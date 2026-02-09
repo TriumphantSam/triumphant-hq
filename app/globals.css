@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* ========================================
+   TRIUMPHANT HQ - ANTIGRAVITY THEME
+   ======================================== */
+
+:root {
+  /* Color Palette */
+  --accent-color: #00ff88;
+  --secondary-color: #00ccff;
+  --bg-dark: #0a0a0a;
+  --bg-darker: #1a1a1a;
+  --text-primary: #e0e0e0;
+  --text-secondary: #aaa;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme inline {
+  --color-background: var(--bg-dark);
+  --color-foreground: var(--text-primary);
+  --color-accent: var(--accent-color);
+  --color-secondary: var(--secondary-color);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Custom animations */
+  --animate-float-slow: float-slow 12s ease-in-out infinite;
+  --animate-float-slower: float-slower 15s ease-in-out infinite reverse;
+}
+
+/* Floating Animations */
+@keyframes float-slow {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  50% {
+    transform: translateY(-40px) translateX(30px);
+  }
+
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+@keyframes float-slower {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  50% {
+    transform: translateY(-50px) translateX(-20px);
+  }
+
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Utility Classes */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-hover {
+  transition: all 0.3s ease;
+}
+
+.glass-hover:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(90deg, #fff, #888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow Effect */
+.glow-accent {
+  box-shadow: 0 0 20px var(--accent-color);
+}
+
+.glow-secondary {
+  box-shadow: 0 0 20px var(--secondary-color);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
