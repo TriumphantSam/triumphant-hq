@@ -32,7 +32,9 @@ export default function RootLayout({
       >
         <AntigravityBackground />
         <Navigation />
-        {children}
+        <main className="flex-grow w-full">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

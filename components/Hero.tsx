@@ -2,37 +2,142 @@
 
 export default function Hero() {
     return (
-        <section className="min-h-[80vh] flex flex-col justify-center items-center text-center px-4 relative">
-            {/* Hero Content */}
-            <div className="max-w-4xl mx-auto z-10">
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 gradient-text">
-                    Essential Tech.<br />Digital Growth.
-                </h1>
+        <section
+            style={{
+                minHeight: '85vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                textAlign: 'center',
+                padding: '2rem 1.5rem',
+                position: 'relative',
+            }}
+        >
+            {/* Decorative badge */}
+            <div
+                style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.5rem 1.25rem',
+                    borderRadius: '9999px',
+                    border: '1px solid var(--glass-border)',
+                    background: 'var(--glass-bg)',
+                    marginBottom: '2rem',
+                    fontSize: '0.85rem',
+                    color: 'var(--text-secondary)',
+                }}
+            >
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent-color)', display: 'inline-block' }} />
+                Bridging Technology &amp; Community Since 2017
+            </div>
 
-                <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
-                    From local NIMC registrations to global AI data strategies. We bridge the gap between today's needs and tomorrow's technology.
-                </p>
+            {/* Main heading */}
+            <h1
+                className="gradient-text"
+                style={{
+                    fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+                    fontWeight: 800,
+                    lineHeight: 1.1,
+                    marginBottom: '1.5rem',
+                    maxWidth: 800,
+                }}
+            >
+                Essential Tech.
+                <br />
+                <span style={{ color: 'var(--accent-color)', WebkitTextFillColor: 'var(--accent-color)' }}>
+                    Digital Growth.
+                </span>
+            </h1>
 
-                <button
-                    className="px-8 py-4 text-lg font-semibold uppercase tracking-wider transition-all duration-300 rounded-lg"
+            {/* Subtitle */}
+            <p
+                style={{
+                    fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                    color: 'var(--text-secondary)',
+                    maxWidth: 600,
+                    lineHeight: 1.7,
+                    marginBottom: '2.5rem',
+                }}
+            >
+                From local NIMC registrations to global AI data strategies. We bridge the gap between today's needs and tomorrow's technology.
+            </p>
+
+            {/* CTA buttons */}
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <a
+                    href="/services"
                     style={{
-                        background: 'rgba(0, 255, 136, 0.1)',
-                        border: '1px solid var(--accent-color)',
-                        color: 'var(--accent-color)',
+                        display: 'inline-block',
+                        padding: '0.9rem 2.5rem',
+                        fontSize: '1rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        borderRadius: '0.75rem',
+                        background: 'var(--accent-color)',
+                        color: '#000',
+                        textDecoration: 'none',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                     }}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--accent-color)';
-                        e.currentTarget.style.color = '#000';
-                        e.currentTarget.style.boxShadow = '0 0 20px var(--accent-color)';
+                        (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                        (e.target as HTMLElement).style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.4)';
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(0, 255, 136, 0.1)';
-                        e.currentTarget.style.color = 'var(--accent-color)';
-                        e.currentTarget.style.boxShadow = 'none';
+                        (e.target as HTMLElement).style.transform = 'translateY(0)';
+                        (e.target as HTMLElement).style.boxShadow = 'none';
                     }}
                 >
                     Explore Solutions
-                </button>
+                </a>
+                <a
+                    href="/about"
+                    style={{
+                        display: 'inline-block',
+                        padding: '0.9rem 2.5rem',
+                        fontSize: '1rem',
+                        fontWeight: 700,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        borderRadius: '0.75rem',
+                        background: 'transparent',
+                        border: '1px solid var(--glass-border)',
+                        color: 'var(--text-primary)',
+                        textDecoration: 'none',
+                        transition: 'all 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                        (e.target as HTMLElement).style.borderColor = 'var(--accent-color)';
+                        (e.target as HTMLElement).style.color = 'var(--accent-color)';
+                    }}
+                    onMouseLeave={(e) => {
+                        (e.target as HTMLElement).style.borderColor = 'var(--glass-border)';
+                        (e.target as HTMLElement).style.color = 'var(--text-primary)';
+                    }}
+                >
+                    Our Story →
+                </a>
+            </div>
+
+            {/* Scroll indicator */}
+            <div
+                style={{
+                    position: 'absolute',
+                    bottom: '2rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    color: 'var(--text-secondary)',
+                    fontSize: '0.75rem',
+                    opacity: 0.6,
+                    animation: 'float-slow 3s ease-in-out infinite',
+                }}
+            >
+                <span>Scroll</span>
+                <span style={{ fontSize: '1.25rem' }}>↓</span>
             </div>
         </section>
     );
