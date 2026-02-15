@@ -3,24 +3,56 @@
 import { useState } from 'react';
 
 const contactMethods = [
-    { icon: '📧', title: 'Email', value: 'info@triumphanthq.com', href: 'mailto:info@triumphanthq.com', color: '#00ff88' },
-    { icon: '📱', title: 'WhatsApp', value: '+234 800 000 0000', href: 'https://wa.me/2348000000000', color: '#00ccff' },
+    { icon: '📧', title: 'Email', value: 'admin@triumphantech.com', href: 'mailto:admin@triumphantech.com', color: '#00ff88' },
+    { icon: '📱', title: 'WhatsApp', value: '+234 810 771 1190', href: 'https://wa.me/2348107711190', color: '#00ccff' },
     { icon: '📍', title: 'Visit Us', value: 'No 4, Kolawole Close, Ibadan, Nigeria', href: '#', color: '#a855f7' },
 ];
+
+const serviceLabels: Record<string, string> = {
+    nimc: 'NIMC Registration',
+    school: 'School Registrations',
+    internet: 'Internet Services',
+    seo: 'SEO & Website Management',
+    ai: 'AI Data Consulting',
+    tech: 'Technical Support',
+    productivity: 'AI-Enhanced Productivity',
+    other: 'Other',
+};
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({ name: '', email: '', service: '', message: '' });
     const [sending, setSending] = useState(false);
     const [sent, setSent] = useState(false);
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setSending(true);
-        // Simulate sending — replace with real API (EmailJS, Formspree, etc.)
-        await new Promise((r) => setTimeout(r, 1500));
-        setSending(false);
-        setSent(true);
-        setFormData({ name: '', email: '', service: '', message: '' });
+        setError('');
+        try {
+            const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    service_id: 'service_fgz42ok',
+                    template_id: 'template_2bilwne',
+                    user_id: 'TCsiAiLBlJkqHpCn5',
+                    template_params: {
+                        from_name: formData.name,
+                        reply_to: formData.email,
+                        service: serviceLabels[formData.service] || formData.service || 'Not specified',
+                        message: formData.message,
+                    },
+                }),
+            });
+            if (!res.ok) throw new Error('Failed to send message');
+            setSent(true);
+            setFormData({ name: '', email: '', service: '', message: '' });
+        } catch (err: unknown) {
+            setError(err instanceof Error ? err.message : 'Failed to send. Please try again.');
+        } finally {
+            setSending(false);
+        }
     };
 
     const inputStyle: React.CSSProperties = {
@@ -112,6 +144,16 @@ export default function ContactPage() {
                         Fill out the form and we will get back to you as soon as possible.
                     </p>
 
+                    {error && (
+                        <div style={{
+                            padding: '0.75rem 1rem', marginBottom: '1.5rem', borderRadius: '0.5rem',
+                            background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)',
+                            color: '#ef4444', fontSize: '0.9rem',
+                        }}>
+                            {error}
+                        </div>
+                    )}
+
                     {sent ? (
                         <div style={{ textAlign: 'center', padding: '3rem 0' }}>
                             <span style={{ fontSize: '3rem', display: 'block', marginBottom: '1rem' }}>✅</span>
@@ -120,7 +162,7 @@ export default function ContactPage() {
                             </h3>
                             <p style={{ color: 'var(--text-secondary)' }}>{"We'll get back to you within 24 hours."}</p>
                             <button
-                                onClick={() => setSent(false)}
+                                onClick={() => { setSent(false); setError(''); }}
                                 style={{
                                     marginTop: '1.5rem', padding: '0.6rem 1.5rem', borderRadius: '0.75rem',
                                     border: '1px solid var(--glass-border)', background: 'transparent',
@@ -174,19 +216,19 @@ export default function ContactPage() {
                                 <select
                                     value={formData.service}
                                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                                    style={{ ...inputStyle, cursor: 'pointer', appearance: 'auto' }}
+                                    style={{ ...inputStyle, cursor: 'pointer', appearance: 'auto', colorScheme: 'dark' }}
                                     onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-color)'}
                                     onBlur={(e) => e.currentTarget.style.borderColor = 'var(--glass-border)'}
                                 >
-                                    <option value="">Select a service...</option>
-                                    <option value="nimc">NIMC Registration</option>
-                                    <option value="school">School Registrations</option>
-                                    <option value="internet">Internet Services</option>
-                                    <option value="seo">SEO & Website Management</option>
-                                    <option value="ai">AI Data Consulting</option>
-                                    <option value="tech">Technical Support</option>
-                                    <option value="productivity">AI-Enhanced Productivity</option>
-                                    <option value="other">Other</option>
+                                    <option value="" style={{ background: '#1a1a2e', color: '#ccc' }}>Select a service...</option>
+                                    <option value="nimc" style={{ background: '#1a1a2e', color: '#fff' }}>NIMC Registration</option>
+                                    <option value="school" style={{ background: '#1a1a2e', color: '#fff' }}>School Registrations</option>
+                                    <option value="internet" style={{ background: '#1a1a2e', color: '#fff' }}>Internet Services</option>
+                                    <option value="seo" style={{ background: '#1a1a2e', color: '#fff' }}>SEO &amp; Website Management</option>
+                                    <option value="ai" style={{ background: '#1a1a2e', color: '#fff' }}>AI Data Consulting</option>
+                                    <option value="tech" style={{ background: '#1a1a2e', color: '#fff' }}>Technical Support</option>
+                                    <option value="productivity" style={{ background: '#1a1a2e', color: '#fff' }}>AI-Enhanced Productivity</option>
+                                    <option value="other" style={{ background: '#1a1a2e', color: '#fff' }}>Other</option>
                                 </select>
                             </div>
 

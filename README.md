@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Triumphant HQ Website
 
-## Getting Started
+Modern website for Triumphant HQ built with Next.js 16 + Tailwind CSS v4.
 
-First, run the development server:
+## 🚀 Getting Started
+
+First, install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Modern Design**: Glassmorphism, dark mode aesthetic, fluid typography (`clamp()`).
+- **Performance**: Optimized images, code splitting, and fast page loads via Next.js.
+- **Components**:
+  - `Hero`: Main landing section with stats bar suitable for mobile/desktop.
+  - `Navigation`: Responsive header with mobile hamburger menu.
+  - `Footer`: 4-column layout with quick links.
+  - `Contact Form`: Wired to EmailJS (client-side) - no server config needed.
+- **Blog**: Tech Diary powered by Markdown files in `content/blog`.
 
-## Learn More
+## 📦 Deployment
 
-To learn more about Next.js, take a look at the following resources:
+The easiest way to deploy is using [Vercel](https://vercel.com/new).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Push your code to a GitHub repository.
+2. Sign up/Log in to Vercel.
+3. Import your repository.
+4. Click **Deploy**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Vercel will automatically detect `Next.js` and configure the build settings.
 
-## Deploy on Vercel
+## 🧹 Cleanup Note
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+If you see `app/api/contact/route.ts` or `.env.local` (with SMTP credentials) in your project, you can safely delete them as the contact form now uses EmailJS directly from the browser.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 Blog Posts
+
+To add a new blog post:
+1. Create a `.md` file in `content/blog/`.
+2. Add frontmatter at the top:
+   ```markdown
+   ---
+   title: 'Your Post Title'
+   date: '2024-03-20'
+   excerpt: 'Short description...'
+   category: 'General'
+   readTime: '5 min read'
+   ---
+   ```
+3. Write your content below in Markdown.
+
+## 📞 Contact Info
+
+- **Email**: admin@triumphantech.com
+- **WhatsApp**: +234 810 771 1190
+- **Address**: No 4, Kolawole Close, Ibadan, Nigeria

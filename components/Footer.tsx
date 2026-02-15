@@ -108,18 +108,18 @@ export default function Footer() {
                         </h4>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                             <a
-                                href="mailto:info@triumphanthq.com"
+                                href="mailto:admin@triumphantech.com"
                                 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                             >
-                                📧 info@triumphanthq.com
+                                📧 admin@triumphantech.com
                             </a>
                             <a
-                                href="https://wa.me/2348000000000"
+                                href="https://wa.me/2348107711190"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                             >
-                                📱 +234 800 000 0000
+                                📱 +234 810 771 1190
                             </a>
                         </div>
                     </div>

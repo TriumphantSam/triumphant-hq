@@ -18,6 +18,21 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Triumphant HQ | Essential Tech & Digital Growth",
   description: "From local NIMC registrations to global AI data strategies. We bridge the gap between essential tech services and digital growth solutions.",
+  keywords: ["Triumphant HQ", "Tech Support Ibadan", "NIMC Registration", "AI Consulting", "Web Development", "SEO Services", "Digital Growth"],
+  authors: [{ name: "Triumphant HQ Team" }],
+  openGraph: {
+    title: "Triumphant HQ | Essential Tech & Digital Growth",
+    description: "Bridging the gap between essential tech services and digital growth solutions.",
+    url: "https://triumphanthq.com",
+    siteName: "Triumphant HQ",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Triumphant HQ | Essential Tech & Digital Growth",
+    description: "Bridging the gap between essential tech services and digital growth solutions.",
+  },
 };
 
 export default function RootLayout({
