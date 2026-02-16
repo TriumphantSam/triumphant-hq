@@ -30,16 +30,9 @@ const services = [
     icon: '💻',
     title: 'Technical Support',
     color: '#00A3CC',
-    description: 'HP printer setup, Microsoft 365 deployment, hardware diagnostics and repair from a trusted partner.',
+    description: 'HP printer and pc support, HP Instant Ink consultations, Microsoft 365, hardware diagnostics and repair from trusted partners.',
     link: '/services',
   },
-];
-
-const stats = [
-  { value: '7+', label: 'Years of Service' },
-  { value: '40%', label: 'Avg. Traffic Growth' },
-  { value: '500+', label: 'Clients Helped' },
-  { value: '6', label: 'Service Areas' },
 ];
 
 const reasons = [
@@ -51,7 +44,7 @@ const reasons = [
   {
     icon: '⚡',
     title: 'Fast & Reliable',
-    description: "Whether it's a NIN registration or a full SEO audit, we deliver on time with consistent quality.",
+    description: "Whether it's a NIN registration, website development or a full SEO audit, we deliver on time with consistent quality.",
   },
   {
     icon: '🤝',
@@ -67,41 +60,6 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero */}
       <Hero />
-
-      {/* ===================== STATS BAR ===================== */}
-      <section
-        className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
-        style={{ paddingBottom: '4rem' }}
-      >
-        <div
-          className="glass rounded-sm border border-[#0066FF]/30"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-            gap: '1rem',
-            padding: 'clamp(1.5rem, 3vw, 2.5rem)',
-            textAlign: 'center',
-          }}
-        >
-          {stats.map((s, i) => (
-            <div key={i}>
-              <div
-                style={{
-                  fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                  fontWeight: 800,
-                  color: 'var(--accent-color)',
-                  lineHeight: 1.2,
-                }}
-              >
-                {s.value}
-              </div>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ===================== SERVICES ===================== */}
       <section

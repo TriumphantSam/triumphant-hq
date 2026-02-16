@@ -8,11 +8,11 @@ const timelineData = [
         title: 'Foundation Years',
         icon: '🏁',
         color: '#0066FF',
-        description: 'Started as a local internet café in Ibadan, providing essential services to the community.',
-        highlights: ['Document typing & printing', 'Email & internet support', 'School portal registrations', 'Building community trust'],
+        description: 'Started in a local internet café serving the biggest Forum in Africa and providing essential services to the community.',
+        highlights: ['Nairaland Moderator', 'Document typing & printing', 'Email & internet support', 'School portal registrations', 'Building community trust'],
     },
     {
-        year: '2019–2021',
+        year: '2019–Present',
         title: 'Technical Expertise',
         icon: '🔧',
         color: '#00CCFF',
@@ -20,7 +20,7 @@ const timelineData = [
         highlights: ['HP printer setup & troubleshooting', 'Microsoft 365 support', 'Hardware diagnostics & repair', 'NIMC registration services'],
     },
     {
-        year: '2021–2023',
+        year: '2021–Present',
         title: 'Digital Growth',
         icon: '📈',
         color: '#3385FF',
@@ -40,7 +40,7 @@ const timelineData = [
 const skills = [
     { icon: '🏪', title: 'Local Services', color: '#0066FF', items: ['NIMC Registration', 'JAMB/WAEC/NECO', 'Document Services', 'Internet Support'] },
     { icon: '💻', title: 'Technical Support', color: '#00CCFF', items: ['HP Printer Support', 'Microsoft 365', 'Hardware Repair', 'Software Installation'] },
-    { icon: '🌐', title: 'SEO & Web', color: '#3385FF', items: ['Search Optimization', 'WordPress Management', 'Content Strategy', 'Analytics & Reporting'] },
+    { icon: '🌐', title: 'SEO & Web', color: '#3385FF', items: ['Search Optimization', 'WordPress Management', 'Online Ads', 'Analytics & Reporting'] },
     { icon: '🧠', title: 'AI & Data', color: '#00A3CC', items: ['Data Annotation', 'Quality Assurance', 'Prompt Engineering', 'Model Evaluation'] },
     { icon: '⚡', title: 'Productivity', color: '#0066FF', items: ['AI Tool Integration', 'Workflow Automation', 'Team Training', 'Process Optimization'] },
     { icon: '👨‍💻', title: 'Development', color: '#00CCFF', items: ['Next.js / React', 'JavaScript / TypeScript', 'Modern Web Design', '"Vibe Coding"'] },
@@ -72,7 +72,7 @@ export default function AboutPage() {
                     className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
                     style={{ color: 'var(--text-secondary)' }}
                 >
-                    Bridging the gap between essential local tech services and cutting-edge digital solutions — for over <strong style={{ color: 'var(--secondary-color)' }}>7 years</strong>.
+                    Bridging the gap between essential local tech services and cutting-edge digital solutions  <strong style={{ color: 'var(--secondary-color)' }}></strong>.
                 </p>
             </section>
 
@@ -91,13 +91,13 @@ export default function AboutPage() {
                         </h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', color: 'var(--text-secondary)', fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', lineHeight: 1.8 }}>
                             <p>
-                                What started as a local internet café providing essential services has evolved into a comprehensive tech solutions provider. We understand the unique challenges of operating in Nigeria's tech landscape.
+                                What started as a personal passion for providing essential services has evolved into a comprehensive tech solutions provider. We understand the unique challenges of operating in Nigeria's tech landscape.
                             </p>
                             <p>
-                                From helping students register for JAMB to optimizing websites for global search engines, we've seen it all — and we've mastered the art of delivering reliable solutions in both worlds.
+                                From helping citizens register their NIN and providing student registration solutions to optimizing websites for global search engines, we've seen it all — and we've mastered the art of delivering reliable solutions in both worlds.
                             </p>
                             <p>
-                                Today, Triumphant HQ stands as a testament to adaptability and growth. We're not just keeping pace with technology — we're helping our clients leverage it, whether they need a NIN registration or a business looking to grow their online presence.
+                                Today, Triumphant Tech Services stands as a testament to adaptability and growth. We're not just keeping pace with technology — we're helping our clients leverage it, whether they need local solutions or professional services.
                             </p>
                         </div>
                     </div>
@@ -320,7 +320,7 @@ export default function AboutPage() {
                         className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
                         style={{ color: 'var(--text-secondary)' }}
                     >
-                        Whether you're a student registering for JAMB or a business scaling globally, we believe in making technology accessible, understandable, and effective. We bridge the gap between where you are and where you want to be.
+                        Whether you're a citizen registering for NIN or a business scaling globally, we believe in making technology accessible, understandable, and effective. We bridge the gap between where you are and where you want to be.
                     </p>
                 </div>
             </section>

@@ -32,7 +32,7 @@ export default function Hero() {
                 }}
             >
                 <span style={{ width: 6, height: 6, borderRadius: '0px', background: 'var(--secondary-color)', display: 'inline-block' }} />
-                Bridging Technology &amp; Community Since 2017
+                TRIUMPHANTTECH: Delivering Innovative Solutions
             </div>
 
             {/* Main heading */}
@@ -63,7 +63,7 @@ export default function Hero() {
                     marginBottom: '2.5rem',
                 }}
             >
-                From local NIMC registrations to global AI data strategies. We bridge the gap between today's needs and tomorrow's technology.
+                From Local Solutions to Professional Services. We bridge the gap between today's needs and tomorrow's technology.
             </p>
 
             {/* CTA buttons */}

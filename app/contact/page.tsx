@@ -5,7 +5,7 @@ import { useState } from 'react';
 const contactMethods = [
     { icon: '📧', title: 'Email', value: 'admin@triumphantech.com', href: 'mailto:admin@triumphantech.com', color: '#0066FF' },
     { icon: '📱', title: 'WhatsApp', value: '+234 810 771 1190', href: 'https://wa.me/2348107711190', color: '#00CCFF' },
-    { icon: '📍', title: 'Visit Us', value: 'No 4, Kolawole Close, Ibadan, Nigeria', href: '#', color: '#3385FF' },
+    { icon: '📍', title: 'Visit Us', value: 'Bashorun, Ibadan, Nigeria', href: '#', color: '#3385FF' },
 ];
 
 const serviceLabels: Record<string, string> = {
