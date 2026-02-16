@@ -21,32 +21,34 @@ export default function Hero() {
                     alignItems: 'center',
                     gap: '0.5rem',
                     padding: '0.5rem 1.25rem',
-                    borderRadius: '9999px',
+                    borderRadius: '2px', // Angular
                     border: '1px solid var(--glass-border)',
                     background: 'var(--glass-bg)',
                     marginBottom: '2rem',
                     fontSize: '0.85rem',
                     color: 'var(--text-secondary)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
                 }}
             >
-                <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--accent-color)', display: 'inline-block' }} />
+                <span style={{ width: 6, height: 6, borderRadius: '0px', background: 'var(--secondary-color)', display: 'inline-block' }} />
                 Bridging Technology &amp; Community Since 2017
             </div>
 
             {/* Main heading */}
             <h1
-                className="gradient-text"
                 style={{
                     fontSize: 'clamp(2.5rem, 7vw, 5rem)',
                     fontWeight: 800,
                     lineHeight: 1.1,
                     marginBottom: '1.5rem',
                     maxWidth: 800,
+                    color: '#fff',
                 }}
             >
                 Essential Tech.
                 <br />
-                <span style={{ color: 'var(--accent-color)', WebkitTextFillColor: 'var(--accent-color)' }}>
+                <span style={{ color: 'var(--secondary-color)' }}>
                     Digital Growth.
                 </span>
             </h1>
@@ -75,15 +77,15 @@ export default function Hero() {
                         fontWeight: 700,
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
-                        borderRadius: '0.75rem',
+                        borderRadius: '2px', // Angular
                         background: 'var(--accent-color)',
-                        color: '#000',
+                        color: '#fff',
                         textDecoration: 'none',
                         transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                     }}
                     onMouseEnter={(e) => {
                         (e.target as HTMLElement).style.transform = 'translateY(-2px)';
-                        (e.target as HTMLElement).style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.4)';
+                        (e.target as HTMLElement).style.boxShadow = '0 0 30px rgba(0, 102, 255, 0.4)';
                     }}
                     onMouseLeave={(e) => {
                         (e.target as HTMLElement).style.transform = 'translateY(0)';
@@ -101,7 +103,7 @@ export default function Hero() {
                         fontWeight: 700,
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
-                        borderRadius: '0.75rem',
+                        borderRadius: '2px', // Angular
                         background: 'transparent',
                         border: '1px solid var(--glass-border)',
                         color: 'var(--text-primary)',
@@ -109,8 +111,8 @@ export default function Hero() {
                         transition: 'all 0.2s ease',
                     }}
                     onMouseEnter={(e) => {
-                        (e.target as HTMLElement).style.borderColor = 'var(--accent-color)';
-                        (e.target as HTMLElement).style.color = 'var(--accent-color)';
+                        (e.target as HTMLElement).style.borderColor = 'var(--secondary-color)';
+                        (e.target as HTMLElement).style.color = 'var(--secondary-color)';
                     }}
                     onMouseLeave={(e) => {
                         (e.target as HTMLElement).style.borderColor = 'var(--glass-border)';
@@ -136,7 +138,7 @@ export default function Hero() {
                     animation: 'float-slow 3s ease-in-out infinite',
                 }}
             >
-                <span>Scroll</span>
+                <span style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }} >Scroll</span>
                 <span style={{ fontSize: '1.25rem' }}>↓</span>
             </div>
         </section>

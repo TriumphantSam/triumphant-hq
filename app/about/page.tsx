@@ -7,7 +7,7 @@ const timelineData = [
         year: '2017–2019',
         title: 'Foundation Years',
         icon: '🏁',
-        color: '#00ff88',
+        color: '#0066FF',
         description: 'Started as a local internet café in Ibadan, providing essential services to the community.',
         highlights: ['Document typing & printing', 'Email & internet support', 'School portal registrations', 'Building community trust'],
     },
@@ -15,7 +15,7 @@ const timelineData = [
         year: '2019–2021',
         title: 'Technical Expertise',
         icon: '🔧',
-        color: '#00ccff',
+        color: '#00CCFF',
         description: 'Expanded into technical support and hardware services, becoming a trusted HP and Microsoft partner.',
         highlights: ['HP printer setup & troubleshooting', 'Microsoft 365 support', 'Hardware diagnostics & repair', 'NIMC registration services'],
     },
@@ -23,7 +23,7 @@ const timelineData = [
         year: '2021–2023',
         title: 'Digital Growth',
         icon: '📈',
-        color: '#a855f7',
+        color: '#3385FF',
         description: 'Pivoted into SEO and digital marketing, helping businesses grow their online presence.',
         highlights: ['SEO strategy & implementation', 'WordPress website management', 'Content optimization', '40% organic traffic growth for clients'],
     },
@@ -31,19 +31,19 @@ const timelineData = [
         year: '2023–Present',
         title: 'AI & Innovation',
         icon: '🤖',
-        color: '#f59e0b',
+        color: '#00A3CC',
         description: 'Embracing the AI revolution with data consulting and productivity solutions.',
         highlights: ['AI data annotation & QA', 'Human-in-the-Loop services', 'AI-enhanced productivity consulting', 'Continuous learning & adaptation'],
     },
 ];
 
 const skills = [
-    { icon: '🏪', title: 'Local Services', color: '#00ff88', items: ['NIMC Registration', 'JAMB/WAEC/NECO', 'Document Services', 'Internet Support'] },
-    { icon: '💻', title: 'Technical Support', color: '#00ccff', items: ['HP Printer Support', 'Microsoft 365', 'Hardware Repair', 'Software Installation'] },
-    { icon: '🌐', title: 'SEO & Web', color: '#a855f7', items: ['Search Optimization', 'WordPress Management', 'Content Strategy', 'Analytics & Reporting'] },
-    { icon: '🧠', title: 'AI & Data', color: '#f59e0b', items: ['Data Annotation', 'Quality Assurance', 'Prompt Engineering', 'Model Evaluation'] },
-    { icon: '⚡', title: 'Productivity', color: '#ec4899', items: ['AI Tool Integration', 'Workflow Automation', 'Team Training', 'Process Optimization'] },
-    { icon: '👨‍💻', title: 'Development', color: '#06b6d4', items: ['Next.js / React', 'JavaScript / TypeScript', 'Modern Web Design', '"Vibe Coding"'] },
+    { icon: '🏪', title: 'Local Services', color: '#0066FF', items: ['NIMC Registration', 'JAMB/WAEC/NECO', 'Document Services', 'Internet Support'] },
+    { icon: '💻', title: 'Technical Support', color: '#00CCFF', items: ['HP Printer Support', 'Microsoft 365', 'Hardware Repair', 'Software Installation'] },
+    { icon: '🌐', title: 'SEO & Web', color: '#3385FF', items: ['Search Optimization', 'WordPress Management', 'Content Strategy', 'Analytics & Reporting'] },
+    { icon: '🧠', title: 'AI & Data', color: '#00A3CC', items: ['Data Annotation', 'Quality Assurance', 'Prompt Engineering', 'Model Evaluation'] },
+    { icon: '⚡', title: 'Productivity', color: '#0066FF', items: ['AI Tool Integration', 'Workflow Automation', 'Team Training', 'Process Optimization'] },
+    { icon: '👨‍💻', title: 'Development', color: '#00CCFF', items: ['Next.js / React', 'JavaScript / TypeScript', 'Modern Web Design', '"Vibe Coding"'] },
 ];
 
 export default function AboutPage() {
@@ -132,14 +132,16 @@ export default function AboutPage() {
                             onClick={() => setActiveTimeline(i)}
                             style={{
                                 padding: '0.6rem 1.2rem',
-                                borderRadius: '9999px',
+                                borderRadius: '2px',
                                 border: `1px solid ${activeTimeline === i ? item.color : 'var(--glass-border)'}`,
                                 background: activeTimeline === i ? `${item.color}18` : 'var(--glass-bg)',
                                 color: activeTimeline === i ? item.color : 'var(--text-secondary)',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
-                                fontSize: '0.875rem',
+                                fontSize: '0.8rem',
                                 fontWeight: 600,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
                             }}
                         >
                             {item.icon} {item.year}
@@ -149,7 +151,7 @@ export default function AboutPage() {
 
                 {/* Active timeline card */}
                 <div
-                    className="glass rounded-2xl"
+                    className="glass rounded-lg border border-[#0066FF]/20"
                     style={{
                         maxWidth: 720,
                         margin: '0 auto',
@@ -164,7 +166,7 @@ export default function AboutPage() {
                             <h3 className="text-xl sm:text-2xl font-bold" style={{ color: timelineData[activeTimeline].color }}>
                                 {timelineData[activeTimeline].title}
                             </h3>
-                            <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+                            <span className="text-sm uppercase tracking-wide opacity-80" style={{ color: 'var(--text-secondary)' }}>
                                 {timelineData[activeTimeline].year}
                             </span>
                         </div>
@@ -187,10 +189,10 @@ export default function AboutPage() {
                                     alignItems: 'center',
                                     gap: '0.5rem',
                                     padding: '0.5rem 0.75rem',
-                                    borderRadius: '0.5rem',
+                                    borderRadius: '2px',
                                     background: 'rgba(255,255,255,0.03)',
                                     border: '1px solid var(--glass-border)',
-                                    fontSize: '0.875rem',
+                                    fontSize: '0.8rem',
                                     color: 'var(--text-secondary)',
                                 }}
                             >
@@ -207,9 +209,9 @@ export default function AboutPage() {
                             key={i}
                             onClick={() => setActiveTimeline(i)}
                             style={{
-                                width: activeTimeline === i ? 32 : 10,
-                                height: 10,
-                                borderRadius: 9999,
+                                width: activeTimeline === i ? 40 : 12,
+                                height: 4,
+                                borderRadius: 0,
                                 background: activeTimeline === i ? item.color : 'var(--glass-border)',
                                 transition: 'all 0.3s ease',
                                 cursor: 'pointer',
@@ -227,7 +229,7 @@ export default function AboutPage() {
                 >
                     What We Do
                 </p>
-                <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center gradient-text">
+                <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center text-white">
                     Skills & Expertise
                 </h2>
 
@@ -241,7 +243,7 @@ export default function AboutPage() {
                     {skills.map((skill, i) => (
                         <div
                             key={i}
-                            className="glass glass-hover rounded-2xl"
+                            className="glass glass-hover rounded-sm"
                             style={{
                                 padding: '1.75rem',
                                 borderTop: `3px solid ${skill.color}`,

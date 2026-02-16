@@ -5,19 +5,23 @@
    ======================================== */
 
 :root {
-  /* Color Palette */
-  --accent-color: #00ff88;
-  --secondary-color: #00ccff;
-  --bg-dark: #0a0a0a;
-  --bg-darker: #1a1a1a;
+  /* Color Palette - Industrial Tech */
+  --accent-color: #0066FF;
+  /* Electric Blue */
+  --secondary-color: #00CCFF;
+  /* Cyan */
+  --bg-dark: #050510;
+  --bg-darker: #020205;
   --text-primary: #e0e0e0;
-  --text-secondary: #aaa;
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-secondary: #94a3b8;
+  --glass-bg: rgba(0, 102, 255, 0.03);
+  --glass-border: rgba(0, 102, 255, 0.2);
+  /* Tech blue tint on borders */
 
   /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-playfair);
 }
 
 @theme inline {
@@ -118,24 +122,22 @@ main {
 .glass-hover:hover {
   transform: translateY(-5px);
   border-color: var(--accent-color);
-  box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
 }
 
-/* Gradient Text */
+/* Gradient Text - REMOVED for Industrial Look */
 .gradient-text {
-  background: linear-gradient(90deg, #fff, #888);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fff;
+  /* Solid white for clarity */
 }
 
-/* Glow Effect */
+/* Glow Effect - Sharper */
 .glow-accent {
-  box-shadow: 0 0 20px var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
 }
 
 .glow-secondary {
-  box-shadow: 0 0 20px var(--secondary-color);
+  box-shadow: 0 0 10px var(--secondary-color);
 }
 
 /* Custom Scrollbar */
@@ -149,7 +151,8 @@ main {
 
 ::-webkit-scrollbar-thumb {
   background: var(--accent-color);
-  border-radius: 5px;
+  border-radius: 0px;
+  /* Square */
 }
 
 ::-webkit-scrollbar-thumb:hover {

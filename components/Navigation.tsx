@@ -9,7 +9,6 @@ const links = [
     { href: '/services', label: 'Services' },
     { href: '/tech-diary', label: 'Tech Diary' },
     { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
 ];
 
 export default function Navigation() {
@@ -18,168 +17,84 @@ export default function Navigation() {
 
     return (
         <nav
-            style={{
-                position: 'sticky',
-                top: 0,
-                zIndex: 50,
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-                background: 'rgba(10, 10, 20, 0.75)',
-                borderBottom: '1px solid var(--glass-border)',
-            }}
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${mobileOpen ? 'bg-[#050510]' : 'bg-[#050510]/80 backdrop-blur-md border-b border-[#0066FF]/20'
+                }`}
         >
-            <div
-                style={{
-                    maxWidth: 1200,
-                    margin: '0 auto',
-                    padding: '0 clamp(1rem, 3vw, 2rem)',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    height: 64,
-                }}
-            >
-                {/* Logo */}
-                <Link
-                    href="/"
-                    style={{
-                        textDecoration: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                    }}
-                >
+            <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+                {/* Logo - Industrial/Tech */}
+                <Link href="/" className="flex items-center gap-3 group">
+                    <div className="w-10 h-10 bg-[#0066FF] flex items-center justify-center rounded-sm group-hover:bg-[#00CCFF] transition-colors shadow-[0_0_15px_rgba(0,102,255,0.3)]">
+                        <span className="text-white font-bold text-xl">T</span>
+                    </div>
                     <span
-                        style={{
-                            fontSize: '1.35rem',
-                            fontWeight: 800,
-                            letterSpacing: '0.15em',
-                            color: 'var(--accent-color)',
-                        }}
+                        className="text-white font-bold text-xl tracking-wider uppercase"
                     >
-                        TRIUMPHANT
-                    </span>
-                    <span
-                        style={{
-                            fontSize: '0.7rem',
-                            fontWeight: 600,
-                            padding: '0.15rem 0.5rem',
-                            borderRadius: '0.25rem',
-                            border: '1px solid var(--accent-color)',
-                            color: 'var(--accent-color)',
-                            letterSpacing: '0.1em',
-                        }}
-                    >
-                        HQ
+                        TRIUMPHANT<span className="text-[#0066FF]">HQ</span>
                     </span>
                 </Link>
 
-                {/* Desktop links */}
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.25rem',
-                    }}
-                    className="desktop-nav"
-                >
-                    {links.map((link) => {
-                        const isActive = pathname === link.href;
-                        return (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                style={{
-                                    textDecoration: 'none',
-                                    padding: '0.45rem 1rem',
-                                    borderRadius: '0.5rem',
-                                    fontSize: '0.9rem',
-                                    fontWeight: isActive ? 600 : 400,
-                                    color: isActive ? 'var(--accent-color)' : 'var(--text-secondary)',
-                                    background: isActive ? 'rgba(0, 255, 136, 0.08)' : 'transparent',
-                                    transition: 'all 0.2s ease',
-                                }}
-                            >
-                                {link.label}
-                            </Link>
-                        );
-                    })}
+                {/* Desktop Links */}
+                <div className="hidden md:flex items-center gap-8">
+                    {links.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className={`text-sm font-semibold tracking-widest uppercase transition-colors hover:text-[#00CCFF] ${pathname === link.href ? 'text-[#0066FF]' : 'text-gray-400'
+                                }`}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                    <Link
+                        href="/contact"
+                        className="px-6 py-2 border border-[#0066FF] text-[#0066FF] text-sm font-bold tracking-wider uppercase hover:bg-[#0066FF] hover:text-white transition-all shadow-[0_0_10px_rgba(0,102,255,0.15)] hover:shadow-[0_0_20px_rgba(0,102,255,0.4)]"
+                        style={{ borderRadius: '2px' }}
+                    >
+                        Contact
+                    </Link>
                 </div>
 
-                {/* Mobile hamburger */}
+                {/* Mobile Menu Button */}
                 <button
-                    className="mobile-nav-btn"
+                    className="md:hidden text-white hover:text-[#0066FF] transition-colors"
                     onClick={() => setMobileOpen(!mobileOpen)}
-                    aria-label="Toggle menu"
-                    style={{
-                        display: 'none', /* shown via CSS media query */
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        padding: '0.5rem',
-                        color: 'var(--text-primary)',
-                    }}
                 >
-                    {mobileOpen ? (
-                        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        {mobileOpen ? (
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    ) : (
-                        <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        ) : (
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    )}
+                        )}
+                    </svg>
                 </button>
             </div>
 
-            {/* Mobile menu */}
+            {/* Mobile Menu */}
             {mobileOpen && (
-                <div
-                    className="mobile-nav-menu"
-                    style={{
-                        padding: '0.5rem clamp(1rem, 3vw, 2rem) 1.25rem',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.25rem',
-                        borderTop: '1px solid var(--glass-border)',
-                        background: 'rgba(10, 10, 20, 0.95)',
-                    }}
-                >
-                    {links.map((link) => {
-                        const isActive = pathname === link.href;
-                        return (
+                <div className="md:hidden bg-[#050510] border-t border-[#0066FF]/20 px-6 py-8 h-screen">
+                    <div className="flex flex-col gap-6">
+                        {links.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
+                                className={`text-lg font-semibold tracking-wide uppercase ${pathname === link.href ? 'text-[#0066FF]' : 'text-gray-400'
+                                    }`}
                                 onClick={() => setMobileOpen(false)}
-                                style={{
-                                    textDecoration: 'none',
-                                    padding: '0.75rem 1rem',
-                                    borderRadius: '0.5rem',
-                                    fontSize: '1rem',
-                                    fontWeight: isActive ? 600 : 400,
-                                    color: isActive ? 'var(--accent-color)' : 'var(--text-secondary)',
-                                    background: isActive ? 'rgba(0, 255, 136, 0.08)' : 'transparent',
-                                    transition: 'all 0.2s ease',
-                                }}
                             >
                                 {link.label}
                             </Link>
-                        );
-                    })}
+                        ))}
+                        <Link
+                            href="/contact"
+                            className="inline-block text-center px-6 py-3 border border-[#0066FF] text-[#0066FF] font-bold tracking-wider uppercase hover:bg-[#0066FF] hover:text-white transition-all"
+                            onClick={() => setMobileOpen(false)}
+                            style={{ borderRadius: '2px' }}
+                        >
+                            Contact Us
+                        </Link>
+                    </div>
                 </div>
             )}
-
-            {/* Responsive CSS */}
-            <style jsx>{`
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .mobile-nav-btn { display: block !important; }
-        }
-        @media (min-width: 769px) {
-          .mobile-nav-menu { display: none !important; }
-        }
-      `}</style>
         </nav>
     );
 }

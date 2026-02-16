@@ -17,66 +17,50 @@ const services = [
 
 export default function Footer() {
     return (
-        <footer
-            style={{
-                borderTop: '1px solid var(--glass-border)',
-                background: 'rgba(10, 10, 20, 0.6)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-            }}
-        >
+        <footer className="bg-[#020205] border-t border-[#0066FF]/20 relative overflow-hidden">
+            {/* Hex Pattern Overlay */}
             <div
+                className="absolute inset-0 opacity-5 pointer-events-none"
                 style={{
-                    maxWidth: 1200,
-                    margin: '0 auto',
-                    padding: 'clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 3vw, 2rem) 2rem',
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill-opacity='0' stroke='%230066FF' stroke-width='1'/%3E%3C/svg%3E")`,
+                    backgroundSize: '30px 30px'
                 }}
-            >
+            />
+
+            <div className="container mx-auto px-6 py-16 relative z-10">
                 {/* Main grid */}
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                        gap: '2.5rem',
-                        marginBottom: '2.5rem',
-                    }}
-                >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     {/* Brand column */}
                     <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                            <span style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '0.15em', color: 'var(--accent-color)' }}>
-                                TRIUMPHANT
-                            </span>
-                            <span
-                                style={{
-                                    fontSize: '0.6rem', fontWeight: 600, padding: '0.1rem 0.4rem',
-                                    borderRadius: '0.2rem', border: '1px solid var(--accent-color)',
-                                    color: 'var(--accent-color)', letterSpacing: '0.1em',
-                                }}
-                            >
-                                HQ
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="w-8 h-8 bg-[#0066FF] flex items-center justify-center rounded-sm">
+                                <span className="text-white font-bold text-lg">T</span>
+                            </div>
+                            <span className="text-xl font-bold tracking-wider text-white uppercase">
+                                TRIUMPHANT<span className="text-[#0066FF]">HQ</span>
                             </span>
                         </div>
-                        <p style={{ fontSize: '0.85rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '1rem', maxWidth: 280 }}>
+                        <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
                             Bridging essential local tech services with cutting-edge digital solutions since 2017.
                         </p>
-                        <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <p className="text-sm text-gray-500 flex items-center gap-2">
                             📍 No 4, Kolawole Close, Ibadan
                         </p>
                     </div>
 
                     {/* Navigation column */}
                     <div>
-                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-primary)', marginBottom: '1rem' }}>
+                        <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-6 border-b border-[#0066FF]/30 pb-2 inline-block">
                             Quick Links
                         </h4>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div className="flex flex-col gap-3">
                             {footerLinks.map((link) => (
                                 <Link
                                     key={link.href}
                                     href={link.href}
-                                    style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.2s' }}
+                                    className="text-sm text-gray-400 hover:text-[#00CCFF] transition-colors flex items-center gap-2"
                                 >
+                                    <span className="w-1 h-1 bg-[#0066FF] rounded-full" />
                                     {link.label}
                                 </Link>
                             ))}
@@ -85,16 +69,17 @@ export default function Footer() {
 
                     {/* Services column */}
                     <div>
-                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-primary)', marginBottom: '1rem' }}>
+                        <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-6 border-b border-[#0066FF]/30 pb-2 inline-block">
                             Services
                         </h4>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        <div className="flex flex-col gap-3">
                             {services.map((s, i) => (
                                 <Link
                                     key={i}
                                     href={s.href}
-                                    style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none', transition: 'color 0.2s' }}
+                                    className="text-sm text-gray-400 hover:text-[#00CCFF] transition-colors flex items-center gap-2"
                                 >
+                                    <span className="w-1 h-1 bg-[#0066FF] rounded-full" />
                                     {s.label}
                                 </Link>
                             ))}
@@ -103,13 +88,13 @@ export default function Footer() {
 
                     {/* Contact column */}
                     <div>
-                        <h4 style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--text-primary)', marginBottom: '1rem' }}>
+                        <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-6 border-b border-[#0066FF]/30 pb-2 inline-block">
                             Get in Touch
                         </h4>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                        <div className="flex flex-col gap-4">
                             <a
                                 href="mailto:admin@triumphantech.com"
-                                style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                                className="text-sm text-gray-400 hover:text-[#00CCFF] transition-colors flex items-center gap-2"
                             >
                                 📧 admin@triumphantech.com
                             </a>
@@ -117,7 +102,7 @@ export default function Footer() {
                                 href="https://wa.me/2348107711190"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                                className="text-sm text-gray-400 hover:text-[#00CCFF] transition-colors flex items-center gap-2"
                             >
                                 📱 +234 810 771 1190
                             </a>
@@ -126,21 +111,11 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom bar */}
-                <div
-                    style={{
-                        borderTop: '1px solid var(--glass-border)',
-                        paddingTop: '1.5rem',
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        gap: '0.75rem',
-                    }}
-                >
-                    <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                <div className="border-t border-[#0066FF]/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-xs text-gray-600">
                         © {new Date().getFullYear()} Triumphant Technological Services. All rights reserved.
                     </p>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', opacity: 0.6 }}>
+                    <p className="text-xs text-gray-600">
                         Built with ⚡ in Ibadan, Nigeria
                     </p>
                 </div>

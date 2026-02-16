@@ -14,40 +14,40 @@ const categories: { key: ServiceCategory; label: string; description: string }[]
 const services: Record<ServiceCategory, { icon: string; title: string; color: string; badge?: string; description: string; features: string[] }[]> = {
     local: [
         {
-            icon: '🆔', title: 'NIMC Registration', color: '#00ff88',
+            icon: '🆔', title: 'NIMC Registration', color: '#0066FF',
             description: 'Fast and accurate National Identity Number (NIN) registration and enrollment services.',
             features: ['New NIN enrollment', 'NIN modification & updates', 'NIN slip printing', 'Expert guidance through the process'],
         },
         {
-            icon: '🎓', title: 'School Registrations', color: '#00ccff',
+            icon: '🎓', title: 'School Registrations', color: '#00CCFF',
             description: 'Hassle-free registration for JAMB, WAEC, NECO, and other educational portals.',
             features: ['JAMB registration & profile creation', 'WAEC/NECO registration', 'Result checking & verification', 'Portal troubleshooting'],
         },
         {
-            icon: '💻', title: 'Internet Services', color: '#a855f7',
+            icon: '💻', title: 'Internet Services', color: '#3385FF',
             description: 'Document typing, printing, scanning, and general internet assistance.',
             features: ['Document typing & formatting', 'Printing & scanning', 'Email setup & support', 'Online form filling'],
         },
     ],
     digital: [
         {
-            icon: '📈', title: 'SEO & Website Management', color: '#00ff88',
+            icon: '📈', title: 'SEO & Website Management', color: '#0066FF',
             badge: '40% Organic Traffic Increase',
             description: 'Proven strategies to increase your online visibility and drive organic growth.',
             features: ['Keyword research & optimization', 'On-page & technical SEO', 'Content strategy development', 'WordPress setup & maintenance', 'Performance monitoring & reporting'],
         },
         {
-            icon: '🤖', title: 'AI Data Consulting', color: '#00ccff',
+            icon: '🤖', title: 'AI Data Consulting', color: '#00CCFF',
             description: 'Human-in-the-Loop data services to ensure your AI models are accurate and reliable.',
             features: ['Data annotation & labeling', 'AI output evaluation & testing', 'Quality assurance for ML models', 'Prompt engineering & optimization', 'Training data accuracy consulting'],
         },
         {
-            icon: '🔧', title: 'Technical Support', color: '#f59e0b',
+            icon: '🔧', title: 'Technical Support', color: '#00A3CC',
             description: 'Expert troubleshooting and support for hardware, software, and system issues.',
             features: ['HP printer setup & troubleshooting', 'Microsoft 365 support', 'Hardware diagnostics & repair', 'Software installation & configuration', 'Remote & on-site support'],
         },
         {
-            icon: '⚡', title: 'AI-Enhanced Productivity', color: '#a855f7',
+            icon: '⚡', title: 'AI-Enhanced Productivity', color: '#3385FF',
             description: 'Leverage modern AI tools to streamline your business workflows and save time.',
             features: ['AI tool integration & training', 'Workflow automation consulting', 'Custom AI solution recommendations', 'Team training on AI productivity tools'],
         },
@@ -97,14 +97,16 @@ export default function ServicesPage() {
                             onClick={() => setActiveCategory(cat.key)}
                             style={{
                                 padding: '0.75rem 1.5rem',
-                                borderRadius: '9999px',
+                                borderRadius: '2px',
                                 border: `1px solid ${activeCategory === cat.key ? 'var(--accent-color)' : 'var(--glass-border)'}`,
-                                background: activeCategory === cat.key ? 'rgba(0, 255, 136, 0.12)' : 'var(--glass-bg)',
+                                background: activeCategory === cat.key ? 'rgba(0, 102, 255, 0.15)' : 'var(--glass-bg)',
                                 color: activeCategory === cat.key ? 'var(--accent-color)' : 'var(--text-secondary)',
                                 cursor: 'pointer',
                                 transition: 'all 0.3s ease',
-                                fontSize: '0.95rem',
-                                fontWeight: 600,
+                                fontSize: '0.8rem',
+                                fontWeight: 700,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
                             }}
                         >
                             {cat.label}
@@ -132,7 +134,7 @@ export default function ServicesPage() {
                     {services[activeCategory].map((service, i) => (
                         <div
                             key={`${activeCategory}-${i}`}
-                            className="glass glass-hover rounded-2xl"
+                            className="glass glass-hover rounded-sm"
                             style={{
                                 padding: 'clamp(1.5rem, 3vw, 2rem)',
                                 borderLeft: `4px solid ${service.color}`,
@@ -155,15 +157,16 @@ export default function ServicesPage() {
                                 <div
                                     style={{
                                         padding: '0.5rem 0.75rem',
-                                        borderRadius: '0.5rem',
+                                        borderRadius: '2px',
                                         background: `${service.color}15`,
                                         border: `1px solid ${service.color}40`,
-                                        fontSize: '0.8rem',
-                                        fontWeight: 600,
+                                        fontSize: '0.75rem',
+                                        fontWeight: 700,
+                                        textTransform: 'uppercase',
                                         color: service.color,
                                     }}
                                 >
-                                    ✨ Track Record: {service.badge}
+                                    ✨ {service.badge}
                                 </div>
                             )}
 
@@ -200,11 +203,11 @@ export default function ServicesPage() {
                 style={{ paddingBottom: '6rem', textAlign: 'center' }}
             >
                 <div
-                    className="glass rounded-3xl"
+                    className="glass rounded-lg border border-[#0066FF]/30"
                     style={{ padding: 'clamp(2rem, 5vw, 3.5rem)', position: 'relative', overflow: 'hidden' }}
                 >
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'linear-gradient(90deg, var(--accent-color), var(--secondary-color), #a855f7)' }} />
-                    <h2 className="gradient-text" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, marginBottom: '0.75rem' }}>
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'linear-gradient(90deg, var(--accent-color), var(--secondary-color))' }} />
+                    <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, marginBottom: '0.75rem', color: '#fff' }}>
                         Ready to Get Started?
                     </h2>
                     <p style={{ color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto 2rem', lineHeight: 1.7 }}>
@@ -214,23 +217,23 @@ export default function ServicesPage() {
                         <a
                             href="/contact"
                             style={{
-                                display: 'inline-block', padding: '0.9rem 2.5rem', fontSize: '1rem', fontWeight: 700,
-                                textTransform: 'uppercase', letterSpacing: '0.1em', borderRadius: '0.75rem',
-                                background: 'var(--accent-color)', color: '#000', textDecoration: 'none',
+                                display: 'inline-block', padding: '0.9rem 2.5rem', fontSize: '0.9rem', fontWeight: 700,
+                                textTransform: 'uppercase', letterSpacing: '0.1em', borderRadius: '2px',
+                                background: 'var(--accent-color)', color: '#fff', textDecoration: 'none',
                                 transition: 'transform 0.2s, box-shadow 0.2s',
                             }}
-                            onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'translateY(-2px)'; (e.target as HTMLElement).style.boxShadow = '0 0 30px rgba(0,255,136,0.4)'; }}
+                            onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'translateY(-2px)'; (e.target as HTMLElement).style.boxShadow = '0 0 20px rgba(0, 102, 255, 0.4)'; }}
                             onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'translateY(0)'; (e.target as HTMLElement).style.boxShadow = 'none'; }}
                         >
                             Contact Us
                         </a>
                         <a
-                            href="https://wa.me/2348000000000"
+                            href="https://wa.me/2348107711190"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
-                                display: 'inline-block', padding: '0.9rem 2.5rem', fontSize: '1rem', fontWeight: 700,
-                                textTransform: 'uppercase', letterSpacing: '0.1em', borderRadius: '0.75rem',
+                                display: 'inline-block', padding: '0.9rem 2.5rem', fontSize: '0.9rem', fontWeight: 700,
+                                textTransform: 'uppercase', letterSpacing: '0.1em', borderRadius: '2px',
                                 background: 'transparent', border: '1px solid var(--glass-border)', color: 'var(--text-primary)',
                                 textDecoration: 'none', transition: 'all 0.2s',
                             }}

@@ -3,9 +3,9 @@
 import { useState } from 'react';
 
 const contactMethods = [
-    { icon: '📧', title: 'Email', value: 'admin@triumphantech.com', href: 'mailto:admin@triumphantech.com', color: '#00ff88' },
-    { icon: '📱', title: 'WhatsApp', value: '+234 810 771 1190', href: 'https://wa.me/2348107711190', color: '#00ccff' },
-    { icon: '📍', title: 'Visit Us', value: 'No 4, Kolawole Close, Ibadan, Nigeria', href: '#', color: '#a855f7' },
+    { icon: '📧', title: 'Email', value: 'admin@triumphantech.com', href: 'mailto:admin@triumphantech.com', color: '#0066FF' },
+    { icon: '📱', title: 'WhatsApp', value: '+234 810 771 1190', href: 'https://wa.me/2348107711190', color: '#00CCFF' },
+    { icon: '📍', title: 'Visit Us', value: 'No 4, Kolawole Close, Ibadan, Nigeria', href: '#', color: '#3385FF' },
 ];
 
 const serviceLabels: Record<string, string> = {
@@ -58,9 +58,9 @@ export default function ContactPage() {
     const inputStyle: React.CSSProperties = {
         width: '100%',
         padding: '0.85rem 1rem',
-        borderRadius: '0.75rem',
+        borderRadius: '2px',
         border: '1px solid var(--glass-border)',
-        background: 'var(--glass-bg)',
+        background: 'rgba(255, 255, 255, 0.03)',
         color: 'var(--text-primary)',
         fontSize: '0.95rem',
         outline: 'none',
@@ -81,7 +81,7 @@ export default function ContactPage() {
                     Get in Touch
                 </p>
                 <h1
-                    className="gradient-text"
+                    className="text-white"
                     style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.15, marginBottom: '1.25rem' }}
                 >
                     {"Let's Work Together"}
@@ -109,7 +109,7 @@ export default function ContactPage() {
                             href={m.href}
                             target={m.href.startsWith('http') ? '_blank' : undefined}
                             rel={m.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                            className="glass glass-hover rounded-2xl"
+                            className="glass glass-hover rounded-sm"
                             style={{
                                 padding: '1.75rem',
                                 textDecoration: 'none',
@@ -132,7 +132,7 @@ export default function ContactPage() {
                 style={{ paddingTop: '2rem', paddingBottom: '6rem' }}
             >
                 <div
-                    className="glass rounded-3xl"
+                    className="glass rounded-lg border border-[#0066FF]/20"
                     style={{ padding: 'clamp(2rem, 5vw, 3rem)', position: 'relative', overflow: 'hidden' }}
                 >
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'linear-gradient(90deg, var(--accent-color), var(--secondary-color))' }} />
@@ -146,7 +146,7 @@ export default function ContactPage() {
 
                     {error && (
                         <div style={{
-                            padding: '0.75rem 1rem', marginBottom: '1.5rem', borderRadius: '0.5rem',
+                            padding: '0.75rem 1rem', marginBottom: '1.5rem', borderRadius: '2px',
                             background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)',
                             color: '#ef4444', fontSize: '0.9rem',
                         }}>
@@ -164,9 +164,10 @@ export default function ContactPage() {
                             <button
                                 onClick={() => { setSent(false); setError(''); }}
                                 style={{
-                                    marginTop: '1.5rem', padding: '0.6rem 1.5rem', borderRadius: '0.75rem',
+                                    marginTop: '1.5rem', padding: '0.6rem 1.5rem', borderRadius: '2px',
                                     border: '1px solid var(--glass-border)', background: 'transparent',
                                     color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.9rem',
+                                    fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em'
                                 }}
                             >
                                 Send Another Message
@@ -177,8 +178,8 @@ export default function ContactPage() {
                             {/* Name & Email row */}
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.35rem' }}>
-                                        Your Name *
+                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        Your Name
                                     </label>
                                     <input
                                         type="text"
@@ -192,8 +193,8 @@ export default function ContactPage() {
                                     />
                                 </div>
                                 <div>
-                                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.35rem' }}>
-                                        Email Address *
+                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        Email Address
                                     </label>
                                     <input
                                         type="email"
@@ -210,7 +211,7 @@ export default function ContactPage() {
 
                             {/* Service dropdown */}
                             <div>
-                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.35rem' }}>
+                                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                     Service Needed
                                 </label>
                                 <select
@@ -220,22 +221,22 @@ export default function ContactPage() {
                                     onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-color)'}
                                     onBlur={(e) => e.currentTarget.style.borderColor = 'var(--glass-border)'}
                                 >
-                                    <option value="" style={{ background: '#1a1a2e', color: '#ccc' }}>Select a service...</option>
-                                    <option value="nimc" style={{ background: '#1a1a2e', color: '#fff' }}>NIMC Registration</option>
-                                    <option value="school" style={{ background: '#1a1a2e', color: '#fff' }}>School Registrations</option>
-                                    <option value="internet" style={{ background: '#1a1a2e', color: '#fff' }}>Internet Services</option>
-                                    <option value="seo" style={{ background: '#1a1a2e', color: '#fff' }}>SEO &amp; Website Management</option>
-                                    <option value="ai" style={{ background: '#1a1a2e', color: '#fff' }}>AI Data Consulting</option>
-                                    <option value="tech" style={{ background: '#1a1a2e', color: '#fff' }}>Technical Support</option>
-                                    <option value="productivity" style={{ background: '#1a1a2e', color: '#fff' }}>AI-Enhanced Productivity</option>
-                                    <option value="other" style={{ background: '#1a1a2e', color: '#fff' }}>Other</option>
+                                    <option value="" style={{ background: '#050510', color: '#ccc' }}>Select a service...</option>
+                                    <option value="nimc" style={{ background: '#050510', color: '#fff' }}>NIMC Registration</option>
+                                    <option value="school" style={{ background: '#050510', color: '#fff' }}>School Registrations</option>
+                                    <option value="internet" style={{ background: '#050510', color: '#fff' }}>Internet Services</option>
+                                    <option value="seo" style={{ background: '#050510', color: '#fff' }}>SEO &amp; Website Management</option>
+                                    <option value="ai" style={{ background: '#050510', color: '#fff' }}>AI Data Consulting</option>
+                                    <option value="tech" style={{ background: '#050510', color: '#fff' }}>Technical Support</option>
+                                    <option value="productivity" style={{ background: '#050510', color: '#fff' }}>AI-Enhanced Productivity</option>
+                                    <option value="other" style={{ background: '#050510', color: '#fff' }}>Other</option>
                                 </select>
                             </div>
 
                             {/* Message */}
                             <div>
-                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.35rem' }}>
-                                    Your Message *
+                                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    Your Message
                                 </label>
                                 <textarea
                                     required
@@ -255,20 +256,20 @@ export default function ContactPage() {
                                 disabled={sending}
                                 style={{
                                     padding: '0.9rem 2.5rem',
-                                    fontSize: '1rem',
+                                    fontSize: '0.9rem',
                                     fontWeight: 700,
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.1em',
-                                    borderRadius: '0.75rem',
+                                    borderRadius: '2px',
                                     background: sending ? 'var(--glass-bg)' : 'var(--accent-color)',
-                                    color: sending ? 'var(--text-secondary)' : '#000',
+                                    color: sending ? 'var(--text-secondary)' : '#fff',
                                     border: 'none',
                                     cursor: sending ? 'wait' : 'pointer',
                                     transition: 'transform 0.2s, box-shadow 0.2s',
                                     alignSelf: 'flex-start',
                                 }}
                             >
-                                {sending ? 'Sending...' : 'Send Message →'}
+                                {sending ? 'Sending...' : 'Send Message'}
                             </button>
                         </form>
                     )}

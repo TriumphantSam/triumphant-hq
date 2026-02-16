@@ -8,28 +8,28 @@ const services = [
   {
     icon: '🏪',
     title: 'Local Services',
-    color: '#00ff88',
+    color: '#0066FF',
     description: 'NIMC registration, school portals, document services and essential internet support for individuals and students.',
     link: '/services',
   },
   {
     icon: '📈',
     title: 'Digital Growth',
-    color: '#00ccff',
+    color: '#00CCFF',
     description: 'SEO strategy, WordPress management and content optimization — with a 40% organic traffic growth track record.',
     link: '/services',
   },
   {
     icon: '🤖',
     title: 'AI Data & Training',
-    color: '#a855f7',
+    color: '#3385FF',
     description: 'Human-in-the-Loop data annotation, prompt engineering and quality assurance for AI projects worldwide.',
     link: '/services',
   },
   {
     icon: '💻',
     title: 'Technical Support',
-    color: '#f59e0b',
+    color: '#00A3CC',
     description: 'HP printer setup, Microsoft 365 deployment, hardware diagnostics and repair from a trusted partner.',
     link: '/services',
   },
@@ -74,7 +74,7 @@ export default function Home() {
         style={{ paddingBottom: '4rem' }}
       >
         <div
-          className="glass rounded-2xl"
+          className="glass rounded-sm border border-[#0066FF]/30"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
