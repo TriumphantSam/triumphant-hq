@@ -7,8 +7,12 @@ export function getPreviewSecret(): string | undefined {
 }
 
 export async function isTechDiaryPreview(): Promise<boolean> {
+    // Launch mode: show Tech Diary to everyone
+    if (process.env.TECH_DIARY_PUBLIC === 'true') return true;
+
     const secret = getPreviewSecret();
-    if (!secret) return true; // no secret configured = show to everyone (e.g. when you're ready to launch)
+    // No secret = show "Coming soon" to everyone (safe default for production)
+    if (!secret) return false;
     const cookieStore = await cookies();
     const value = cookieStore.get(COOKIE_NAME)?.value;
     return value === secret;
