@@ -48,6 +48,22 @@ Vercel will automatically detect `Next.js` and configure the build settings.
 
 If you see `app/api/contact/route.ts` or `.env.local` (with SMTP credentials) in your project, you can safely delete them as the contact form now uses EmailJS directly from the browser.
 
+## 🔒 Tech Diary “Coming soon” (preview mode)
+
+To show **Coming soon** to visitors while you work on the Tech Diary in the backend:
+
+1. Add to your environment (e.g. `.env.local` or Vercel env vars):
+   ```bash
+   TECH_DIARY_PREVIEW_SECRET=your-secret-string
+   ```
+2. **Everyone else** will see a “Coming soon” message on `/tech-diary` and cannot open individual posts.
+3. **You** (preview access): open once in your browser:
+   ```
+   https://yoursite.com/api/tech-diary-preview?key=your-secret-string
+   ```
+   You’ll be redirected to the Tech Diary with full access. The cookie lasts 30 days. Use “Exit preview” on the page to see the public view again.
+4. When you’re ready to go live, remove `TECH_DIARY_PREVIEW_SECRET` (or leave it unset); then the Tech Diary is visible to everyone.
+
 ## 📝 Blog Posts
 
 To add a new blog post:

@@ -1,5 +1,6 @@
 import { getAllPosts, getPostBySlug } from '@/lib/blog';
-import { notFound } from 'next/navigation';
+import { isTechDiaryPreview } from '@/lib/tech-diary-preview';
+import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 
 export async function generateStaticParams() {
@@ -15,6 +16,9 @@ const categoryColors: Record<string, string> = {
 };
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+    const canView = await isTechDiaryPreview();
+    if (!canView) redirect('/tech-diary');
+
     const { slug } = await params;
     const post = getPostBySlug(slug);
     if (!post) notFound();

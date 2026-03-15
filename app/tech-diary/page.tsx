@@ -1,4 +1,5 @@
 import { getAllPosts } from '@/lib/blog';
+import { getPreviewSecret, isTechDiaryPreview } from '@/lib/tech-diary-preview';
 import Link from 'next/link';
 
 const categoryColors: Record<string, string> = {
@@ -8,7 +9,8 @@ const categoryColors: Record<string, string> = {
     'General': '#f59e0b',
 };
 
-export default function TechDiaryPage() {
+export default async function TechDiaryPage() {
+    const canView = await isTechDiaryPreview();
     const posts = getAllPosts();
 
     return (
@@ -33,6 +35,13 @@ export default function TechDiaryPage() {
                 <p style={{ fontSize: 'clamp(1rem, 1.8vw, 1.15rem)', color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto', lineHeight: 1.7 }}>
                     Sharing what I learn as I re-learn code in the AI era, alongside practical tips for SEO, tech, and digital growth.
                 </p>
+                {canView && getPreviewSecret() && (
+                    <p style={{ marginTop: '1.5rem', fontSize: '0.85rem' }}>
+                        <Link href="/api/tech-diary-preview/exit" style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}>
+                            Exit preview (see public view)
+                        </Link>
+                    </p>
+                )}
             </section>
 
             {/* ===================== POSTS ===================== */}
@@ -40,7 +49,7 @@ export default function TechDiaryPage() {
                 className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16"
                 style={{ paddingBottom: '6rem' }}
             >
-                {posts.length === 0 ? (
+                {!canView || posts.length === 0 ? (
                     <div className="glass rounded-2xl" style={{ padding: '4rem', textAlign: 'center' }}>
                         <span style={{ fontSize: '3rem', display: 'block', marginBottom: '1rem' }}>📝</span>
                         <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--accent-color)', marginBottom: '0.5rem' }}>
