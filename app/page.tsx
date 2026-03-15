@@ -49,7 +49,7 @@ const reasons = [
   {
     icon: '🤝',
     title: 'Community First',
-    description: 'Built on 7+ years of trust in Ibadan. Every client is a neighbour, every project is personal.',
+    description: 'Built on 7+ years of trust. Every client is a neighbour, every project is personal.',
   },
 ];
 
