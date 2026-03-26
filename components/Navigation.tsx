@@ -8,6 +8,7 @@ const links = [
     { href: '/', label: 'Home' },
     { href: '/services', label: 'Services' },
     { href: '/tech-diary', label: 'Tech Diary' },
+    { href: '/digital-forge', label: 'Digital Forge' },
     { href: '/about', label: 'About' },
 ];
 
@@ -98,3 +99,4 @@ export default function Navigation() {
         </nav>
     );
 }
+

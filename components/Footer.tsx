@@ -4,6 +4,7 @@ const footerLinks = [
     { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
     { label: 'Tech Diary', href: '/tech-diary' },
+    { label: 'Digital Forge', href: '/digital-forge' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
 ];
@@ -123,3 +124,4 @@ export default function Footer() {
         </footer>
     );
 }
+
