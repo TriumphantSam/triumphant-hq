@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://triumphantech.com
+
+# Sitemaps
+Sitemap: https://triumphantech.com/sitemap.xml

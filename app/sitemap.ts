@@ -1,36 +1,66 @@
 import { MetadataRoute } from 'next';
+import { forgeProducts } from '@/lib/digital-forge';
+
+const SITE_URL = 'https://triumphantech.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    return [
-        {
-            url: 'https://triumphanthq.com',
-            lastModified: new Date(),
-            changeFrequency: 'yearly',
-            priority: 1,
-        },
-        {
-            url: 'https://triumphanthq.com/services',
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        },
-        {
-            url: 'https://triumphanthq.com/about',
-            lastModified: new Date(),
-            changeFrequency: 'yearly',
-            priority: 0.8,
-        },
-        {
-            url: 'https://triumphanthq.com/contact',
-            lastModified: new Date(),
-            changeFrequency: 'yearly',
-            priority: 0.8,
-        },
-        {
-            url: 'https://triumphanthq.com/tech-diary',
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.8,
-        },
-    ];
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: SITE_URL,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 1,
+    },
+    {
+      url: `${SITE_URL}/services`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.6,
+    },
+    {
+      url: `${SITE_URL}/digital-forge`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/digital-forge/products`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/digital-forge/resources`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.75,
+    },
+    {
+      url: `${SITE_URL}/tech-diary`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+  ];
+
+  const productRoutes: MetadataRoute.Sitemap = forgeProducts.map((product) => ({
+    url: `${SITE_URL}/digital-forge/products/${product.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: product.featured ? 0.9 : 0.8,
+  }));
+
+  return [...staticRoutes, ...productRoutes];
 }
