@@ -1,9 +1,33 @@
+import fs from "node:fs";
+import path from "node:path";
+
 export type ForgeFaq = {
   question: string;
   answer: string;
 };
 
 export type ForgeProduct = {
+  status?: "draft" | "published";
+  generationProfile?: string;
+  bundleZipPath?: string;
+  bundlePdfPath?: string;
+  driveFolderLink?: string;
+  seo?: {
+    primaryKeyword?: string;
+    secondaryKeywords?: string[];
+    longTailKeywords?: string[];
+    searchIntent?: string;
+    metaTitle?: string;
+    metaDescription?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    tags?: string[];
+    categories?: string[];
+    faqKeywords?: string[];
+    internalLinkIdeas?: string[];
+    websiteIntroKeywordParagraph?: string;
+    schemaFaq?: ForgeFaq[];
+  };
   slug: string;
   title: string;
   category: string;
@@ -28,7 +52,7 @@ export type ForgeProduct = {
   secondaryAction: string;
 };
 
-export const forgeProducts: ForgeProduct[] = [
+const seedForgeProducts: ForgeProduct[] = [
   {
     slug: 'ai-automation-playbooks',
     title: 'AI & Automation Playbooks',
@@ -235,3 +259,43 @@ export function getForgeProduct(slug: string) {
 export function getForgeProductSlugs() {
   return forgeProducts.map((product) => product.slug);
 }
+
+
+function loadGeneratedForgeProducts(): ForgeProduct[] {
+  const generatedDir = path.join(process.cwd(), "content", "digital-forge", "generated");
+  if (!fs.existsSync(generatedDir)) {
+    return [];
+  }
+
+  const files = fs
+    .readdirSync(generatedDir)
+    .filter((file) => file.endsWith(".json"));
+
+  const products: ForgeProduct[] = [];
+  for (const file of files) {
+    try {
+      const fullPath = path.join(generatedDir, file);
+      const parsed = JSON.parse(fs.readFileSync(fullPath, "utf-8")) as ForgeProduct;
+      if (parsed?.slug && parsed?.title && (parsed.status ?? "draft") === "published") {
+        products.push(parsed);
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return products.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+}
+
+function mergeForgeProducts(seedProducts: ForgeProduct[], generatedProducts: ForgeProduct[]): ForgeProduct[] {
+  const merged = new Map<string, ForgeProduct>();
+  for (const product of seedProducts) {
+    merged.set(product.slug, product);
+  }
+  for (const product of generatedProducts) {
+    merged.set(product.slug, product);
+  }
+  return Array.from(merged.values());
+}
+
+export const forgeProducts: ForgeProduct[] = mergeForgeProducts(seedForgeProducts, loadGeneratedForgeProducts());
