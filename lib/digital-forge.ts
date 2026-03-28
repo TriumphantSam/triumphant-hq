@@ -297,18 +297,18 @@ function mergeForgeProducts(seedProducts: ForgeProduct[], generatedProducts: For
 
 function normalizeForgeProduct(product: ForgeProduct): ForgeProduct {
   return {
-    featured: false,
-    proofPoints: [],
-    faq: [],
-    includes: [],
-    idealFor: [],
-    deliverables: [],
-    bonuses: [],
-    problem: "",
-    approach: "",
-    secondaryAction: "View free resources",
-    primaryAction: "Request this product",
     ...product,
+    featured: product.featured ?? false,
+    proofPoints: product.proofPoints ?? [],
+    faq: product.faq ?? [],
+    includes: product.includes ?? [],
+    idealFor: product.idealFor ?? [],
+    deliverables: product.deliverables ?? [],
+    bonuses: product.bonuses ?? [],
+    problem: product.problem ?? "",
+    approach: product.approach ?? "",
+    secondaryAction: product.secondaryAction ?? "View free resources",
+    primaryAction: product.primaryAction ?? "Request this product",
   };
 }
 
