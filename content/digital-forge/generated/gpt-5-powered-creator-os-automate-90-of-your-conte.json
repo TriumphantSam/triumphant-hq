@@ -51,7 +51,7 @@
     },
     {
       "question": "What makes it different?",
-      "answer": "Unlike generic guides, this product focuses on practical implementation in creator content systems, with concrete assets and a faster path from idea to execution."
+      "answer": "The digital information product landscape for creators leveraging AI is fragmented. While many products focus on individual AI tools or basic prompt engineering, they largely fail to offer a cohesive, scalable, and truly autonomous content system. The primary..."
     }
   ],
   "primaryAction": "Buy the bundle",
@@ -59,9 +59,9 @@
   "status": "published",
   "generationProfile": "flash",
   "niche": "creator content systems",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/gpt-5-powered-creator-os-automate-90-of-your-conte_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/gpt-5-powered-creator-os-automate-90-of-your-conte.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1TiYmPbbvjDnZglMQlYXeUQOag7LK-3n3",
   "seo": {
     "primaryKeyword": "GPT-5 Creator OS",
     "secondaryKeywords": [
