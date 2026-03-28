@@ -55,9 +55,9 @@
   "status": "published",
   "generationProfile": "flash",
   "niche": "agentic AI solutions",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/stop-agent-chaos-deploy-govern-your-ai-workforce-i_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/stop-agent-chaos-deploy-govern-your-ai-workforce-i.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1kLTPTcIElAZZUCOw-SZPPYTs5DktNeE0",
   "seo": {
     "primaryKeyword": "deploy AI workforce no code",
     "secondaryKeywords": [
