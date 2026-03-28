@@ -1,4 +1,4 @@
-import { forgeProducts } from "@/lib/digital-forge";
+import { getForgeProducts } from "@/lib/digital-forge";
 
 export const metadata = {
   title: "Digital Forge Products | Triumphant HQ",
@@ -7,7 +7,8 @@ export const metadata = {
 
 import Link from "next/link";
 
-export default function DigitalForgeProductsPage() {
+export default async function DigitalForgeProductsPage() {
+  const forgeProducts = await getForgeProducts();
   return (
     <div className="min-h-screen pt-28 pb-20">
       <section className="max-w-screen-xl px-6 sm:px-10 lg:px-16">

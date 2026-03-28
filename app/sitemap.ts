@@ -1,9 +1,10 @@
 import { MetadataRoute } from 'next';
-import { forgeProducts } from '@/lib/digital-forge';
+import { getForgeProducts } from '@/lib/digital-forge';
 
 const SITE_URL = 'https://triumphantech.com';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const forgeProducts = await getForgeProducts();
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,

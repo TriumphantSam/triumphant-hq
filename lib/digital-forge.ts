@@ -53,6 +53,11 @@ export type ForgeProduct = {
   secondaryAction: string;
 };
 
+const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
+const AIRTABLE_PRODUCTS_TABLE = process.env.AIRTABLE_PRODUCTS_TABLE ?? "Products";
+const AIRTABLE_FORGE_REVALIDATE_SECONDS = Number(process.env.AIRTABLE_FORGE_REVALIDATE_SECONDS ?? "300");
+
 const seedForgeProducts: ForgeProduct[] = [
   {
     slug: 'ai-automation-playbooks',
@@ -253,15 +258,6 @@ export const forgeResources = [
   },
 ];
 
-export function getForgeProduct(slug: string) {
-  return forgeProducts.find((product) => product.slug === slug);
-}
-
-export function getForgeProductSlugs() {
-  return forgeProducts.map((product) => product.slug);
-}
-
-
 function loadGeneratedForgeProducts(): ForgeProduct[] {
   const generatedDir = path.join(process.cwd(), "content", "digital-forge", "generated");
   if (!fs.existsSync(generatedDir)) {
@@ -299,5 +295,84 @@ function mergeForgeProducts(seedProducts: ForgeProduct[], generatedProducts: For
   return Array.from(merged.values());
 }
 
-export const forgeProducts: ForgeProduct[] = mergeForgeProducts(seedForgeProducts, loadGeneratedForgeProducts());
+function normalizeForgeProduct(product: ForgeProduct): ForgeProduct {
+  return {
+    featured: false,
+    proofPoints: [],
+    faq: [],
+    includes: [],
+    idealFor: [],
+    deliverables: [],
+    bonuses: [],
+    problem: "",
+    approach: "",
+    secondaryAction: "View free resources",
+    primaryAction: "Request this product",
+    ...product,
+  };
+}
+
+async function fetchPublishedAirtableForgeProducts(): Promise<ForgeProduct[]> {
+  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) {
+    return [];
+  }
+
+  const params = new URLSearchParams();
+  params.set("maxRecords", "100");
+  params.set("filterByFormula", "{Website Status}='published'");
+  params.set("sort[0][field]", "Title");
+  params.set("sort[0][direction]", "asc");
+
+  const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_PRODUCTS_TABLE)}?${params.toString()}`;
+  try {
+    const response = await fetch(endpoint, {
+      headers: {
+        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+      },
+      next: { revalidate: AIRTABLE_FORGE_REVALIDATE_SECONDS },
+    });
+    if (!response.ok) {
+      return [];
+    }
+    const data = (await response.json()) as { records?: Array<{ fields?: Record<string, unknown> }> };
+    const items: ForgeProduct[] = [];
+    for (const record of data.records ?? []) {
+      const fields = record.fields ?? {};
+      const payloadRaw = fields["Website Payload JSON"];
+      if (typeof payloadRaw !== "string" || !payloadRaw.trim()) {
+        continue;
+      }
+      try {
+        const parsed = JSON.parse(payloadRaw) as ForgeProduct;
+        if (parsed?.slug && parsed?.title && (parsed.status ?? "draft") === "published") {
+          items.push(normalizeForgeProduct(parsed));
+        }
+      } catch {
+        continue;
+      }
+    }
+    return items;
+  } catch {
+    return [];
+  }
+}
+
+export async function getForgeProducts(): Promise<ForgeProduct[]> {
+  const airtableProducts = await fetchPublishedAirtableForgeProducts();
+  if (airtableProducts.length > 0) {
+    return mergeForgeProducts(seedForgeProducts, airtableProducts).map(normalizeForgeProduct);
+  }
+
+  return mergeForgeProducts(seedForgeProducts, loadGeneratedForgeProducts()).map(normalizeForgeProduct);
+}
+
+export async function getForgeProduct(slug: string): Promise<ForgeProduct | undefined> {
+  const products = await getForgeProducts();
+  return products.find((product) => product.slug === slug);
+}
+
+export async function getForgeProductSlugs(): Promise<string[]> {
+  const products = await getForgeProducts();
+  return products.map((product) => product.slug);
+}
 

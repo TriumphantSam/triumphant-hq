@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { forgePillars, forgeProducts, forgeWorkflow } from "@/lib/digital-forge";
+import { forgePillars, forgeWorkflow, getForgeProducts } from "@/lib/digital-forge";
 
 export const metadata = {
   title: "Digital Forge | Triumphant HQ",
   description: "Digital Forge is the product division of Triumphant HQ for premium digital playbooks, systems, templates, and launch-ready assets.",
 };
 
-export default function DigitalForgePage() {
+export default async function DigitalForgePage() {
+  const forgeProducts = await getForgeProducts();
   const featured = forgeProducts.find((item) => item.featured) ?? forgeProducts[0];
 
   return (

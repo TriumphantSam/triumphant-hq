@@ -1,7 +1,9 @@
 import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
-import { forgeProducts, getForgeProduct } from "@/lib/digital-forge";
+import { getForgeProduct, getForgeProductSlugs } from "@/lib/digital-forge";
+
+export const revalidate = 300;
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -16,12 +18,13 @@ function dedupe(items: string[]) {
 }
 
 export async function generateStaticParams() {
-  return forgeProducts.map((product) => ({ slug: product.slug }));
+  const slugs = await getForgeProductSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const product = getForgeProduct(slug);
+  const product = await getForgeProduct(slug);
   if (!product) {
     return {};
   }
@@ -38,7 +41,7 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function DigitalForgeProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = getForgeProduct(slug);
+  const product = await getForgeProduct(slug);
 
   if (!product) {
     notFound();
