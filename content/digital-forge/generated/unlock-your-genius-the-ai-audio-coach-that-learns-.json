@@ -59,9 +59,9 @@
   "status": "published",
   "generationProfile": "flash",
   "niche": "audiobooks and audio products",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/unlock-your-genius-the-ai-audio-coach-that-learns-_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/unlock-your-genius-the-ai-audio-coach-that-learns-.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1YplIr89Kl-NjwneMIyTV4C24Pp79l_Hd",
   "seo": {
     "primaryKeyword": "AI audio coach",
     "secondaryKeywords": [
