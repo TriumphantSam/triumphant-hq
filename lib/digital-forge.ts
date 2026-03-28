@@ -12,6 +12,7 @@ export type ForgeProduct = {
   bundleZipPath?: string;
   bundlePdfPath?: string;
   driveFolderLink?: string;
+  coverImageUrl?: string;
   seo?: {
     primaryKeyword?: string;
     secondaryKeywords?: string[];
@@ -299,3 +300,4 @@ function mergeForgeProducts(seedProducts: ForgeProduct[], generatedProducts: For
 }
 
 export const forgeProducts: ForgeProduct[] = mergeForgeProducts(seedForgeProducts, loadGeneratedForgeProducts());
+
