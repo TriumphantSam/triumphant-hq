@@ -49,7 +49,7 @@
     },
     {
       "question": "What makes it different?",
-      "answer": "Unlike generic guides, this product focuses on practical implementation in ai workflow playbooks, with concrete assets and a faster path from idea to execution."
+      "answer": "Public comps in AI workflow playbooks suggest many offers are broad or too generic. The strongest gap is practical implementation tied to real outcomes"
     }
   ],
   "primaryAction": "Buy the bundle",
@@ -57,9 +57,9 @@
   "status": "published",
   "generationProfile": "pro",
   "niche": "AI workflow playbooks",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/stop-guessing-start-automating-the-2026-ai-workflo_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/stop-guessing-start-automating-the-2026-ai-workflo.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1LNSP0u_ZEoW0TaKx6QemyUECchS63hMp",
   "seo": {
     "primaryKeyword": "AI workflow blueprints",
     "secondaryKeywords": [
