@@ -125,6 +125,13 @@ export default function Footer() {
                             Privacy Policy
                         </Link>
                         <span className="text-gray-700 text-xs">|</span>
+                        <Link
+                            href="/data-deletion"
+                            className="text-xs text-gray-600 hover:text-[#00CCFF] transition-colors"
+                        >
+                            Data Deletion
+                        </Link>
+                        <span className="text-gray-700 text-xs">|</span>
                         <p className="text-xs text-gray-600">
                             Built with ⚡ in Ibadan, Nigeria
                         </p>
