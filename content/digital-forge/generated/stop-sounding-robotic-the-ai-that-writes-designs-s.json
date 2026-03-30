@@ -49,7 +49,7 @@
     },
     {
       "question": "What makes it different?",
-      "answer": "Unlike generic guides, this product focuses on practical implementation in ai productivity tools, with concrete assets and a faster path from idea to execution."
+      "answer": "Public comps in AI productivity tools suggest many offers are broad or too generic. The strongest gap is practical implementation tied to real outcomes"
     }
   ],
   "primaryAction": "Buy the bundle",
@@ -57,9 +57,9 @@
   "status": "published",
   "generationProfile": "flash",
   "niche": "AI productivity tools",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/stop-sounding-robotic-the-ai-that-writes-designs-s_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/stop-sounding-robotic-the-ai-that-writes-designs-s.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1oJBtGqKAhGpNkt6jmoB1uJ_8Lt_RYOT1",
   "seo": {
     "primaryKeyword": "AI productivity tools",
     "secondaryKeywords": [
