@@ -7,6 +7,7 @@ const footerLinks = [
     { label: 'Digital Forge', href: '/digital-forge' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
+    { label: 'Privacy Policy', href: '/privacy-policy' },
 ];
 
 const services = [
@@ -116,9 +117,18 @@ export default function Footer() {
                     <p className="text-xs text-gray-600">
                         © {new Date().getFullYear()} Triumphant Technological Services. All rights reserved.
                     </p>
-                    <p className="text-xs text-gray-600">
-                        Built with ⚡ in Ibadan, Nigeria
-                    </p>
+                    <div className="flex items-center gap-4">
+                        <Link
+                            href="/privacy-policy"
+                            className="text-xs text-gray-600 hover:text-[#00CCFF] transition-colors"
+                        >
+                            Privacy Policy
+                        </Link>
+                        <span className="text-gray-700 text-xs">|</span>
+                        <p className="text-xs text-gray-600">
+                            Built with ⚡ in Ibadan, Nigeria
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>
