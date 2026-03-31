@@ -49,7 +49,7 @@
     },
     {
       "question": "What makes it different?",
-      "answer": "Unlike generic guides, this product focuses on practical implementation in notion templates, with concrete assets and a faster path from idea to execution."
+      "answer": "Competitor analysis reveals a strong opportunity for 'Stop Drowning in Prompts: This AI-Driven Notion Command Center Automates Your Entire Workflow (Before Everyone Else)'. Current market comps are largely generic AI productivity or GPT-focused guides..."
     }
   ],
   "primaryAction": "Buy the bundle",
@@ -57,9 +57,9 @@
   "status": "published",
   "generationProfile": "flash",
   "niche": "Notion templates",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/stop-drowning-in-prompts-this-ai-driven-notion-com_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/stop-drowning-in-prompts-this-ai-driven-notion-com.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1mUantAwL1405v1mfZERe9W41tEvrIxoY",
   "seo": {
     "primaryKeyword": "AI Notion Command Center",
     "secondaryKeywords": [
