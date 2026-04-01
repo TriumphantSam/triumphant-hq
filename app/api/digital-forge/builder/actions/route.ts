@@ -115,39 +115,52 @@ function applyAction(product: ForgeProduct, action: BuilderAction, notes?: strin
   };
 }
 
+function extractUnknownFieldName(detail: string): string | null {
+  const match = detail.match(/Unknown field name: \"([^\"]+)\"/i);
+  return match?.[1] ?? null;
+}
+
 async function patchAirtableRecord(recordId: string, product: ForgeProduct): Promise<void> {
   if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) return;
   const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_PRODUCTS_TABLE)}/${recordId}`;
   const publishing = product.publishing ?? {};
-  const body = {
-    fields: {
-      "Website Status": product.status ?? "draft",
-      "Queue Status": publishing.queueStatus ?? "draft",
-      "Website Sync Status": publishing.websiteSyncStatus ?? "pending",
-      "Distribution Status": publishing.distributionStatus ?? "pending",
-      "Review Status": publishing.reviewStatus ?? "not_reviewed",
-      "Reviewer": publishing.reviewer ?? "",
-      "Reviewed At": publishing.reviewedAt ?? "",
-      "Approval Notes": publishing.approvalNotes ?? "",
-      "Revision Notes": publishing.revisionNotes ?? "",
-      "Launch Status": publishing.launchStatus ?? "not_started",
-      "Last Distribution Attempt At": publishing.lastDistributionAttemptAt ?? "",
-      "Last Website Sync At": publishing.lastWebsiteSyncAt ?? "",
-      "Website Payload JSON": JSON.stringify(product),
-    },
+  const fields: Record<string, string> = {
+    "Website Status": product.status ?? "draft",
+    "Queue Status": publishing.queueStatus ?? "draft",
+    "Website Sync Status": publishing.websiteSyncStatus ?? "pending",
+    "Distribution Status": publishing.distributionStatus ?? "pending",
+    "Review Status": publishing.reviewStatus ?? "not_reviewed",
+    "Reviewer": publishing.reviewer ?? "",
+    "Reviewed At": publishing.reviewedAt ?? "",
+    "Approval Notes": publishing.approvalNotes ?? "",
+    "Revision Notes": publishing.revisionNotes ?? "",
+    "Launch Status": publishing.launchStatus ?? "not_started",
+    "Last Distribution Attempt At": publishing.lastDistributionAttemptAt ?? "",
+    "Last Website Sync At": publishing.lastWebsiteSyncAt ?? "",
+    "Website Payload JSON": JSON.stringify(product),
   };
 
-  const response = await fetch(endpoint, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  while (true) {
+    const response = await fetch(endpoint, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fields }),
+    });
 
-  if (!response.ok) {
+    if (response.ok) {
+      return;
+    }
+
     const detail = await response.text();
+    const missingField = extractUnknownFieldName(detail);
+    if (response.status === 422 && missingField && missingField in fields) {
+      delete fields[missingField];
+      continue;
+    }
+
     throw new Error(`Airtable update failed: ${response.status} ${detail}`);
   }
 }
