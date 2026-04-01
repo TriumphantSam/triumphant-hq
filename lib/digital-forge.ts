@@ -6,8 +6,27 @@ export type ForgeFaq = {
   answer: string;
 };
 
+// ─── Publishing / Approval metadata ──────────────────────────────
+export type ForgePublishing = {
+  // Existing pipeline fields
+  queueStatus?: string;        // draft | ready_for_review | needs_revision | approved_for_publish | published | distribution_pending | distribution_complete | archived
+  websiteSyncStatus?: string;  // pending | synced | success | failed
+  distributionStatus?: string; // pending | sent | done | failed
+  qualityFlags?: string[];
+  // Approval workflow fields (wired by other builder)
+  reviewStatus?: string;       // not_reviewed | in_review | approved | revision_requested
+  reviewer?: string;
+  reviewedAt?: string;
+  approvalNotes?: string;
+  revisionNotes?: string;
+  launchStatus?: string;       // not_started | website_live | social_pending | launch_in_progress | launched
+  lastDistributionAttemptAt?: string;
+  lastWebsiteSyncAt?: string;
+};
+
 export type ForgeProduct = {
   status?: "draft" | "published";
+  publishing?: ForgePublishing;
   generationProfile?: string;
   bundleZipPath?: string;
   bundlePdfPath?: string;
@@ -258,6 +277,8 @@ export const forgeResources = [
   },
 ];
 
+// ─── Internal helpers ─────────────────────────────────────────────
+
 function loadGeneratedForgeProducts(): ForgeProduct[] {
   const generatedDir = path.join(process.cwd(), "content", "digital-forge", "generated");
   if (!fs.existsSync(generatedDir)) {
@@ -282,6 +303,28 @@ function loadGeneratedForgeProducts(): ForgeProduct[] {
   }
 
   return products.sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+}
+
+// Builder-only: returns ALL generated products regardless of status
+function loadAllGeneratedForgeProducts(): ForgeProduct[] {
+  const generatedDir = path.join(process.cwd(), "content", "digital-forge", "generated");
+  if (!fs.existsSync(generatedDir)) {
+    return [];
+  }
+  const files = fs.readdirSync(generatedDir).filter((f) => f.endsWith(".json"));
+  const products: ForgeProduct[] = [];
+  for (const file of files) {
+    try {
+      const fullPath = path.join(generatedDir, file);
+      const parsed = JSON.parse(fs.readFileSync(fullPath, "utf-8")) as ForgeProduct;
+      if (parsed?.slug && parsed?.title) {
+        products.push(parsed);
+      }
+    } catch {
+      continue;
+    }
+  }
+  return products;
 }
 
 function mergeForgeProducts(seedProducts: ForgeProduct[], generatedProducts: ForgeProduct[]): ForgeProduct[] {
@@ -357,6 +400,8 @@ async function fetchPublishedAirtableForgeProducts(): Promise<ForgeProduct[]> {
   }
 }
 
+// ─── Public storefront loaders ────────────────────────────────────
+
 export async function getForgeProducts(): Promise<ForgeProduct[]> {
   const airtableProducts = await fetchPublishedAirtableForgeProducts();
   if (airtableProducts.length > 0) {
@@ -376,3 +421,11 @@ export async function getForgeProductSlugs(): Promise<string[]> {
   return products.map((product) => product.slug);
 }
 
+// ─── Builder-only loader (all states, not just published) ─────────
+// Used exclusively by /digital-forge/builder — never by the public storefront.
+
+export async function getForgeBuilderProducts(): Promise<ForgeProduct[]> {
+  const generated = loadAllGeneratedForgeProducts();
+  const merged = mergeForgeProducts(seedForgeProducts, generated);
+  return merged.map(normalizeForgeProduct);
+}
