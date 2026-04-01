@@ -52,7 +52,7 @@
     },
     {
       "question": "What makes it different?",
-      "answer": "Unlike generic guides, this product focuses on practical implementation in audiobook content, with concrete assets and a faster path from idea to execution."
+      "answer": "The market comps identified for 'AI Co-Pilot' are predominantly general guides for Microsoft Copilot or broader AI tools in professional/computer contexts. There is a significant and unmet need for an info product specifically addressing the application of AI..."
     }
   ],
   "primaryAction": "Buy the bundle",
@@ -60,9 +60,9 @@
   "status": "published",
   "generationProfile": "pro",
   "niche": "audiobook content",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/unlock-your-brain-s-full-potential-the-ai-co-pilot_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/unlock-your-brain-s-full-potential-the-ai-co-pilot.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/11Y824rkmvo3qs2toXI3ibwVk5uapl8Vu",
   "seo": {
     "primaryKeyword": "AI audiobook retention",
     "secondaryKeywords": [
