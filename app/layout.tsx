@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import AntigravityBackground from "@/components/AntigravityBackground";
 import Footer from "@/components/Footer";
+import PageReader from "@/components/PageReader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,10 +48,15 @@ export default function RootLayout({
       >
         <AntigravityBackground />
         <Navigation />
-        <main className="flex-grow w-full">
+        <main
+          id="site-main-content"
+          className="flex-grow w-full"
+          data-page-reader-root
+        >
           {children}
         </main>
         <Footer />
+        <PageReader />
       </body>
     </html>
   );
