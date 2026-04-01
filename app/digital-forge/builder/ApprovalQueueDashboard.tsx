@@ -100,6 +100,7 @@ async function runBuilderActionRequest(product: ForgeProduct, action: BuilderAct
       recordId: product.airtableRecordId,
       action,
       notes,
+      currentProduct: product,
     }),
   });
   const data = await response.json();

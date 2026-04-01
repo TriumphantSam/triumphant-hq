@@ -57,6 +57,16 @@ function writeLocalProduct(product: ForgeProduct): void {
   fs.writeFileSync(filePath, JSON.stringify(product, null, 2), "utf-8");
 }
 
+function canWriteLocalProduct(product: ForgeProduct): boolean {
+  try {
+    const filePath = resolveGeneratedPath(product.slug);
+    const targetDir = path.dirname(filePath);
+    return fs.existsSync(targetDir) && fs.existsSync(filePath || targetDir);
+  } catch {
+    return false;
+  }
+}
+
 function applyAction(product: ForgeProduct, action: BuilderAction, notes?: string | null): ForgeProduct {
   const stamp = nowIso();
   const publishing: ForgePublishing = { ...(product.publishing ?? {}) };
@@ -149,6 +159,10 @@ export async function POST(request: NextRequest) {
     const action = payload.action as BuilderAction;
     const recordId = typeof payload.recordId === "string" ? payload.recordId.trim() : "";
     const notes = typeof payload.notes === "string" ? payload.notes : null;
+    const currentProduct =
+      payload.currentProduct && typeof payload.currentProduct === "object"
+        ? (payload.currentProduct as ForgeProduct)
+        : null;
 
     if (!slug) {
       return NextResponse.json({ error: "slug is required" }, { status: 400 });
@@ -157,12 +171,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "invalid action" }, { status: 400 });
     }
 
-    const current = readLocalProduct(slug) ?? { slug, title: slug, status: "draft", publishing: {} };
+    const current =
+      currentProduct ??
+      readLocalProduct(slug) ??
+      { slug, title: slug, status: "draft", publishing: {} };
     const updated = applyAction(current, action, notes);
-    writeLocalProduct(updated);
 
     if (recordId) {
       await patchAirtableRecord(recordId, updated);
+    }
+
+    if (!recordId && canWriteLocalProduct(updated)) {
+      try {
+        writeLocalProduct(updated);
+      } catch (error) {
+        if (!(error instanceof Error) || !/EROFS|read-only file system/i.test(error.message)) {
+          throw error;
+        }
+      }
     }
 
     return NextResponse.json({ ok: true, product: updated });
