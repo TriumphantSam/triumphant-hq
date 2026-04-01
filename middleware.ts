@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PROTECTED_PREFIX = "/digital-forge/builder";
+const PROTECTED_PREFIXES = ["/digital-forge/builder", "/api/digital-forge/builder"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Only protect the builder route
-  if (!pathname.startsWith(PROTECTED_PREFIX)) {
+  // Only protect the builder UI and its internal action routes
+  if (!PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
     return NextResponse.next();
   }
 
@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
   if (authHeader) {
     // Authorization: Basic <base64(user:pass)>
     const encoded = authHeader.replace(/^Basic\s+/i, "");
-    const decoded = Buffer.from(encoded, "base64").toString("utf-8");
+    const decoded = atob(encoded);
     const [user, ...rest] = decoded.split(":");
     const pass = rest.join(":"); // allow colons in password
 
@@ -37,5 +37,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/digital-forge/builder/:path*"],
+  matcher: ["/digital-forge/builder/:path*", "/api/digital-forge/builder/:path*"],
 };

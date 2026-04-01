@@ -25,6 +25,7 @@ export type ForgePublishing = {
 };
 
 export type ForgeProduct = {
+  airtableRecordId?: string;
   status?: "draft" | "published";
   publishing?: ForgePublishing;
   generationProfile?: string;
@@ -76,6 +77,7 @@ const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
 const AIRTABLE_PRODUCTS_TABLE = process.env.AIRTABLE_PRODUCTS_TABLE ?? "Products";
 const AIRTABLE_FORGE_REVALIDATE_SECONDS = Number(process.env.AIRTABLE_FORGE_REVALIDATE_SECONDS ?? "300");
+const GENERATED_FORGE_DIR = path.join(process.cwd(), "content", "digital-forge", "generated");
 
 const seedForgeProducts: ForgeProduct[] = [
   {
@@ -280,7 +282,7 @@ export const forgeResources = [
 // ─── Internal helpers ─────────────────────────────────────────────
 
 function loadGeneratedForgeProducts(): ForgeProduct[] {
-  const generatedDir = path.join(process.cwd(), "content", "digital-forge", "generated");
+  const generatedDir = GENERATED_FORGE_DIR;
   if (!fs.existsSync(generatedDir)) {
     return [];
   }
@@ -307,7 +309,7 @@ function loadGeneratedForgeProducts(): ForgeProduct[] {
 
 // Builder-only: returns ALL generated products regardless of status
 function loadAllGeneratedForgeProducts(): ForgeProduct[] {
-  const generatedDir = path.join(process.cwd(), "content", "digital-forge", "generated");
+  const generatedDir = GENERATED_FORGE_DIR;
   if (!fs.existsSync(generatedDir)) {
     return [];
   }
@@ -352,17 +354,93 @@ function normalizeForgeProduct(product: ForgeProduct): ForgeProduct {
     approach: product.approach ?? "",
     secondaryAction: product.secondaryAction ?? "View free resources",
     primaryAction: product.primaryAction ?? "Request this product",
+    publishing: product.publishing ?? {},
   };
 }
 
-async function fetchPublishedAirtableForgeProducts(): Promise<ForgeProduct[]> {
+function firstString(value: unknown): string {
+  return typeof value === "string" ? value : "";
+}
+
+function mergeAirtableFieldsIntoProduct(product: ForgeProduct, fields: Record<string, unknown>, recordId: string): ForgeProduct {
+  const publishing = {
+    ...(product.publishing ?? {}),
+    queueStatus: firstString(fields["Queue Status"]) || product.publishing?.queueStatus,
+    websiteSyncStatus: firstString(fields["Website Sync Status"]) || product.publishing?.websiteSyncStatus,
+    distributionStatus: firstString(fields["Distribution Status"]) || product.publishing?.distributionStatus,
+    reviewStatus: firstString(fields["Review Status"]) || product.publishing?.reviewStatus,
+    reviewer: firstString(fields["Reviewer"]) || product.publishing?.reviewer,
+    reviewedAt: firstString(fields["Reviewed At"]) || product.publishing?.reviewedAt,
+    approvalNotes: firstString(fields["Approval Notes"]) || product.publishing?.approvalNotes,
+    revisionNotes: firstString(fields["Revision Notes"]) || product.publishing?.revisionNotes,
+    launchStatus: firstString(fields["Launch Status"]) || product.publishing?.launchStatus,
+    lastDistributionAttemptAt: firstString(fields["Last Distribution Attempt At"]) || product.publishing?.lastDistributionAttemptAt,
+    lastWebsiteSyncAt: firstString(fields["Last Website Sync At"]) || product.publishing?.lastWebsiteSyncAt,
+  } as ForgePublishing;
+
+  const status = firstString(fields["Website Status"]) || product.status || "draft";
+  return normalizeForgeProduct({
+    ...product,
+    airtableRecordId: recordId,
+    status: status as ForgeProduct["status"],
+    publishing,
+  });
+}
+
+function fallbackProductFromAirtableFields(fields: Record<string, unknown>, recordId: string): ForgeProduct | null {
+  const slug = firstString(fields["Slug"]);
+  const title = firstString(fields["Title"]);
+  if (!slug || !title) {
+    return null;
+  }
+  return normalizeForgeProduct({
+    airtableRecordId: recordId,
+    slug,
+    title,
+    category: firstString(fields["Category"]) || "Digital Products",
+    promise: firstString(fields["Promise"]),
+    format: firstString(fields["Format"]) || "Digital Forge bundle",
+    cta: firstString(fields["CTA"]) || "Review this product",
+    audience: firstString(fields["Audience"]),
+    outcome: firstString(fields["Outcome"]),
+    includes: [],
+    pricing: firstString(fields["Pricing"]) || "Digital Forge bundle",
+    headline: firstString(fields["Headline"]),
+    subheadline: firstString(fields["Subheadline"]),
+    problem: firstString(fields["Problem"]),
+    approach: firstString(fields["Approach"]),
+    idealFor: [],
+    deliverables: [],
+    bonuses: [],
+    proofPoints: [],
+    faq: [],
+    primaryAction: "Review this product",
+    secondaryAction: "View free resources",
+    status: (firstString(fields["Website Status"]) || "draft") as ForgeProduct["status"],
+    publishing: {
+      queueStatus: firstString(fields["Queue Status"]) || "draft",
+      websiteSyncStatus: firstString(fields["Website Sync Status"]) || "pending",
+      distributionStatus: firstString(fields["Distribution Status"]) || "pending",
+      reviewStatus: firstString(fields["Review Status"]) || "not_reviewed",
+      reviewer: firstString(fields["Reviewer"]),
+      reviewedAt: firstString(fields["Reviewed At"]),
+      approvalNotes: firstString(fields["Approval Notes"]),
+      revisionNotes: firstString(fields["Revision Notes"]),
+      launchStatus: firstString(fields["Launch Status"]) || "not_started",
+    },
+  });
+}
+
+async function fetchAirtableForgeProducts({ publishedOnly = false }: { publishedOnly?: boolean } = {}): Promise<ForgeProduct[]> {
   if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) {
     return [];
   }
 
   const params = new URLSearchParams();
   params.set("maxRecords", "100");
-  params.set("filterByFormula", "{Website Status}='published'");
+  if (publishedOnly) {
+    params.set("filterByFormula", "{Website Status}='published'");
+  }
   params.set("sort[0][field]", "Title");
   params.set("sort[0][direction]", "asc");
 
@@ -377,21 +455,25 @@ async function fetchPublishedAirtableForgeProducts(): Promise<ForgeProduct[]> {
     if (!response.ok) {
       return [];
     }
-    const data = (await response.json()) as { records?: Array<{ fields?: Record<string, unknown> }> };
+    const data = (await response.json()) as { records?: Array<{ id: string; fields?: Record<string, unknown> }> };
     const items: ForgeProduct[] = [];
     for (const record of data.records ?? []) {
       const fields = record.fields ?? {};
       const payloadRaw = fields["Website Payload JSON"];
-      if (typeof payloadRaw !== "string" || !payloadRaw.trim()) {
-        continue;
-      }
-      try {
-        const parsed = JSON.parse(payloadRaw) as ForgeProduct;
-        if (parsed?.slug && parsed?.title && (parsed.status ?? "draft") === "published") {
-          items.push(normalizeForgeProduct(parsed));
+      if (typeof payloadRaw === "string" && payloadRaw.trim()) {
+        try {
+          const parsed = JSON.parse(payloadRaw) as ForgeProduct;
+          if (parsed?.slug && parsed?.title) {
+            items.push(mergeAirtableFieldsIntoProduct(parsed, fields, record.id));
+            continue;
+          }
+        } catch {
         }
-      } catch {
-        continue;
+      }
+
+      const fallback = fallbackProductFromAirtableFields(fields, record.id);
+      if (fallback) {
+        items.push(fallback);
       }
     }
     return items;
@@ -403,7 +485,7 @@ async function fetchPublishedAirtableForgeProducts(): Promise<ForgeProduct[]> {
 // ─── Public storefront loaders ────────────────────────────────────
 
 export async function getForgeProducts(): Promise<ForgeProduct[]> {
-  const airtableProducts = await fetchPublishedAirtableForgeProducts();
+  const airtableProducts = await fetchAirtableForgeProducts({ publishedOnly: true });
   if (airtableProducts.length > 0) {
     return mergeForgeProducts(seedForgeProducts, airtableProducts).map(normalizeForgeProduct);
   }
@@ -426,6 +508,7 @@ export async function getForgeProductSlugs(): Promise<string[]> {
 
 export async function getForgeBuilderProducts(): Promise<ForgeProduct[]> {
   const generated = loadAllGeneratedForgeProducts();
+  const airtable = await fetchAirtableForgeProducts({ publishedOnly: false });
   const merged = mergeForgeProducts(seedForgeProducts, generated);
-  return merged.map(normalizeForgeProduct);
+  return mergeForgeProducts(merged, airtable).map(normalizeForgeProduct);
 }

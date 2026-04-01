@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { ForgeProduct, ForgePublishing } from "@/lib/digital-forge";
 
 // ─── Types ────────────────────────────────────────────────────────
@@ -17,6 +18,7 @@ type QueueStatus =
   | "archived";
 
 type View = "queue" | "launch_ops" | "store_health" | "blocked";
+type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publish" | "push_distribution";
 
 // ─── Constants ────────────────────────────────────────────────────
 
@@ -85,6 +87,28 @@ function getPriority(p: ForgeProduct): "high" | "medium" | "urgent" {
   return "medium";
 }
 
+function applyUpdatedProduct(products: ForgeProduct[], updated: ForgeProduct): ForgeProduct[] {
+  return products.map((item) => (item.slug === updated.slug ? updated : item));
+}
+
+async function runBuilderActionRequest(product: ForgeProduct, action: BuilderAction, notes?: string | null) {
+  const response = await fetch("/api/digital-forge/builder/actions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      slug: product.slug,
+      recordId: product.airtableRecordId,
+      action,
+      notes,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data?.error || "Builder action failed");
+  }
+  return data.product as ForgeProduct;
+}
+
 // ─── Sub-components (all inline for single-file client component) ──
 
 function StatusDot({ ok }: { ok: boolean }) {
@@ -132,7 +156,7 @@ function MiniPanel({ title, children }: { title: string; children: React.ReactNo
 
 // ─── Product Detail Drawer ────────────────────────────────────────
 
-function ProductDetailDrawer({ product, onClose }: { product: ForgeProduct; onClose: () => void }) {
+function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { product: ForgeProduct; onClose: () => void; onAction: (action: BuilderAction, product: ForgeProduct) => void; actionPending: BuilderAction | null; }) {
   const block = pub(product);
   const r = product as unknown as Record<string, unknown>;
   const flags = block.qualityFlags ?? [];
@@ -267,21 +291,22 @@ function ProductDetailDrawer({ product, onClose }: { product: ForgeProduct; onCl
               <p style={{ color: "rgba(249,115,22,0.75)", fontSize: "0.75rem", lineHeight: 1.6 }}>{block.revisionNotes}</p>
             </div>
           )}
-          {/* Action buttons — display only for now, data builder will wire these */}
           <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1rem" }}>
             {[
-              { label: "Approve for Publish", color: "#10b981", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.3)" },
-              { label: "Request Revision",    color: "#f97316", bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.3)" },
-              { label: "Push to Publish",     color: "#00CCFF", bg: "rgba(0,204,255,0.08)", border: "rgba(0,204,255,0.3)" },
-              { label: "Push Distribution",   color: "#8b5cf6", bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.3)" },
+              { action: "approve_for_publish" as BuilderAction, label: "Approve for Publish", color: "#10b981", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.3)" },
+              { action: "request_revision" as BuilderAction, label: "Request Revision", color: "#f97316", bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.3)" },
+              { action: "push_to_publish" as BuilderAction, label: "Push to Publish", color: "#00CCFF", bg: "rgba(0,204,255,0.08)", border: "rgba(0,204,255,0.3)" },
+              { action: "push_distribution" as BuilderAction, label: "Push Distribution", color: "#8b5cf6", bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.3)" },
             ].map((btn) => (
-              <button key={btn.label} title="Action will be wired by data builder"
-                style={{ padding: "0.5rem 0.9rem", background: btn.bg, border: `1px solid ${btn.border}`, borderRadius: "7px", color: btn.color, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.07em", cursor: "not-allowed", opacity: 0.65 }}>
-                {btn.label}
+              <button
+                key={btn.label}
+                onClick={() => onAction(btn.action, product)}
+                disabled={actionPending !== null}
+                style={{ padding: "0.5rem 0.9rem", background: btn.bg, border: `1px solid ${btn.border}`, borderRadius: "7px", color: btn.color, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.07em", cursor: actionPending ? "wait" : "pointer", opacity: actionPending && actionPending !== btn.action ? 0.55 : 1 }}>
+                {actionPending === btn.action ? "Working…" : btn.label}
               </button>
             ))}
           </div>
-          <p style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.68rem", marginTop: "0.5rem", fontStyle: "italic" }}>Action buttons display-only. Data builder will wire queue logic.</p>
         </div>
 
         {/* Block 4: Publishing State */}
@@ -350,7 +375,7 @@ function ProductDetailDrawer({ product, onClose }: { product: ForgeProduct; onCl
 
 // ─── Queue Product Card ───────────────────────────────────────────
 
-function QueueProductCard({ product, onSelect }: { product: ForgeProduct; onSelect: () => void }) {
+function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: { product: ForgeProduct; onSelect: () => void; onQuickAction: (action: BuilderAction, product: ForgeProduct) => void; actionPending: BuilderAction | null; }) {
   const block = pub(product);
   const qs = getQueueStatus(product);
   const laneMeta = QUEUE_LANES.find((l) => l.status === qs)!;
@@ -441,10 +466,16 @@ function QueueProductCard({ product, onSelect }: { product: ForgeProduct; onSele
           )}
         </div>
         <div style={{ display: "flex", gap: "0.4rem" }}>
-          {["Approve", "Revision"].map((a) => (
-            <button key={a} title="Will be wired by data builder"
-              style={{ padding: "0.38rem 0.7rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "6px", color: "rgba(255,255,255,0.3)", fontSize: "0.65rem", fontWeight: 600, cursor: "not-allowed" }}>
-              {a}
+          {[
+            { label: "Approve", action: "approve_for_publish" as BuilderAction },
+            { label: "Revision", action: "request_revision" as BuilderAction },
+          ].map((a) => (
+            <button
+              key={a.label}
+              onClick={() => onQuickAction(a.action, product)}
+              disabled={actionPending !== null}
+              style={{ padding: "0.38rem 0.7rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "6px", color: actionPending === a.action ? "#00CCFF" : "rgba(255,255,255,0.55)", fontSize: "0.65rem", fontWeight: 600, cursor: actionPending ? "wait" : "pointer" }}>
+              {actionPending === a.action ? "Working…" : a.label}
             </button>
           ))}
         </div>
@@ -455,10 +486,13 @@ function QueueProductCard({ product, onSelect }: { product: ForgeProduct; onSele
 
 // ─── Queue Lane ───────────────────────────────────────────────────
 
-function QueueLane({ lane, products, onSelect }: {
+function QueueLane({ lane, products, onSelect, onQuickAction, busySlug, busyAction }: {
   lane: typeof QUEUE_LANES[0];
   products: ForgeProduct[];
   onSelect: (p: ForgeProduct) => void;
+  onQuickAction: (action: BuilderAction, product: ForgeProduct) => void;
+  busySlug: string | null;
+  busyAction: BuilderAction | null;
 }) {
   const [collapsed, setCollapsed] = useState(products.length === 0);
 
@@ -486,7 +520,7 @@ function QueueLane({ lane, products, onSelect }: {
       {!collapsed && products.length > 0 && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "0.85rem" }}>
           {products.map((p) => (
-            <QueueProductCard key={p.slug} product={p} onSelect={() => onSelect(p)} />
+            <QueueProductCard key={p.slug} product={p} onSelect={() => onSelect(p)} onQuickAction={onQuickAction} actionPending={busySlug === p.slug ? busyAction : null} />
           ))}
         </div>
       )}
@@ -497,19 +531,25 @@ function QueueLane({ lane, products, onSelect }: {
 // ─── Main Component ───────────────────────────────────────────────
 
 export default function ApprovalQueueDashboard({ products }: { products: ForgeProduct[] }) {
+  const router = useRouter();
   const [activeView, setActiveView] = useState<View>("queue");
-  const [selectedProduct, setSelectedProduct] = useState<ForgeProduct | null>(null);
+  const [productState, setProductState] = useState<ForgeProduct[]>(products);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [actionError, setActionError] = useState("");
+  const [busySlug, setBusySlug] = useState<string | null>(null);
+  const [busyAction, setBusyAction] = useState<BuilderAction | null>(null);
+  const [, startTransition] = useTransition();
 
   const categories = useMemo(() => {
-    const cats = Array.from(new Set(products.map((p) => p.category)));
+    const cats = Array.from(new Set(productState.map((p) => p.category)));
     return ["all", ...cats];
-  }, [products]);
+  }, [productState]);
 
   // Filter logic
   const filtered = useMemo(() => {
-    return products.filter((p) => {
+    return productState.filter((p) => {
       const matchSearch = !search || p.title.toLowerCase().includes(search.toLowerCase()) || p.slug.toLowerCase().includes(search.toLowerCase());
       const matchCat = filterCategory === "all" || p.category === filterCategory;
       const qs = getQueueStatus(p);
@@ -520,18 +560,51 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
       if (activeView === "blocked") return matchSearch && matchCat && (flags > 0 || qs === "needs_revision");
       return matchSearch && matchCat;
     });
-  }, [products, search, filterCategory, activeView]);
+  }, [productState, search, filterCategory, activeView]);
 
   // Summary counts
   const counts = useMemo(() => ({
-    total:    products.length,
-    review:   products.filter((p) => getQueueStatus(p) === "ready_for_review").length,
-    revision: products.filter((p) => getQueueStatus(p) === "needs_revision").length,
-    approved: products.filter((p) => getQueueStatus(p) === "approved_for_publish").length,
-    live:     products.filter((p) => getQueueStatus(p) === "published").length,
-    distPend: products.filter((p) => getQueueStatus(p) === "distribution_pending").length,
-    blocked:  products.filter((p) => (pub(p).qualityFlags ?? []).length > 0).length,
-  }), [products]);
+    total:    productState.length,
+    review:   productState.filter((p) => getQueueStatus(p) === "ready_for_review").length,
+    revision: productState.filter((p) => getQueueStatus(p) === "needs_revision").length,
+    approved: productState.filter((p) => getQueueStatus(p) === "approved_for_publish").length,
+    live:     productState.filter((p) => getQueueStatus(p) === "published").length,
+    distPend: productState.filter((p) => getQueueStatus(p) === "distribution_pending").length,
+    blocked:  productState.filter((p) => (pub(p).qualityFlags ?? []).length > 0).length,
+  }), [productState]);
+
+  const selectedProduct = selectedSlug ? productState.find((item) => item.slug === selectedSlug) ?? null : null;
+
+  async function handleAction(action: BuilderAction, product: ForgeProduct) {
+    let notes: string | null | undefined = undefined;
+    if (action === "approve_for_publish") {
+      const value = window.prompt("Optional approval note", product.publishing?.approvalNotes ?? "");
+      if (value === null) return;
+      notes = value;
+    }
+    if (action === "request_revision") {
+      const value = window.prompt("Revision note for the builder", product.publishing?.revisionNotes ?? "");
+      if (value === null) return;
+      notes = value;
+    }
+
+    try {
+      setActionError("");
+      setBusySlug(product.slug);
+      setBusyAction(action);
+      const updated = await runBuilderActionRequest(product, action, notes);
+      setProductState((current) => applyUpdatedProduct(current, updated));
+      if (selectedSlug === product.slug) {
+        setSelectedSlug(updated.slug);
+      }
+      startTransition(() => router.refresh());
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Builder action failed");
+    } finally {
+      setBusySlug(null);
+      setBusyAction(null);
+    }
+  }
 
   const views: { id: View; label: string }[] = [
     { id: "queue",       label: "Queue" },
@@ -544,7 +617,12 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
     <>
       {/* Detail drawer */}
       {selectedProduct && (
-        <ProductDetailDrawer product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+        <ProductDetailDrawer
+          product={selectedProduct}
+          onClose={() => setSelectedSlug(null)}
+          onAction={handleAction}
+          actionPending={busySlug === selectedProduct.slug ? busyAction : null}
+        />
       )}
 
       <div className="min-h-screen pb-24">
@@ -634,6 +712,12 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
               </div>
             </div>
 
+            {actionError && (
+              <div style={{ marginBottom: "1rem", padding: "0.75rem 0.95rem", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "9px", color: "rgba(248,113,113,0.9)", fontSize: "0.78rem" }}>
+                {actionError}
+              </div>
+            )}
+
             {/* View label */}
             <p style={{ color: "rgba(255,255,255,0.22)", fontSize: "0.72rem", marginBottom: "1.25rem", fontStyle: "italic" }}>
               {activeView === "queue"        && `Showing all ${filtered.length} products grouped by queue stage.`}
@@ -649,7 +733,10 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
                   key={lane.status}
                   lane={lane}
                   products={filtered.filter((p) => getQueueStatus(p) === lane.status)}
-                  onSelect={setSelectedProduct}
+                  onSelect={(product) => setSelectedSlug(product.slug)}
+                  onQuickAction={handleAction}
+                  busySlug={busySlug}
+                  busyAction={busyAction}
                 />
               ))
             ) : (
@@ -660,7 +747,7 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
                   </div>
                 ) : (
                   filtered.map((p) => (
-                    <QueueProductCard key={p.slug} product={p} onSelect={() => setSelectedProduct(p)} />
+                    <QueueProductCard key={p.slug} product={p} onSelect={() => setSelectedSlug(p.slug)} onQuickAction={handleAction} actionPending={busySlug === p.slug ? busyAction : null} />
                   ))
                 )}
               </div>
