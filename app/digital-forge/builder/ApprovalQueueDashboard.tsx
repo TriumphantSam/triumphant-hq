@@ -629,7 +629,7 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
       <div className="min-h-screen pb-24">
 
         {/* ── Header ── */}
-        <section className="relative pt-32 pb-8">
+        <section className="relative pt-40 pb-8">
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.75rem" }}>
               <div>

@@ -64,7 +64,7 @@ export default function ServicesPage() {
             {/* ===================== HERO ===================== */}
             <section
                 className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingTop: '5rem', paddingBottom: '3rem', textAlign: 'center' }}
+                style={{ paddingTop: '8rem', paddingBottom: '3rem', textAlign: 'center' }}
             >
                 <p
                     className="uppercase tracking-widest text-sm font-semibold mb-4"

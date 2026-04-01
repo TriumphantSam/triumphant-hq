@@ -53,7 +53,7 @@ export default function PrivacyPolicyPage() {
             {/* ─── HERO ─── */}
             <section
                 className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 text-center"
-                style={{ paddingTop: '5rem', paddingBottom: '3rem', position: 'relative' }}
+                style={{ paddingTop: '8rem', paddingBottom: '3rem', position: 'relative' }}
             >
                 {/* Decorative glow blob */}
                 <div
