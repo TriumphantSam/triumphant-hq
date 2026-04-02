@@ -558,7 +558,6 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
       const flags = (pub(p).qualityFlags ?? []).length;
 
       if (activeView === "launch_ops") return matchSearch && matchCat && ["approved_for_publish", "published", "distribution_pending"].includes(qs);
-      if (activeView === "store_health") return matchSearch && matchCat && ["published"].includes(qs);
       if (activeView === "blocked") return matchSearch && matchCat && (flags > 0 || qs === "needs_revision");
       return matchSearch && matchCat;
     });
