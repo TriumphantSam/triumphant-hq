@@ -48,7 +48,7 @@
     },
     {
       "question": "What makes it different?",
-      "answer": "Unlike generic guides, this product focuses on practical implementation in ai skills courses for non-technical professionals, with concrete assets and a faster path from idea to execution."
+      "answer": "The public market comps provided, such as 'The AI Product Playbook' and 'Adversarial Machine Learning,' are not direct competitors to 'Automate and Profit with AI skills courses for non-technical professionals.' They either focus on building AI products..."
     }
   ],
   "primaryAction": "Buy the bundle",
@@ -56,9 +56,9 @@
   "status": "published",
   "generationProfile": "flash",
   "niche": "AI skills courses for non-technical professionals",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/automate-and-profit-with-ai-skills-courses-for-non_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/automate-and-profit-with-ai-skills-courses-for-non.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1iQQpSQ1BdpDz5YU4Us9VT0DCXxJu_SLd",
   "seo": {
     "primaryKeyword": "AI skills courses for non-technical professionals",
     "secondaryKeywords": [
