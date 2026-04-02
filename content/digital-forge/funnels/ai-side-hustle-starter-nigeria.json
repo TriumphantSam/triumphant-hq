@@ -1,0 +1,111 @@
+{
+  "slug": "ai-side-hustle-starter-nigeria",
+  "status": "draft",
+  "funnelType": "evergreen_training",
+  "campaignName": "AI Side Hustle Starter Funnel",
+  "productSlug": "ai-automation-playbooks",
+  "niche": "AI-powered digital products for Nigerians",
+  "audience": {
+    "primary": "Nigerians who want to start a digital side hustle with AI",
+    "secondary": "creators, freelancers, students, operators"
+  },
+  "promise": {
+    "headline": "How to Build and Sell Your First AI-Powered Digital Product from Nigeria",
+    "subheadline": "Free training showing how to turn simple knowledge into a digital product, content engine, and side-income system using AI.",
+    "cta": "Reserve My Spot"
+  },
+  "training": {
+    "mode": "on_demand",
+    "title": "Free Masterclass",
+    "timeLabel": "Watch instantly",
+    "duration": "30 minutes",
+    "whatYouWillLearn": [
+      "How to choose a practical digital product angle",
+      "How to build the product quickly with AI",
+      "How to promote it without expensive tools or a big audience"
+    ],
+    "coreMethod": [
+      "Pick a commercially useful angle",
+      "Build the product with AI support",
+      "Promote it with repeatable content and direct-response assets"
+    ]
+  },
+  "offer": {
+    "name": "Digital Forge Side Hustle Starter System",
+    "price": "Review before publish",
+    "cta": "Get Instant Access",
+    "summary": "A practical starter system for building, packaging, and promoting your first AI-powered digital product.",
+    "deliverables": [
+      "main guide",
+      "prompt pack",
+      "launch checklist",
+      "audio companion",
+      "template pack"
+    ],
+    "bonuses": [
+      "bonus prompt library",
+      "quick-start workflow sheet"
+    ]
+  },
+  "proof": {
+    "authorityBlock": "Built by the TriumphantHQ internal team using the exact techniques that built our own digital offerings. Our goal is to equip you with tools that just work.",
+    "evidenceBullets": [
+      "built from real internal product systems",
+      "designed for simple execution",
+      "created for local market realities"
+    ]
+  },
+  "pages": {
+    "optIn": {
+      "heroEyebrow": "Free Training",
+      "whoItsFor": [
+        "People who want to build practical digital products",
+        "Operators who want a cleaner AI-assisted workflow",
+        "Creators and freelancers who need a repeatable system"
+      ],
+      "whyNow": "AI has lowered the cost of building useful digital products, but most people still lack a repeatable operating system."
+    },
+    "thankYou": {
+      "headline": "You’ve Successfully Reserved Your Spot",
+      "instructions": [
+        "Check your email for the confirmation message",
+        "Return to the training page when you are ready to watch",
+        "Watch the full session before deciding on the offer"
+      ]
+    },
+    "trainingPage": {
+      "headline": "How to Build and Sell Your First AI-Powered Digital Product from Nigeria",
+      "supportingLine": "A practical framework for building, packaging, and promoting a digital product with AI support.",
+      "cta": "See The Full System"
+    },
+    "offerPage": {
+      "headline": "Digital Forge Side Hustle Starter System",
+      "summary": "A practical system for turning one idea into a sellable digital product and a cleaner launch path.",
+      "faq": [
+        {
+          "question": "Who is this for?",
+          "answer": "This is for builders who want a practical digital product workflow without getting overwhelmed by AI tools."
+        },
+        {
+          "question": "Do I need technical skills?",
+          "answer": "No. The system covers everything step-by-step from prompt generation to final packaging."
+        }
+      ]
+    }
+  },
+  "emails": {
+    "confirmation": {},
+    "reminders": [],
+    "followUps": []
+  },
+  "channels": {
+    "telegramReminder": "",
+    "whatsappReminder": ""
+  },
+  "review": {
+    "status": "draft",
+    "notes": "",
+    "approvedBy": "",
+    "approvedAt": ""
+  }
+}

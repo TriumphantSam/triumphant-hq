@@ -73,11 +73,38 @@ export type ForgeProduct = {
   secondaryAction: string;
 };
 
+// ─── Funnel metadata ──────────────────────────────────────────────
+export type FunnelPayload = {
+  slug: string;
+  status: "draft" | "needs_review" | "approved" | "published" | "archived";
+  funnelType: string;
+  campaignName: string;
+  productSlug: string;
+  niche: string;
+  audience: { primary: string; secondary: string };
+  promise: { headline: string; subheadline: string; cta: string };
+  training: { mode: string; title: string; timeLabel: string; duration: string; whatYouWillLearn: string[]; coreMethod: string[] };
+  offer: { name: string; price: string; cta: string; summary: string; deliverables: string[]; bonuses: string[] };
+  proof: { authorityBlock: string; evidenceBullets: string[] };
+  pages: {
+    optIn: { heroEyebrow: string; whoItsFor: string[]; whyNow: string };
+    thankYou: { headline: string; instructions: string[] };
+    trainingPage: { headline: string; supportingLine: string; cta: string };
+    offerPage: { headline: string; summary: string; faq: ForgeFaq[] };
+  };
+  emails: { confirmation: Record<string, unknown>; reminders: unknown[]; followUps: unknown[] };
+  channels: { telegramReminder: string; whatsappReminder: string };
+  review: { status: string; notes: string; approvedBy: string; approvedAt: string };
+  // UI extended elements (derived or optional)
+  airtableRecordId?: string;
+};
+
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
 const AIRTABLE_PRODUCTS_TABLE = process.env.AIRTABLE_PRODUCTS_TABLE ?? "Products";
 const AIRTABLE_FORGE_REVALIDATE_SECONDS = Number(process.env.AIRTABLE_FORGE_REVALIDATE_SECONDS ?? "300");
 const GENERATED_FORGE_DIR = path.join(process.cwd(), "content", "digital-forge", "generated");
+const GENERATED_FUNNELS_DIR = path.join(process.cwd(), "content", "digital-forge", "funnels");
 
 const seedForgeProducts: ForgeProduct[] = [
   {
@@ -511,4 +538,54 @@ export async function getForgeBuilderProducts(): Promise<ForgeProduct[]> {
   const airtable = await fetchAirtableForgeProducts({ publishedOnly: false });
   const merged = mergeForgeProducts(seedForgeProducts, generated);
   return mergeForgeProducts(merged, airtable).map(normalizeForgeProduct);
+}
+
+// ─── Funnel Loaders ───────────────────────────────────────────────
+
+function loadGeneratedForgeFunnels(): FunnelPayload[] {
+  const generatedDir = GENERATED_FUNNELS_DIR;
+  if (!fs.existsSync(generatedDir)) {
+    return [];
+  }
+
+  const files = fs
+    .readdirSync(generatedDir)
+    .filter((file) => file.endsWith(".json"));
+
+  const funnels: FunnelPayload[] = [];
+  for (const file of files) {
+    try {
+      const fullPath = path.join(generatedDir, file);
+      const parsed = JSON.parse(fs.readFileSync(fullPath, "utf-8")) as FunnelPayload;
+      if (parsed?.slug && parsed?.funnelType) {
+        funnels.push(parsed);
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return funnels;
+}
+
+export async function getForgeFunnels(): Promise<FunnelPayload[]> {
+  // In v1, there's no Airtable merge for Funnels yet. Reading local only.
+  return loadGeneratedForgeFunnels().filter(
+    (f) => f.status === "published" || process.env.NODE_ENV === "development"
+  );
+}
+
+export async function getForgeFunnel(slug: string): Promise<FunnelPayload | undefined> {
+  const funnels = await getForgeFunnels();
+  return funnels.find((funnel) => funnel.slug === slug);
+}
+
+export async function getForgeBuilderFunnel(slug: string): Promise<FunnelPayload | undefined> {
+  const funnels = await getForgeBuilderFunnels();
+  return funnels.find((funnel) => funnel.slug === slug);
+}
+
+// Builder-only loader (all states, not just published)
+export async function getForgeBuilderFunnels(): Promise<FunnelPayload[]> {
+  return loadGeneratedForgeFunnels();
 }

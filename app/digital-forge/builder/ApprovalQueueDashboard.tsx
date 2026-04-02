@@ -3,7 +3,8 @@
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { ForgeProduct, ForgePublishing } from "@/lib/digital-forge";
+import type { ForgeProduct, ForgePublishing, FunnelPayload } from "@/lib/digital-forge";
+import FunnelQueueDashboardRenderer from "@/components/funnel/FunnelQueueDashboardRenderer";
 
 // ─── Types ────────────────────────────────────────────────────────
 
@@ -17,7 +18,7 @@ type QueueStatus =
   | "distribution_complete"
   | "archived";
 
-type View = "queue" | "launch_ops" | "store_health" | "blocked";
+type View = "products" | "funnels" | "launch_ops" | "blocked";
 type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publish" | "push_distribution";
 
 // ─── Constants ────────────────────────────────────────────────────
@@ -531,9 +532,9 @@ function QueueLane({ lane, products, onSelect, onQuickAction, busySlug, busyActi
 
 // ─── Main Component ───────────────────────────────────────────────
 
-export default function ApprovalQueueDashboard({ products }: { products: ForgeProduct[] }) {
+export default function ApprovalQueueDashboard({ products, funnels }: { products: ForgeProduct[]; funnels?: FunnelPayload[] }) {
   const router = useRouter();
-  const [activeView, setActiveView] = useState<View>("queue");
+  const [activeView, setActiveView] = useState<View>("products");
   const [productState, setProductState] = useState<ForgeProduct[]>(products);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [search, setSearch] = useState("");
@@ -608,9 +609,9 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
   }
 
   const views: { id: View; label: string }[] = [
-    { id: "queue",       label: "Queue" },
+    { id: "products",    label: "Products" },
+    { id: "funnels",     label: "Funnels" },
     { id: "launch_ops",  label: "Launch Ops" },
-    { id: "store_health",label: "Store Health" },
     { id: "blocked",     label: "Blocked" },
   ];
 
@@ -721,14 +722,16 @@ export default function ApprovalQueueDashboard({ products }: { products: ForgePr
 
             {/* View label */}
             <p style={{ color: "rgba(255,255,255,0.22)", fontSize: "0.72rem", marginBottom: "1.25rem", fontStyle: "italic" }}>
-              {activeView === "queue"        && `Showing all ${filtered.length} products grouped by queue stage.`}
+              {activeView === "products"     && `Showing all ${filtered.length} products grouped by queue stage.`}
+              {activeView === "funnels"      && `Showing all built funnels in the payload engine.`}
               {activeView === "launch_ops"   && `Showing ${filtered.length} products in approved/published/distribution state.`}
-              {activeView === "store_health" && `Showing ${filtered.length} live products and their sync health.`}
               {activeView === "blocked"      && `Showing ${filtered.length} products blocked by flags or revision requests.`}
             </p>
 
             {/* Queue Lanes or flat list */}
-            {activeView === "queue" ? (
+            {activeView === "funnels" ? (
+              <FunnelQueueDashboardRenderer funnels={funnels || []} />
+            ) : activeView === "products" ? (
               QUEUE_LANES.map((lane) => (
                 <QueueLane
                   key={lane.status}

@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const footerLinks = [
     { label: 'Home', href: '/' },
@@ -18,6 +21,12 @@ const services = [
 ];
 
 export default function Footer() {
+    const pathname = usePathname();
+    
+    if (pathname.startsWith('/digital-forge/funnel/')) {
+        return null; // Isolate funnel engine pages
+    }
+
     return (
         <footer className="bg-[#020205] border-t border-[#0066FF]/20 relative overflow-hidden">
             {/* Hex Pattern Overlay */}

@@ -1,4 +1,4 @@
-import { getForgeBuilderProducts } from "@/lib/digital-forge";
+import { getForgeBuilderProducts, getForgeBuilderFunnels } from "@/lib/digital-forge";
 import ApprovalQueueDashboard from "./ApprovalQueueDashboard";
 
 export const metadata = {
@@ -9,5 +9,6 @@ export const metadata = {
 
 export default async function DigitalForgeBuilderPage() {
   const products = await getForgeBuilderProducts();
-  return <ApprovalQueueDashboard products={products} />;
+  const funnels = await getForgeBuilderFunnels();
+  return <ApprovalQueueDashboard products={products} funnels={funnels} />;
 }

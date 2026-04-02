@@ -16,6 +16,10 @@ export default function Navigation() {
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
 
+    if (pathname.startsWith('/digital-forge/funnel/')) {
+        return null; // Isolate funnel engine pages
+    }
+
     return (
         <nav
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${mobileOpen ? 'bg-[#050510]' : 'bg-[#050510]/80 backdrop-blur-md border-b border-[#0066FF]/20'
