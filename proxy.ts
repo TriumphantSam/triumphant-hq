@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const PROTECTED_PREFIXES = ["/digital-forge/builder", "/api/digital-forge/builder"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Only protect the builder UI and its internal action routes
