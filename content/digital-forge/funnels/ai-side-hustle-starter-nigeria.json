@@ -1,94 +1,106 @@
 {
   "slug": "ai-side-hustle-starter-nigeria",
-  "status": "draft",
+  "status": "published",
   "funnelType": "evergreen_training",
-  "campaignName": "AI Side Hustle Starter Funnel",
-  "productSlug": "ai-automation-playbooks",
-  "niche": "AI-powered digital products for Nigerians",
+  "campaignName": "Digital Forge AI Side Hustle Starter Funnel",
+  "productSlug": "digital-forge-side-hustle-starter-system",
+  "niche": "AI-powered digital products and side hustles for Nigerians",
   "audience": {
-    "primary": "Nigerians who want to start a digital side hustle with AI",
-    "secondary": "creators, freelancers, students, operators"
+    "primary": "Nigerians who want to build and sell practical digital products using AI and simple tools.",
+    "secondary": "Creators, freelancers, operators, and knowledge workers who want a cleaner path into digital product income."
   },
   "promise": {
-    "headline": "How to Build and Sell Your First AI-Powered Digital Product from Nigeria",
-    "subheadline": "Free training showing how to turn simple knowledge into a digital product, content engine, and side-income system using AI.",
-    "cta": "Reserve My Spot"
+    "headline": "How To Build and Sell Your First AI-Powered Digital Product From Nigeria",
+    "subheadline": "Free practical training showing you how to turn what you already know into a simple digital product, package it properly, and start promoting it with AI and everyday tools.",
+    "cta": "Watch The Free Training"
   },
   "training": {
     "mode": "on_demand",
-    "title": "Free Masterclass",
+    "title": "How To Build and Sell Your First AI-Powered Digital Product From Nigeria",
     "timeLabel": "Watch instantly",
     "duration": "30 minutes",
     "whatYouWillLearn": [
-      "How to choose a practical digital product angle",
-      "How to build the product quickly with AI",
-      "How to promote it without expensive tools or a big audience"
+      "How to choose a digital product idea people can quickly understand and pay for",
+      "How to use AI to speed up product creation without getting lost in tool chaos",
+      "How to package and promote your offer with simple content and direct-response assets"
     ],
     "coreMethod": [
-      "Pick a commercially useful angle",
-      "Build the product with AI support",
-      "Promote it with repeatable content and direct-response assets"
+      "Choose a commercially useful product angle",
+      "Build and package the product with AI assistance",
+      "Promote it with simple channels and repeatable messaging"
     ]
   },
   "offer": {
     "name": "Digital Forge Side Hustle Starter System",
-    "price": "Review before publish",
-    "cta": "Get Instant Access",
-    "summary": "A practical starter system for building, packaging, and promoting your first AI-powered digital product.",
+    "offerType": "system",
+    "price": "₦25,000",
+    "cta": "Get Access On WhatsApp",
+    "checkoutUrl": "https://wa.me/2348107711190?text=Hi%2C%20I%20just%20watched%20the%20Digital%20Forge%20training%20and%20I%20want%20to%20get%20the%20Side%20Hustle%20Starter%20System.%20Please%20guide%20me%20with%20the%20next%20step.",
+    "summary": "A practical starter system for choosing, building, packaging, and promoting your first AI-powered digital product.",
     "deliverables": [
-      "main guide",
-      "prompt pack",
-      "launch checklist",
-      "audio companion",
-      "template pack"
+      "Main guide",
+      "Prompt pack",
+      "Launch checklist",
+      "Implementation templates",
+      "Content prompts",
+      "Audio companion"
     ],
     "bonuses": [
-      "bonus prompt library",
-      "quick-start workflow sheet"
+      "Quick-start workflow sheet",
+      "Prompt library",
+      "First-launch checklist"
     ]
   },
   "proof": {
-    "authorityBlock": "Built by the TriumphantHQ internal team using the exact techniques that built our own digital offerings. Our goal is to equip you with tools that just work.",
+    "authorityBlock": "Digital Forge is built around practical product systems, not random prompt collections. The goal is to help you choose a stronger angle, build a clearer offer, and move into the market faster with less confusion.",
     "evidenceBullets": [
-      "built from real internal product systems",
-      "designed for simple execution",
-      "created for local market realities"
+      "Structured for simple execution",
+      "Built around reusable product systems",
+      "Designed for practical local-market realities"
     ]
   },
   "pages": {
     "optIn": {
-      "heroEyebrow": "Free Training",
+      "heroEyebrow": "Free Digital Forge Training",
       "whoItsFor": [
-        "People who want to build practical digital products",
-        "Operators who want a cleaner AI-assisted workflow",
-        "Creators and freelancers who need a repeatable system"
+        "Nigerians who want a practical digital side hustle",
+        "Creators and freelancers who want to package useful knowledge into an offer",
+        "Operators who want a cleaner path from idea to product to promotion"
       ],
-      "whyNow": "AI has lowered the cost of building useful digital products, but most people still lack a repeatable operating system."
+      "whyNow": "AI has made building digital products faster and cheaper, but most people are still stuck in tool overload, weak product ideas, poor packaging, and random content with no offer behind it. This training shows a cleaner path."
     },
     "thankYou": {
       "headline": "You’ve Successfully Reserved Your Spot",
       "instructions": [
-        "Check your email for the confirmation message",
-        "Return to the training page when you are ready to watch",
-        "Watch the full session before deciding on the offer"
+        "Check your email for your access details",
+        "Use the training link when you’re ready",
+        "Watch the full session before deciding on the full system"
       ]
     },
     "trainingPage": {
-      "headline": "How to Build and Sell Your First AI-Powered Digital Product from Nigeria",
-      "supportingLine": "A practical framework for building, packaging, and promoting a digital product with AI support.",
+      "headline": "How To Build and Sell Your First AI-Powered Digital Product From Nigeria",
+      "supportingLine": "A practical training showing you how to go from scattered ideas and AI confusion to one clear product, one clean offer, and one realistic path to selling it.",
       "cta": "See The Full System"
     },
     "offerPage": {
-      "headline": "Digital Forge Side Hustle Starter System",
-      "summary": "A practical system for turning one idea into a sellable digital product and a cleaner launch path.",
+      "headline": "Get The Full Digital Forge Side Hustle Starter System",
+      "summary": "If the training gave you the framework, this gives you the implementation layer: the guide, the prompts, the checklists, the templates, and the content support so you can move faster with more clarity and less guesswork.",
       "faq": [
         {
-          "question": "Who is this for?",
-          "answer": "This is for builders who want a practical digital product workflow without getting overwhelmed by AI tools."
+          "question": "Is this for complete beginners?",
+          "answer": "Yes. It is built for people who want a practical starting point, even if they have never launched a digital product before."
         },
         {
-          "question": "Do I need technical skills?",
-          "answer": "No. The system covers everything step-by-step from prompt generation to final packaging."
+          "question": "Do I need expensive tools?",
+          "answer": "No. The system is designed around accessible tools and clear execution."
+        },
+        {
+          "question": "Is this just another ebook?",
+          "answer": "No. It is a starter system with implementation assets, not just reading material."
+        },
+        {
+          "question": "What if I already feel overwhelmed by AI tools?",
+          "answer": "That is exactly why this exists. The whole point is to reduce noise and give you a cleaner path."
         }
       ]
     }
@@ -103,7 +115,7 @@
     "whatsappReminder": ""
   },
   "review": {
-    "status": "draft",
+    "status": "approved",
     "notes": "",
     "approvedBy": "",
     "approvedAt": ""

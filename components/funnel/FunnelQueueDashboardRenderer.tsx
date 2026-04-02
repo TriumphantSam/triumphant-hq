@@ -7,6 +7,8 @@ import type { FunnelPayload } from "@/lib/digital-forge";
 
 type FunnelQueueStatus = "draft" | "needs_review" | "approved" | "published" | "archived";
 type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publish" | "push_distribution";
+type FunnelEmailTemplate = "starting_soon" | "replay";
+type PendingAction = BuilderAction | `email:${FunnelEmailTemplate}:test` | `email:${FunnelEmailTemplate}:all`;
 
 const FUNNEL_LANES: { status: FunnelQueueStatus; label: string; color: string; bg: string }[] = [
   { status: "needs_review", label: "Needs Review", color: "#f59e0b", bg: "rgba(245,158,11,0.08)" },
@@ -32,7 +34,7 @@ function MiniPanel({ title, children }: { title: string; children: React.ReactNo
   return (
     <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", padding: "0.75rem 0.9rem" }}>
       <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "0.5rem" }}>{title}</p>
-      {Array.isArray(children) || typeof children === 'string' ? children : <div className="space-y-1">{children}</div>}
+      {Array.isArray(children) || typeof children === "string" ? children : <div className="space-y-1">{children}</div>}
     </div>
   );
 }
@@ -56,7 +58,44 @@ async function runFunnelActionRequest(funnel: FunnelPayload, action: BuilderActi
   return data.funnel as FunnelPayload;
 }
 
-function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funnel: FunnelPayload; onClose: () => void; onAction: (a: BuilderAction, f: FunnelPayload) => void; actionPending: BuilderAction | null; }) {
+async function runFunnelEmailRequest(funnel: FunnelPayload, template: FunnelEmailTemplate, options?: { emails?: string[]; dryRun?: boolean }) {
+  const response = await fetch("/api/digital-forge/builder/funnel-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      slug: funnel.slug,
+      template,
+      emails: options?.emails,
+      dryRun: options?.dryRun ?? false,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data?.error || "Funnel email request failed");
+  }
+  return data as {
+    recipientCount: number;
+    sent: number;
+    failed: number;
+    trainingTitle: string;
+  };
+}
+
+function FunnelDetailDrawer({
+  funnel,
+  onClose,
+  onAction,
+  onEmailAction,
+  actionPending,
+  sendFeedback,
+}: {
+  funnel: FunnelPayload;
+  onClose: () => void;
+  onAction: (a: BuilderAction, f: FunnelPayload) => void;
+  onEmailAction: (template: FunnelEmailTemplate, funnel: FunnelPayload, mode: "test" | "all") => void;
+  actionPending: PendingAction | null;
+  sendFeedback: string;
+}) {
   const laneMeta = FUNNEL_LANES.find((l) => l.status === (funnel.review?.status ?? funnel.status));
 
   return (
@@ -113,7 +152,7 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
           </div>
           <p className="text-xs font-bold text-gray-400 mb-2">Methodology:</p>
           <ul className="space-y-1 mb-4">
-            {funnel.training.coreMethod.map((m,i)=><li key={i} className="text-xs text-gray-300 flex gap-2"><span className="text-amber-500">{i+1}.</span>{m}</li>)}
+            {funnel.training.coreMethod.map((m, i) => <li key={i} className="text-xs text-gray-300 flex gap-2"><span className="text-amber-500">{i + 1}.</span>{m}</li>)}
           </ul>
         </div>
 
@@ -123,22 +162,36 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
             <h3 className="text-lg font-bold text-white mb-1">{funnel.offer.name} <span className="text-[#00CCFF] ml-2">{funnel.offer.price}</span></h3>
             <p className="text-xs text-gray-400 mb-3">{funnel.offer.summary}</p>
             <div className="flex flex-wrap gap-2">
-                {funnel.offer.deliverables.slice(0,3).map((d,i)=><span key={i} className="text-[10px] font-bold uppercase tracking-wider text-white bg-white/10 px-2 py-1 rounded">{d}</span>)}
-                {funnel.offer.deliverables.length > 3 && <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-white/5 px-2 py-1 rounded">+{funnel.offer.deliverables.length - 3} more</span>}
+              {funnel.offer.deliverables.slice(0, 3).map((d, i) => <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-white bg-white/10 px-2 py-1 rounded">{d}</span>)}
+              {funnel.offer.deliverables.length > 3 && <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-white/5 px-2 py-1 rounded">+{funnel.offer.deliverables.length - 3} more</span>}
             </div>
             <p className="text-xs font-mono text-[#00CCFF] mt-3">CTA: {funnel.offer.cta}</p>
             {funnel.offer.checkoutUrl && <p className="text-[11px] text-gray-500 mt-2 font-mono truncate">Checkout: {funnel.offer.checkoutUrl}</p>}
           </div>
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 pb-6 border-b border-white/5">
           <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-3">Review & Approval</p>
           <div className="bg-white/5 rounded-lg p-4">
             <p className="text-xs text-gray-300 font-mono mb-2">Status: <span className="text-amber-400">{funnel.review?.status || funnel.status}</span></p>
             {funnel.review?.notes && <p className="text-xs text-gray-400 mb-2 border-l-2 border-gray-600 pl-2">{funnel.review.notes}</p>}
             <div className="flex gap-2 flex-wrap mt-4">
-              <button disabled={actionPending!==null} onClick={()=>onAction("approve_for_publish", funnel)} className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold rounded">{actionPending === "approve_for_publish" ? "Working…" : "Approve"}</button>
-              <button disabled={actionPending!==null} onClick={()=>onAction("push_to_publish", funnel)} className="px-3 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-500 text-xs font-bold rounded">{actionPending === "push_to_publish" ? "Working…" : "Publish Live"}</button>
+              <button disabled={actionPending !== null} onClick={() => onAction("approve_for_publish", funnel)} className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold rounded">{actionPending === "approve_for_publish" ? "Working…" : "Approve"}</button>
+              <button disabled={actionPending !== null} onClick={() => onAction("push_to_publish", funnel)} className="px-3 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-500 text-xs font-bold rounded">{actionPending === "push_to_publish" ? "Working…" : "Publish Live"}</button>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-6">
+          <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-3">Audience Sends</p>
+          <div className="bg-white/5 rounded-lg p-4">
+            <p className="text-xs text-gray-400 mb-4">Use a test send first, then send to all funnel leads once you have confirmed the template lands correctly.</p>
+            {sendFeedback && <div className="mb-4 rounded border border-cyan-500/20 bg-cyan-500/5 px-3 py-2 text-xs text-cyan-200">{sendFeedback}</div>}
+            <div className="flex gap-2 flex-wrap">
+              <button disabled={actionPending !== null} onClick={() => onEmailAction("starting_soon", funnel, "test")} className="px-3 py-1.5 bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-bold rounded">{actionPending === "email:starting_soon:test" ? "Working…" : "Test Starting Soon"}</button>
+              <button disabled={actionPending !== null} onClick={() => onEmailAction("starting_soon", funnel, "all")} className="px-3 py-1.5 bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-bold rounded">{actionPending === "email:starting_soon:all" ? "Working…" : "Send Starting Soon To All"}</button>
+              <button disabled={actionPending !== null} onClick={() => onEmailAction("replay", funnel, "test")} className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold rounded">{actionPending === "email:replay:test" ? "Working…" : "Test Replay"}</button>
+              <button disabled={actionPending !== null} onClick={() => onEmailAction("replay", funnel, "all")} className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold rounded">{actionPending === "email:replay:all" ? "Working…" : "Send Replay To All"}</button>
             </div>
           </div>
         </div>
@@ -147,7 +200,7 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
   );
 }
 
-function QueueFunnelCard({ funnel, onSelect }: { funnel: FunnelPayload; onSelect: () => void; }) {
+function QueueFunnelCard({ funnel, onSelect }: { funnel: FunnelPayload; onSelect: () => void }) {
   const laneMeta = FUNNEL_LANES.find((l) => l.status === (funnel.review?.status ?? funnel.status)) || FUNNEL_LANES[3];
 
   return (
@@ -158,7 +211,7 @@ function QueueFunnelCard({ funnel, onSelect }: { funnel: FunnelPayload; onSelect
       <div style={{ padding: "1rem 1.1rem 0.75rem" }}>
         <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap", marginBottom: "0.55rem", alignItems: "center" }}>
           <Badge label={laneMeta.label} color={laneMeta.color} bg={laneMeta.bg} />
-          <Badge label={funnel.funnelType.replace('_', ' ')} color="rgba(255,255,255,0.4)" bg="rgba(255,255,255,0.04)" />
+          <Badge label={funnel.funnelType.replace("_", " ")} color="rgba(255,255,255,0.4)" bg="rgba(255,255,255,0.04)" />
         </div>
         <h3 style={{ color: "#fff", fontWeight: 700, fontSize: "0.92rem", lineHeight: 1.3, marginBottom: "0.25rem" }}>
           {funnel.campaignName}
@@ -196,9 +249,9 @@ function QueueFunnelCard({ funnel, onSelect }: { funnel: FunnelPayload; onSelect
 }
 
 function QueueLane({ lane, funnels, onSelect }: {
-    lane: typeof FUNNEL_LANES[0];
-    funnels: FunnelPayload[];
-    onSelect: (f: FunnelPayload) => void;
+  lane: typeof FUNNEL_LANES[0];
+  funnels: FunnelPayload[];
+  onSelect: (f: FunnelPayload) => void;
 }) {
   const [collapsed, setCollapsed] = useState(funnels.length === 0);
   return (
@@ -227,69 +280,101 @@ function QueueLane({ lane, funnels, onSelect }: {
 }
 
 export default function FunnelQueueDashboardRenderer({ funnels }: { funnels: FunnelPayload[] }) {
-    const router = useRouter();
-    const [funnelState, setFunnelState] = useState<FunnelPayload[]>(funnels);
-    const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
-    const [busySlug, setBusySlug] = useState<string | null>(null);
-    const [busyAction, setBusyAction] = useState<BuilderAction | null>(null);
-    const [actionError, setActionError] = useState("");
-    const [, startTransition] = useTransition();
+  const router = useRouter();
+  const [funnelState, setFunnelState] = useState<FunnelPayload[]>(funnels);
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const [busySlug, setBusySlug] = useState<string | null>(null);
+  const [busyAction, setBusyAction] = useState<PendingAction | null>(null);
+  const [actionError, setActionError] = useState("");
+  const [sendFeedback, setSendFeedback] = useState("");
+  const [, startTransition] = useTransition();
 
-    async function handleAction(action: BuilderAction, funnel: FunnelPayload) {
-        let notes: string | null | undefined = undefined;
-        if (action === "approve_for_publish") {
-            const value = window.prompt("Optional approval note", funnel.review?.notes ?? "");
-            if (value === null) return;
-            notes = value;
-        }
-        if (action === "request_revision") {
-            const value = window.prompt("Revision note for the funnel", funnel.review?.notes ?? "");
-            if (value === null) return;
-            notes = value;
-        }
-
-        setBusySlug(funnel.slug);
-        setBusyAction(action);
-        setActionError("");
-
-        try {
-            const updated = await runFunnelActionRequest(funnel, action, notes);
-            setFunnelState(prev => prev.map(f => f.slug === updated.slug ? updated : f));
-            startTransition(() => router.refresh());
-        } catch (error) {
-            setActionError(error instanceof Error ? error.message : "Funnel action failed");
-        } finally {
-            setBusySlug(null);
-            setBusyAction(null);
-        }
+  async function handleAction(action: BuilderAction, funnel: FunnelPayload) {
+    let notes: string | null | undefined = undefined;
+    if (action === "approve_for_publish") {
+      const value = window.prompt("Optional approval note", funnel.review?.notes ?? "");
+      if (value === null) return;
+      notes = value;
+    }
+    if (action === "request_revision") {
+      const value = window.prompt("Revision note for the funnel", funnel.review?.notes ?? "");
+      if (value === null) return;
+      notes = value;
     }
 
-    const selectedFunnel = selectedSlug ? funnelState.find((item) => item.slug === selectedSlug) ?? null : null;
+    setBusySlug(funnel.slug);
+    setBusyAction(action);
+    setActionError("");
+    setSendFeedback("");
 
-    return (
-        <div>
-            {actionError && (
-              <div style={{ marginBottom: "1rem", padding: "0.75rem 0.95rem", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "9px", color: "rgba(248,113,113,0.9)", fontSize: "0.78rem" }}>
-                {actionError}
-              </div>
-            )}
-            {selectedFunnel && (
-                <FunnelDetailDrawer 
-                    funnel={selectedFunnel} 
-                    onClose={() => setSelectedSlug(null)} 
-                    onAction={handleAction} 
-                    actionPending={busySlug === selectedFunnel.slug ? busyAction : null} 
-                />
-            )}
+    try {
+      const updated = await runFunnelActionRequest(funnel, action, notes);
+      setFunnelState((prev) => prev.map((f) => (f.slug === updated.slug ? updated : f)));
+      startTransition(() => router.refresh());
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Funnel action failed");
+    } finally {
+      setBusySlug(null);
+      setBusyAction(null);
+    }
+  }
 
-            {FUNNEL_LANES.map(lane => (
-                <QueueLane 
-                    key={lane.status}
-                    lane={lane}
-                    funnels={funnelState.filter(f => (f.review?.status ?? f.status) === lane.status)}
-                    onSelect={(f) => setSelectedSlug(f.slug)}
-                />
-            ))}
+  async function handleEmailAction(template: FunnelEmailTemplate, funnel: FunnelPayload, mode: "test" | "all") {
+    let emails: string[] | undefined;
+    if (mode === "test") {
+      const value = window.prompt(`Enter the email address for a ${template.replace("_", " ")} test send`, "");
+      if (!value) return;
+      emails = [value.trim()];
+    } else {
+      const proceed = window.confirm(`Send ${template.replace("_", " ")} emails to all leads for this funnel?`);
+      if (!proceed) return;
+    }
+
+    const pendingKey = `email:${template}:${mode}` as PendingAction;
+    setBusySlug(funnel.slug);
+    setBusyAction(pendingKey);
+    setActionError("");
+    setSendFeedback("");
+
+    try {
+      const result = await runFunnelEmailRequest(funnel, template, { emails });
+      setSendFeedback(`${template.replace("_", " ")} send finished. Sent ${result.sent}, failed ${result.failed}, recipients ${result.recipientCount}.`);
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Funnel email request failed");
+    } finally {
+      setBusySlug(null);
+      setBusyAction(null);
+    }
+  }
+
+  const selectedFunnel = selectedSlug ? funnelState.find((item) => item.slug === selectedSlug) ?? null : null;
+
+  return (
+    <div>
+      {actionError && (
+        <div style={{ marginBottom: "1rem", padding: "0.75rem 0.95rem", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "9px", color: "rgba(248,113,113,0.9)", fontSize: "0.78rem" }}>
+          {actionError}
         </div>
-    );
+      )}
+      {selectedFunnel && (
+        <FunnelDetailDrawer
+          funnel={selectedFunnel}
+          onClose={() => setSelectedSlug(null)}
+          onAction={handleAction}
+          onEmailAction={handleEmailAction}
+          actionPending={busySlug === selectedFunnel.slug ? busyAction : null}
+          sendFeedback={sendFeedback}
+        />
+      )}
+
+      {FUNNEL_LANES.map((lane) => (
+        <QueueLane
+          key={lane.status}
+          lane={lane}
+          funnels={funnelState.filter((f) => (f.review?.status ?? f.status) === lane.status)}
+          onSelect={(f) => setSelectedSlug(f.slug)}
+        />
+      ))}
+    </div>
+  );
 }
