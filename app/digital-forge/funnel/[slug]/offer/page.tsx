@@ -31,7 +31,7 @@ export default async function FunnelOfferPage(props: { params: Promise<{ slug: s
                 <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', margin: 0, fontWeight: 500 }}>
                     <span style={{ color: '#f59e0b', fontWeight: 800 }}>{offer.name}</span> — Get instant access
                 </p>
-                <a href="#offer-cta" style={{
+                <a href={offer.checkoutUrl || "#offer-cta"} style={{
                     display: 'inline-flex', alignItems: 'center', gap: '8px',
                     background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                     color: '#fff', fontWeight: 800, fontSize: '14px',
@@ -91,7 +91,7 @@ export default async function FunnelOfferPage(props: { params: Promise<{ slug: s
                     </p>
                     
                     {/* Top CTA */}
-                    <a href="#offer-cta" style={{
+                    <a href={offer.checkoutUrl || "#offer-cta"} style={{
                         display: 'inline-flex', alignItems: 'center', gap: '10px',
                         background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                         color: '#fff', fontWeight: 800, fontSize: '1.15rem',
@@ -284,7 +284,7 @@ export default async function FunnelOfferPage(props: { params: Promise<{ slug: s
                         <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px', marginBottom: '32px' }}>
                             Instant access · All deliverables included
                         </p>
-                        <a href="#" style={{
+                        <a href={offer.checkoutUrl || "#offer-cta"} style={{
                             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
                             background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
                             color: '#fff', fontWeight: 800, fontSize: '1.1rem',
@@ -319,3 +319,4 @@ export default async function FunnelOfferPage(props: { params: Promise<{ slug: s
         </div>
     );
 }
+

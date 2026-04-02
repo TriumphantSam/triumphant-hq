@@ -6,6 +6,7 @@ const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
 const AIRTABLE_PRODUCTS_TABLE = process.env.AIRTABLE_PRODUCTS_TABLE ?? "Products";
 const GENERATED_FORGE_DIR = path.join(process.cwd(), "content", "digital-forge", "generated");
+const GENERATED_FUNNELS_DIR = path.join(process.cwd(), "content", "digital-forge", "funnels");
 const REVIEWER_FALLBACK = process.env.BUILDER_USER ?? "builder";
 
 type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publish" | "push_distribution";
@@ -34,40 +35,56 @@ type ForgeProduct = {
   [key: string]: unknown;
 };
 
+type FunnelPayload = {
+  airtableRecordId?: string;
+  slug: string;
+  status: "draft" | "needs_review" | "approved" | "published" | "archived";
+  funnelType: string;
+  campaignName: string;
+  review?: {
+    status?: string;
+    notes?: string;
+    approvedBy?: string;
+    approvedAt?: string;
+  };
+  [key: string]: unknown;
+};
+
 function nowIso(): string {
   return new Date().toISOString();
 }
 
-function resolveGeneratedPath(slug: string): string {
+function resolveProductPath(slug: string): string {
   return path.join(GENERATED_FORGE_DIR, `${slug}.json`);
 }
 
-function readLocalProduct(slug: string): ForgeProduct | null {
-  const filePath = resolveGeneratedPath(slug);
+function resolveFunnelPath(slug: string): string {
+  return path.join(GENERATED_FUNNELS_DIR, `${slug}.json`);
+}
+
+function readJsonFile<T>(filePath: string): T | null {
   if (!fs.existsSync(filePath)) return null;
   try {
-    return JSON.parse(fs.readFileSync(filePath, "utf-8")) as ForgeProduct;
+    return JSON.parse(fs.readFileSync(filePath, "utf-8")) as T;
   } catch {
     return null;
   }
 }
 
-function writeLocalProduct(product: ForgeProduct): void {
-  const filePath = resolveGeneratedPath(product.slug);
-  fs.writeFileSync(filePath, JSON.stringify(product, null, 2), "utf-8");
+function writeJsonFile(filePath: string, data: unknown): void {
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
 }
 
-function canWriteLocalProduct(product: ForgeProduct): boolean {
+function canWriteLocalFile(filePath: string): boolean {
   try {
-    const filePath = resolveGeneratedPath(product.slug);
     const targetDir = path.dirname(filePath);
-    return fs.existsSync(targetDir) && fs.existsSync(filePath || targetDir);
+    return fs.existsSync(targetDir);
   } catch {
     return false;
   }
 }
 
-function applyAction(product: ForgeProduct, action: BuilderAction, notes?: string | null): ForgeProduct {
+function applyProductAction(product: ForgeProduct, action: BuilderAction, notes?: string | null): ForgeProduct {
   const stamp = nowIso();
   const publishing: ForgePublishing = { ...(product.publishing ?? {}) };
 
@@ -115,12 +132,47 @@ function applyAction(product: ForgeProduct, action: BuilderAction, notes?: strin
   };
 }
 
+function applyFunnelAction(funnel: FunnelPayload, action: BuilderAction, notes?: string | null): FunnelPayload {
+  const stamp = nowIso();
+  const review = { ...(funnel.review ?? {}) };
+
+  if (action === "approve_for_publish") {
+    funnel.status = "approved";
+    review.status = "approved";
+    review.approvedBy = review.approvedBy || REVIEWER_FALLBACK;
+    review.approvedAt = stamp;
+    if (notes && notes.trim()) review.notes = notes.trim();
+  }
+
+  if (action === "request_revision") {
+    funnel.status = "draft";
+    review.status = "needs_review";
+    if (notes && notes.trim()) review.notes = notes.trim();
+  }
+
+  if (action === "push_to_publish") {
+    funnel.status = "published";
+    review.status = "approved";
+    review.approvedBy = review.approvedBy || REVIEWER_FALLBACK;
+    review.approvedAt = review.approvedAt || stamp;
+  }
+
+  if (action === "push_distribution") {
+    review.status = review.status || funnel.status;
+  }
+
+  return {
+    ...funnel,
+    review,
+  };
+}
+
 function extractUnknownFieldName(detail: string): string | null {
   const match = detail.match(/Unknown field name: \"([^\"]+)\"/i);
   return match?.[1] ?? null;
 }
 
-async function patchAirtableRecord(recordId: string, product: ForgeProduct): Promise<void> {
+async function patchAirtableProduct(recordId: string, product: ForgeProduct): Promise<void> {
   if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) return;
   const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_PRODUCTS_TABLE)}/${recordId}`;
   const publishing = product.publishing ?? {};
@@ -172,10 +224,12 @@ export async function POST(request: NextRequest) {
     const action = payload.action as BuilderAction;
     const recordId = typeof payload.recordId === "string" ? payload.recordId.trim() : "";
     const notes = typeof payload.notes === "string" ? payload.notes : null;
-    const currentProduct =
-      payload.currentProduct && typeof payload.currentProduct === "object"
-        ? (payload.currentProduct as ForgeProduct)
-        : null;
+    const currentProduct = payload.currentProduct && typeof payload.currentProduct === "object"
+      ? (payload.currentProduct as ForgeProduct)
+      : null;
+    const currentFunnel = payload.currentFunnel && typeof payload.currentFunnel === "object"
+      ? (payload.currentFunnel as FunnelPayload)
+      : null;
 
     if (!slug) {
       return NextResponse.json({ error: "slug is required" }, { status: 400 });
@@ -184,19 +238,41 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "invalid action" }, { status: 400 });
     }
 
-    const current =
-      currentProduct ??
-      readLocalProduct(slug) ??
-      { slug, title: slug, status: "draft", publishing: {} };
-    const updated = applyAction(current, action, notes);
+    if (currentFunnel) {
+      const filePath = resolveFunnelPath(slug);
+      const current = currentFunnel ?? readJsonFile<FunnelPayload>(filePath) ?? {
+        slug,
+        status: "draft",
+        funnelType: "evergreen_training",
+        campaignName: slug,
+        productSlug: slug,
+      } as FunnelPayload;
+      const updated = applyFunnelAction(current, action, notes);
 
-    if (recordId) {
-      await patchAirtableRecord(recordId, updated);
+      if (canWriteLocalFile(filePath)) {
+        try {
+          writeJsonFile(filePath, updated);
+        } catch (error) {
+          if (!(error instanceof Error) || !/EROFS|read-only file system/i.test(error.message)) {
+            throw error;
+          }
+        }
+      }
+
+      return NextResponse.json({ ok: true, funnel: updated });
     }
 
-    if (!recordId && canWriteLocalProduct(updated)) {
+    const filePath = resolveProductPath(slug);
+    const current = currentProduct ?? readJsonFile<ForgeProduct>(filePath) ?? { slug, title: slug, status: "draft", publishing: {} };
+    const updated = applyProductAction(current, action, notes);
+
+    if (recordId) {
+      await patchAirtableProduct(recordId, updated);
+    }
+
+    if (!recordId && canWriteLocalFile(filePath)) {
       try {
-        writeLocalProduct(updated);
+        writeJsonFile(filePath, updated);
       } catch (error) {
         if (!(error instanceof Error) || !/EROFS|read-only file system/i.test(error.message)) {
           throw error;

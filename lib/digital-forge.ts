@@ -84,7 +84,7 @@ export type FunnelPayload = {
   audience: { primary: string; secondary: string };
   promise: { headline: string; subheadline: string; cta: string };
   training: { mode: string; title: string; timeLabel: string; duration: string; whatYouWillLearn: string[]; coreMethod: string[] };
-  offer: { name: string; price: string; cta: string; summary: string; deliverables: string[]; bonuses: string[] };
+  offer: { name: string; price: string; cta: string; checkoutUrl?: string; summary: string; deliverables: string[]; bonuses: string[] };
   proof: { authorityBlock: string; evidenceBullets: string[] };
   pages: {
     optIn: { heroEyebrow: string; whoItsFor: string[]; whyNow: string };
@@ -589,3 +589,4 @@ export async function getForgeBuilderFunnel(slug: string): Promise<FunnelPayload
 export async function getForgeBuilderFunnels(): Promise<FunnelPayload[]> {
   return loadGeneratedForgeFunnels();
 }
+

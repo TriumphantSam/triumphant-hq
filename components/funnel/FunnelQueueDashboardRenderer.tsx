@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import type { FunnelPayload } from "@/lib/digital-forge";
 
 type FunnelQueueStatus = "draft" | "needs_review" | "approved" | "published" | "archived";
+type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publish" | "push_distribution";
 
 const FUNNEL_LANES: { status: FunnelQueueStatus; label: string; color: string; bg: string }[] = [
   { status: "needs_review", label: "Needs Review", color: "#f59e0b", bg: "rgba(245,158,11,0.08)" },
-  { status: "approved",     label: "Approved to Publish", color: "#3b82f6", bg: "rgba(59,130,246,0.08)" },
-  { status: "published",    label: "Published", color: "#00CCFF", bg: "rgba(0,204,255,0.08)" },
-  { status: "draft",        label: "Draft", color: "#64748b", bg: "rgba(100,116,139,0.06)" },
+  { status: "approved", label: "Approved to Publish", color: "#3b82f6", bg: "rgba(59,130,246,0.08)" },
+  { status: "published", label: "Published", color: "#00CCFF", bg: "rgba(0,204,255,0.08)" },
+  { status: "draft", label: "Draft", color: "#64748b", bg: "rgba(100,116,139,0.06)" },
 ];
 
 function Badge({ label, color, bg }: { label: string; color: string; bg: string }) {
@@ -36,7 +37,26 @@ function MiniPanel({ title, children }: { title: string; children: React.ReactNo
   );
 }
 
-function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funnel: FunnelPayload; onClose: () => void; onAction: (a: string, f: FunnelPayload) => void; actionPending: string | null; }) {
+async function runFunnelActionRequest(funnel: FunnelPayload, action: BuilderAction, notes?: string | null) {
+  const response = await fetch("/api/digital-forge/builder/actions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      slug: funnel.slug,
+      recordId: funnel.airtableRecordId,
+      action,
+      notes,
+      currentFunnel: funnel,
+    }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data?.error || "Funnel action failed");
+  }
+  return data.funnel as FunnelPayload;
+}
+
+function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funnel: FunnelPayload; onClose: () => void; onAction: (a: BuilderAction, f: FunnelPayload) => void; actionPending: BuilderAction | null; }) {
   const laneMeta = FUNNEL_LANES.find((l) => l.status === (funnel.review?.status ?? funnel.status));
 
   return (
@@ -56,7 +76,6 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
           </button>
         </div>
 
-        {/* 1. Identity */}
         <div className="mb-6 pb-6 border-b border-white/5">
           <div className="flex gap-2 flex-wrap mb-3">
             {laneMeta && <Badge label={laneMeta.label} color={laneMeta.color} bg={laneMeta.bg} />}
@@ -76,7 +95,6 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
           </div>
         </div>
 
-        {/* 2. Promise */}
         <div className="mb-6 pb-6 border-b border-white/5">
           <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-3">The Promise</p>
           <div className="mb-3 pl-3 border-l-2 border-amber-500/50">
@@ -86,7 +104,6 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
           <p className="text-xs font-mono text-amber-500">CTA: {funnel.promise.cta}</p>
         </div>
 
-        {/* 3. Training */}
         <div className="mb-6 pb-6 border-b border-white/5">
           <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-3">Training Asset</p>
           <div className="grid grid-cols-3 gap-2 mb-4">
@@ -100,7 +117,6 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
           </ul>
         </div>
 
-        {/* 4. Offer */}
         <div className="mb-6 pb-6 border-b border-white/5">
           <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-3">Commercial Offer</p>
           <div className="bg-[#00CCFF]/5 border border-[#00CCFF]/20 rounded-lg p-4 mb-4">
@@ -111,19 +127,18 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
                 {funnel.offer.deliverables.length > 3 && <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 bg-white/5 px-2 py-1 rounded">+{funnel.offer.deliverables.length - 3} more</span>}
             </div>
             <p className="text-xs font-mono text-[#00CCFF] mt-3">CTA: {funnel.offer.cta}</p>
+            {funnel.offer.checkoutUrl && <p className="text-[11px] text-gray-500 mt-2 font-mono truncate">Checkout: {funnel.offer.checkoutUrl}</p>}
           </div>
         </div>
 
-        {/* 5. Proof & Review */}
         <div className="mb-6">
           <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-3">Review & Approval</p>
           <div className="bg-white/5 rounded-lg p-4">
             <p className="text-xs text-gray-300 font-mono mb-2">Status: <span className="text-amber-400">{funnel.review?.status || funnel.status}</span></p>
             {funnel.review?.notes && <p className="text-xs text-gray-400 mb-2 border-l-2 border-gray-600 pl-2">{funnel.review.notes}</p>}
-            
             <div className="flex gap-2 flex-wrap mt-4">
-              <button disabled={actionPending!==null} onClick={()=>onAction("approve", funnel)} className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold rounded">Approve</button>
-              <button disabled={actionPending!==null} onClick={()=>onAction("publish", funnel)} className="px-3 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-500 text-xs font-bold rounded">Publish Live</button>
+              <button disabled={actionPending!==null} onClick={()=>onAction("approve_for_publish", funnel)} className="px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-500 text-xs font-bold rounded">{actionPending === "approve_for_publish" ? "Working…" : "Approve"}</button>
+              <button disabled={actionPending!==null} onClick={()=>onAction("push_to_publish", funnel)} className="px-3 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-500 text-xs font-bold rounded">{actionPending === "push_to_publish" ? "Working…" : "Publish Live"}</button>
             </div>
           </div>
         </div>
@@ -132,9 +147,9 @@ function FunnelDetailDrawer({ funnel, onClose, onAction, actionPending }: { funn
   );
 }
 
-function QueueFunnelCard({ funnel, onSelect, onAction, actionPending }: { funnel: FunnelPayload; onSelect: () => void; onAction: (a: string, f: FunnelPayload) => void; actionPending: string | null; }) {
+function QueueFunnelCard({ funnel, onSelect }: { funnel: FunnelPayload; onSelect: () => void; }) {
   const laneMeta = FUNNEL_LANES.find((l) => l.status === (funnel.review?.status ?? funnel.status)) || FUNNEL_LANES[3];
-  
+
   return (
     <div style={{
       background: "rgba(6,10,25,0.9)", border: "1px solid rgba(255,255,255,0.07)",
@@ -180,13 +195,10 @@ function QueueFunnelCard({ funnel, onSelect, onAction, actionPending }: { funnel
   );
 }
 
-function QueueLane({ lane, funnels, onSelect, onAction, busySlug, busyAction }: {
+function QueueLane({ lane, funnels, onSelect }: {
     lane: typeof FUNNEL_LANES[0];
     funnels: FunnelPayload[];
     onSelect: (f: FunnelPayload) => void;
-    onAction: (a: string, f: FunnelPayload) => void;
-    busySlug: string | null;
-    busyAction: string | null;
 }) {
   const [collapsed, setCollapsed] = useState(funnels.length === 0);
   return (
@@ -206,7 +218,7 @@ function QueueLane({ lane, funnels, onSelect, onAction, busySlug, busyAction }: 
       {!collapsed && funnels.length > 0 && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "0.85rem" }}>
           {funnels.map((f) => (
-            <QueueFunnelCard key={f.slug} funnel={f} onSelect={() => onSelect(f)} onAction={onAction} actionPending={busySlug === f.slug ? busyAction : null} />
+            <QueueFunnelCard key={f.slug} funnel={f} onSelect={() => onSelect(f)} />
           ))}
         </div>
       )}
@@ -219,29 +231,33 @@ export default function FunnelQueueDashboardRenderer({ funnels }: { funnels: Fun
     const [funnelState, setFunnelState] = useState<FunnelPayload[]>(funnels);
     const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
     const [busySlug, setBusySlug] = useState<string | null>(null);
-    const [busyAction, setBusyAction] = useState<string | null>(null);
+    const [busyAction, setBusyAction] = useState<BuilderAction | null>(null);
+    const [actionError, setActionError] = useState("");
     const [, startTransition] = useTransition();
 
-    async function handleAction(action: string, funnel: FunnelPayload) {
+    async function handleAction(action: BuilderAction, funnel: FunnelPayload) {
+        let notes: string | null | undefined = undefined;
+        if (action === "approve_for_publish") {
+            const value = window.prompt("Optional approval note", funnel.review?.notes ?? "");
+            if (value === null) return;
+            notes = value;
+        }
+        if (action === "request_revision") {
+            const value = window.prompt("Revision note for the funnel", funnel.review?.notes ?? "");
+            if (value === null) return;
+            notes = value;
+        }
+
         setBusySlug(funnel.slug);
         setBusyAction(action);
-        
+        setActionError("");
+
         try {
-            // Simulated API call for v1. In reality, we'd hit /api/digital-forge/builder/actions
-            await new Promise(r => setTimeout(r, 600));
-            const newStatus = action === "publish" ? "published" : "approved";
-            
-            const updated = {
-                ...funnel,
-                status: newStatus as any,
-                review: {
-                    ...funnel.review,
-                    status: newStatus
-                }
-            };
-            
+            const updated = await runFunnelActionRequest(funnel, action, notes);
             setFunnelState(prev => prev.map(f => f.slug === updated.slug ? updated : f));
             startTransition(() => router.refresh());
+        } catch (error) {
+            setActionError(error instanceof Error ? error.message : "Funnel action failed");
         } finally {
             setBusySlug(null);
             setBusyAction(null);
@@ -252,6 +268,11 @@ export default function FunnelQueueDashboardRenderer({ funnels }: { funnels: Fun
 
     return (
         <div>
+            {actionError && (
+              <div style={{ marginBottom: "1rem", padding: "0.75rem 0.95rem", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "9px", color: "rgba(248,113,113,0.9)", fontSize: "0.78rem" }}>
+                {actionError}
+              </div>
+            )}
             {selectedFunnel && (
                 <FunnelDetailDrawer 
                     funnel={selectedFunnel} 
@@ -267,9 +288,6 @@ export default function FunnelQueueDashboardRenderer({ funnels }: { funnels: Fun
                     lane={lane}
                     funnels={funnelState.filter(f => (f.review?.status ?? f.status) === lane.status)}
                     onSelect={(f) => setSelectedSlug(f.slug)}
-                    onAction={handleAction}
-                    busySlug={busySlug}
-                    busyAction={busyAction}
                 />
             ))}
         </div>
