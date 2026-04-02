@@ -1,0 +1,115 @@
+{
+  "slug": "beyond-listening-how-to-co-create-your-favorite-au",
+  "status": "draft",
+  "funnelType": "evergreen_training",
+  "campaignName": "Co-Creator's Audio Toolkit Evergreen Funnel",
+  "productSlug": "beyond-listening-how-to-co-create-your-favorite-audio-experience",
+  "niche": "Audio Experience Creation for Authors & Creators",
+  "audience": {
+    "primary": "Independent authors seeking to produce high-quality, immersive audiobooks that stand out in a crowded market.",
+    "secondary": "Narrative podcasters and content creators aiming to elevate their storytelling with professional sound design and collaborative production techniques."
+  },
+  "promise": {
+    "headline": "Go Beyond Listening: Learn How to Co-Create an Immersive Audio Experience Your Fans Will Rave About",
+    "subheadline": "In this free, on-demand training, you'll discover the 3-step framework for turning your story into a captivating audio production\u2014without needing a Hollywood budget or technical expertise.",
+    "cta": "Watch The Free Training Now"
+  },
+  "training": {
+    "mode": "on_demand",
+    "title": "The 3-Step Framework for Co-Creating an Unforgettable Audio Experience",
+    "timeLabel": "On-Demand Training",
+    "duration": "22 Minutes",
+    "whatYouWillLearn": [
+      "The 'Auditory Vision' Blueprint: How to define the sound, tone, and feel of your audio experience before you ever hit record.",
+      "How to find, vet, and collaborate with the right voice talent and sound designers who will elevate your project, not just complete it.",
+      "The 'Iterative Sound' Loop: A simple project management and feedback process to ensure a high-quality result without creative conflicts or costly re-records."
+    ],
+    "coreMethod": [
+      "Step 1: Define Your Auditory Vision",
+      "Step 2: Assemble Your Creative Partners",
+      "Step 3: Manage the Co-Creation Process"
+    ]
+  },
+  "offer": {
+    "name": "The Co-Creator's Audio Toolkit",
+    "offerType": "ebook_bundle",
+    "price": "Review before publish",
+    "cta": "Get The Complete Toolkit",
+    "checkoutUrl": "",
+    "summary": "The Co-Creator's Audio Toolkit is a comprehensive digital bundle designed to give you all the guides, templates, and resources needed to manage the production of a professional, immersive audio experience from start to finish.",
+    "deliverables": [
+      "The Core Guide: 'Beyond Listening: The Complete Guide to Co-Creating Immersive Audio' (120-page PDF)",
+      "The Resource Library: A curated and vetted directory of platforms for finding narrators, sound designers, and royalty-free music/sfx.",
+      "The Template Pack: Includes project brief templates, collaboration agreement outlines, and production feedback checklists."
+    ],
+    "bonuses": [
+      "Bonus #1: The Soundscape Starter Pack - A curated library of 50+ royalty-free atmospheric sounds to help you start building your world.",
+      "Bonus #2: Expert Interview Series - Two video interviews with a seasoned audiobook narrator and a professional sound designer on best practices for collaboration."
+    ]
+  },
+  "proof": {
+    "authorityBlock": "From the audio production specialists who have guided dozens of independent authors and creators in launching chart-topping audio experiences.",
+    "evidenceBullets": [
+      "Learn a proven framework that can reduce production friction and miscommunication by up to 40%.",
+      "Access the same principles used to produce award-nominated audio dramas and podcasts.",
+      "Avoid the common and costly pitfalls that lead to amateur-sounding audio and listener drop-off."
+    ]
+  },
+  "pages": {
+    "optIn": {
+      "heroEyebrow": "Free On-Demand Training",
+      "whoItsFor": [
+        "Indie Authors who want to create an audiobook that honors their story.",
+        "Narrative Podcasters looking to improve their production quality.",
+        "Creators who believe great stories deserve to be heard, not just read."
+      ],
+      "whyNow": "The audio market is booming, but listener expectations are higher than ever. A flat, robotic narration no longer stands out. The creators who succeed in the next decade will be those who can deliver a truly immersive audio experience. This training shows you how."
+    },
+    "thankYou": {
+      "headline": "You're In! Check Your Email.",
+      "instructions": [
+        "Your unique link to the on-demand training has been sent to your inbox.",
+        "Please allow 5-10 minutes for it to arrive.",
+        "To ensure you get our emails, please add our address to your contacts."
+      ]
+    },
+    "trainingPage": {
+      "headline": "The 3-Step Framework for Co-Creating an Unforgettable Audio Experience",
+      "supportingLine": "Watch the training below to learn the core method. When you're ready to get all the tools and templates to implement it, our complete toolkit is available for you.",
+      "cta": "Get The Complete Co-Creator's Audio Toolkit"
+    },
+    "offerPage": {
+      "headline": "The Co-Creator's Audio Toolkit: Your Complete System for Producing a World-Class Audio Experience",
+      "summary": "You've learned the framework, now get everything you need to execute it. This toolkit provides the step-by-step guides, resource lists, and professional templates to take your project from concept to a polished, immersive final product.",
+      "faq": [
+        {
+          "question": "Do I need technical audio skills to use this toolkit?",
+          "answer": "Not at all. This system is designed for creators, not audio engineers. It focuses on how to define your vision and manage creative partners who will handle the technical execution for you."
+        },
+        {
+          "question": "Is this for fiction or non-fiction projects?",
+          "answer": "The principles and templates can be adapted for both. While immersive sound design is more common in fiction, the collaboration and project management frameworks are invaluable for producing high-quality non-fiction audiobooks as well."
+        },
+        {
+          "question": "What if I have a very small budget?",
+          "answer": "This toolkit is budget-agnostic. It provides strategies for finding emerging talent and using resources effectively, whether you're bootstrapping your first project or have a dedicated production budget."
+        }
+      ]
+    }
+  },
+  "emails": {
+    "confirmation": {},
+    "reminders": [],
+    "followUps": []
+  },
+  "channels": {
+    "telegramReminder": "",
+    "whatsappReminder": ""
+  },
+  "review": {
+    "status": "draft",
+    "notes": "Initial draft of the funnel payload. Price for the offer needs to be determined. Email sequences need to be written and added. Checkout URL to be added once the product is set up in the payment processor.",
+    "approvedBy": "",
+    "approvedAt": ""
+  }
+}
