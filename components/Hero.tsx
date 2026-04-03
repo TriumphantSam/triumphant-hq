@@ -14,7 +14,6 @@ export default function Hero() {
                 position: 'relative',
             }}
         >
-            {/* Decorative badge */}
             <div
                 style={{
                     display: 'inline-flex',
@@ -32,7 +31,7 @@ export default function Hero() {
                 }}
             >
                 <span style={{ width: 6, height: 6, borderRadius: '0px', background: 'var(--secondary-color)', display: 'inline-block' }} />
-                TRIUMPHANTTECH: Delivering Innovative Solutions
+                Empowering Automated Digital Empires
             </div>
 
             {/* Main heading */}
@@ -46,10 +45,10 @@ export default function Hero() {
                     color: '#fff',
                 }}
             >
-                Essential Tech.
+                Automated AI Systems.
                 <br />
                 <span style={{ color: 'var(--secondary-color)' }}>
-                    Digital Growth.
+                    Digital Products.
                 </span>
             </h1>
 
@@ -63,7 +62,7 @@ export default function Hero() {
                     marginBottom: '2.5rem',
                 }}
             >
-                From Local Solutions to Professional Services. We bridge the gap between today's needs and tomorrow's technology.
+                From autonomous digital product pipelines and AI-powered funnel engines to elite semantic SEO execution.
             </p>
 
             {/* CTA buttons */}

@@ -7,9 +7,9 @@ import { useState } from 'react';
 const links = [
     { href: '/', label: 'Home' },
     { href: '/services', label: 'Services' },
-    { href: '/tech-diary', label: 'Tech Diary' },
     { href: '/digital-forge', label: 'Digital Forge' },
     { href: '/about', label: 'About' },
+    { href: '/seo-snapshot', label: 'Free SEO Audit' },
 ];
 
 export default function Navigation() {
@@ -22,8 +22,7 @@ export default function Navigation() {
 
     return (
         <nav
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${mobileOpen ? 'bg-[#050510]' : 'bg-[#050510]/80 backdrop-blur-md border-b border-[#0066FF]/20'
-                }`}
+            className="sticky top-0 left-0 right-0 z-[200] bg-[#050510] border-b border-[#0066FF]/20"
         >
             <div className="container mx-auto px-6 h-20 flex items-center justify-between">
                 {/* Logo - Industrial/Tech */}

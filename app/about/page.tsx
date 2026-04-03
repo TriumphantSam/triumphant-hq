@@ -20,7 +20,7 @@ const timelineData = [
         highlights: ['HP printer setup & troubleshooting', 'Microsoft 365 support', 'Hardware diagnostics & repair', 'NIMC registration services'],
     },
     {
-        year: '2021–Present',
+        year: '2021–2023',
         title: 'Digital Growth',
         icon: '📈',
         color: '#3385FF',
@@ -28,22 +28,22 @@ const timelineData = [
         highlights: ['SEO strategy & implementation', 'WordPress website management', 'Content optimization', '40% organic traffic growth for clients'],
     },
     {
-        year: '2023–Present',
-        title: 'AI & Innovation',
-        icon: '🤖',
+        year: '2024–Present',
+        title: 'Automated Digital Pipelines',
+        icon: '🚀',
         color: '#00A3CC',
-        description: 'Embracing the AI revolution with data consulting and productivity solutions.',
-        highlights: ['AI data annotation & QA', 'Human-in-the-Loop services', 'AI-enhanced productivity consulting', 'Continuous learning & adaptation'],
+        description: 'Evolved into an AI agency focused on scaling autonomous digital empires through AgentPrinter, Digital Forge, and Semantic SEO.',
+        highlights: ['Autonomous AI Pipelines', 'Funnel Engineering', 'AI-citation (SGE) strategy', 'Digital product factories'],
     },
 ];
 
 const skills = [
-    { icon: '🏪', title: 'Local Services', color: '#0066FF', items: ['NIMC Registration', 'JAMB/WAEC/NECO', 'Document Services', 'Internet Support'] },
-    { icon: '💻', title: 'Technical Support', color: '#00CCFF', items: ['HP Printer Support', 'Microsoft 365', 'Hardware Repair', 'Software Installation'] },
-    { icon: '🌐', title: 'SEO & Web', color: '#3385FF', items: ['Search Optimization', 'WordPress Management', 'Online Ads', 'Analytics & Reporting'] },
-    { icon: '🧠', title: 'AI & Data', color: '#00A3CC', items: ['Data Annotation', 'Quality Assurance', 'Prompt Engineering', 'Model Evaluation'] },
-    { icon: '⚡', title: 'Productivity', color: '#0066FF', items: ['AI Tool Integration', 'Workflow Automation', 'Team Training', 'Process Optimization'] },
-    { icon: '👨‍💻', title: 'Development', color: '#00CCFF', items: ['Next.js / React', 'JavaScript / TypeScript', 'Modern Web Design', '"Vibe Coding"'] },
+    { icon: '⚙️', title: 'Funnel Engineering', color: '#0066FF', items: ['Digital Forge Design', 'Offer Overhauls', 'Checkout Optimization', 'A/B Conversion Focus'] },
+    { icon: '🤖', title: 'Autonomous Pipelines', color: '#00CCFF', items: ['AgentPrinter Logic', 'Content Factories', 'Automated Workflows', 'Generative Integrations'] },
+    { icon: '📈', title: 'Semantic SEO', color: '#3385FF', items: ['SGE Readiness', 'Programmatic SEO', 'Technical Auditing', 'Trium-Seo Deployments'] },
+    { icon: '💻', title: 'Full-Stack Architecture', color: '#00A3CC', items: ['Next.js React Apps', 'Airtable Syncs', 'API Webhooks', 'Private Worker Routing'] },
+    { icon: '⚡', title: 'AI Productivity', color: '#0066FF', items: ['AI Tool Integration', 'Workflow Automation', 'Team Training', 'Process Optimization'] },
+    { icon: '🏪', title: 'Local Roots', color: '#00CCFF', items: ['NIMC Registrations', 'Hardware Support', 'Essential Web Operations', 'Community Trust'] },
 ];
 
 export default function AboutPage() {

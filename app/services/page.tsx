@@ -4,11 +4,11 @@ import { useState } from 'react';
 
 /* ──────────────── DATA ──────────────── */
 
-type ServiceCategory = 'local' | 'digital';
+type ServiceCategory = 'ai_systems' | 'local';
 
 const categories: { key: ServiceCategory; label: string; description: string }[] = [
-    { key: 'local', label: '🏪 Local & Essential', description: 'In-person support for everyday tech needs in Ibadan and beyond.' },
-    { key: 'digital', label: '🚀 Digital & Professional', description: 'Advanced solutions to grow your online presence and leverage modern technology.' },
+    { key: 'ai_systems', label: '🚀 Digital & AI Systems', description: 'Autonomous digital product pipelines, funnel engineering, and generative SEO architectures.' },
+    { key: 'local', label: '🏪 Local Tech', description: 'In-person tech support and essential technical services in Ibadan and beyond.' },
 ];
 
 const services: Record<ServiceCategory, { icon: string; title: string; color: string; badge?: string; description: string; features: string[] }[]> = {
@@ -29,27 +29,28 @@ const services: Record<ServiceCategory, { icon: string; title: string; color: st
             features: ['Document typing & formatting', 'Printing & scanning', 'Email setup & support', 'Online form filling'],
         },
     ],
-    digital: [
+    ai_systems: [
         {
-            icon: '📈', title: 'SEO & Website Management', color: '#0066FF',
-            badge: '40% Organic Traffic Increase',
-            description: 'Proven strategies to increase your online visibility and drive organic growth.',
-            features: ['Keyword research & optimization', 'On-page & technical SEO', 'Content strategy development', 'WordPress setup & maintenance', 'Performance monitoring & reporting'],
+            icon: '⚡', title: 'Funnel Engineering', color: '#0066FF',
+            badge: 'Digital Forge Engine',
+            description: 'Deploy high-converting flagship funnels and optimized checkout systems designed to scale digital asset sales.',
+            features: ['Flagship funnel deployment', 'Offer and copy rewrite systems', 'Dynamic digital forge architecture', 'A/B tested conversion flows'],
         },
         {
-            icon: '🤖', title: 'AI Data Consulting', color: '#00CCFF',
-            description: 'Human-in-the-Loop data services to ensure your AI models are accurate and reliable.',
-            features: ['Data annotation & labeling', 'AI output evaluation & testing', 'Quality assurance for ML models', 'Prompt engineering & optimization', 'Training data accuracy consulting'],
+            icon: '📈', title: 'Semantic SEO & Search', color: '#00CCFF',
+            description: 'Elite semantic SEO strategy and AI-citation optimization designed for modern generative search environments.',
+            features: ['Free SEO visibility snapshots', 'Monthly done-for-you execution', 'AI-citation (SGE) readiness', 'Technical infrastructure audits', 'Performance marketing alignment'],
         },
         {
-            icon: '🔧', title: 'Technical Support', color: '#00A3CC',
-            description: 'Expert troubleshooting and support for hardware, software, and system issues.',
-            features: ['HP printer setup & troubleshooting', 'Microsoft 365 support', 'Hardware diagnostics & repair', 'Software installation & configuration', 'Remote & on-site support'],
+            icon: '🤖', title: 'Autonomous AI Pipelines', color: '#3385FF',
+            badge: 'AgentPrinter',
+            description: 'Custom implementation of our AgentPrinter architecture to scale your digital product generation unconditionally.',
+            features: ['Ebook & Notion template factories', 'Shorts video content pipelines', 'Autonomous revenue generation', 'Fully free distribution logic'],
         },
         {
-            icon: '⚡', title: 'AI-Enhanced Productivity', color: '#3385FF',
-            description: 'Leverage modern AI tools to streamline your business workflows and save time.',
-            features: ['AI tool integration & training', 'Workflow automation consulting', 'Custom AI solution recommendations', 'Team training on AI productivity tools'],
+            icon: '🏗️', title: 'Technical Architecture', color: '#00A3CC',
+            description: 'Complete stack setups including Next.js web apps and private API worker integrations.',
+            features: ['Next.js React development', 'API webhook orchestration', 'Backend worker scripts', 'Airtable operational mapping'],
         },
     ],
 };
@@ -57,7 +58,7 @@ const services: Record<ServiceCategory, { icon: string; title: string; color: st
 /* ──────────────── COMPONENT ──────────────── */
 
 export default function ServicesPage() {
-    const [activeCategory, setActiveCategory] = useState<ServiceCategory>('local');
+    const [activeCategory, setActiveCategory] = useState<ServiceCategory>('ai_systems');
 
     return (
         <div className="min-h-screen">

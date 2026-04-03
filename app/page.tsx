@@ -6,50 +6,50 @@ import Hero from '@/components/Hero';
 
 const services = [
   {
-    icon: '🏪',
-    title: 'Local Services',
+    icon: '⚡',
+    title: 'Funnel Engineering',
     color: '#0066FF',
-    description: 'NIMC registration, school portals, document services and essential internet support for individuals and students.',
+    description: 'High-converting flagship funnels, optimized checkout systems, and the underlying Digital Forge offering ecosystem.',
     link: '/services',
   },
   {
     icon: '📈',
-    title: 'Digital Growth',
+    title: 'Search & Generative Visibility',
     color: '#00CCFF',
-    description: 'SEO strategy, WordPress management and content optimization — with a 40% organic traffic growth track record.',
-    link: '/services',
+    description: 'Advanced semantic SEO, AI-citations optimization (SGE), and performance marketing architecture.',
+    link: '/seo-snapshot',
   },
   {
     icon: '🤖',
-    title: 'AI Data & Training',
+    title: 'Autonomous AI Pipelines',
     color: '#3385FF',
-    description: 'Human-in-the-Loop data annotation, prompt engineering and quality assurance for AI projects worldwide.',
+    description: 'Custom implementation of AgentPrinter and other orchestrated workflows to scale your digital product generation unconditionally.',
     link: '/services',
   },
   {
-    icon: '💻',
-    title: 'Technical Support',
+    icon: '🏗️',
+    title: 'Technical Infrastructure',
     color: '#00A3CC',
-    description: 'HP printer and pc support, HP Instant Ink consultations, Microsoft 365, hardware diagnostics and repair from trusted partners.',
+    description: 'Complete stack setups including Next.js web apps, automation webhooks, and private API worker integrations.',
     link: '/services',
   },
 ];
 
 const reasons = [
   {
+    icon: '⚙️',
+    title: 'Autonomous Systems First',
+    description: "We don't just build websites; we build scalable digital architectures powered by AI and hands-free automation.",
+  },
+  {
     icon: '🎯',
-    title: 'Local Expertise, Global Standards',
-    description: "We understand Nigeria's tech landscape while delivering solutions that meet international quality benchmarks.",
+    title: 'Scalable Product Ecosystems',
+    description: "We help you transition from selling time to scaling digital assets through calculated funnel engineering.",
   },
   {
-    icon: '⚡',
-    title: 'Fast & Reliable',
-    description: "Whether it's a NIN registration, website development or a full SEO audit, we deliver on time with consistent quality.",
-  },
-  {
-    icon: '🤝',
-    title: 'Community First',
-    description: 'Built on 7+ years of trust. Every client is a neighbour, every project is personal.',
+    icon: '🌍',
+    title: 'Local Roots, Global Output',
+    description: 'Backed by 7+ years of technical experience, our infrastructure delivers elite results capable of competing on the global stage.',
   },
 ];
 
@@ -81,7 +81,7 @@ export default function Home() {
           className="text-center mb-12"
           style={{ color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto 3rem' }}
         >
-          From essential community tech services to cutting-edge AI solutions — we cover every layer of the digital stack.
+          We engineer automated digital product ecosystems, high-conversion funnels, and generative-readiness for search.
         </p>
 
         <div
@@ -192,16 +192,16 @@ export default function Home() {
           <h2
             className="text-3xl sm:text-4xl font-bold mb-4 gradient-text"
           >
-            Ready to Bridge the Gap?
+            Ready to Dominate Search & AI?
           </h2>
           <p
             style={{ color: 'var(--text-secondary)', maxWidth: 520, margin: '0 auto 2rem', lineHeight: 1.7 }}
           >
-            Whether you need local tech support or global digital solutions, we're here to help you grow.
+            Get a free visibility snapshot to see what is blocking your rankings, AI citations, and conversions right now.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
-              href="/contact"
+              href="/seo-snapshot"
               style={{
                 display: 'inline-block',
                 padding: '0.9rem 2.5rem',
@@ -224,7 +224,7 @@ export default function Home() {
                 (e.target as HTMLElement).style.boxShadow = 'none';
               }}
             >
-              Get in Touch
+              Get Free SEO Snapshot
             </a>
             <a
               href="/services"
@@ -251,7 +251,7 @@ export default function Home() {
                 (e.target as HTMLElement).style.color = 'var(--text-primary)';
               }}
             >
-              View Services →
+              View Full Architecture →
             </a>
           </div>
         </div>
