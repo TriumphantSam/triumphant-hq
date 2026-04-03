@@ -139,25 +139,22 @@ export default function SeoSnapshotPage() {
             <div className="p-8 sm:p-12 overflow-y-auto">
               <form onSubmit={handleSubmit} className="flex flex-col gap-10">
                 <div className="flex flex-col gap-3">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Website URL *</label>
+                  <label className="text-xs font-bold text-[#60a5fa] uppercase tracking-widest pl-2">Website URL *</label>
                   <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                      <span className="text-gray-500 text-lg">https://</span>
-                    </div>
                     <input
                       type="text"
                       required
                       value={form.websiteUrl}
                       onChange={e => setForm(f => ({ ...f, websiteUrl: e.target.value.replace(/^https?:\/\//, '') }))}
-                      className="w-full min-h-[4rem] bg-white/5 border border-white/10 text-white text-lg rounded-2xl pl-24 pr-6 focus:ring-2 focus:ring-[#3b82f6]/50 focus:border-[#3b82f6] outline-none transition-all placeholder:text-gray-600 block"
-                      placeholder="yourdomain.com"
+                      className="w-full min-h-[4rem] bg-white/5 border border-white/10 text-white text-lg rounded-2xl px-6 focus:ring-2 focus:ring-[#3b82f6]/50 focus:border-[#3b82f6] outline-none transition-all placeholder:text-gray-600 block"
+                      placeholder="https://yourdomain.com"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                   <div className="flex flex-col gap-3">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Full Name *</label>
+                    <label className="text-xs font-bold text-[#60a5fa] uppercase tracking-widest pl-2">Full Name *</label>
                     <input
                       type="text"
                       required
@@ -168,7 +165,7 @@ export default function SeoSnapshotPage() {
                     />
                   </div>
                   <div className="flex flex-col gap-3">
-                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Work Email *</label>
+                    <label className="text-xs font-bold text-[#60a5fa] uppercase tracking-widest pl-2">Work Email *</label>
                     <input
                       type="email"
                       required
@@ -181,7 +178,7 @@ export default function SeoSnapshotPage() {
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <label className="text-xs font-bold text-gray-400 uppercase tracking-widest pl-2">Business Type</label>
+                  <label className="text-xs font-bold text-[#60a5fa] uppercase tracking-widest pl-2">Business Type</label>
                   <div className="relative">
                     <select
                       value={form.businessType}
@@ -212,22 +209,19 @@ export default function SeoSnapshotPage() {
                   <button
                     type="submit"
                     disabled={step === 'loading'}
-                    className="w-full min-h-[5rem] rounded-2xl bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] text-white font-bold tracking-[0.15em] uppercase text-lg sm:text-xl hover:opacity-90 transition-transform hover:scale-[1.02] focus:ring-4 focus:ring-[#3b82f6]/50 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden flex items-center justify-center gap-4 shadow-lg shadow-blue-500/20"
+                    className="w-full min-h-[5rem] rounded-2xl bg-[#4A55A2] text-white font-bold tracking-[0.15em] uppercase text-lg sm:text-xl hover:opacity-90 transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-4"
                   >
-                    <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
-                    <span className="relative flex items-center justify-center gap-3 w-full">
-                      {step === 'loading' ? (
-                        <>
-                          <svg className="animate-spin h-6 w-6 text-white shrink-0" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Scanning Architecture...
-                        </>
-                      ) : (
-                        <>Reveal My Snapshot <span className="text-2xl group-hover:translate-x-2 transition-transform shrink-0">→</span></>
-                      )}
-                    </span>
+                    {step === 'loading' ? (
+                      <>
+                        <svg className="animate-spin h-6 w-6 text-white shrink-0" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Scanning Architecture...
+                      </>
+                    ) : (
+                      <>Reveal My Snapshot →</>
+                    )}
                   </button>
 
                   <div className="text-center w-full">
