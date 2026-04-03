@@ -12,10 +12,11 @@ interface SeoResult {
   opportunities: string[];
   leadId: string;
   rootUrl?: string;
-  cta?: { headline: string; description: string; primaryLabel: string; secondaryLabel: string };
+  cta?: { headline: string; description: string; primaryLabel: string; primaryUrl?: string; secondaryLabel: string; secondaryUrl?: string };
+  bookingLinks?: { triage?: string; strategy?: string; implementation?: string };
 }
 
-const BOOKING_URL = process.env.NEXT_PUBLIC_SEO_BOOKING_URL || '/contact';
+const DEFAULT_BOOKING_URL = process.env.NEXT_PUBLIC_SEO_BOOKING_URL || 'https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call';
 
 export default function SeoResultsPage() {
   const router = useRouter();
@@ -47,8 +48,9 @@ export default function SeoResultsPage() {
   };
 
   const handleBookCall = async () => {
+    const bookingUrl = result?.cta?.primaryUrl || result?.bookingLinks?.strategy || DEFAULT_BOOKING_URL;
     if (!result?.leadId) {
-      window.location.href = BOOKING_URL;
+      window.location.href = bookingUrl;
       return;
     }
     setBooking(true);
@@ -59,7 +61,7 @@ export default function SeoResultsPage() {
         body: JSON.stringify({ leadId: result.leadId }),
       });
     } finally {
-      window.location.href = BOOKING_URL;
+      window.location.href = bookingUrl;
     }
   };
 

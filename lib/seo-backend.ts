@@ -22,7 +22,14 @@ export type SeoQuickAuditResponse = {
     headline: string;
     description: string;
     primaryLabel: string;
+    primaryUrl?: string;
     secondaryLabel: string;
+    secondaryUrl?: string;
+  };
+  bookingLinks?: {
+    triage?: string;
+    strategy?: string;
+    implementation?: string;
   };
   error?: string;
 };
@@ -63,5 +70,6 @@ export function normalizeQuickAuditResponse(data: SeoQuickAuditResponse): SeoQui
     visibleIssues: Array.isArray(data.visibleIssues) ? data.visibleIssues.slice(0, 3) : [],
     opportunities: Array.isArray(data.opportunities) ? data.opportunities.slice(0, 3) : [],
     cta: data.cta,
+    bookingLinks: data.bookingLinks,
   };
 }

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-const BOOKING_URL = process.env.NEXT_PUBLIC_SEO_BOOKING_URL || '/contact';
+const BOOKING_URL = process.env.NEXT_PUBLIC_SEO_BOOKING_URL || 'https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call';
 
 export default function SeoSnapshotThankYouPage() {
   return (
