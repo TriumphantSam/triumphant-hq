@@ -49,7 +49,7 @@
     },
     {
       "question": "What makes it different?",
-      "answer": "Unlike generic guides, this product focuses on practical implementation in ai skills courses, with concrete assets and a faster path from idea to execution."
+      "answer": "Public comps in AI skills courses suggest many offers are broad or too generic. The strongest gap is practical implementation tied to real outcomes"
     }
   ],
   "primaryAction": "Buy the bundle",
@@ -57,9 +57,9 @@
   "status": "published",
   "generationProfile": "pro",
   "niche": "AI skills courses",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/stop-prompting-start-architecting-the-2026-guide-t_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/stop-prompting-start-architecting-the-2026-guide-t.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1yIG52jGrwYns3ap1G5vnASl1Puc2Uw0C",
   "seo": {
     "primaryKeyword": "AI Workflow Automation",
     "secondaryKeywords": [
