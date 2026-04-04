@@ -75,14 +75,25 @@ function getPublishedLabel(product: ForgeProduct): string | null {
 function getQueueStatus(p: ForgeProduct): QueueStatus {
   const block = pub(p);
   const qs = block.queueStatus;
-  if (qs && ["draft","ready_for_review","needs_revision","approved_for_publish","published","distribution_pending","distribution_complete","archived"].includes(qs)) {
-    return qs as QueueStatus;
-  }
-  // Derive from existing fields
+
+  // Live state should override stale queue metadata coming from older payloads.
   if (p.status === "published") {
     const distDone = block.distributionStatus === "sent" || block.distributionStatus === "done";
     return distDone ? "distribution_complete" : "distribution_pending";
   }
+
+  if (block.reviewStatus === "revision_requested") {
+    return "needs_revision";
+  }
+
+  if (block.reviewStatus === "approved") {
+    return "approved_for_publish";
+  }
+
+  if (qs && ["draft","ready_for_review","needs_revision","approved_for_publish","published","distribution_pending","distribution_complete","archived"].includes(qs)) {
+    return qs as QueueStatus;
+  }
+
   const flags = block.qualityFlags ?? [];
   if (flags.length > 0) return "needs_revision";
   return "draft";
