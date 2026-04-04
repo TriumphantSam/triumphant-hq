@@ -20,6 +20,7 @@ export type ForgePublishing = {
   approvalNotes?: string;
   revisionNotes?: string;
   launchStatus?: string;       // not_started | website_live | social_pending | launch_in_progress | launched
+  publishedAt?: string;
   lastDistributionAttemptAt?: string;
   lastWebsiteSyncAt?: string;
 };
@@ -401,6 +402,7 @@ function mergeAirtableFieldsIntoProduct(product: ForgeProduct, fields: Record<st
     approvalNotes: firstString(fields["Approval Notes"]) || product.publishing?.approvalNotes,
     revisionNotes: firstString(fields["Revision Notes"]) || product.publishing?.revisionNotes,
     launchStatus: firstString(fields["Launch Status"]) || product.publishing?.launchStatus,
+    publishedAt: firstString(fields["Published At"]) || product.publishing?.publishedAt,
     lastDistributionAttemptAt: firstString(fields["Last Distribution Attempt At"]) || product.publishing?.lastDistributionAttemptAt,
     lastWebsiteSyncAt: firstString(fields["Last Website Sync At"]) || product.publishing?.lastWebsiteSyncAt,
   } as ForgePublishing;
@@ -454,6 +456,7 @@ function fallbackProductFromAirtableFields(fields: Record<string, unknown>, reco
       approvalNotes: firstString(fields["Approval Notes"]),
       revisionNotes: firstString(fields["Revision Notes"]),
       launchStatus: firstString(fields["Launch Status"]) || "not_started",
+      publishedAt: firstString(fields["Published At"]),
     },
   });
 }
@@ -536,8 +539,7 @@ export async function getForgeProductSlugs(): Promise<string[]> {
 export async function getForgeBuilderProducts(): Promise<ForgeProduct[]> {
   const generated = loadAllGeneratedForgeProducts();
   const airtable = await fetchAirtableForgeProducts({ publishedOnly: false });
-  const merged = mergeForgeProducts(seedForgeProducts, generated);
-  return mergeForgeProducts(merged, airtable).map(normalizeForgeProduct);
+  return mergeForgeProducts(generated, airtable).map(normalizeForgeProduct);
 }
 
 // ─── Funnel Loaders ───────────────────────────────────────────────

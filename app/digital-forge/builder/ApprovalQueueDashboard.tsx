@@ -18,7 +18,7 @@ type QueueStatus =
   | "distribution_complete"
   | "archived";
 
-type View = "products" | "funnels" | "launch_ops" | "blocked";
+type View = "products" | "funnels" | "launch_ops" | "blocked" | "live";
 type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publish" | "push_distribution";
 
 // ─── Constants ────────────────────────────────────────────────────
@@ -43,6 +43,33 @@ function has(val: unknown): boolean {
   if (typeof val === "string") return val.trim().length > 0;
   if (Array.isArray(val)) return val.length > 0;
   return Boolean(val);
+}
+
+function formatTimestamp(value?: string): string {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("en-NG", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function getPublishedTimestamp(product: ForgeProduct): number {
+  const block = pub(product);
+  const raw = block.publishedAt || block.lastWebsiteSyncAt || block.reviewedAt;
+  if (!raw) return 0;
+  const parsed = new Date(raw).getTime();
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+function getPublishedLabel(product: ForgeProduct): string | null {
+  const block = pub(product);
+  const raw = block.publishedAt || block.lastWebsiteSyncAt || block.reviewedAt;
+  return raw ? formatTimestamp(raw) : null;
 }
 
 function getQueueStatus(p: ForgeProduct): QueueStatus {
@@ -166,6 +193,7 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
   const score = getPageScore(product);
   const qs = getQueueStatus(product);
   const laneMeta = QUEUE_LANES.find((l) => l.status === qs);
+  const publishedAt = getPublishedLabel(product);
 
   const distChannels = [
     { name: "Telegram",  ok: false },
@@ -273,7 +301,8 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
             {[
               { k: "Review status",  v: block.reviewStatus ?? "not_reviewed" },
               { k: "Reviewer",       v: block.reviewer ?? "—" },
-              { k: "Reviewed at",    v: block.reviewedAt ?? "—" },
+              { k: "Reviewed at",    v: formatTimestamp(block.reviewedAt) },
+                { k: "Published at",   v: publishedAt ?? "—" },
             ].map(({ k, v }) => (
               <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "0.4rem 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
                 <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.73rem" }}>{k}</span>
@@ -318,8 +347,15 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
           <StatusRow ok={product.status === "published"} label={`Website status: ${product.status ?? "draft"}`} />
           <StatusRow ok={block.websiteSyncStatus === "synced" || block.websiteSyncStatus === "success"} label={`Airtable sync: ${block.websiteSyncStatus ?? "pending"}`} />
           <StatusRow ok={product.status === "published" && getPageScore(product) >= 5} label="Live eligible" />
+          {publishedAt && (
+            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.72rem", marginTop: "0.5rem" }}>
+              Published: {publishedAt}
+            </p>
+          )}
           {block.lastWebsiteSyncAt && (
-            <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.7rem", marginTop: "0.5rem" }}>Last sync: {block.lastWebsiteSyncAt}</p>
+            <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.7rem", marginTop: publishedAt ? "0.2rem" : "0.5rem" }}>
+              Last sync: {formatTimestamp(block.lastWebsiteSyncAt)}
+            </p>
           )}
           {product.status === "published" && (
             <Link href={`/digital-forge/products/${product.slug}`} target="_blank"
@@ -386,7 +422,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
   const priority = getPriority(product);
   const flags = block.qualityFlags ?? [];
   const r = product as unknown as Record<string, unknown>;
-
+  const publishedAt = getPublishedLabel(product);
   const priorityColor = priority === "urgent" ? "#ef4444" : priority === "high" ? "#00CCFF" : "rgba(255,255,255,0.28)";
 
   return (
@@ -398,13 +434,16 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
       {/* Card Header */}
       <div style={{ padding: "1rem 1.1rem 0.75rem" }}>
         <div style={{ display: "flex", gap: "0.45rem", flexWrap: "wrap", marginBottom: "0.55rem", alignItems: "center" }}>
-          <Badge label={laneMeta.label} color={laneMeta.color} bg={laneMeta.bg} />
-          <Badge label={product.category} color="rgba(255,255,255,0.4)" bg="rgba(255,255,255,0.04)" />
-          {product.generationProfile && (
-            <Badge label={product.generationProfile} color="#a78bfa" bg="rgba(124,58,237,0.08)" />
-          )}
-          <span style={{
-            background: score >= 5 ? "rgba(16,185,129,0.1)" : "rgba(249,115,22,0.1)",
+            <Badge label={laneMeta.label} color={laneMeta.color} bg={laneMeta.bg} />
+            <Badge label={product.category} color="rgba(255,255,255,0.4)" bg="rgba(255,255,255,0.04)" />
+            {product.generationProfile && (
+              <Badge label={product.generationProfile} color="#a78bfa" bg="rgba(124,58,237,0.08)" />
+            )}
+            {publishedAt && (
+              <Badge label={`Published ${publishedAt}`} color="#10b981" bg="rgba(16,185,129,0.08)" />
+            )}
+            <span style={{
+              background: score >= 5 ? "rgba(16,185,129,0.1)" : "rgba(249,115,22,0.1)",
             border: `1px solid ${score >= 5 ? "rgba(16,185,129,0.25)" : "rgba(249,115,22,0.25)"}`,
             borderRadius: "6px", padding: "0.15rem 0.5rem",
             fontSize: "0.62rem", fontWeight: 700,
@@ -422,10 +461,15 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
         <h3 style={{ color: "#fff", fontWeight: 700, fontSize: "0.92rem", lineHeight: 1.3, marginBottom: "0.25rem" }}>
           {product.title}
         </h3>
-        <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.7rem", fontFamily: "monospace" }}>
-          /{product.slug}
-        </p>
-      </div>
+          <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.7rem", fontFamily: "monospace" }}>
+            /{product.slug}
+          </p>
+          {publishedAt && (
+            <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.68rem", marginTop: "0.3rem" }}>
+              Published: {formatTimestamp(publishedAt)}
+            </p>
+          )}
+        </div>
 
       {/* Quality flag strip */}
       {flags.length > 0 && (
@@ -558,8 +602,24 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
       const flags = (pub(p).qualityFlags ?? []).length;
 
       if (activeView === "launch_ops") return matchSearch && matchCat && ["approved_for_publish", "published", "distribution_pending"].includes(qs);
+      if (activeView === "live") return matchSearch && matchCat && p.status === "published";
       if (activeView === "blocked") return matchSearch && matchCat && (flags > 0 || qs === "needs_revision");
       return matchSearch && matchCat;
+    }).sort((a, b) => {
+      const aStatus = getQueueStatus(a);
+      const bStatus = getQueueStatus(b);
+      const aPublished = getPublishedTimestamp(a);
+      const bPublished = getPublishedTimestamp(b);
+
+      if ((activeView === "launch_ops" || activeView === "live") && bPublished !== aPublished) {
+        return bPublished - aPublished;
+      }
+
+      if (aStatus === "published" && bStatus === "published" && bPublished !== aPublished) {
+        return bPublished - aPublished;
+      }
+
+      return a.title.localeCompare(b.title);
     });
   }, [productState, search, filterCategory, activeView]);
 
@@ -610,6 +670,7 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
   const views: { id: View; label: string }[] = [
     { id: "products",    label: "Products" },
     { id: "funnels",     label: "Funnels" },
+    { id: "live",        label: "Live Since" },
     { id: "launch_ops",  label: "Launch Ops" },
     { id: "blocked",     label: "Blocked" },
   ];
@@ -723,6 +784,7 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
             <p style={{ color: "rgba(255,255,255,0.22)", fontSize: "0.72rem", marginBottom: "1.25rem", fontStyle: "italic" }}>
               {activeView === "products"     && `Showing all ${filtered.length} products grouped by queue stage.`}
               {activeView === "funnels"      && `Showing all built funnels in the payload engine.`}
+              {activeView === "live"         && `Showing ${filtered.length} currently published products, newest live items first.`}
               {activeView === "launch_ops"   && `Showing ${filtered.length} products in approved/published/distribution state.`}
               {activeView === "blocked"      && `Showing ${filtered.length} products blocked by flags or revision requests.`}
             </p>

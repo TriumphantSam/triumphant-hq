@@ -31,7 +31,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - `Navigation`: Responsive header with mobile hamburger menu.
   - `Footer`: 4-column layout with quick links.
   - `Contact Form`: Wired to EmailJS (client-side) - no server config needed.
-- **Blog**: Tech Diary powered by Markdown files in `content/blog`.
+- **Blog**: Public blog powered by Markdown files in `content/blog`.
 
 ## 📦 Deployment
 
@@ -48,31 +48,17 @@ Vercel will automatically detect `Next.js` and configure the build settings.
 
 If you see `app/api/contact/route.ts` or `.env.local` (with SMTP credentials) in your project, you can safely delete them as the contact form now uses EmailJS directly from the browser.
 
-## 🔒 Tech Diary “Coming soon” (preview mode)
+## 📰 Blog
 
-By **default**, the Tech Diary shows **“Coming soon”** to everyone on production (so the live site stays gated until you’re ready).
+The public blog now lives at `/blog`.
 
-1. **Preview access (you):** Add to your environment (e.g. `.env.local` for local, and in Vercel → Project → Settings → Environment Variables for production):
-   ```bash
-   TECH_DIARY_PREVIEW_SECRET=your-secret-string
-   ```
-   Then open once in your browser:
-   ```
-   https://yoursite.com/api/tech-diary-preview?key=your-secret-string
-   ```
-   You’ll get full access; the cookie lasts 30 days. Use “Exit preview” on the page to see the public view again.
-
-2. **Everyone else** sees “Coming soon” on `/tech-diary` and cannot open individual posts.
-
-3. **When you’re ready to go live**, set:
-   ```bash
-   TECH_DIARY_PUBLIC=true
-   ```
-   Then the Tech Diary is visible to everyone. You can remove `TECH_DIARY_PREVIEW_SECRET` if you like.
+- Blog posts are stored as Markdown in `content/blog/`.
+- Older `/tech-diary` URLs redirect to `/blog`.
+- Preview helpers still exist, but the blog is now intended to be public and indexable.
 
 ## 📝 Blog Posts
 
-To add a new blog post:
+To add a new blog post manually:
 1. Create a `.md` file in `content/blog/`.
 2. Add frontmatter at the top:
    ```markdown

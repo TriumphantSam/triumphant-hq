@@ -6,10 +6,10 @@ export function GET(request: NextRequest) {
     const key = request.nextUrl.searchParams.get('key');
 
     if (!secret || key !== secret) {
-        return NextResponse.redirect(new URL('/tech-diary', request.url));
+        return NextResponse.redirect(new URL('/blog', request.url));
     }
 
-    const res = NextResponse.redirect(new URL('/tech-diary', request.url));
+    const res = NextResponse.redirect(new URL('/blog', request.url));
     res.cookies.set(COOKIE_NAME, secret, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',

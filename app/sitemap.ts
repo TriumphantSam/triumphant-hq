@@ -1,10 +1,12 @@
 import { MetadataRoute } from 'next';
 import { getForgeProducts } from '@/lib/digital-forge';
+import { getAllPosts } from '@/lib/blog';
 
 const SITE_URL = 'https://triumphantech.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const forgeProducts = await getForgeProducts();
+  const blogPosts = getAllPosts();
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
@@ -49,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.75,
     },
     {
-      url: `${SITE_URL}/tech-diary`,
+      url: `${SITE_URL}/blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -75,5 +77,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: product.featured ? 0.9 : 0.8,
   }));
 
-  return [...staticRoutes, ...productRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${SITE_URL}/blog/${post.slug}`,
+    lastModified: new Date(post.date || Date.now()),
+    changeFrequency: 'monthly',
+    priority: 0.75,
+  }));
+
+  return [...staticRoutes, ...productRoutes, ...blogRoutes];
 }

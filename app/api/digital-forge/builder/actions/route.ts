@@ -22,6 +22,7 @@ type ForgePublishing = {
   approvalNotes?: string;
   revisionNotes?: string;
   launchStatus?: string;
+  publishedAt?: string;
   lastDistributionAttemptAt?: string;
   lastWebsiteSyncAt?: string;
 };
@@ -105,12 +106,16 @@ function applyProductAction(product: ForgeProduct, action: BuilderAction, notes?
   }
 
   if (action === "push_to_publish") {
+    const firstPublish = product.status !== "published" && !publishing.publishedAt;
     product.status = "published";
     publishing.queueStatus = "published";
     publishing.websiteSyncStatus = publishing.websiteSyncStatus && publishing.websiteSyncStatus !== "failed"
       ? publishing.websiteSyncStatus
       : "pending";
     publishing.launchStatus = "website_live";
+    if (firstPublish) {
+      publishing.publishedAt = stamp;
+    }
     publishing.lastWebsiteSyncAt = stamp;
     if (!publishing.reviewStatus || publishing.reviewStatus === "not_reviewed") {
       publishing.reviewStatus = "approved";
@@ -187,6 +192,7 @@ async function patchAirtableProduct(recordId: string, product: ForgeProduct): Pr
     "Approval Notes": publishing.approvalNotes ?? "",
     "Revision Notes": publishing.revisionNotes ?? "",
     "Launch Status": publishing.launchStatus ?? "not_started",
+    "Published At": publishing.publishedAt ?? "",
     "Last Distribution Attempt At": publishing.lastDistributionAttemptAt ?? "",
     "Last Website Sync At": publishing.lastWebsiteSyncAt ?? "",
     "Website Payload JSON": JSON.stringify(product),
