@@ -26,9 +26,9 @@ type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publi
 const QUEUE_LANES: { status: QueueStatus; label: string; color: string; bg: string; desc: string }[] = [
   { status: "ready_for_review",     label: "Needs Review",          color: "#f59e0b", bg: "rgba(245,158,11,0.08)",   desc: "Awaiting editorial approval" },
   { status: "needs_revision",       label: "Needs Revision",        color: "#f97316", bg: "rgba(249,115,22,0.08)",  desc: "Flagged — revisions requested" },
-  { status: "approved_for_publish", label: "Approved to Publish",   color: "#00CCFF", bg: "rgba(0,204,255,0.07)",   desc: "Cleared — ready to go live" },
-  { status: "published",            label: "Published",             color: "#10b981", bg: "rgba(16,185,129,0.07)", desc: "Live on the public store" },
-  { status: "distribution_pending", label: "Distribution Pending",  color: "#8b5cf6", bg: "rgba(139,92,246,0.07)", desc: "Published but channels not sent" },
+  { status: "approved_for_publish", label: "Ready to Publish",      color: "#00CCFF", bg: "rgba(0,204,255,0.07)",   desc: "Cleared — ready to go live" },
+  { status: "published",            label: "Live",                  color: "#10b981", bg: "rgba(16,185,129,0.07)", desc: "Live on the public store" },
+  { status: "distribution_pending", label: "Ready for Distribution",color: "#8b5cf6", bg: "rgba(139,92,246,0.07)", desc: "Published but channels not sent" },
   { status: "draft",                label: "Draft",                 color: "#64748b", bg: "rgba(100,116,139,0.06)", desc: "Generated — not yet in review" },
 ];
 
@@ -136,7 +136,7 @@ function getAvailableActions(product: ForgeProduct): Array<{ action: BuilderActi
   if (!isApproved) {
     actions.push({
       action: "approve_for_publish",
-      label: "Approve for Publish",
+      label: "Approve",
       color: "#10b981",
       bg: "rgba(16,185,129,0.1)",
       border: "rgba(16,185,129,0.3)",
@@ -146,7 +146,7 @@ function getAvailableActions(product: ForgeProduct): Array<{ action: BuilderActi
   if (!isPublished) {
     actions.push({
       action: "push_to_publish",
-      label: "Push to Publish",
+      label: "Publish Live",
       color: "#00CCFF",
       bg: "rgba(0,204,255,0.08)",
       border: "rgba(0,204,255,0.3)",
@@ -156,7 +156,7 @@ function getAvailableActions(product: ForgeProduct): Array<{ action: BuilderActi
   if (isPublished) {
     actions.push({
       action: "push_distribution",
-      label: "Push Distribution",
+      label: "Start Distribution",
       color: "#8b5cf6",
       bg: "rgba(139,92,246,0.1)",
       border: "rgba(139,92,246,0.3)",
@@ -576,7 +576,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
               onClick={() => onQuickAction(a.action, product)}
               disabled={actionPending !== null}
               style={{ padding: "0.38rem 0.7rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "6px", color: actionPending === a.action ? "#00CCFF" : "rgba(255,255,255,0.55)", fontSize: "0.65rem", fontWeight: 600, cursor: actionPending ? "wait" : "pointer" }}>
-              {actionPending === a.action ? "Working…" : a.label.replace(" for Publish", "")}
+              {actionPending === a.action ? "Working…" : a.label}
             </button>
           ))}
         </div>
