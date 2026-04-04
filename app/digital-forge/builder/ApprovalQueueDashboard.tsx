@@ -126,6 +126,54 @@ function getPriority(p: ForgeProduct): "high" | "medium" | "urgent" {
   return "medium";
 }
 
+function getAvailableActions(product: ForgeProduct): Array<{ action: BuilderAction; label: string; color: string; bg: string; border: string }> {
+  const block = pub(product);
+  const isPublished = product.status === "published";
+  const isApproved = block.reviewStatus === "approved" || isPublished;
+
+  const actions: Array<{ action: BuilderAction; label: string; color: string; bg: string; border: string }> = [];
+
+  if (!isApproved) {
+    actions.push({
+      action: "approve_for_publish",
+      label: "Approve for Publish",
+      color: "#10b981",
+      bg: "rgba(16,185,129,0.1)",
+      border: "rgba(16,185,129,0.3)",
+    });
+  }
+
+  if (!isPublished) {
+    actions.push({
+      action: "push_to_publish",
+      label: "Push to Publish",
+      color: "#00CCFF",
+      bg: "rgba(0,204,255,0.08)",
+      border: "rgba(0,204,255,0.3)",
+    });
+  }
+
+  if (isPublished) {
+    actions.push({
+      action: "push_distribution",
+      label: "Push Distribution",
+      color: "#8b5cf6",
+      bg: "rgba(139,92,246,0.1)",
+      border: "rgba(139,92,246,0.3)",
+    });
+  }
+
+  actions.push({
+    action: "request_revision",
+    label: "Request Revision",
+    color: "#f97316",
+    bg: "rgba(249,115,22,0.1)",
+    border: "rgba(249,115,22,0.3)",
+  });
+
+  return actions;
+}
+
 function applyUpdatedProduct(products: ForgeProduct[], updated: ForgeProduct): ForgeProduct[] {
   return products.map((item) => (item.slug === updated.slug ? updated : item));
 }
@@ -205,6 +253,7 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
   const qs = getQueueStatus(product);
   const laneMeta = QUEUE_LANES.find((l) => l.status === qs);
   const publishedAt = getPublishedLabel(product);
+  const availableActions = getAvailableActions(product);
 
   const distChannels = [
     { name: "Telegram",  ok: false },
@@ -334,12 +383,7 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
             </div>
           )}
           <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginTop: "1rem" }}>
-            {[
-              { action: "approve_for_publish" as BuilderAction, label: "Approve for Publish", color: "#10b981", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.3)" },
-              { action: "request_revision" as BuilderAction, label: "Request Revision", color: "#f97316", bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.3)" },
-              { action: "push_to_publish" as BuilderAction, label: "Push to Publish", color: "#00CCFF", bg: "rgba(0,204,255,0.08)", border: "rgba(0,204,255,0.3)" },
-              { action: "push_distribution" as BuilderAction, label: "Push Distribution", color: "#8b5cf6", bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.3)" },
-            ].map((btn) => (
+            {availableActions.map((btn) => (
               <button
                 key={btn.label}
                 onClick={() => onAction(btn.action, product)}
@@ -434,6 +478,9 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
   const flags = block.qualityFlags ?? [];
   const r = product as unknown as Record<string, unknown>;
   const publishedAt = getPublishedLabel(product);
+  const quickActions = getAvailableActions(product).filter((item) =>
+    item.action === "approve_for_publish" || item.action === "request_revision"
+  );
   const priorityColor = priority === "urgent" ? "#ef4444" : priority === "high" ? "#00CCFF" : "rgba(255,255,255,0.28)";
 
   return (
@@ -523,16 +570,13 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
           )}
         </div>
         <div style={{ display: "flex", gap: "0.4rem" }}>
-          {[
-            { label: "Approve", action: "approve_for_publish" as BuilderAction },
-            { label: "Revision", action: "request_revision" as BuilderAction },
-          ].map((a) => (
+          {quickActions.map((a) => (
             <button
-              key={a.label}
+              key={a.action}
               onClick={() => onQuickAction(a.action, product)}
               disabled={actionPending !== null}
               style={{ padding: "0.38rem 0.7rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "6px", color: actionPending === a.action ? "#00CCFF" : "rgba(255,255,255,0.55)", fontSize: "0.65rem", fontWeight: 600, cursor: actionPending ? "wait" : "pointer" }}>
-              {actionPending === a.action ? "Working…" : a.label}
+              {actionPending === a.action ? "Working…" : a.label.replace(" for Publish", "")}
             </button>
           ))}
         </div>
