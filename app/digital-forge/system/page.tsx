@@ -1,25 +1,95 @@
 import Link from "next/link";
-import { digitalForgeCoreClarification, digitalForgeOfferLadder, flagshipSystem, premiumOffersNow } from "@/lib/digital-forge-offers";
 
 export const metadata = {
-  title: "Digital Forge System — Build and Sell an AI Product | Triumphant HQ",
+  title: "Digital Forge Side Hustle Starter System — Build and Sell Your First AI Product | Digital Forge",
   description:
-    "Explore the Digital Forge Side Hustle Starter System: the practical guide, templates, prompts, launch assets, and workflows for building and selling an AI-powered digital product.",
+    "Get the Digital Forge Side Hustle Starter System: the complete practical toolkit with guide, prompts, templates, launch assets, and operating documents to build and sell your first AI-powered digital product.",
 };
 
-export default function DigitalForgeSystemPage() {
-  const surroundingOffers = digitalForgeOfferLadder.filter((item) => item.slug !== "system");
+const DELIVERABLES = [
+  "Core implementation guide — the complete method in one place",
+  "Starter prompt pack — AI prompts tuned for product creation and packaging",
+  "Offer and packaging templates — position and present your product clearly",
+  "Launch checklist — know exactly what to do and in what order",
+  "Sales copy framework — write copy that converts, even if you hate writing",
+  "Funnel planning worksheet — map out a simple path from attention to sale",
+  "Distribution plan — get your product in front of buyers quickly",
+  "Optional audio companion and mini onboarding layer",
+];
 
+const OUTCOMES = [
+  "One clear offer with a promise people can instantly understand",
+  "One digital product bundled and packaged to sell",
+  "One product page or sales path with stronger messaging",
+  "One simple promotion and launch workflow you can use again",
+];
+
+const FOR_WHO = [
+  { title: "Nigerian Professionals", body: "Ready for a side hustle that actually fits local constraints — no fantasy income claims, just a real operating method." },
+  { title: "Creators With Expertise", body: "You know your subject but cannot figure out how to package it into something people will pay for. This fixes that." },
+  { title: "AI-Curious Operators", body: "You follow the AI space closely, but have not turned that curiosity into a product that earns. This is the activation layer." },
+  { title: "Stalled Founders", body: "You started once and got stuck. The Starter System gives you the structure to restart and finish without the confusion." },
+];
+
+const MODULES = [
+  {
+    num: "01",
+    title: "Choose The Angle",
+    description:
+      "Pick one audience, one problem, one promise, and one realistic first offer instead of trying to build something for everyone and ending up with something for no one.",
+  },
+  {
+    num: "02",
+    title: "Build The Product",
+    description:
+      "Create your guide, prompt pack, checklist, template, and supporting assets so the bundle feels implementation-ready — not just a PDF people download and forget.",
+  },
+  {
+    num: "03",
+    title: "Package The Offer",
+    description:
+      "Strengthen your naming, messaging, headline, and promise clarity. Add the bonus logic that tips buyers from maybe to yes. Make them feel they would be leaving money on the table by not buying.",
+  },
+  {
+    num: "04",
+    title: "Launch Simply",
+    description:
+      "Use blog content, the free training, direct-response posts, and message-based selling to move from attention to your first sales. No paid ads required to start.",
+  },
+];
+
+const FAQ = [
+  {
+    q: "Is this just an ebook?",
+    a: "No. The Starter System is a practical toolkit: guide, prompts, templates, checklists, launch assets, and workflow documents. It is built to help you act immediately, not just feel informed.",
+  },
+  {
+    q: "What if I have no product idea yet?",
+    a: "The first section of the system is specifically about choosing a direction — one audience, one problem, one promise. You will leave that section with clarity, not confusion.",
+  },
+  {
+    q: "Is this right for me if I already have an idea?",
+    a: "Yes. If you have an idea but have not packaged, priced, or launched it yet, this system gives you everything you need to go from concept to sale.",
+  },
+  {
+    q: "How is this different from the Course?",
+    a: "The Starter System is the business toolkit — everything you need to act. The Course is the guided teaching layer that walks you through the full build-package-launch journey in more depth. Many people get the system first, then the course.",
+  },
+];
+
+export default function DigitalForgeSystemPage() {
   return (
     <div className="min-h-screen pb-24">
-      <section className="relative overflow-hidden pt-32 pb-20">
+
+      {/* ── HERO ── */}
+      <section className="relative overflow-hidden pt-32 pb-24">
         <div
           aria-hidden
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 20% 20%, rgba(0,102,255,0.22), transparent 34%), radial-gradient(circle at 78% 18%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(4,9,24,0.92), rgba(5,5,16,1))",
+              "radial-gradient(circle at 18% 20%, rgba(0,102,255,0.24), transparent 34%), radial-gradient(circle at 80% 16%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(4,9,24,0.96), rgba(5,5,16,1))",
           }}
         />
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
@@ -29,12 +99,12 @@ export default function DigitalForgeSystemPage() {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.45rem",
-              color: "rgba(255,255,255,0.55)",
+              color: "rgba(255,255,255,0.5)",
               textDecoration: "none",
               fontSize: "0.84rem",
               fontWeight: 600,
               letterSpacing: "0.08em",
-              marginBottom: "1.4rem",
+              marginBottom: "1.6rem",
             }}
           >
             ← Back to Digital Forge
@@ -45,37 +115,21 @@ export default function DigitalForgeSystemPage() {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.55rem",
-              padding: "0.4rem 0.95rem",
+              padding: "0.42rem 1rem",
               borderRadius: 999,
-              border: "1px solid rgba(0,204,255,0.35)",
-              background: "rgba(0,204,255,0.08)",
+              border: "1px solid rgba(0,102,255,0.38)",
+              background: "rgba(0,102,255,0.1)",
               marginBottom: "1.5rem",
             }}
           >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "#00CCFF",
-                display: "inline-block",
-              }}
-            />
-            <span
-              style={{
-                color: "#00CCFF",
-                fontWeight: 700,
-                fontSize: "0.76rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.18em",
-              }}
-            >
-              {flagshipSystem.eyebrow}
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#0066FF", display: "inline-block" }} />
+            <span style={{ color: "#60A5FA", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+              Flagship System — Most Popular
             </span>
           </div>
 
           <div
-            className="grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)]"
+            className="grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)]"
             style={{ alignItems: "start" }}
           >
             <div>
@@ -87,153 +141,156 @@ export default function DigitalForgeSystemPage() {
                   letterSpacing: "-0.03em",
                   color: "#fff",
                   maxWidth: 860,
-                  marginBottom: "1.2rem",
+                  marginBottom: "1.3rem",
                 }}
               >
-                {flagshipSystem.name}
+                The complete toolkit to build, package, and sell your first AI-powered digital product
               </h1>
               <p
                 style={{
                   fontSize: "1.15rem",
-                  color: "rgba(255,255,255,0.72)",
-                  lineHeight: 1.85,
+                  color: "rgba(255,255,255,0.74)",
+                  lineHeight: 1.9,
                   maxWidth: 740,
-                  marginBottom: "1.5rem",
+                  marginBottom: "1rem",
                 }}
               >
-                {flagshipSystem.promise}
+                The Digital Forge Side Hustle Starter System is not just a PDF. It is the guide, the prompts, the templates, the launch assets, and the operating documents that turn scattered AI curiosity into one sellable product with a real path to income.
               </p>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.58)",
+                  color: "rgba(255,255,255,0.52)",
                   lineHeight: 1.85,
-                  maxWidth: 760,
-                  fontSize: "0.98rem",
-                  marginBottom: "2rem",
+                  maxWidth: 740,
+                  fontSize: "0.97rem",
+                  marginBottom: "2.2rem",
                 }}
               >
-                {flagshipSystem.summary}
+                Built for Nigerian professionals, African creators, and anyone who has been circling the idea of an AI-powered side hustle — and needs a system that actually moves them into action.
               </p>
 
-              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
                 <Link
                   href="/contact"
+                  id="system-buy-cta"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    padding: "1rem 1.8rem",
+                    padding: "1rem 2rem",
                     borderRadius: 10,
                     textDecoration: "none",
                     fontWeight: 800,
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
-                    fontSize: "0.84rem",
+                    fontSize: "0.86rem",
                     color: "#fff",
                     background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                    boxShadow: "0 0 32px rgba(0,102,255,0.35)",
+                    boxShadow: "0 0 36px rgba(0,102,255,0.42)",
                   }}
                 >
-                  Get The Starter System
+                  Get the Starter System — From ₦25,000
                 </Link>
                 <Link
                   href="/digital-forge/training"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    padding: "1rem 1.8rem",
+                    padding: "1rem 2rem",
                     borderRadius: 10,
                     textDecoration: "none",
                     fontWeight: 700,
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
-                    fontSize: "0.84rem",
-                    color: "rgba(255,255,255,0.84)",
+                    fontSize: "0.86rem",
+                    color: "rgba(255,255,255,0.82)",
                     border: "1px solid rgba(255,255,255,0.16)",
                   }}
                 >
-                  Watch The Free Training
+                  Watch the Free Training First
                 </Link>
               </div>
+
+              <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.83rem" }}>
+                Not sure yet? Start with the free training — then come back when you are ready.
+              </p>
             </div>
 
+            {/* Outcome summary */}
             <div
               style={{
-                background: "rgba(9,14,32,0.9)",
-                border: "1px solid rgba(0,102,255,0.25)",
+                background: "rgba(9,14,32,0.92)",
+                border: "1px solid rgba(0,102,255,0.26)",
                 borderRadius: 24,
-                padding: "1.5rem",
-                boxShadow: "0 20px 80px rgba(0,0,0,0.35)",
+                padding: "1.6rem",
+                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
               }}
             >
               <p
                 style={{
                   color: "#00CCFF",
-                  fontSize: "0.74rem",
+                  fontSize: "0.73rem",
                   textTransform: "uppercase",
                   letterSpacing: "0.16em",
                   fontWeight: 700,
-                  marginBottom: "0.7rem",
-                }}
-              >
-                Positioning Snapshot
-              </p>
-              <h2
-                style={{
-                  color: "#fff",
-                  fontWeight: 800,
-                  fontSize: "1.3rem",
-                  lineHeight: 1.2,
                   marginBottom: "0.8rem",
                 }}
               >
-                The core paid implementation layer
-              </h2>
-              <p
-                style={{
-                  color: "rgba(255,255,255,0.58)",
-                  lineHeight: 1.8,
-                  fontSize: "0.92rem",
-                  marginBottom: "1.4rem",
-                }}
-              >
-                Best positioned around <strong style={{ color: "#fff" }}>{flagshipSystem.price}</strong> with a strong bridge from free training and blog content into a practical, action-ready bundle.
+                What You Walk Away With
               </p>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                  gap: "0.9rem",
-                }}
-              >
-                {[
-                  { label: "Format", value: "Guide + assets + launch toolkit" },
-                  { label: "Buyer", value: "Operators, creators, professionals" },
-                  { label: "Promise", value: "Build one sellable product system" },
-                  { label: "Upgrade Path", value: "Course, SOPs, blueprint" },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 14,
-                      padding: "0.9rem",
-                    }}
-                  >
-                    <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
-                      {item.label}
-                    </p>
-                    <p style={{ color: "#fff", fontWeight: 700, lineHeight: 1.45, fontSize: "0.84rem" }}>{item.value}</p>
+              <div style={{ display: "grid", gap: "1rem" }}>
+                {OUTCOMES.map((item) => (
+                  <div key={item} style={{ display: "flex", gap: "0.85rem", alignItems: "flex-start" }}>
+                    <span
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: "50%",
+                        background: "rgba(0,102,255,0.2)",
+                        border: "1px solid rgba(0,102,255,0.4)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                        marginTop: 2,
+                      }}
+                    >
+                      <span style={{ color: "#60A5FA", fontSize: "0.72rem", fontWeight: 900 }}>✓</span>
+                    </span>
+                    <p style={{ color: "rgba(255,255,255,0.78)", lineHeight: 1.7, fontSize: "0.94rem" }}>{item}</p>
                   </div>
                 ))}
+              </div>
+              <div
+                style={{
+                  marginTop: "1.4rem",
+                  paddingTop: "1.2rem",
+                  borderTop: "1px solid rgba(255,255,255,0.07)",
+                }}
+              >
+                <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
+                  Price
+                </p>
+                <p style={{ color: "#fff", fontWeight: 800, fontSize: "1.4rem" }}>From ₦25,000</p>
+                <p style={{ color: "rgba(255,255,255,0.44)", fontSize: "0.84rem", marginTop: "0.3rem" }}>
+                  The most practical first investment in your digital product business.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section style={{ paddingBottom: "4rem" }}>
+      {/* ── WHO THIS IS FOR ── */}
+      <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+          <div style={{ marginBottom: "1.8rem" }}>
+            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              Who This Is For
+            </p>
+            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 600 }}>
+              Built for real people with real goals
+            </h2>
+          </div>
           <div
             style={{
               display: "grid",
@@ -241,23 +298,25 @@ export default function DigitalForgeSystemPage() {
               gap: "1rem",
             }}
           >
-            {flagshipSystem.outcomes.map((item) => (
+            {FOR_WHO.map((item) => (
               <div
-                key={item}
+                key={item.title}
                 style={{
                   background: "rgba(0,102,255,0.05)",
                   border: "1px solid rgba(0,102,255,0.18)",
-                  borderRadius: 18,
-                  padding: "1.2rem",
+                  borderRadius: 20,
+                  padding: "1.4rem",
                 }}
               >
-                <p style={{ color: "#fff", fontWeight: 700, lineHeight: 1.7 }}>{item}</p>
+                <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", marginBottom: "0.7rem" }}>{item.title}</h3>
+                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* ── WHAT YOU GET + MODULES ── */}
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
@@ -265,30 +324,30 @@ export default function DigitalForgeSystemPage() {
               style={{
                 background: "rgba(255,255,255,0.03)",
                 border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 22,
-                padding: "1.6rem",
+                borderRadius: 24,
+                padding: "1.8rem",
               }}
             >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.7rem" }}>
-                What You Get
+              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.8rem" }}>
+                Everything Included
               </p>
-              <h2 style={{ color: "#fff", fontSize: "1.8rem", fontWeight: 900, lineHeight: 1.15, marginBottom: "1rem" }}>
-                Assets serious buyers can actually use
+              <h2 style={{ color: "#fff", fontSize: "1.8rem", fontWeight: 900, lineHeight: 1.15, marginBottom: "1.2rem" }}>
+                A complete business toolkit, not loose files
               </h2>
-              <div style={{ display: "grid", gap: "0.8rem" }}>
-                {flagshipSystem.deliverables.map((item) => (
+              <div style={{ display: "grid", gap: "0.9rem" }}>
+                {DELIVERABLES.map((item) => (
                   <div
                     key={item}
                     style={{
                       display: "flex",
-                      gap: "0.8rem",
+                      gap: "0.9rem",
                       alignItems: "flex-start",
-                      paddingBottom: "0.8rem",
+                      paddingBottom: "0.9rem",
                       borderBottom: "1px solid rgba(255,255,255,0.06)",
                     }}
                   >
-                    <span style={{ color: "#00CCFF", fontWeight: 900 }}>•</span>
-                    <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.7 }}>{item}</p>
+                    <span style={{ color: "#00CCFF", fontWeight: 900, flexShrink: 0 }}>→</span>
+                    <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.7, fontSize: "0.93rem" }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -298,46 +357,47 @@ export default function DigitalForgeSystemPage() {
               style={{
                 background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
                 border: "1px solid rgba(0,102,255,0.2)",
-                borderRadius: 22,
-                padding: "1.6rem",
+                borderRadius: 24,
+                padding: "1.8rem",
               }}
             >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.7rem" }}>
-                What Happens Inside
+              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.8rem" }}>
+                How It Works
               </p>
-              <h2 style={{ color: "#fff", fontSize: "1.8rem", fontWeight: 900, lineHeight: 1.15, marginBottom: "1rem" }}>
-                A guided build path, not random files
+              <h2 style={{ color: "#fff", fontSize: "1.8rem", fontWeight: 900, lineHeight: 1.15, marginBottom: "1.2rem" }}>
+                A guided build path, not a pile of random files
               </h2>
-              <div style={{ display: "grid", gap: "1rem" }}>
-                {flagshipSystem.modules.map((item, index) => (
+              <div style={{ display: "grid", gap: "1.2rem" }}>
+                {MODULES.map((item) => (
                   <div
                     key={item.title}
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "44px minmax(0, 1fr)",
+                      gridTemplateColumns: "48px minmax(0, 1fr)",
                       gap: "1rem",
                       alignItems: "start",
                     }}
                   >
                     <div
                       style={{
-                        width: 44,
-                        height: 44,
+                        width: 48,
+                        height: 48,
                         borderRadius: 14,
                         background: "rgba(0,102,255,0.16)",
-                        border: "1px solid rgba(0,102,255,0.28)",
-                        color: "#00CCFF",
+                        border: "1px solid rgba(0,102,255,0.3)",
+                        color: "#60A5FA",
                         fontWeight: 800,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        fontSize: "0.88rem",
                       }}
                     >
-                      {String(index + 1).padStart(2, "0")}
+                      {item.num}
                     </div>
                     <div>
-                      <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.3rem" }}>{item.title}</h3>
-                      <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.75 }}>{item.description}</p>
+                      <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.35rem", fontSize: "1rem" }}>{item.title}</h3>
+                      <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -347,186 +407,146 @@ export default function DigitalForgeSystemPage() {
         </div>
       </section>
 
+      {/* ── FAQ ── */}
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+          <div style={{ marginBottom: "1.8rem" }}>
+            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              Common Questions
+            </p>
+            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.8rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 600 }}>
+              Everything you need to know before buying
+            </h2>
+          </div>
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "1.2rem",
-            }}
-          >
-            <div
-              style={{
-                borderRadius: 22,
-                border: "1px solid rgba(0,102,255,0.18)",
-                background: "rgba(0,102,255,0.04)",
-                padding: "1.5rem",
-              }}
-            >
-              <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.8rem" }}>
-                Buyers Get
-              </p>
-              <h2 style={{ color: "#fff", fontSize: "1.35rem", fontWeight: 900, marginBottom: "1rem" }}>
-                The method, assets, and operating logic
-              </h2>
-              <div style={{ display: "grid", gap: "0.7rem" }}>
-                {digitalForgeCoreClarification.customersBuy.map((item) => (
-                  <p key={item} style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
-                    • {item}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            <div
-              style={{
-                borderRadius: 22,
-                border: "1px solid rgba(255,255,255,0.1)",
-                background: "rgba(255,255,255,0.03)",
-                padding: "1.5rem",
-              }}
-            >
-              <p style={{ color: "#F59E0B", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.8rem" }}>
-                Not Included By Default
-              </p>
-              <h2 style={{ color: "#fff", fontSize: "1.35rem", fontWeight: 900, marginBottom: "1rem" }}>
-                Your private machine stays private
-              </h2>
-              <div style={{ display: "grid", gap: "0.7rem" }}>
-                {digitalForgeCoreClarification.notIncludedByDefault.map((item) => (
-                  <p key={item} style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.7 }}>
-                    • {item}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section style={{ paddingBottom: "5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div style={{ marginBottom: "1.5rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.7rem" }}>
-              Upgrade Path
-            </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.8rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "0.8rem" }}>
-              Where this system leads next
-            </h2>
-            <p style={{ color: "rgba(255,255,255,0.58)", maxWidth: 760, lineHeight: 1.85 }}>
-              The starter system is the commercial center of the ladder. Around it sit the free training, deeper course, and premium operator assets for people who want more implementation depth.
-            </p>
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
               gap: "1rem",
             }}
           >
-            {surroundingOffers.map((item) => (
-              <Link
-                key={item.slug}
-                href={item.href}
-                style={{ textDecoration: "none" }}
+            {FAQ.map((item) => (
+              <div
+                key={item.q}
+                style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 20,
+                  padding: "1.4rem",
+                }}
               >
-                <div
-                  className="glass-hover"
-                  style={{
-                    height: "100%",
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: 18,
-                    padding: "1.4rem",
-                  }}
-                >
-                  <p style={{ color: "#00CCFF", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.6rem" }}>
-                    {item.eyebrow}
-                  </p>
-                  <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1.08rem", marginBottom: "0.55rem" }}>{item.label}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.55)", fontWeight: 700, marginBottom: "0.7rem" }}>{item.price}</p>
-                  <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.75 }}>{item.description}</p>
-                </div>
-              </Link>
+                <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.7rem", fontSize: "1rem" }}>{item.q}</h3>
+                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.a}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* ── UPGRADE PATH ── */}
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div
-            style={{
-              background: "linear-gradient(180deg, rgba(6,11,29,0.95), rgba(5,8,20,0.92))",
-              border: "1px solid rgba(0,102,255,0.2)",
-              borderRadius: 24,
-              padding: "1.7rem",
-            }}
-          >
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.8rem" }}>
-              Premium Layers
+          <div style={{ marginBottom: "1.8rem" }}>
+            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              What Comes Next
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1rem" }}>
-              The sellable add-ons around the system
+            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
+              The Starter System is the beginning, not the ceiling
             </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem" }}>
             <div
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                gap: "1rem",
+                borderRadius: 22,
+                border: "1px solid rgba(0,204,255,0.2)",
+                background: "rgba(0,204,255,0.04)",
+                padding: "1.5rem",
               }}
             >
-              {premiumOffersNow.map((item) => (
-                <div
-                  key={item.name}
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: 16,
-                    padding: "1rem",
-                  }}
-                >
-                  <p style={{ color: "#00CCFF", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.14em", fontWeight: 700, marginBottom: "0.45rem" }}>
-                    {item.readiness}
-                  </p>
-                  <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.35rem" }}>{item.name}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.52)", marginBottom: "0.55rem", fontWeight: 700 }}>{item.price}</p>
-                  <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.7 }}>{item.description}</p>
-                </div>
-              ))}
+              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.7rem" }}>
+                Before the System
+              </p>
+              <h3 style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.6rem" }}>Free Training</h3>
+              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
+                Watch the training first if you want to see the full framework before buying. It is 100% free and takes 25–45 minutes.
+              </p>
+              <Link href="/digital-forge/training" style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
+                Watch Free Training →
+              </Link>
+            </div>
+            <div
+              style={{
+                borderRadius: 22,
+                border: "1px solid rgba(0,102,255,0.35)",
+                background: "rgba(0,102,255,0.12)",
+                padding: "1.5rem",
+              }}
+            >
+              <p style={{ color: "#60A5FA", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.7rem" }}>
+                You Are Here — Start Here
+              </p>
+              <h3 style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.6rem" }}>Starter System</h3>
+              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
+                The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
+              </p>
+              <Link href="/contact" style={{ color: "#60A5FA", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
+                Get the System — From ₦25,000 →
+              </Link>
+            </div>
+            <div
+              style={{
+                borderRadius: 22,
+                border: "1px solid rgba(139,92,246,0.22)",
+                background: "rgba(139,92,246,0.06)",
+                padding: "1.5rem",
+              }}
+            >
+              <p style={{ color: "#A78BFA", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.7rem" }}>
+                The Next Level
+              </p>
+              <h3 style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.6rem" }}>Digital Forge Course</h3>
+              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
+                The full guided curriculum for a deeper, more supported build-package-launch-grow journey. Takes you further than the system alone.
+              </p>
+              <Link href="/digital-forge/course" style={{ color: "#A78BFA", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
+                Explore the Course →
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
+      {/* ── CTA ── */}
       <section style={{ paddingBottom: "6rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div
             style={{
-              background: "linear-gradient(135deg, rgba(0,66,204,0.26), rgba(0,204,255,0.12))",
-              border: "1px solid rgba(0,102,255,0.3)",
-              borderRadius: 24,
-              padding: "clamp(2rem, 5vw, 4rem)",
+              background: "linear-gradient(135deg, rgba(0,66,204,0.28), rgba(0,204,255,0.12))",
+              border: "1px solid rgba(0,102,255,0.32)",
+              borderRadius: 28,
+              padding: "clamp(2rem, 5vw, 4.5rem)",
               textAlign: "center",
             }}
           >
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
-              Start Here
+            <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "1rem" }}>
+              Stop Dabbling. Start Building.
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.3rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1rem" }}>
-              The fastest way to stop dabbling and start building
+            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
+              This is the fastest path from
+              <br />
+              AI curiosity to your first sale.
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 760, margin: "0 auto 1.8rem", lineHeight: 1.85, fontSize: "1rem" }}>
-              If you want the best conversion path, send visitors to the free training first, then move them into the Digital Forge Side Hustle Starter System, then upsell the course and premium implementation layers.
+            <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.9, fontSize: "1.01rem" }}>
+              The Starter System gives you every asset, every template, every prompt, and every workflow you need to build one clear digital product and take it to market. No more guessing. No more getting stuck. Just a complete, actionable system designed to produce results.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <Link
-                href="/digital-forge/training"
+                href="/contact"
+                id="system-buy-cta-bottom"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  padding: "1rem 1.8rem",
+                  padding: "1rem 2rem",
                   borderRadius: 10,
                   background: "linear-gradient(135deg, #0066FF, #0044CC)",
                   color: "#fff",
@@ -534,17 +554,18 @@ export default function DigitalForgeSystemPage() {
                   fontWeight: 800,
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
-                  fontSize: "0.84rem",
+                  fontSize: "0.86rem",
+                  boxShadow: "0 0 36px rgba(0,102,255,0.45)",
                 }}
               >
-                Enter Through The Training
+                Get the Starter System — From ₦25,000
               </Link>
               <Link
-                href="/contact"
+                href="/digital-forge/training"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  padding: "1rem 1.8rem",
+                  padding: "1rem 2rem",
                   borderRadius: 10,
                   border: "1px solid rgba(255,255,255,0.16)",
                   color: "rgba(255,255,255,0.82)",
@@ -552,10 +573,10 @@ export default function DigitalForgeSystemPage() {
                   fontWeight: 700,
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
-                  fontSize: "0.84rem",
+                  fontSize: "0.86rem",
                 }}
               >
-                Buy The System
+                Watch the Free Training First
               </Link>
             </div>
           </div>
