@@ -517,10 +517,10 @@ async function fetchAirtableForgeProducts({ publishedOnly = false }: { published
 export async function getForgeProducts(): Promise<ForgeProduct[]> {
   const airtableProducts = await fetchAirtableForgeProducts({ publishedOnly: true });
   if (airtableProducts.length > 0) {
-    return mergeForgeProducts(seedForgeProducts, airtableProducts).map(normalizeForgeProduct);
+    return airtableProducts.map(normalizeForgeProduct);
   }
 
-  return mergeForgeProducts(seedForgeProducts, loadGeneratedForgeProducts()).map(normalizeForgeProduct);
+  return loadGeneratedForgeProducts().map(normalizeForgeProduct);
 }
 
 export async function getForgeProduct(slug: string): Promise<ForgeProduct | undefined> {
