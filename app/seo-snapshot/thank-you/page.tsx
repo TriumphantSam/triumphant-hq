@@ -5,55 +5,268 @@ import Link from 'next/link';
 const BOOKING_URL = process.env.NEXT_PUBLIC_SEO_BOOKING_URL || 'https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call';
 
 export default function SeoSnapshotThankYouPage() {
+  const NEXT_STEPS = [
+    {
+      num: '01',
+      title: 'Check your inbox',
+      desc: 'Your snapshot summary and a brief analysis of your site are on their way to your email — usually within a few minutes.',
+    },
+    {
+      num: '02',
+      title: 'We review your domain in detail',
+      desc: 'Our SEO team goes deeper into your specific issues, builds a custom implementation plan, and prepares a prioritized roadmap for your site.',
+    },
+    {
+      num: '03',
+      title: 'You get a personal follow-up',
+      desc: 'Within 24 hours, we will reach out to walk you through the roadmap, answer your questions, and give you a clear path forward.',
+    },
+  ];
+
   return (
-    <div className="bg-[#020205] relative selection:bg-[#3b82f6]/30 font-sans border-b border-transparent overflow-hidden pb-16">
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <div className="w-[1000px] h-[1000px] bg-[#3b82f6]/10 blur-[300px] rounded-full" />
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay"></div>
-      </div>
-      <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center gap-20 pt-24 px-6">
-        <div className="flex flex-col items-center gap-8 w-full text-center mt-10">
-          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-[2rem] bg-gradient-to-br from-[#3b82f6] to-[#06b6d4] flex items-center justify-center shadow-[0_10px_40px_rgba(59,130,246,0.3)]">
-            <svg className="w-12 h-12 sm:w-16 sm:h-16 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-white tracking-tight">Request Received.</h1>
-          <p className="text-xl sm:text-2xl md:text-3xl text-gray-400 font-light leading-relaxed max-w-3xl">
-            We have logged your full audit request. You will receive an email shortly with your snapshot summary and next steps.
-          </p>
-        </div>
-        <div className="w-full bg-[#050510]/80 backdrop-blur-xl border border-white/5 rounded-[2.5rem] sm:rounded-[3rem] px-8 py-14 sm:px-16 sm:py-20 shadow-2xl relative">
-          <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#3b82f6]/50 to-transparent"></div>
-          <div className="w-full text-center mb-12 sm:mb-16">
-            <span className="text-xs font-black uppercase tracking-[0.25em] text-[#60a5fa] border border-[#3b82f6]/30 bg-[#3b82f6]/10 px-8 py-3 rounded-full">
-              What happens next?
-            </span>
-          </div>
-          <div className="flex flex-col gap-12 sm:gap-16">
-            {[
-              'Check your inbox — your snapshot summary is on its way.',
-              'Our team reviews your domain in detail and builds a custom implementation plan.',
-              'We will reach out within 24 hours to discuss the roadmap.',
-            ].map((step, i) => (
-              <div key={i} className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start sm:items-center">
-                <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-white/[0.02] border border-white/5 flex items-center justify-center shadow-[inset_0_0_20px_rgba(59,130,246,0.05)]">
-                  <span className="text-[#60a5fa] text-2xl sm:text-3xl font-black">{i + 1}</span>
-                </div>
-                <span className="text-gray-300 text-lg sm:text-2xl font-light leading-relaxed">{step}</span>
+    <div className="min-h-screen" style={{ background: 'var(--bg-dark)' }}>
+
+      {/* ── BACKGROUND ── */}
+      <div
+        aria-hidden
+        style={{
+          position: 'fixed',
+          inset: 0,
+          pointerEvents: 'none',
+          background:
+            'radial-gradient(circle at 25% 25%, rgba(0,102,255,0.16), transparent 38%), radial-gradient(circle at 78% 72%, rgba(0,204,255,0.08), transparent 34%), linear-gradient(180deg, rgba(5,5,16,0.98), rgba(2,2,5,1))',
+        }}
+      />
+
+      <div className="relative" style={{ zIndex: 10, paddingBottom: '5rem' }}>
+
+        {/* ── HERO ── */}
+        <section style={{ paddingTop: '8rem', paddingBottom: '4rem', textAlign: 'center' }}>
+          <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+
+            {/* Icon */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+              <div
+                style={{
+                  width: 96,
+                  height: 96,
+                  borderRadius: 24,
+                  background: 'linear-gradient(135deg, #0066FF, #00CCFF)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  boxShadow: '0 0 60px rgba(0,102,255,0.4)',
+                }}
+              >
+                <svg width="44" height="44" fill="none" stroke="#fff" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
               </div>
-            ))}
+            </div>
+
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.55rem',
+                background: 'rgba(0,102,255,0.1)',
+                border: '1px solid rgba(0,102,255,0.3)',
+                borderRadius: '999px',
+                padding: '0.4rem 1.1rem',
+                marginBottom: '1.5rem',
+              }}
+            >
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#00CCFF', display: 'inline-block' }} />
+              <span style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+                Request Received
+              </span>
+            </div>
+
+            <h1
+              style={{
+                fontSize: 'clamp(2.8rem, 6vw, 5rem)',
+                fontWeight: 900,
+                lineHeight: 1.04,
+                color: '#fff',
+                letterSpacing: '-0.03em',
+                marginBottom: '1.2rem',
+              }}
+            >
+              Your snapshot is
+              <br />
+              <span
+                style={{
+                  background: 'linear-gradient(90deg, #0066FF, #00CCFF)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                on its way.
+              </span>
+            </h1>
+            <p
+              style={{
+                fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                color: 'rgba(255,255,255,0.65)',
+                lineHeight: 1.85,
+                maxWidth: 680,
+                margin: '0 auto',
+              }}
+            >
+              We have logged your request and your scan is complete. A summary of your visibility score, your priority blockers, and your quick wins is heading to your email right now.
+            </p>
           </div>
-        </div>
-        <div className="flex flex-col items-center gap-6 w-full z-20">
-          <Link href={BOOKING_URL} className="group relative flex items-center justify-center px-10 sm:px-12 lg:px-16 min-h-[4rem] sm:min-h-[4.5rem] lg:min-h-[5.5rem] bg-gradient-to-r from-[#3b82f6] to-[#06b6d4] text-white font-black text-sm sm:text-lg lg:text-xl uppercase tracking-widest rounded-full transition-transform hover:-translate-y-1 overflow-hidden w-full sm:w-auto text-center">
-            <span className="relative z-10 whitespace-nowrap pl-[0.1em] flex items-center justify-center gap-3">
-              SKIP THE WAIT — BOOK A CALL <span className="text-3xl leading-none transition-transform group-hover:translate-x-2">→</span>
-            </span>
-          </Link>
-          <span className="text-xs sm:text-sm text-gray-500 font-bold tracking-[0.25em] uppercase text-center mt-4">Private SEO Operations</span>
-        </div>
-        <div className="h-8 lg:h-12 w-full shrink-0"></div>
+        </section>
+
+        {/* ── NEXT STEPS ── */}
+        <section style={{ paddingBottom: '4rem' }}>
+          <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+            <div
+              style={{
+                background: 'linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))',
+                border: '1px solid rgba(0,102,255,0.2)',
+                borderRadius: 24,
+                padding: 'clamp(1.5rem, 4vw, 3rem)',
+              }}
+            >
+              <p
+                style={{
+                  color: '#00CCFF',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  marginBottom: '0.9rem',
+                  textAlign: 'center',
+                }}
+              >
+                What Happens Next
+              </p>
+              <h2
+                style={{
+                  color: '#fff',
+                  fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)',
+                  fontWeight: 900,
+                  lineHeight: 1.1,
+                  marginBottom: '2rem',
+                  textAlign: 'center',
+                }}
+              >
+                Here is your next 24 hours
+              </h2>
+              <div style={{ display: 'grid', gap: '1.2rem' }}>
+                {NEXT_STEPS.map(item => (
+                  <div
+                    key={item.num}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '64px minmax(0,1fr)',
+                      gap: '1.2rem',
+                      alignItems: 'flex-start',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid rgba(255,255,255,0.07)',
+                      borderRadius: 18,
+                      padding: '1.2rem',
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 56,
+                        height: 56,
+                        borderRadius: 16,
+                        background: 'rgba(0,102,255,0.14)',
+                        border: '1px solid rgba(0,102,255,0.28)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <span style={{ color: '#60A5FA', fontWeight: 900, fontSize: '1rem' }}>{item.num}</span>
+                    </div>
+                    <div>
+                      <h3 style={{ color: '#fff', fontWeight: 800, marginBottom: '0.35rem', fontSize: '1.05rem' }}>{item.title}</h3>
+                      <p style={{ color: 'rgba(255,255,255,0.62)', lineHeight: 1.75, fontSize: '0.93rem' }}>{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SKIP THE WAIT CTA ── */}
+        <section style={{ paddingBottom: '4rem' }}>
+          <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+            <div
+              style={{
+                background: 'linear-gradient(135deg, rgba(0,66,204,0.26), rgba(0,204,255,0.1))',
+                border: '1px solid rgba(0,102,255,0.28)',
+                borderRadius: 28,
+                padding: 'clamp(2rem, 5vw, 4rem)',
+                textAlign: 'center',
+              }}
+            >
+              <p style={{ color: '#00CCFF', fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
+                Want Faster Results?
+              </p>
+              <h2 style={{ color: '#fff', fontSize: 'clamp(2rem, 4.5vw, 3.2rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: '1rem' }}>
+                Skip the wait.
+                <br />
+                Book a live strategy call.
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 680, margin: '0 auto 2rem', lineHeight: 1.85, fontSize: '1rem' }}>
+                In 30 minutes, we will walk through your results together, explain exactly what is stopping your rankings, and give you a prioritized plan you can act on immediately. No sales pitch — just clear, useful SEO direction.
+              </p>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Link
+                  href={BOOKING_URL}
+                  id="thankyou-book-call-cta"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '1rem 2rem',
+                    borderRadius: 10,
+                    background: 'linear-gradient(135deg, #0066FF, #0044CC)',
+                    color: '#fff',
+                    textDecoration: 'none',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    fontSize: '0.86rem',
+                    boxShadow: '0 0 32px rgba(0,102,255,0.4)',
+                  }}
+                >
+                  Book My Free Strategy Call →
+                </Link>
+                <Link
+                  href="/seo-snapshot"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '1rem 2rem',
+                    borderRadius: 10,
+                    border: '1px solid rgba(255,255,255,0.14)',
+                    color: 'rgba(255,255,255,0.7)',
+                    textDecoration: 'none',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    fontSize: '0.86rem',
+                  }}
+                >
+                  Run Another Snapshot
+                </Link>
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.82rem', marginTop: '1.4rem' }}>
+                30-minute call · Free · No obligation · Real action from day one
+              </p>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   );
