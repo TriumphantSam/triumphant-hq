@@ -564,7 +564,7 @@ export default function SeoSnapshotPage() {
                       <option value="agency" style={{ background: '#050510' }}>Agency</option>
                       <option value="other" style={{ background: '#050510' }}>Other</option>
                     </select>
-                    <div style={{ position: 'absolute', insetY: 0, right: '1rem', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
+                    <div style={{ position: 'absolute', top: 0, bottom: 0, right: '1rem', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
                       <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                       </svg>
