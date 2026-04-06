@@ -1,4 +1,5 @@
 import Link from "next/link";
+import WaitlistForm from "./WaitlistForm";
 
 export const metadata = {
   title: "Digital Forge Course Waitlist | Digital Forge",
@@ -14,13 +15,6 @@ const WAITLIST_BENEFITS = [
 ];
 
 const NEXT_STEPS = [
-  {
-    title: "Join the Waitlist",
-    description:
-      "Use the contact flow for now as the waitlist inbox, so you are tagged for first access when the course opens.",
-    href: "/contact?topic=digital-forge-course&intent=waitlist",
-    cta: "Join the Waitlist",
-  },
   {
     title: "Start with the Starter System",
     description:
@@ -137,25 +131,6 @@ export default function DigitalForgeCourseWaitlistPage() {
           </p>
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             <Link
-              href="/contact?topic=digital-forge-course&intent=waitlist"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                padding: "1rem 2rem",
-                borderRadius: 10,
-                textDecoration: "none",
-                fontWeight: 800,
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                fontSize: "0.86rem",
-                color: "#fff",
-                background: "linear-gradient(135deg, #7C3AED, #4C1D95)",
-                boxShadow: "0 0 36px rgba(124,58,237,0.42)",
-              }}
-            >
-              Join the Waitlist
-            </Link>
-            <Link
               href="/digital-forge/system"
               style={{
                 display: "inline-flex",
@@ -173,6 +148,25 @@ export default function DigitalForgeCourseWaitlistPage() {
             >
               Start with the Starter System
             </Link>
+            <Link
+              href="#course-waitlist-form"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "1rem 2rem",
+                borderRadius: 10,
+                textDecoration: "none",
+                fontWeight: 800,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                fontSize: "0.86rem",
+                color: "#fff",
+                background: "linear-gradient(135deg, #7C3AED, #4C1D95)",
+                boxShadow: "0 0 36px rgba(124,58,237,0.42)",
+              }}
+            >
+              Join the Waitlist
+            </Link>
           </div>
         </div>
       </section>
@@ -180,26 +174,37 @@ export default function DigitalForgeCourseWaitlistPage() {
       <section style={{ paddingBottom: "4.5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div
+            id="course-waitlist-form"
             style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 24,
-              padding: "1.8rem",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "1rem",
+              alignItems: "start",
             }}
           >
-            <p style={{ color: "#8B5CF6", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
-              Why Join
-            </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
-              Stay connected to the strongest next step.
-            </h2>
-            <div style={{ display: "grid", gap: "0.8rem" }}>
-              {WAITLIST_BENEFITS.map((item) => (
-                <div key={item} style={{ display: "flex", gap: "0.7rem", alignItems: "flex-start" }}>
-                  <span style={{ color: "#C4B5FD", fontWeight: 900, flexShrink: 0, marginTop: 1 }}>✓</span>
-                  <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>{item}</p>
-                </div>
-              ))}
+            <WaitlistForm />
+            <div
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: 24,
+                padding: "1.8rem",
+              }}
+            >
+              <p style={{ color: "#8B5CF6", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
+                Why Join
+              </p>
+              <h2 style={{ color: "#fff", fontSize: "clamp(1.5rem, 4vw, 2.2rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
+                Stay connected to the strongest next step.
+              </h2>
+              <div style={{ display: "grid", gap: "0.8rem" }}>
+                {WAITLIST_BENEFITS.map((item) => (
+                  <div key={item} style={{ display: "flex", gap: "0.7rem", alignItems: "flex-start" }}>
+                    <span style={{ color: "#C4B5FD", fontWeight: 900, flexShrink: 0, marginTop: 1 }}>✓</span>
+                    <p style={{ color: "rgba(255,255,255,0.7)", lineHeight: 1.8 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
