@@ -189,7 +189,7 @@ export default function DigitalForgeCoursePage() {
           </p>
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             <Link
-              href="/contact"
+              href="/digital-forge/course/access"
               id="course-enroll-cta"
               style={{
                 display: "inline-flex",
@@ -206,10 +206,10 @@ export default function DigitalForgeCoursePage() {
                 boxShadow: "0 0 36px rgba(124,58,237,0.42)",
               }}
             >
-              Enroll in the Course — From ₦35,000
+              Choose Your Access Path
             </Link>
             <Link
-              href="/digital-forge/training"
+              href="/digital-forge/system"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -224,7 +224,7 @@ export default function DigitalForgeCoursePage() {
                 border: "1px solid rgba(255,255,255,0.16)",
               }}
             >
-              Start with the Free Training
+              Start with the Starter System
             </Link>
           </div>
         </div>
@@ -242,9 +242,9 @@ export default function DigitalForgeCoursePage() {
           >
             {[
               { label: "Recommended Price", value: "₦35,000 to ₦60,000" },
-              { label: "Format", value: "Recorded modules, worksheets, and assets" },
-              { label: "Outcome", value: "One offer, one product, one complete launch path" },
-              { label: "Where It Lives", value: "Accessible online — on desktop and mobile" },
+              { label: "Current Status", value: "Pre-launch access routing is live now" },
+              { label: "Delivery", value: "Hosted course or bundle delivery, depending on channel" },
+              { label: "Best Next Step", value: "Choose your access path or start with the Starter System" },
             ].map((item) => (
               <div
                 key={item.label}
@@ -261,6 +261,68 @@ export default function DigitalForgeCoursePage() {
                 <p style={{ color: "#fff", fontWeight: 700, lineHeight: 1.6 }}>{item.value}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── ACCESS PATHS ── */}
+      <section style={{ paddingBottom: "5rem" }}>
+        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+          <div
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 24,
+              padding: "1.8rem",
+            }}
+          >
+            <p style={{ color: "#8B5CF6", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
+              Access Paths
+            </p>
+            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1rem" }}>
+              Your website sells the course now. Hosted delivery opens in layers.
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.64)", lineHeight: 1.85, maxWidth: 840, marginBottom: "1.5rem" }}>
+              Right now, the course page on your website is the authority and conversion layer. The next layer is access routing: priority list, hosted delivery, and storefront checkout paths. That means the course can sell now without pretending the final native student portal already exists.
+            </p>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <Link
+                href="/digital-forge/course/access"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "1rem 1.6rem",
+                  borderRadius: 10,
+                  textDecoration: "none",
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  fontSize: "0.82rem",
+                  color: "#fff",
+                  background: "linear-gradient(135deg, #7C3AED, #4C1D95)",
+                }}
+              >
+                Open Course Access Paths
+              </Link>
+              <Link
+                href="/digital-forge/training"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "1rem 1.6rem",
+                  borderRadius: 10,
+                  textDecoration: "none",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  fontSize: "0.82rem",
+                  color: "rgba(255,255,255,0.82)",
+                  border: "1px solid rgba(255,255,255,0.16)",
+                }}
+              >
+                Watch the Free Training
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -459,7 +521,7 @@ export default function DigitalForgeCoursePage() {
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <Link
-                href="/contact"
+                href="/digital-forge/course/access"
                 id="course-enroll-cta-bottom"
                 style={{
                   display: "inline-flex",
@@ -476,7 +538,7 @@ export default function DigitalForgeCoursePage() {
                   boxShadow: "0 0 36px rgba(124,58,237,0.45)",
                 }}
               >
-                Enroll in the Course — From ₦35,000
+                Choose Your Access Path
               </Link>
               <Link
                 href="/digital-forge/system"
