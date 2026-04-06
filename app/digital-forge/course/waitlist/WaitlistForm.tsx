@@ -5,16 +5,16 @@ import { useState } from "react";
 const ACCESS_OPTIONS = [
   "Hosted course access",
   "Bundle delivery first",
-  "Both options",
-  "Not sure yet",
+  "Both — hosted course and bundle",
+  "Not sure yet — I need guidance",
 ];
 
 const HELP_OPTIONS = [
-  "Choosing the right offer",
-  "Building the product",
-  "Packaging and messaging",
-  "Launch and promotion",
-  "Operations and scaling",
+  "Choosing the right offer for my audience",
+  "Building and structuring my first product",
+  "Packaging and messaging my offer",
+  "Setting up my launch and funnel",
+  "Operations, fulfillment, and scaling",
 ];
 
 export default function WaitlistForm() {
@@ -46,34 +46,21 @@ export default function WaitlistForm() {
     setSending(true);
     setError("");
 
-    const message = [
-      `Priority access request for the Digital Forge Course.`,
-      ``,
-      `Preferred access path: ${formData.accessPath}`,
-      `Main help topic: ${formData.helpTopic}`,
-      `WhatsApp number: ${formData.whatsapp || "Not provided"}`,
-      ``,
-      `Additional note:`,
-      formData.note || "No extra note provided.",
-    ].join("\n");
-
     try {
-      const res = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      const res = await fetch("/api/digital-forge/course-waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          service_id: "service_fgz42ok",
-          template_id: "template_2bilwne",
-          user_id: "TCsiAiLBlJkqHpCn5",
-          template_params: {
-            from_name: formData.name,
-            reply_to: formData.email,
-            service: "Digital Forge Course Waitlist",
-            message,
-          },
+          name: formData.name,
+          email: formData.email,
+          whatsapp: formData.whatsapp,
+          accessPath: formData.accessPath,
+          helpTopic: formData.helpTopic,
+          note: formData.note,
         }),
       });
-      if (!res.ok) throw new Error("Failed to join the waitlist");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error || "Failed to send your enrollment request");
       setSent(true);
       setFormData({
         name: "",
@@ -84,7 +71,7 @@ export default function WaitlistForm() {
         note: "",
       });
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Failed to submit. Please try again.");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setSending(false);
     }
@@ -94,8 +81,8 @@ export default function WaitlistForm() {
     return (
       <div
         style={{
-          background: "rgba(124,58,237,0.07)",
-          border: "1px solid rgba(124,58,237,0.24)",
+          background: "rgba(0,102,255,0.08)",
+          border: "1px solid rgba(0,102,255,0.28)",
           borderRadius: 22,
           padding: "2rem",
           textAlign: "center",
@@ -103,10 +90,10 @@ export default function WaitlistForm() {
       >
         <div style={{ fontSize: "2.6rem", marginBottom: "0.8rem" }}>✅</div>
         <h3 style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 800, marginBottom: "0.55rem" }}>
-          You’re on the waitlist
+          You're on the waitlist!
         </h3>
         <p style={{ color: "rgba(255,255,255,0.68)", lineHeight: 1.8, marginBottom: "1.2rem" }}>
-          You’ll now be easier to track for course-first updates, access announcements, and the strongest next step when the full rollout opens.
+          You'll be among the first to know when hosted enrollment opens and the course is ready to access. Check your email and WhatsApp for updates.
         </p>
         <button
           onClick={() => {
@@ -125,7 +112,7 @@ export default function WaitlistForm() {
             cursor: "pointer",
           }}
         >
-          Add Another Entry
+          Submit Another Entry
         </button>
       </div>
     );
@@ -134,20 +121,20 @@ export default function WaitlistForm() {
   return (
     <div
       style={{
-        background: "rgba(124,58,237,0.07)",
-        border: "1px solid rgba(124,58,237,0.24)",
+        background: "rgba(0,102,255,0.07)",
+        border: "1px solid rgba(0,102,255,0.26)",
         borderRadius: 22,
         padding: "1.6rem",
       }}
     >
-      <p style={{ color: "#8B5CF6", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.5rem", fontWeight: 700 }}>
+      <p style={{ color: "#00CCFF", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.5rem", fontWeight: 700 }}>
         Join the Waitlist
       </p>
       <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1.15rem", marginBottom: "0.7rem" }}>
         Tell us how you want access
       </h3>
       <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.4rem" }}>
-        This is the real course waitlist step. Share your preferred access path and what you want most help with so the launch flow can be shaped around actual demand.
+        Join the first-access list. Share how you want to receive the course and what you want most help with — that way when enrollment opens, your access and first steps are matched to exactly where you are.
       </p>
 
       {error && (
@@ -177,7 +164,7 @@ export default function WaitlistForm() {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Adeyemi Samuel"
+              placeholder="Your name"
               style={inputStyle}
             />
           </div>
@@ -211,7 +198,7 @@ export default function WaitlistForm() {
           </div>
           <div>
             <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
-              Preferred Access Path
+              How Do You Want to Receive the Course?
             </label>
             <select
               value={formData.accessPath}
@@ -229,7 +216,7 @@ export default function WaitlistForm() {
 
         <div>
           <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
-            What do you want most help with?
+            What Do You Want Most Help With?
           </label>
           <select
             value={formData.helpTopic}
@@ -246,13 +233,13 @@ export default function WaitlistForm() {
 
         <div>
           <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
-            Extra Note
+            Any Extra Notes? (Optional)
           </label>
           <textarea
             rows={4}
             value={formData.note}
             onChange={(e) => setFormData({ ...formData, note: e.target.value })}
-            placeholder="Tell us what would make the course most useful for you."
+            placeholder="Tell us anything else that would help us get you started right."
             style={{ ...inputStyle, resize: "vertical" }}
           />
         </div>
@@ -272,13 +259,17 @@ export default function WaitlistForm() {
             letterSpacing: "0.08em",
             fontSize: "0.82rem",
             color: "#fff",
-            background: sending ? "rgba(124,58,237,0.4)" : "linear-gradient(135deg, #7C3AED, #4C1D95)",
+            background: sending ? "rgba(0,102,255,0.35)" : "linear-gradient(135deg, #0066FF, #0044CC)",
             border: "none",
             cursor: sending ? "wait" : "pointer",
+            boxShadow: sending ? "none" : "0 0 24px rgba(0,102,255,0.38)",
           }}
         >
           {sending ? "Joining..." : "Join the Waitlist"}
         </button>
+        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.82rem", textAlign: "center" }}>
+          You will be notified as soon as enrollment and hosted access open.
+        </p>
       </form>
     </div>
   );

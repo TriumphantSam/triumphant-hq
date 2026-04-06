@@ -1,58 +1,61 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Course Access Paths | Digital Forge",
+  title: "Get Course Access | Digital Forge",
   description:
-    "Choose how you want to access the Digital Forge Course: join the priority list, start with the Starter System, or prepare for hosted course access.",
+    "Join the Digital Forge Course waitlist for priority access when enrollment opens, or start with the Starter System and free training available now.",
 };
 
 const ACCESS_PATHS = [
   {
-    title: "Priority Access",
-    status: "Open Now",
+    title: "Join the Waitlist",
+    status: "Open Now — Priority Access",
     description:
-      "Join the first-access list so you can be notified as soon as course checkout and hosted delivery go live.",
+      "Be first in when enrollment and hosted course access open. Secure your place at the launch price of ₦35,000 and get notified the moment the course is ready to access.",
     href: "/digital-forge/course/waitlist",
-    cta: "Join Priority Access",
+    cta: "Join the Waitlist",
+    featured: true,
   },
   {
-    title: "Starter System First",
+    title: "Start with the Starter System",
     status: "Available Now",
     description:
-      "If you want the fastest practical next step, start with the flagship system while the full guided course opens.",
+      "The fastest practical next step. The Starter System gives you the full toolkit — guide, prompts, templates, and launch assets — so you can begin building right now while the course opens.",
     href: "/digital-forge/system",
-    cta: "Start with the Starter System",
+    cta: "Get the Starter System",
+    featured: false,
   },
   {
-    title: "Free Training",
-    status: "Available Now",
+    title: "Watch the Free Training First",
+    status: "Free — Available Now",
     description:
-      "Use the free training to understand the framework first, then decide whether the Starter System or full Course fits you best.",
+      "Not sure where to start? The free training gives you the full Digital Forge framework and helps you decide whether the Course or Starter System fits you best right now.",
     href: "/digital-forge/training",
     cta: "Watch the Free Training",
+    featured: false,
   },
 ];
 
-const DELIVERY_PLAN = [
+const DELIVERY_DETAILS = [
   {
-    label: "On Your Website",
+    label: "Hosted Course Access",
     detail:
-      "Your website owns the sales page, SEO story, brand, and access routing. This is the long-term home base of the course business.",
+      "Once enrollment opens, you will get access to all 9 modules in a structured hosted learning environment. Watch at your own pace and revisit any lesson at any time.",
   },
   {
-    label: "Hosted Delivery First",
+    label: "Bundle Delivery",
     detail:
-      "The first hosted student experience can live on Expernaire or Podia while the custom website student area is still being built.",
+      "Your workbook, prompt packs, templates, checklists, and all downloadable assets will be delivered as a clean bundle — ready to use from day one.",
   },
   {
-    label: "Storefront Checkout",
+    label: "Implementation-First Assets",
     detail:
-      "Lemon Squeezy, Paystack, Flutterwave, Payhip, and Shopify can handle payment and product delivery before full native hosting is ready.",
+      "Every asset is built for action, not just reading. Use the worksheets during each module to build your offer in real time as you work through the curriculum.",
   },
   {
-    label: "Custom Student Portal Later",
+    label: "Continuous Access",
     detail:
-      "After launch, the next layer is a protected course area on your own hosting for modules, downloads, and future member access.",
+      "You keep access to everything — including future content updates — so your curriculum and assets stay current as the Digital Forge system grows.",
   },
 ];
 
@@ -66,7 +69,7 @@ export default function DigitalForgeCourseAccessPage() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 18% 18%, rgba(124,58,237,0.18), transparent 30%), radial-gradient(circle at 82% 16%, rgba(0,102,255,0.14), transparent 22%), linear-gradient(180deg, rgba(6,10,26,0.97), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.22), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.14), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
           }}
         />
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
@@ -94,14 +97,14 @@ export default function DigitalForgeCourseAccessPage() {
               gap: "0.55rem",
               padding: "0.42rem 1rem",
               borderRadius: 999,
-              border: "1px solid rgba(139,92,246,0.35)",
-              background: "rgba(139,92,246,0.1)",
+              border: "1px solid rgba(0,102,255,0.35)",
+              background: "rgba(0,102,255,0.1)",
               marginBottom: "1.5rem",
             }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#8B5CF6", display: "inline-block" }} />
-            <span style={{ color: "#C4B5FD", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
-              Course Access Paths
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
+            <span style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+              Course Access — Waitlist Open
             </span>
           </div>
 
@@ -116,19 +119,19 @@ export default function DigitalForgeCourseAccessPage() {
               marginBottom: "1.3rem",
             }}
           >
-            The Course is real.
+            The course is ready.
             <br />
-            The student portal is next.
+            Enrollment opens soon.
             <br />
             <span
               style={{
-                background: "linear-gradient(90deg, #8B5CF6, #00CCFF)",
+                background: "linear-gradient(90deg, #0066FF, #00CCFF)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
             >
-              Choose the best path for now.
+              Join the waitlist to be first in.
             </span>
           </h1>
 
@@ -141,7 +144,7 @@ export default function DigitalForgeCourseAccessPage() {
               marginBottom: "1rem",
             }}
           >
-            The Digital Forge Course already has the curriculum, decks, workbook, downloads, and platform packaging. What is opening in stages is the final access and hosting flow.
+            The Digital Forge Course curriculum — all 9 modules, your student workbook, prompt packs, templates, and every implementation asset — is built and ready. Hosted enrollment opens shortly.
           </p>
           <p
             style={{
@@ -152,13 +155,63 @@ export default function DigitalForgeCourseAccessPage() {
               marginBottom: "2.2rem",
             }}
           >
-            If you want to move now, join the priority list, start with the Starter System, or use the free training while hosted course access is finalized.
+            Join the waitlist now to get priority access at the launch price of ₦35,000. While you wait, the Starter System and free training are both available right now.
           </p>
+
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <Link
+              href="/digital-forge/course/waitlist"
+              id="course-access-waitlist-cta"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "1rem 2rem",
+                borderRadius: 10,
+                textDecoration: "none",
+                fontWeight: 800,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                fontSize: "0.86rem",
+                color: "#fff",
+                background: "linear-gradient(135deg, #0066FF, #0044CC)",
+                boxShadow: "0 0 36px rgba(0,102,255,0.42)",
+              }}
+            >
+              Join the Waitlist — ₦35,000 at Launch
+            </Link>
+            <Link
+              href="/digital-forge/training"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "1rem 2rem",
+                borderRadius: 10,
+                textDecoration: "none",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                fontSize: "0.86rem",
+                color: "rgba(255,255,255,0.82)",
+                border: "1px solid rgba(255,255,255,0.16)",
+              }}
+            >
+              Watch the Free Training First
+            </Link>
+          </div>
         </div>
       </section>
 
+      {/* ── ACCESS PATHS ── */}
       <section style={{ paddingBottom: "4.5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+          <div style={{ marginBottom: "1.8rem" }}>
+            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              Your Options Right Now
+            </p>
+            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
+              There is a right move for wherever you are.
+            </h2>
+          </div>
           <div
             style={{
               display: "grid",
@@ -170,13 +223,14 @@ export default function DigitalForgeCourseAccessPage() {
               <div
                 key={item.title}
                 style={{
-                  background: "rgba(124,58,237,0.07)",
-                  border: "1px solid rgba(124,58,237,0.24)",
+                  background: item.featured ? "rgba(0,102,255,0.1)" : "rgba(255,255,255,0.03)",
+                  border: item.featured ? "1px solid rgba(0,102,255,0.32)" : "1px solid rgba(255,255,255,0.08)",
+                  borderTop: item.featured ? "3px solid #0066FF" : undefined,
                   borderRadius: 22,
                   padding: "1.4rem",
                 }}
               >
-                <p style={{ color: "#8B5CF6", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem", fontWeight: 700 }}>
+                <p style={{ color: item.featured ? "#00CCFF" : "rgba(255,255,255,0.45)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem", fontWeight: 700 }}>
                   {item.status}
                 </p>
                 <h2 style={{ color: "#fff", fontWeight: 800, fontSize: "1.15rem", marginBottom: "0.75rem" }}>{item.title}</h2>
@@ -194,7 +248,10 @@ export default function DigitalForgeCourseAccessPage() {
                     letterSpacing: "0.08em",
                     fontSize: "0.8rem",
                     color: "#fff",
-                    background: "linear-gradient(135deg, #7C3AED, #4C1D95)",
+                    background: item.featured
+                      ? "linear-gradient(135deg, #0066FF, #0044CC)"
+                      : "rgba(255,255,255,0.07)",
+                    border: item.featured ? "none" : "1px solid rgba(255,255,255,0.14)",
                   }}
                 >
                   {item.cta}
@@ -205,27 +262,36 @@ export default function DigitalForgeCourseAccessPage() {
         </div>
       </section>
 
+      {/* ── WHAT YOU WILL GET WHEN IT OPENS ── */}
       <section style={{ paddingBottom: "6rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div
             style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
+              border: "1px solid rgba(0,102,255,0.2)",
               borderRadius: 24,
               padding: "1.8rem",
             }}
           >
-            <p style={{ color: "#8B5CF6", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
-              Your Hosting Plan
+            <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
+              What You Get When Enrollment Opens
             </p>
             <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
-              Launch fast now. Move deeper onto your own platform next.
+              Everything you need, delivered cleanly from day one.
             </h2>
-            <div style={{ display: "grid", gap: "1rem" }}>
-              {DELIVERY_PLAN.map((item) => (
-                <div key={item.label} style={{ display: "grid", gridTemplateColumns: "200px minmax(0, 1fr)", gap: "1rem" }}>
-                  <p style={{ color: "#fff", fontWeight: 800 }}>{item.label}</p>
-                  <p style={{ color: "rgba(255,255,255,0.64)", lineHeight: 1.8 }}>{item.detail}</p>
+            <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
+              {DELIVERY_DETAILS.map((item) => (
+                <div
+                  key={item.label}
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                    borderRadius: 16,
+                    padding: "1.2rem",
+                  }}
+                >
+                  <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.55rem", fontSize: "1rem" }}>{item.label}</h3>
+                  <p style={{ color: "rgba(255,255,255,0.64)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.detail}</p>
                 </div>
               ))}
             </div>
