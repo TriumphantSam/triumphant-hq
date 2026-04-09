@@ -8,6 +8,7 @@ const footerLinks = [
     { label: 'Services', href: '/services' },
     { label: 'Free SEO Audit', href: '/seo-snapshot' },
     { label: 'Digital Forge', href: '/digital-forge' },
+    { label: 'Products', href: '/digital-forge/products' },
     { label: 'Free Training', href: '/digital-forge/training' },
     { label: 'Starter System', href: '/digital-forge/system' },
     { label: 'Course', href: '/digital-forge/course' },

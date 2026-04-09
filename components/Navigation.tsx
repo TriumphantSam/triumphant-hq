@@ -8,6 +8,7 @@ const links = [
     { href: '/', label: 'Home' },
     { href: '/services', label: 'Services' },
     { href: '/digital-forge', label: 'Digital Forge' },
+    { href: '/digital-forge/products', label: 'Products' },
     { href: '/digital-forge/training', label: 'Training' },
     { href: '/blog', label: 'Blog' },
     { href: '/about', label: 'About' },
