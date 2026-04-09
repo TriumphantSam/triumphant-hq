@@ -9,8 +9,8 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-function buildInquiryHref(slug: string, product_title: string) {
-  return `/contact?topic=digital-forge&product=${encodeURIComponent(slug)}&title=${encodeURIComponent(product_title)}`;
+function buildCheckoutHref(slug: string) {
+  return `/digital-forge/checkout?slug=${encodeURIComponent(slug)}`;
 }
 
 function parseBonusItem(raw: string): { asset: string; role: string; perceived_value: string } | null {
@@ -80,7 +80,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
     })),
   };
 
-  const primaryHref = buildInquiryHref(product.slug, product.title);
+  const primaryHref = buildCheckoutHref(product.slug);
   const parsedBonuses = product.bonuses
     .map(parseBonusItem)
     .filter(Boolean) as { asset: string; role: string; perceived_value: string }[];
@@ -486,7 +486,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       marginTop: "0.75rem",
                     }}
                   >
-                    Reply to our message or contact us directly
+                    Secure checkout via Flutterwave. Delivery arrives automatically by email after payment is verified.
                   </p>
                 </div>
               </div>

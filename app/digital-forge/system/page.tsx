@@ -171,7 +171,7 @@ export default function DigitalForgeSystemPage() {
 
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
                 <Link
-                  href="/contact"
+                  href="/digital-forge/checkout?offer=system"
                   id="system-buy-cta"
                   style={{
                     display: "inline-flex",
@@ -211,7 +211,7 @@ export default function DigitalForgeSystemPage() {
               </div>
 
               <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.83rem" }}>
-                Not sure yet? Start with the free training — then come back when you are ready.
+                Secure checkout via Flutterwave. Delivery arrives automatically by email after payment is verified.
               </p>
             </div>
 
