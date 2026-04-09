@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatOfferPrice, resolveSystemOffer } from "@/lib/digital-forge-offers";
 
 export const metadata = {
   title: "Digital Forge Side Hustle Starter System — Build and Sell Your First AI Product | Digital Forge",
@@ -78,6 +79,9 @@ const FAQ = [
 ];
 
 export default function DigitalForgeSystemPage() {
+  const systemOffer = resolveSystemOffer();
+  const systemPrice = formatOfferPrice(systemOffer.amount, systemOffer.currency);
+
   return (
     <div className="min-h-screen pb-24">
 
@@ -188,7 +192,7 @@ export default function DigitalForgeSystemPage() {
                     boxShadow: "0 0 36px rgba(0,102,255,0.42)",
                   }}
                 >
-                  Get the Starter System — From ₦25,000
+                  Get the Starter System — From {systemPrice}
                 </Link>
                 <Link
                   href="/digital-forge/training"
@@ -270,7 +274,7 @@ export default function DigitalForgeSystemPage() {
                 <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
                   Price
                 </p>
-                <p style={{ color: "#fff", fontWeight: 800, fontSize: "1.4rem" }}>From ₦25,000</p>
+                <p style={{ color: "#fff", fontWeight: 800, fontSize: "1.4rem" }}>From {systemPrice}</p>
                 <p style={{ color: "rgba(255,255,255,0.44)", fontSize: "0.84rem", marginTop: "0.3rem" }}>
                   The most practical first investment in your digital product business.
                 </p>
@@ -489,8 +493,8 @@ export default function DigitalForgeSystemPage() {
               <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
                 The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
               </p>
-              <Link href="/contact" style={{ color: "#60A5FA", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
-                Get the System — From ₦25,000 →
+              <Link href="/digital-forge/checkout?offer=system" style={{ color: "#60A5FA", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
+                Get the System — From {systemPrice} →
               </Link>
             </div>
             <div
@@ -541,7 +545,7 @@ export default function DigitalForgeSystemPage() {
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <Link
-                href="/contact"
+                href="/digital-forge/checkout?offer=system"
                 id="system-buy-cta-bottom"
                 style={{
                   display: "inline-flex",
@@ -558,7 +562,7 @@ export default function DigitalForgeSystemPage() {
                   boxShadow: "0 0 36px rgba(0,102,255,0.45)",
                 }}
               >
-                Get the Starter System — From ₦25,000
+                Get the Starter System — From {systemPrice}
               </Link>
               <Link
                 href="/digital-forge/training"
