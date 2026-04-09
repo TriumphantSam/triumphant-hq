@@ -183,6 +183,12 @@ export default function DigitalForgeTrainingPage() {
               Skip to the Starter System
             </Link>
           </div>
+          <p style={{ marginTop: "1rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.28)" }}>
+            By purchasing, you agree to our{" "}
+            <Link href="/terms" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Terms of Service</Link>
+            {" "}and{" "}
+            <Link href="/refund-policy" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Refund Policy</Link>.
+          </p>
         </div>
       </section>
 
@@ -439,6 +445,12 @@ export default function DigitalForgeTrainingPage() {
                 See the Starter System
               </Link>
             </div>
+            <p style={{ marginTop: "1.2rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.28)" }}>
+              By purchasing, you agree to our{" "}
+              <Link href="/terms" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Terms of Service</Link>
+              {" "}and{" "}
+              <Link href="/refund-policy" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Refund Policy</Link>.
+            </p>
           </div>
         </div>
       </section>

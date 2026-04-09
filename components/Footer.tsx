@@ -15,6 +15,8 @@ const footerLinks = [
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
     { label: 'Privacy Policy', href: '/privacy-policy' },
+    { label: 'Terms of Service', href: '/terms' },
+    { label: 'Refund Policy', href: '/refund-policy' },
 ];
 
 const services = [
@@ -139,6 +141,14 @@ export default function Footer() {
                     <div className="flex flex-wrap justify-center items-center gap-6">
                         <Link href="/privacy-policy" className="text-sm font-medium text-gray-500 hover:text-[#60a5fa] transition-colors">
                             Privacy Policy
+                        </Link>
+                        <span className="w-1 h-1 rounded-full bg-gray-800"></span>
+                        <Link href="/terms" className="text-sm font-medium text-gray-500 hover:text-[#60a5fa] transition-colors">
+                            Terms of Service
+                        </Link>
+                        <span className="w-1 h-1 rounded-full bg-gray-800"></span>
+                        <Link href="/refund-policy" className="text-sm font-medium text-gray-500 hover:text-[#60a5fa] transition-colors">
+                            Refund Policy
                         </Link>
                         <span className="w-1 h-1 rounded-full bg-gray-800"></span>
                         <Link href="/data-deletion" className="text-sm font-medium text-gray-500 hover:text-[#60a5fa] transition-colors">

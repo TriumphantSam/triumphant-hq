@@ -393,6 +393,12 @@ export default async function DigitalForgeProductsPage() {
             ))}
           </div>
         </div>
+        <p style={{ textAlign: "center", marginTop: "2rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.28)" }}>
+          By purchasing, you agree to our{" "}
+          <Link href="/terms" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Terms of Service</Link>
+          {" "}and{" "}
+          <Link href="/refund-policy" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Refund Policy</Link>.
+        </p>
       </section>
     </div>
   );
