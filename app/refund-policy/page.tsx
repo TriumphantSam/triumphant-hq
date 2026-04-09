@@ -2,12 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-export const metadata = {
-    title: 'Refund Policy | Triumphant Technological Services',
-    description:
-        'Refund Policy for digital products sold by Triumphant Technological Services. Understand your rights and how to request support for failed delivery, broken files, or technical issues.',
-};
-
 const sections = [
     { id: 'overview',          label: 'Overview',           icon: '📄' },
     { id: 'digital-nature',    label: 'Digital Nature',     icon: '💾' },

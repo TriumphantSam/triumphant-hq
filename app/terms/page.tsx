@@ -2,12 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-export const metadata = {
-    title: 'Terms of Service | Triumphant Technological Services',
-    description:
-        'Read the Terms of Service governing your use of this website and the purchase of digital products from Triumphant Technological Services.',
-};
-
 const sections = [
     { id: 'overview',            label: 'Overview',               icon: '📄' },
     { id: 'products',            label: 'Products',               icon: '📦' },
