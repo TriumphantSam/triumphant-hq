@@ -47,9 +47,9 @@
   "status": "published",
   "generationProfile": "smart_balanced_cheap",
   "niche": "workflow automations",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/the-90-success-framework-for-ai-agents_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/the-90-success-framework-for-ai-agents.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1s4a6F-BR6rcqlpdEusZBN__jxxPZCOtI",
   "seo": {
     "primaryKeyword": "AI agent success framework",
     "secondaryKeywords": [
