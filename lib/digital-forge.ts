@@ -34,6 +34,8 @@ export type ForgeProduct = {
   bundlePdfPath?: string;
   driveFolderLink?: string;
   coverImageUrl?: string;
+  priceNgn?: number;
+  currency?: "NGN" | "USD";
   seo?: {
     primaryKeyword?: string;
     secondaryKeywords?: string[];

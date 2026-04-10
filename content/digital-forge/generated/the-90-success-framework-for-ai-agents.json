@@ -15,6 +15,8 @@
     "Template support assets"
   ],
   "pricing": "Digital Forge bundle",
+  "priceNgn": 5000,
+  "currency": "NGN",
   "headline": "Stop Building AI Agents That Fail. Get the Strategic Framework to Guarantee ROI on Every Automation Project",
   "subheadline": "The proven, tool-agnostic system to identify, validate, and deploy high-impact AI agents that save time and scale your business\u2014before you spend a dime on software or a minute on code",
   "problem": "Most buyers do not need more theory about workflow automations. They need a practical path from scattered tools and hype to one usable system that delivers a result",

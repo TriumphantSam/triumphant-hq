@@ -11,11 +11,15 @@ export type CheckoutOffer = {
   deliveryUrl?: string;
 };
 
-const DEFAULT_PRODUCT_PRICE_NGN = Number(process.env.DIGITAL_FORGE_PRODUCT_PRICE_NGN ?? "25000");
+const DEFAULT_PRODUCT_PRICE_NGN = Number(process.env.DIGITAL_FORGE_PRODUCT_PRICE_NGN ?? "3000");
 const DEFAULT_SYSTEM_PRICE_NGN = Number(process.env.DIGITAL_FORGE_SYSTEM_PRICE_NGN ?? "25000");
 const DEFAULT_CURRENCY = (process.env.DIGITAL_FORGE_CHECKOUT_CURRENCY ?? "NGN").toUpperCase() as "NGN" | "USD";
 const SYSTEM_DELIVERY_URL = process.env.DIGITAL_FORGE_SYSTEM_DELIVERY_URL ?? "";
 const PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_PRICE_OVERRIDES_JSON ?? "");
+const LEGACY_SLUG_PRICE_HINTS: Record<string, number> = {
+  // Legacy live slug still used in blog/product links.
+  "beyond-listening-how-to-co-create-your-favorite-au": 3000,
+};
 
 function parsePriceOverrides(raw: string): Record<string, number> {
   if (!raw.trim()) return {};
@@ -42,9 +46,27 @@ export function formatOfferPrice(amount: number, currency: "NGN" | "USD"): strin
   }).format(amount);
 }
 
+function parsePriceFromText(value?: string): number | null {
+  if (!value) return null;
+  const numeric = value.replace(/[^\d.]/g, "");
+  const amount = Number(numeric);
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  return Math.round(amount);
+}
+
 export async function resolveProductOffer(slug: string): Promise<CheckoutOffer | null> {
   const product = await getForgeProduct(slug);
   if (!product) return null;
+  const productCurrency = product.currency === "USD" ? "USD" : DEFAULT_CURRENCY;
+  const productAmount = Number(product.priceNgn);
+  const pricingTextAmount = parsePriceFromText(product.pricing);
+  const legacyHintAmount = LEGACY_SLUG_PRICE_HINTS[slug];
+  const resolvedAmount =
+    PRICE_OVERRIDES[slug] ??
+    (Number.isFinite(productAmount) && productAmount > 0 ? productAmount : null) ??
+    pricingTextAmount ??
+    legacyHintAmount ??
+    DEFAULT_PRODUCT_PRICE_NGN;
 
   return {
     kind: "product",
@@ -52,8 +74,8 @@ export async function resolveProductOffer(slug: string): Promise<CheckoutOffer |
     slug: product.slug,
     title: product.title,
     description: product.promise || product.subheadline || "Instant-access Digital Forge bundle",
-    amount: PRICE_OVERRIDES[slug] ?? DEFAULT_PRODUCT_PRICE_NGN,
-    currency: DEFAULT_CURRENCY,
+    amount: resolvedAmount,
+    currency: productCurrency,
     deliveryUrl: product.driveFolderLink,
   };
 }

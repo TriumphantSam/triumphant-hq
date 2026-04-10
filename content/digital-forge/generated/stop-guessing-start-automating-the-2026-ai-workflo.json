@@ -15,6 +15,8 @@
     "Template support assets"
   ],
   "pricing": "Digital Forge bundle",
+  "priceNgn": 5000,
+  "currency": "NGN",
   "headline": "Stop Guessing, Start Automating: The 2026 AI Workflow Blueprints for Unstoppable Growth",
   "subheadline": "Transform overwhelm into automated success. Leverage GPT-5 and beyond to build profitable, compliant, and scalable AI-driven enterprises, starting today",
   "problem": "Most buyers do not need more theory about ai workflow playbooks. They need a practical path from scattered tools and hype to one usable system that delivers a result",

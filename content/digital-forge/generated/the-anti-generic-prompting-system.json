@@ -15,6 +15,8 @@
     "Template support assets"
   ],
   "pricing": "Digital Forge bundle",
+  "priceNgn": 5000,
+  "currency": "NGN",
   "headline": "The Anti-Generic Prompting System",
   "subheadline": "The Practitioner's Guide to Crafting Strategic, High-Margin AI Outputs That Your Competitors Can't Replicate",
   "problem": "Most buyers do not need more theory about ai tools and prompts. They need a practical path from scattered tools and hype to one usable system that delivers a result",

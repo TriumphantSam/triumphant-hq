@@ -15,6 +15,8 @@
     "Template support assets"
   ],
   "pricing": "Digital Forge bundle",
+  "priceNgn": 5000,
+  "currency": "NGN",
   "headline": "GPT-5 Powered Creator OS: Automate 90% of Your Content, Amplify Your Impact",
   "subheadline": "Leverage GPT-5 to automate 90% of your content creation, amplify your brand's reach, and reclaim control over your digital empire",
   "problem": "Most buyers do not need more theory about creator content systems. They need a practical path from scattered tools and hype to one usable system that delivers a result",
