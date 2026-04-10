@@ -51,9 +51,9 @@
   "status": "published",
   "generationProfile": "pro_forced",
   "niche": "AI Tools and Prompts",
-  "bundleZipPath": "",
-  "bundlePdfPath": "",
-  "driveFolderLink": "",
+  "bundleZipPath": "/root/AgentPrinter/output/bundles/the-answer-engine-os-win-customers-inside-ai-chat_bundle.zip",
+  "bundlePdfPath": "/root/AgentPrinter/output/pdfs/the-answer-engine-os-win-customers-inside-ai-chat.pdf",
+  "driveFolderLink": "https://drive.google.com/drive/folders/1lRSarCA662Sj3pbF7pJqL-jBRCuJQXeD",
   "seo": {
     "primaryKeyword": "AI Tools and Prompts",
     "secondaryKeywords": [
