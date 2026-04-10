@@ -12,7 +12,7 @@ export type CheckoutOffer = {
 };
 
 const DEFAULT_PRODUCT_PRICE_NGN = Number(process.env.DIGITAL_FORGE_PRODUCT_PRICE_NGN ?? "3000");
-const DEFAULT_SYSTEM_PRICE_NGN = Number(process.env.DIGITAL_FORGE_SYSTEM_PRICE_NGN ?? "25000");
+const FIXED_SYSTEM_PRICE_NGN = 15000;
 const DEFAULT_CURRENCY = (process.env.DIGITAL_FORGE_CHECKOUT_CURRENCY ?? "NGN").toUpperCase() as "NGN" | "USD";
 const SYSTEM_DELIVERY_URL = process.env.DIGITAL_FORGE_SYSTEM_DELIVERY_URL ?? "";
 const PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_PRICE_OVERRIDES_JSON ?? "");
@@ -87,7 +87,7 @@ export function resolveSystemOffer(): CheckoutOffer {
     title: "Digital Forge Side Hustle Starter System",
     description:
       "The complete practical toolkit with guide, prompts, templates, launch assets, and operating documents to build and sell your first AI-powered digital product.",
-    amount: PRICE_OVERRIDES["starter-system"] ?? DEFAULT_SYSTEM_PRICE_NGN,
+    amount: FIXED_SYSTEM_PRICE_NGN,
     currency: DEFAULT_CURRENCY,
     deliveryUrl: SYSTEM_DELIVERY_URL,
   };
