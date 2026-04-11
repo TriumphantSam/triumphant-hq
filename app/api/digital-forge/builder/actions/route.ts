@@ -173,8 +173,15 @@ function applyFunnelAction(funnel: FunnelPayload, action: BuilderAction, notes?:
 }
 
 function extractUnknownFieldName(detail: string): string | null {
-  const match = detail.match(/Unknown field name: \"([^\"]+)\"/i);
-  return match?.[1] ?? null;
+  try {
+    const parsed = JSON.parse(detail);
+    const message = parsed.error?.message || "";
+    const match = message.match(/Unknown field name: "([^"]+)"/i) || message.match(/Unknown field name: '([^']+)'/i);
+    return match?.[1] ?? null;
+  } catch {
+    const backupMatch = detail.match(/Unknown field name: \\?['"]([^\\'"]+)\\?['"]/i);
+    return backupMatch?.[1] ?? null;
+  }
 }
 
 async function patchAirtableProduct(recordId: string, product: ForgeProduct): Promise<void> {
