@@ -331,6 +331,23 @@ export default async function DigitalForgeProductsPage() {
                           height: "3px",
                           background: `linear-gradient(90deg, ${color}, transparent)`,
                         }} />
+                        {/* ── Full title reveal on hover (Netflix-style) ── */}
+                        <div className="title-overlay" style={{
+                          position: "absolute",
+                          bottom: 0, left: 0, right: 0,
+                          background: `linear-gradient(to top, rgba(4,6,18,0.97) 0%, rgba(4,6,18,0.75) 70%, transparent 100%)`,
+                          padding: "1.25rem 0.9rem 0.85rem",
+                          pointerEvents: "none",
+                        }}>
+                          <p style={{
+                            color: "#fff",
+                            fontWeight: 800,
+                            fontSize: "0.82rem",
+                            lineHeight: 1.35,
+                            letterSpacing: "-0.01em",
+                            textShadow: "0 1px 6px rgba(0,0,0,0.8)",
+                          }}>{product.title}</p>
+                        </div>
                         {/* Featured badge */}
                         {product.featured && (
                           <div style={{
@@ -529,12 +546,24 @@ export default async function DigitalForgeProductsPage() {
         </div>
       </section>
 
-      {/* ─── HOVER STYLE ─── */}
+      {/* ─── STYLES ─── */}
       <style>{`
         .product-card:hover {
           transform: translateY(-4px);
           box-shadow: 0 16px 48px rgba(0,0,0,0.4);
           border-color: rgba(255,255,255,0.16);
+        }
+        .title-overlay {
+          opacity: 0;
+          transform: translateY(6px);
+          transition: opacity 0.28s ease, transform 0.28s ease;
+        }
+        .product-card:hover .title-overlay {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        @media (hover: none) {
+          .title-overlay { display: none; }
         }
       `}</style>
     </div>
