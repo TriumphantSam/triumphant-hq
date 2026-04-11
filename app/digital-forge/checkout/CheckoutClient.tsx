@@ -22,6 +22,7 @@ export default function CheckoutClient({
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [provider, setProvider] = useState<"flutterwave" | "lemonsqueezy">("flutterwave");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,7 +35,12 @@ export default function CheckoutClient({
 
     setSubmitting(true);
     try {
-      const response = await fetch("/api/digital-forge/flutterwave/checkout", {
+      const checkoutRoute =
+        provider === "lemonsqueezy"
+          ? "/api/digital-forge/lemonsqueezy/checkout"
+          : "/api/digital-forge/flutterwave/checkout";
+
+      const response = await fetch(checkoutRoute, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,7 +98,10 @@ export default function CheckoutClient({
             color: "#fff",
             padding: "0.9rem 1rem",
             outline: "none",
+            transition: "border-color 0.2s ease",
           }}
+          onFocus={(e) => (e.target.style.borderColor = "rgba(0,204,255,0.5)")}
+          onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.14)")}
         />
       </div>
 
@@ -120,7 +129,10 @@ export default function CheckoutClient({
             color: "#fff",
             padding: "0.9rem 1rem",
             outline: "none",
+            transition: "border-color 0.2s ease",
           }}
+          onFocus={(e) => (e.target.style.borderColor = "rgba(0,204,255,0.5)")}
+          onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.14)")}
         />
       </div>
 
@@ -147,8 +159,107 @@ export default function CheckoutClient({
             color: "#fff",
             padding: "0.9rem 1rem",
             outline: "none",
+            transition: "border-color 0.2s ease",
           }}
+          onFocus={(e) => (e.target.style.borderColor = "rgba(0,204,255,0.5)")}
+          onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.14)")}
         />
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gap: "0.8rem",
+          marginTop: "0.5rem",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div style={{ height: "1px", background: "rgba(255,255,255,0.1)", flex: 1 }} />
+          <p
+            style={{
+              color: "rgba(255,255,255,0.72)",
+              fontSize: "0.84rem",
+              fontWeight: 700,
+              margin: 0,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+            }}
+          >
+            Choose payment method
+          </p>
+          <div style={{ height: "1px", background: "rgba(255,255,255,0.1)", flex: 1 }} />
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gap: "0.6rem",
+          }}
+        >
+          {[
+            { 
+              id: "flutterwave", 
+              label: "Local & African Cards", 
+              desc: "Pay securely in Naira (Cards, USSD, Bank Transfer)", 
+              icon: "🇳🇬",
+              activeColor: "rgba(255, 120, 0, 0.14)",
+              activeBorder: "rgba(255, 120, 0, 0.7)",
+              activeText: "#FF9944"
+            },
+            { 
+              id: "lemonsqueezy", 
+              label: "Global Cards & Apple Pay", 
+              desc: "International payments processing (USD & others)", 
+              icon: "🌍",
+              activeColor: "rgba(255, 194, 51, 0.12)",
+              activeBorder: "rgba(255, 194, 51, 0.7)",
+              activeText: "#FFD055"
+            },
+          ].map((item) => {
+            const isActive = provider === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setProvider(item.id as "flutterwave" | "lemonsqueezy")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  borderRadius: 14,
+                  border: isActive ? `1px solid ${item.activeBorder}` : "1px solid rgba(255,255,255,0.14)",
+                  background: isActive ? item.activeColor : "rgba(255,255,255,0.03)",
+                  padding: "1rem",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  transition: "all 0.25s ease-in-out",
+                  transform: isActive ? "translateY(-2px)" : "translateY(0)",
+                  boxShadow: isActive ? `0 6px 20px ${item.activeColor}` : "none",
+                }}
+              >
+                <div style={{ fontSize: "1.6rem" }}>{item.icon}</div>
+                <div>
+                  <div style={{ 
+                    color: isActive ? item.activeText : "rgba(255,255,255,0.9)", 
+                    fontSize: "0.96rem", 
+                    fontWeight: 800,
+                    marginBottom: "0.15rem"
+                  }}>
+                    {item.label}
+                  </div>
+                  <div style={{ 
+                    color: isActive ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.4)", 
+                    fontSize: "0.8rem", 
+                    fontWeight: 500 
+                  }}>
+                    {item.desc}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {error ? (
@@ -171,33 +282,51 @@ export default function CheckoutClient({
         type="submit"
         disabled={submitting}
         style={{
+          marginTop: "0.5rem",
           border: "none",
           borderRadius: 14,
-          padding: "1rem 1.1rem",
-          background: "linear-gradient(135deg, #0066FF, #00CCFF)",
-          color: "#fff",
-          fontWeight: 800,
-          fontSize: "0.92rem",
-          letterSpacing: "0.08em",
+          padding: "1.1rem 1.1rem",
+          background: provider === "lemonsqueezy" 
+            ? "linear-gradient(135deg, #E69B00, #FFC233)" 
+            : "linear-gradient(135deg, #D45000, #FF6B00)",
+          color: provider === "lemonsqueezy" ? "#000" : "#fff",
+          fontWeight: 900,
+          fontSize: "0.95rem",
+          letterSpacing: "0.05em",
           textTransform: "uppercase",
           cursor: submitting ? "wait" : "pointer",
           opacity: submitting ? 0.75 : 1,
-          boxShadow: "0 0 34px rgba(0,102,255,0.38)",
+          boxShadow: provider === "lemonsqueezy" 
+            ? "0 0 34px rgba(255, 194, 51, 0.3)" 
+            : "0 0 34px rgba(255, 107, 0, 0.38)",
+          transition: "all 0.3s ease",
         }}
       >
-        {submitting ? "Opening Secure Checkout..." : `Continue to pay ${priceLabel}`}
+        {submitting ? "Opening Secure Checkout..." : 
+          provider === "lemonsqueezy" ? "Continue to international checkout" : "Continue to secure local payment"
+        }
       </button>
 
-      <p
-        style={{
-          color: "rgba(255,255,255,0.42)",
-          fontSize: "0.78rem",
-          lineHeight: 1.7,
-          margin: 0,
-        }}
-      >
-        Your payment is processed on Flutterwave. After successful verification, we automatically email your access details for <strong style={{ color: "rgba(255,255,255,0.74)" }}>{title}</strong>.
-      </p>
+      <div style={{ textAlign: "center", marginTop: "0.2rem" }}>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.42)",
+            fontSize: "0.8rem",
+            lineHeight: 1.6,
+            margin: 0,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.4rem"
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Processed via PCI-DSS compliant secure checkout.
+        </p>
+      </div>
     </form>
   );
 }
+
