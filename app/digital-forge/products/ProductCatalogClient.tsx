@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ForgeProduct } from "@/lib/digital-forge";
 
@@ -26,6 +26,24 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "price-asc" | "price-desc" | "a-z">("newest");
+
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const sortRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (categoryRef.current && !categoryRef.current.contains(event.target as Node)) {
+        setIsCategoryOpen(false);
+      }
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const categories = useMemo(() => {
     const cats = new Set(products.map(p => p.category).filter(Boolean));
@@ -159,66 +177,163 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
           </div>
 
           {/* Filters & Sorting */}
-          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-            {/* Category Dropdown */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap", zIndex: 20 }}>
+            {/* Category Custom Dropdown */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", position: "relative" }} ref={categoryRef}>
               <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", fontWeight: 600 }}>Category:</span>
-              <div style={{ position: "relative" }}>
-                <select 
-                  value={activeCategory}
-                  onChange={(e) => setActiveCategory(e.target.value)}
-                  style={{
-                    background: "rgba(0,0,0,0.4)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: "8px",
-                    padding: "0.7rem 2.5rem 0.7rem 1rem",
-                    color: activeCategory === "All" ? "#00CCFF" : getCategoryColor(activeCategory),
-                    outline: "none",
-                    fontSize: "0.9rem",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    appearance: "none",
-                    maxWidth: "240px",
-                    textOverflow: "ellipsis",
-                  }}
-                >
+              <button 
+                type="button"
+                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                style={{
+                  background: "rgba(0,0,0,0.4)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: "8px",
+                  padding: "0.7rem 2.5rem 0.7rem 1rem",
+                  color: activeCategory === "All" ? "#00CCFF" : getCategoryColor(activeCategory),
+                  outline: "none",
+                  fontSize: "0.9rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  minWidth: "200px",
+                  position: "relative"
+                }}
+              >
+                <span>{activeCategory.length > 30 ? activeCategory.substring(0, 30) + "..." : activeCategory}</span>
+                <span style={{ position: "absolute", right: "1rem", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", transform: isCategoryOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▼</span>
+              </button>
+
+              {isCategoryOpen && (
+                <div style={{
+                  position: "absolute",
+                  top: "calc(100% + 8px)",
+                  right: 0,
+                  width: "100%",
+                  minWidth: "240px",
+                  background: "#090d19",
+                  border: "1px solid rgba(0,204,255,0.2)",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
+                  zIndex: 50,
+                  maxHeight: "350px",
+                  overflowY: "auto"
+                }}>
                   {categories.map(cat => {
-                    const label = cat.length > 35 ? cat.substring(0, 35) + "..." : cat;
-                    return <option key={cat} value={cat}>{label}</option>;
+                    const isActive = activeCategory === cat;
+                    const catColor = cat === "All" ? "#00CCFF" : getCategoryColor(cat);
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => { setActiveCategory(cat); setIsCategoryOpen(false); }}
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          textAlign: "left",
+                          padding: "0.8rem 1rem",
+                          background: isActive ? "rgba(0,204,255,0.1)" : "transparent",
+                          color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
+                          border: "none",
+                          borderBottom: "1px solid rgba(255,255,255,0.05)",
+                          cursor: "pointer",
+                          fontSize: "0.85rem",
+                          fontWeight: isActive ? 700 : 500,
+                          transition: "all 0.2s"
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,204,255,0.1)"; e.currentTarget.style.color = "#fff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = isActive ? "rgba(0,204,255,0.1)" : "transparent"; e.currentTarget.style.color = isActive ? "#fff" : "rgba(255,255,255,0.7)"; }}
+                      >
+                        <span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: catColor, marginRight: "8px" }} />
+                        {cat}
+                      </button>
+                    )
                   })}
-                </select>
-                <div style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem" }}>▼</div>
-              </div>
+                </div>
+              )}
             </div>
 
-            {/* Sort Dropdown */}
-            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
+            {/* Sort Custom Dropdown */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", position: "relative" }} ref={sortRef}>
               <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", fontWeight: 600 }}>Sort by:</span>
-              <div style={{ position: "relative" }}>
-                <select 
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as any)}
-                  style={{
-                    background: "rgba(0,0,0,0.4)",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    borderRadius: "8px",
-                    padding: "0.7rem 2.5rem 0.7rem 1rem",
-                    color: "#fff",
-                    outline: "none",
-                    fontSize: "0.9rem",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    appearance: "none",
-                  }}
-                >
-                  <option value="newest">Latest Published</option>
-                  <option value="oldest">Oldest First</option>
-                  <option value="price-desc">Price (High to Low)</option>
-                  <option value="price-asc">Price (Low to High)</option>
-                  <option value="a-z">Name (A-Z)</option>
-                </select>
-                <div style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem" }}>▼</div>
-              </div>
+              <button 
+                type="button"
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                style={{
+                  background: "rgba(0,0,0,0.4)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: "8px",
+                  padding: "0.7rem 2.5rem 0.7rem 1rem",
+                  color: "#fff",
+                  outline: "none",
+                  fontSize: "0.9rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  minWidth: "180px",
+                  position: "relative"
+                }}
+              >
+                <span>
+                  {sortBy === "newest" ? "Latest Published" : 
+                   sortBy === "oldest" ? "Oldest First" : 
+                   sortBy === "price-desc" ? "Price (High to Low)" : 
+                   sortBy === "price-asc" ? "Price (Low to High)" : "Name (A-Z)"}
+                </span>
+                <span style={{ position: "absolute", right: "1rem", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", transform: isSortOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▼</span>
+              </button>
+
+              {isSortOpen && (
+                <div style={{
+                  position: "absolute",
+                  top: "calc(100% + 8px)",
+                  right: 0,
+                  width: "100%",
+                  minWidth: "180px",
+                  background: "#090d19",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
+                  zIndex: 50
+                }}>
+                  {[
+                    { val: "newest", label: "Latest Published" },
+                    { val: "oldest", label: "Oldest First" },
+                    { val: "price-desc", label: "Price (High to Low)" },
+                    { val: "price-asc", label: "Price (Low to High)" },
+                    { val: "a-z", label: "Name (A-Z)" }
+                  ].map(opt => {
+                    const isActive = sortBy === opt.val;
+                    return (
+                      <button
+                        key={opt.val}
+                        onClick={() => { setSortBy(opt.val as any); setIsSortOpen(false); }}
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          textAlign: "left",
+                          padding: "0.8rem 1rem",
+                          background: isActive ? "rgba(255,255,255,0.05)" : "transparent",
+                          color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
+                          border: "none",
+                          borderBottom: "1px solid rgba(255,255,255,0.05)",
+                          cursor: "pointer",
+                          fontSize: "0.85rem",
+                          fontWeight: isActive ? 700 : 500,
+                          transition: "all 0.2s"
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = isActive ? "rgba(255,255,255,0.05)" : "transparent"; }}
+                      >
+                        {opt.label}
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
