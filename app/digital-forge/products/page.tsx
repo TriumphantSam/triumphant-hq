@@ -43,15 +43,31 @@ function getCoverWords(title: string): string {
     .join(" ");
 }
 
-/** Category-specific decorative symbol for the cover */
-function getCoverPattern(category: string): string {
+/** Large emoji icon for the cover tile */
+function getCoverEmoji(category: string): string {
   const cat = category.toLowerCase();
-  if (cat.includes("audio") || cat.includes("book")) return "◈ ◈ ◈";
-  if (cat.includes("notion") || cat.includes("template")) return "▦ ▦ ▦";
-  if (cat.includes("social") || cat.includes("creator") || cat.includes("faceless")) return "◆ ◆ ◆";
-  if (cat.includes("workflow") || cat.includes("automat")) return "⟶ ⟶ ⟶";
-  if (cat.includes("agent") || cat.includes("agentic")) return "◉ ◉ ◉";
-  return "✦ ✦ ✦";
+  if (cat.includes("audio") || cat.includes("book")) return "🎧";
+  if (cat.includes("notion") || cat.includes("template")) return "🗂";
+  if (cat.includes("social") || cat.includes("faceless")) return "📈";
+  if (cat.includes("creator") || cat.includes("content")) return "🎬";
+  if (cat.includes("workflow") || cat.includes("automat")) return "⚡";
+  if (cat.includes("agent") || cat.includes("agentic")) return "🔮";
+  if (cat.includes("prompt") || cat.includes("tool")) return "🤖";
+  return "🧠";
+}
+
+/** Short product type label for the cover tile */
+function getCoverLabel(category: string): string {
+  const cat = category.toLowerCase();
+  if (cat.includes("audio") || cat.includes("book")) return "Audio Guide";
+  if (cat.includes("notion") || cat.includes("template")) return "Template OS";
+  if (cat.includes("social") || cat.includes("faceless")) return "Growth System";
+  if (cat.includes("creator") || cat.includes("content")) return "Creator Toolkit";
+  if (cat.includes("workflow") || cat.includes("automat")) return "Workflow OS";
+  if (cat.includes("agent") || cat.includes("agentic")) return "AI Agent System";
+  if (cat.includes("prompt") || cat.includes("tool")) return "AI Toolkit";
+  if (cat.includes("course")) return "Skills Course";
+  return "AI Playbook";
 }
 
 function formatPrice(priceNgn?: number): string {
@@ -238,9 +254,8 @@ export default async function DigitalForgeProductsPage() {
             >
               {forgeProducts.map((product) => {
                 const color = getColor(product.category);
-                const price = formatPrice(product.priceNgn);
-                const coverWords = getCoverWords(product.title);
-                const pattern = getCoverPattern(product.category);
+                const coverEmoji = getCoverEmoji(product.category);
+                const coverLabel = getCoverLabel(product.category);
 
                 return (
                   <div
@@ -282,25 +297,34 @@ export default async function DigitalForgeProductsPage() {
                           background: `radial-gradient(circle, ${color}2a 0%, transparent 65%)`,
                           pointerEvents: "none",
                         }} />
-                        {/* DIGITAL FORGE label */}
+                        {/* DIGITAL FORGE label top-left */}
                         <div style={{
                           position: "absolute", top: "0.65rem", left: "0.65rem",
                           fontSize: "0.52rem", fontWeight: 800,
                           color: `${color}BB`, letterSpacing: "0.22em",
                           textTransform: "uppercase",
                         }}>Digital Forge</div>
-                        {/* Pattern symbols */}
+                        {/* Centre: big emoji + label */}
                         <div style={{
-                          position: "absolute", top: "0.8rem", right: "0.9rem",
-                          color: `${color}55`, fontSize: "0.85rem", letterSpacing: "0.4em",
-                        }}>{pattern}</div>
-                        {/* Product name on tile */}
-                        <p style={{
-                          position: "relative", color: "#fff", fontWeight: 900,
-                          fontSize: "clamp(0.9rem, 2vw, 1.1rem)", lineHeight: 1.2,
-                          letterSpacing: "-0.01em", maxWidth: "88%",
-                          textShadow: "0 2px 14px rgba(0,0,0,0.9)",
-                        }}>{coverWords}</p>
+                          position: "absolute",
+                          inset: 0,
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "0.4rem",
+                          pointerEvents: "none",
+                        }}>
+                          <span style={{ fontSize: "2.4rem", lineHeight: 1 }}>{coverEmoji}</span>
+                          <span style={{
+                            color: `${color}EE`,
+                            fontSize: "0.65rem",
+                            fontWeight: 800,
+                            letterSpacing: "0.18em",
+                            textTransform: "uppercase",
+                            textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+                          }}>{coverLabel}</span>
+                        </div>
                         {/* Accent line */}
                         <div style={{
                           position: "absolute", bottom: 0, left: 0, right: 0,
@@ -378,67 +402,47 @@ export default async function DigitalForgeProductsPage() {
                         {product.format}
                       </p>
 
-                      {/* Price + CTA row */}
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          gap: "0.5rem",
-                          marginTop: "0.25rem",
-                          paddingTop: "0.75rem",
-                          borderTop: "1px solid rgba(255,255,255,0.07)",
-                        }}
-                      >
-                        <span
-                          style={{
-                            color: "#fff",
-                            fontWeight: 900,
-                            fontSize: "1.15rem",
-                            letterSpacing: "-0.01em",
-                          }}
-                        >
-                          {price}
-                        </span>
-
+                      {/* CTA row — no price, full-width Get Access */}
+                      <div style={{
+                        marginTop: "0.25rem",
+                        paddingTop: "0.75rem",
+                        borderTop: "1px solid rgba(255,255,255,0.07)",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.5rem",
+                      }}>
                         <Link
                           href={checkoutUrl(product.slug)}
                           id={`buy-${product.slug}`}
                           style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "0.4rem",
-                            padding: "0.55rem 1.1rem",
-                            background: `linear-gradient(135deg, ${color}, ${color}cc)`,
+                            display: "block",
+                            textAlign: "center",
+                            padding: "0.6rem 1rem",
+                            background: `linear-gradient(135deg, ${color}, ${color}bb)`,
                             color: "#fff",
                             textDecoration: "none",
                             fontWeight: 800,
-                            fontSize: "0.8rem",
+                            fontSize: "0.82rem",
                             letterSpacing: "0.06em",
                             textTransform: "uppercase",
                             borderRadius: "8px",
-                            boxShadow: `0 0 16px ${color}44`,
-                            whiteSpace: "nowrap",
-                            flexShrink: 0,
+                            boxShadow: `0 0 16px ${color}33`,
                           }}
                         >
-                          Buy Now
+                          Get Access →
+                        </Link>
+                        <Link
+                          href={`/digital-forge/products/${product.slug}`}
+                          style={{
+                            color: "rgba(255,255,255,0.3)",
+                            fontSize: "0.73rem",
+                            textDecoration: "none",
+                            textAlign: "center",
+                          }}
+                        >
+                          View full details
                         </Link>
                       </div>
-
-                      {/* View details link */}
-                      <Link
-                        href={`/digital-forge/products/${product.slug}`}
-                        style={{
-                          color: "rgba(255,255,255,0.35)",
-                          fontSize: "0.76rem",
-                          textDecoration: "none",
-                          textAlign: "center",
-                          paddingTop: "0.25rem",
-                        }}
-                      >
-                        View full details →
-                      </Link>
                     </div>
                   </div>
                 );
