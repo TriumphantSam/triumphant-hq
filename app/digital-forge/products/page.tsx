@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { getForgeProducts } from "@/lib/digital-forge";
 
 export const metadata = {
@@ -9,28 +8,6 @@ export const metadata = {
 };
 
 const PRICE_NGN = 5000;
-
-// Category → cover image map
-const CATEGORY_COVER: Record<string, string> = {
-  "AI Systems": "/covers/digital-forge/ai-systems.png",
-  "Workflow Design": "/covers/digital-forge/workflow-design.png",
-  "Digital Products": "/covers/digital-forge/digital-products.png",
-  "Social Media Growth & Monetization": "/covers/digital-forge/social-growth.png",
-  "agentic AI solutions": "/covers/digital-forge/ai-agents.png",
-  "audiobooks and audio products": "/covers/digital-forge/audio-content.png",
-  "Creator Content Systems": "/covers/digital-forge/creator-systems.png",
-  // AgentPrinter generated categories
-  "AI skills courses for non-technical professionals": "/covers/digital-forge/ai-systems.png",
-  "creator content systems": "/covers/digital-forge/creator-systems.png",
-  "Notion templates": "/covers/digital-forge/workflow-design.png",
-  "AI workflow playbooks": "/covers/digital-forge/ai-systems.png",
-  "AI skills courses": "/covers/digital-forge/ai-systems.png",
-  "AI productivity tools": "/covers/digital-forge/ai-agents.png",
-  "workflow automations": "/covers/digital-forge/workflow-design.png",
-  "AI Tools and Prompts": "/covers/digital-forge/ai-agents.png",
-  "AI tools and prompts": "/covers/digital-forge/ai-agents.png",
-  "audiobook content": "/covers/digital-forge/audio-content.png",
-};
 
 const CATEGORY_COLOR: Record<string, string> = {
   "AI Systems": "#0066FF",
@@ -52,12 +29,29 @@ const CATEGORY_COLOR: Record<string, string> = {
   "audiobook content": "#ec4899",
 };
 
-function getCover(category: string): string {
-  return CATEGORY_COVER[category] ?? "/covers/digital-forge/ai-systems.png";
-}
-
 function getColor(category: string): string {
   return CATEGORY_COLOR[category] ?? "#0066FF";
+}
+
+/** Returns first 3 meaningful words of a title for the cover tile */
+function getCoverWords(title: string): string {
+  return title
+    .replace(/[^a-zA-Z0-9 ]/g, " ")
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 3)
+    .join(" ");
+}
+
+/** Category-specific decorative symbol for the cover */
+function getCoverPattern(category: string): string {
+  const cat = category.toLowerCase();
+  if (cat.includes("audio") || cat.includes("book")) return "◈ ◈ ◈";
+  if (cat.includes("notion") || cat.includes("template")) return "▦ ▦ ▦";
+  if (cat.includes("social") || cat.includes("creator") || cat.includes("faceless")) return "◆ ◆ ◆";
+  if (cat.includes("workflow") || cat.includes("automat")) return "⟶ ⟶ ⟶";
+  if (cat.includes("agent") || cat.includes("agentic")) return "◉ ◉ ◉";
+  return "✦ ✦ ✦";
 }
 
 function formatPrice(priceNgn?: number): string {
@@ -68,6 +62,7 @@ function formatPrice(priceNgn?: number): string {
 function checkoutUrl(slug: string): string {
   return `/digital-forge/checkout?offer=${slug}`;
 }
+
 
 export default async function DigitalForgeProductsPage() {
   const forgeProducts = await getForgeProducts();
@@ -242,9 +237,10 @@ export default async function DigitalForgeProductsPage() {
               }}
             >
               {forgeProducts.map((product) => {
-                const cover = getCover(product.category);
                 const color = getColor(product.category);
                 const price = formatPrice(product.priceNgn);
+                const coverWords = getCoverWords(product.title);
+                const pattern = getCoverPattern(product.category);
 
                 return (
                   <div
@@ -260,7 +256,7 @@ export default async function DigitalForgeProductsPage() {
                     }}
                     className="product-card"
                   >
-                    {/* Cover image */}
+                    {/* ── Dynamic CSS Cover (works for every product automatically) ── */}
                     <Link
                       href={`/digital-forge/products/${product.slug}`}
                       style={{ textDecoration: "none", display: "block", flexShrink: 0 }}
@@ -271,55 +267,54 @@ export default async function DigitalForgeProductsPage() {
                           width: "100%",
                           aspectRatio: "5/3",
                           overflow: "hidden",
-                          background: `${color}18`,
+                          background: `linear-gradient(135deg, #06091a 0%, ${color}1a 60%, ${color}33 100%)`,
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "flex-start",
+                          justifyContent: "flex-end",
+                          padding: "1rem",
                         }}
                       >
-                        <Image
-                          src={cover}
-                          alt={product.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 320px"
-                          style={{ objectFit: "cover", objectPosition: "center top" }}
-                        />
-                        {/* Category badge on image */}
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "0.65rem",
-                            left: "0.65rem",
-                            background: `${color}DD`,
-                            borderRadius: "6px",
-                            padding: "0.2rem 0.55rem",
-                            fontSize: "0.65rem",
-                            fontWeight: 700,
-                            color: "#fff",
-                            letterSpacing: "0.08em",
-                            textTransform: "uppercase",
-                            backdropFilter: "blur(4px)",
-                          }}
-                        >
-                          {product.category.length > 24
-                            ? product.category.slice(0, 22) + "…"
-                            : product.category}
-                        </div>
+                        {/* Glow orb */}
+                        <div style={{
+                          position: "absolute", top: "-20%", right: "-10%",
+                          width: "70%", height: "130%",
+                          background: `radial-gradient(circle, ${color}2a 0%, transparent 65%)`,
+                          pointerEvents: "none",
+                        }} />
+                        {/* DIGITAL FORGE label */}
+                        <div style={{
+                          position: "absolute", top: "0.65rem", left: "0.65rem",
+                          fontSize: "0.52rem", fontWeight: 800,
+                          color: `${color}BB`, letterSpacing: "0.22em",
+                          textTransform: "uppercase",
+                        }}>Digital Forge</div>
+                        {/* Pattern symbols */}
+                        <div style={{
+                          position: "absolute", top: "0.8rem", right: "0.9rem",
+                          color: `${color}55`, fontSize: "0.85rem", letterSpacing: "0.4em",
+                        }}>{pattern}</div>
+                        {/* Product name on tile */}
+                        <p style={{
+                          position: "relative", color: "#fff", fontWeight: 900,
+                          fontSize: "clamp(0.9rem, 2vw, 1.1rem)", lineHeight: 1.2,
+                          letterSpacing: "-0.01em", maxWidth: "88%",
+                          textShadow: "0 2px 14px rgba(0,0,0,0.9)",
+                        }}>{coverWords}</p>
+                        {/* Accent line */}
+                        <div style={{
+                          position: "absolute", bottom: 0, left: 0, right: 0,
+                          height: "3px",
+                          background: `linear-gradient(90deg, ${color}, transparent)`,
+                        }} />
+                        {/* Featured badge */}
                         {product.featured && (
-                          <div
-                            style={{
-                              position: "absolute",
-                              top: "0.65rem",
-                              right: "0.65rem",
-                              background: "rgba(255,204,0,0.9)",
-                              borderRadius: "6px",
-                              padding: "0.2rem 0.55rem",
-                              fontSize: "0.62rem",
-                              fontWeight: 800,
-                              color: "#000",
-                              letterSpacing: "0.1em",
-                              textTransform: "uppercase",
-                            }}
-                          >
-                            ★ Featured
-                          </div>
+                          <div style={{
+                            position: "absolute", top: "0.65rem", right: "0.65rem",
+                            background: "rgba(255,204,0,0.92)", borderRadius: "6px",
+                            padding: "0.2rem 0.55rem", fontSize: "0.62rem", fontWeight: 800,
+                            color: "#000", letterSpacing: "0.1em", textTransform: "uppercase",
+                          }}>★ Featured</div>
                         )}
                       </div>
                     </Link>
