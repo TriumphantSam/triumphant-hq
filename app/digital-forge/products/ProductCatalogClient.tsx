@@ -132,14 +132,14 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
           padding: "1.5rem"
         }}
       >
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", justifyContent: "space-between", alignItems: "center" }}>
           
           {/* Search Input */}
           <div style={{ flex: "1 1 300px", position: "relative" }}>
             <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.4)" }}>🔍</span>
             <input 
               type="text" 
-              placeholder="Search playbooks, tools, or goals..." 
+              placeholder="Search products by name or promise..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -158,62 +158,69 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
             />
           </div>
 
-          {/* Sort Dropdown */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
-            <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", fontWeight: 600 }}>Sort by:</span>
-            <div style={{ position: "relative" }}>
-              <select 
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                style={{
-                  background: "rgba(0,0,0,0.4)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: "8px",
-                  padding: "0.7rem 2.5rem 0.7rem 1rem",
-                  color: "#fff",
-                  outline: "none",
-                  fontSize: "0.9rem",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  appearance: "none",
-                }}
-              >
-                <option value="newest">Latest Published</option>
-                <option value="oldest">Oldest First</option>
-                <option value="price-desc">Price (High to Low)</option>
-                <option value="price-asc">Price (Low to High)</option>
-                <option value="a-z">Name (A-Z)</option>
-              </select>
-              <div style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem" }}>▼</div>
+          {/* Filters & Sorting */}
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
+            {/* Category Dropdown */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
+              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", fontWeight: 600 }}>Category:</span>
+              <div style={{ position: "relative" }}>
+                <select 
+                  value={activeCategory}
+                  onChange={(e) => setActiveCategory(e.target.value)}
+                  style={{
+                    background: "rgba(0,0,0,0.4)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: "8px",
+                    padding: "0.7rem 2.5rem 0.7rem 1rem",
+                    color: activeCategory === "All" ? "#00CCFF" : getCategoryColor(activeCategory),
+                    outline: "none",
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    appearance: "none",
+                    maxWidth: "240px",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {categories.map(cat => {
+                    const label = cat.length > 35 ? cat.substring(0, 35) + "..." : cat;
+                    return <option key={cat} value={cat}>{label}</option>;
+                  })}
+                </select>
+                <div style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem" }}>▼</div>
+              </div>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
+              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", fontWeight: 600 }}>Sort by:</span>
+              <div style={{ position: "relative" }}>
+                <select 
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  style={{
+                    background: "rgba(0,0,0,0.4)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    borderRadius: "8px",
+                    padding: "0.7rem 2.5rem 0.7rem 1rem",
+                    color: "#fff",
+                    outline: "none",
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    appearance: "none",
+                  }}
+                >
+                  <option value="newest">Latest Published</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="price-desc">Price (High to Low)</option>
+                  <option value="price-asc">Price (Low to High)</option>
+                  <option value="a-z">Name (A-Z)</option>
+                </select>
+                <div style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem" }}>▼</div>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Category Pills */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem" }}>
-          {categories.map(cat => {
-            const isActive = activeCategory === cat;
-            const accent = cat === "All" ? "#00CCFF" : getCategoryColor(cat);
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                style={{
-                  background: isActive ? `${accent}22` : "transparent",
-                  border: `1px solid ${isActive ? accent : "rgba(255,255,255,0.15)"}`,
-                  color: isActive ? accent : "rgba(255,255,255,0.6)",
-                  borderRadius: "99px",
-                  padding: "0.4rem 1rem",
-                  fontSize: "0.82rem",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "all 0.2s"
-                }}
-              >
-                {cat}
-              </button>
-            );
-          })}
         </div>
       </div>
 
