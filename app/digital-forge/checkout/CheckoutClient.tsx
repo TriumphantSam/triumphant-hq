@@ -8,6 +8,7 @@ type CheckoutClientProps = {
   slug?: string;
   title: string;
   priceLabel: string;
+  usdPriceLabel?: string;
 };
 
 export default function CheckoutClient({
@@ -16,6 +17,7 @@ export default function CheckoutClient({
   slug,
   title,
   priceLabel,
+  usdPriceLabel,
 }: CheckoutClientProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -303,7 +305,7 @@ export default function CheckoutClient({
         }}
       >
         {submitting ? "Opening Secure Checkout..." : 
-          provider === "lemonsqueezy" ? "Continue to international checkout" : "Continue to secure local payment"
+          provider === "lemonsqueezy" ? `Pay ${usdPriceLabel || "$10.00"} via international checkout` : `Pay ${priceLabel} via secure local checkout`
         }
       </button>
 

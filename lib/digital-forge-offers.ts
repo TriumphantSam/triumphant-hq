@@ -106,3 +106,14 @@ export function resolveSystemOffer(): CheckoutOffer {
     deliveryUrl: SYSTEM_DELIVERY_URL,
   };
 }
+
+const USD_PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_USD_PRICE_OVERRIDES_JSON ?? "");
+
+export function resolveUsdPriceLabel(offerKey: string, offerKind: string): string {
+  if (offerKind === "system" || offerKey === "starter-system") {
+    return "$30.00";
+  }
+  const override = USD_PRICE_OVERRIDES[offerKey];
+  if (override) return `$${override.toFixed(2)}`;
+  return "$10.00";
+}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CheckoutClient from "./CheckoutClient";
-import { formatOfferPrice, resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { formatOfferPrice, resolveProductOffer, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
 type CheckoutPageProps = {
   searchParams: Promise<{
@@ -26,6 +26,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   if (!offer) notFound();
 
   const priceLabel = formatOfferPrice(offer.amount, offer.currency);
+  const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind);
 
   return (
     <div className="min-h-screen pb-24">
@@ -189,6 +190,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 slug={offer.slug}
                 title={offer.title}
                 priceLabel={priceLabel}
+                usdPriceLabel={usdPriceLabel}
               />
             </div>
           </div>
