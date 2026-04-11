@@ -35,6 +35,44 @@ function parseStringOverrides(raw: string): Record<string, string> {
   }
 }
 
+/**
+ * Resolves a delivery URL for a given slug.
+ * Tries an exact match first, then falls back to a prefix match.
+ * This handles cases where Airtable truncates long slugs differently
+ * than what is stored in the override map.
+ */
+export function resolveDeliveryUrl(slug: string, fallback?: string): string | undefined {
+  // 1. Exact match
+  if (DELIVERY_URL_OVERRIDES[slug]) return DELIVERY_URL_OVERRIDES[slug];
+
+  // 2. Prefix match: check if any override key is a prefix of the incoming slug
+  //    e.g. override key "flowstate-engine-the-ai-that-fights-your-meetings"
+  //    matches incoming slug "flowstate-engine-the-ai-that-fights-your-meeting"
+  const keys = Object.keys(DELIVERY_URL_OVERRIDES);
+  for (const key of keys) {
+    if (slug.startsWith(key) || key.startsWith(slug)) {
+      return DELIVERY_URL_OVERRIDES[key];
+    }
+  }
+
+  // 3. Word-overlap fallback: find key with most shared words
+  const slugWords = slug.split("-").filter(Boolean);
+  let bestKey: string | undefined;
+  let bestScore = 0;
+  for (const key of keys) {
+    const keyWords = key.split("-").filter(Boolean);
+    const shared = slugWords.filter(w => keyWords.includes(w)).length;
+    const score = shared / Math.max(slugWords.length, keyWords.length);
+    if (score > 0.75 && score > bestScore) {
+      bestScore = score;
+      bestKey = key;
+    }
+  }
+  if (bestKey) return DELIVERY_URL_OVERRIDES[bestKey];
+
+  return fallback;
+}
+
 function parsePriceOverrides(raw: string): Record<string, number> {
   if (!raw.trim()) return {};
 
@@ -90,7 +128,7 @@ export async function resolveProductOffer(slug: string): Promise<CheckoutOffer |
     description: product.promise || product.subheadline || "Instant-access Digital Forge bundle",
     amount: resolvedAmount,
     currency: productCurrency,
-    deliveryUrl: DELIVERY_URL_OVERRIDES[slug] ?? product.driveFolderLink,
+    deliveryUrl: resolveDeliveryUrl(slug, product.driveFolderLink),
   };
 }
 
