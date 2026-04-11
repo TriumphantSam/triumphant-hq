@@ -16,10 +16,24 @@ const FIXED_SYSTEM_PRICE_NGN = 15000;
 const DEFAULT_CURRENCY = (process.env.DIGITAL_FORGE_CHECKOUT_CURRENCY ?? "NGN").toUpperCase() as "NGN" | "USD";
 const SYSTEM_DELIVERY_URL = process.env.DIGITAL_FORGE_SYSTEM_DELIVERY_URL ?? "";
 const PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_PRICE_OVERRIDES_JSON ?? "");
+const DELIVERY_URL_OVERRIDES = parseStringOverrides(process.env.DIGITAL_FORGE_DELIVERY_URL_OVERRIDES_JSON ?? "");
 const LEGACY_SLUG_PRICE_HINTS: Record<string, number> = {
   // Legacy live slug still used in blog/product links.
   "beyond-listening-how-to-co-create-your-favorite-au": 3000,
 };
+
+function parseStringOverrides(raw: string): Record<string, string> {
+  if (!raw.trim()) return {};
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    return Object.entries(parsed).reduce<Record<string, string>>((accumulator, [key, value]) => {
+      if (typeof value === "string" && value.length > 5) accumulator[key] = value;
+      return accumulator;
+    }, {});
+  } catch {
+    return {};
+  }
+}
 
 function parsePriceOverrides(raw: string): Record<string, number> {
   if (!raw.trim()) return {};
@@ -76,7 +90,7 @@ export async function resolveProductOffer(slug: string): Promise<CheckoutOffer |
     description: product.promise || product.subheadline || "Instant-access Digital Forge bundle",
     amount: resolvedAmount,
     currency: productCurrency,
-    deliveryUrl: product.driveFolderLink,
+    deliveryUrl: DELIVERY_URL_OVERRIDES[slug] ?? product.driveFolderLink,
   };
 }
 
