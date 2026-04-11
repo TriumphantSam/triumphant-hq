@@ -19,9 +19,11 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   const params = await searchParams;
   const offer = params.offer === "system"
     ? resolveSystemOffer()
-    : params.slug
-      ? await resolveProductOffer(params.slug)
-      : null;
+    : params.offer
+      ? await resolveProductOffer(params.offer)
+      : params.slug
+        ? await resolveProductOffer(params.slug)
+        : null;
 
   if (!offer) notFound();
 
