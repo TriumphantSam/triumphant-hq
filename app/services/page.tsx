@@ -52,6 +52,12 @@ const services: Record<ServiceCategory, { icon: string; title: string; color: st
             description: 'Complete stack setups including Next.js web apps and private API worker integrations.',
             features: ['Next.js React development', 'API webhook orchestration', 'Backend worker scripts', 'Airtable operational mapping'],
         },
+        {
+            icon: '🛒', title: 'Digital Products Store', color: '#f59e0b',
+            badge: 'Digital Forge Products',
+            description: 'Browse and buy AI playbooks, workflow systems, prompt packs, and creator toolkits. Instant delivery — no waiting.',
+            features: ['AI automation playbooks', 'Prompt & template packs', 'Workflow operating systems', 'Creator business toolkits', 'Instant download bundles'],
+        },
     ],
 };
 

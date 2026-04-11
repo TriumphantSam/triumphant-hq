@@ -522,6 +522,14 @@ export default async function DigitalForgePage() {
                 cta: "Watch the Training →",
               },
               {
+                href: "/digital-forge/products",
+                eyebrow: "Product Library",
+                title: "Browse Ready-to-Use AI Playbooks & Systems",
+                description: "Buy and implement today. Every product ships with a core guide, prompt pack, checklist, and bonus stack.",
+                accent: "#f59e0b",
+                cta: "Browse Products →",
+              },
+              {
                 href: "/digital-forge/system",
                 eyebrow: "Flagship System",
                 title: "Digital Forge Side Hustle Starter System",
@@ -609,6 +617,25 @@ export default async function DigitalForgePage() {
                 }}
               >
                 Watch the Free Training
+              </Link>
+              <Link
+                href="/digital-forge/products"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "1rem 2rem",
+                  borderRadius: 10,
+                  background: "rgba(245,158,11,0.15)",
+                  border: "1px solid rgba(245,158,11,0.35)",
+                  color: "#f59e0b",
+                  textDecoration: "none",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em",
+                  fontSize: "0.86rem",
+                }}
+              >
+                Browse Products
               </Link>
               <Link
                 href="/digital-forge/system"

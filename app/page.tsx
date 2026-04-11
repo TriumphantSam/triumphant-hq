@@ -20,6 +20,13 @@ const services = [
     link: '/seo-snapshot',
   },
   {
+    icon: '🛍️',
+    title: 'Digital Products Store',
+    color: '#f59e0b',
+    description: 'Ready-to-use AI playbooks, prompt packs, workflow systems, and creator toolkits. Buy and implement from day one.',
+    link: '/digital-forge/products',
+  },
+  {
     icon: '🤖',
     title: 'Autonomous AI Pipelines',
     color: '#3385FF',
@@ -225,6 +232,25 @@ export default function Home() {
               }}
             >
               Get Free SEO Snapshot
+            </a>
+            <a
+              href="/digital-forge/products"
+              style={{
+                display: 'inline-block',
+                padding: '0.9rem 2.5rem',
+                fontSize: '1rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                borderRadius: '0.75rem',
+                background: 'rgba(245,158,11,0.15)',
+                border: '1px solid rgba(245,158,11,0.4)',
+                color: '#f59e0b',
+                textDecoration: 'none',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              Browse Products →
             </a>
             <a
               href="/services"

@@ -9,8 +9,15 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-function buildCheckoutHref(slug: string) {
-  return `/digital-forge/checkout?slug=${encodeURIComponent(slug)}`;
+const CHECKOUT_URL = "https://flutterwave.com/pay/digitalforge";
+const DEFAULT_PRICE_NGN = 5000;
+
+function getCheckoutHref() {
+  return CHECKOUT_URL;
+}
+
+function formatPrice(priceNgn?: number) {
+  return `₦${(priceNgn ?? DEFAULT_PRICE_NGN).toLocaleString("en-NG")}`;
 }
 
 function parseBonusItem(raw: string): { asset: string; role: string; perceived_value: string } | null {
@@ -80,7 +87,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
     })),
   };
 
-  const primaryHref = buildCheckoutHref(product.slug);
+  const primaryHref = getCheckoutHref();
+  const priceDisplay = formatPrice(product.priceNgn);
   const parsedBonuses = product.bonuses
     .map(parseBonusItem)
     .filter(Boolean) as { asset: string; role: string; perceived_value: string }[];
@@ -240,50 +248,58 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                 </p>
               )}
 
-              {/* CTA Buttons */}
-              <div
-                style={{ display: "flex", flexWrap: "wrap", gap: "0.85rem", marginBottom: "2rem" }}
-              >
-                <Link
-                  href={primaryHref}
-                  id={`product-primary-cta-${slug}`}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "1.05rem 2.4rem",
-                    background: `linear-gradient(135deg, ${accent}, ${accent}cc)`,
-                    color: "#fff",
-                    textDecoration: "none",
-                    fontWeight: 800,
-                    fontSize: "0.9rem",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    borderRadius: "8px",
-                    boxShadow: `0 0 35px ${accent}55`,
-                    transition: "opacity 0.2s",
-                  }}
-                >
-                  Get Instant Access →
-                </Link>
-                <Link
-                  href="/digital-forge/products"
-                  id={`product-browse-library-${slug}`}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "1.05rem 2.2rem",
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    color: "rgba(255,255,255,0.75)",
-                    textDecoration: "none",
-                    fontWeight: 700,
-                    fontSize: "0.9rem",
-                    letterSpacing: "0.09em",
-                    textTransform: "uppercase",
-                    borderRadius: "8px",
-                  }}
-                >
-                  Browse Library
-                </Link>
+              {/* Price + CTA Buttons */}
+              <div style={{ marginBottom: "2rem" }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+                  <span style={{ color: "#fff", fontWeight: 900, fontSize: "2rem", letterSpacing: "-0.02em" }}>
+                    {priceDisplay}
+                  </span>
+                  <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>one-time · instant delivery</span>
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.85rem" }}>
+                  <a
+                    href={primaryHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    id={`product-primary-cta-${slug}`}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      padding: "1.05rem 2.4rem",
+                      background: `linear-gradient(135deg, ${accent}, ${accent}cc)`,
+                      color: "#fff",
+                      textDecoration: "none",
+                      fontWeight: 800,
+                      fontSize: "0.9rem",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                      borderRadius: "8px",
+                      boxShadow: `0 0 35px ${accent}55`,
+                      transition: "opacity 0.2s",
+                    }}
+                  >
+                    Buy Now — {priceDisplay}
+                  </a>
+                  <Link
+                    href="/digital-forge/products"
+                    id={`product-browse-library-${slug}`}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      padding: "1.05rem 2.2rem",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      color: "rgba(255,255,255,0.75)",
+                      textDecoration: "none",
+                      fontWeight: 700,
+                      fontSize: "0.9rem",
+                      letterSpacing: "0.09em",
+                      textTransform: "uppercase",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    Browse Library
+                  </Link>
+                </div>
               </div>
 
               {/* Quick-win bullets */}
@@ -455,9 +471,19 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                     </div>
                   )}
 
+                  {/* Price */}
+                  <div style={{ textAlign: "center", marginBottom: "0.75rem" }}>
+                    <span style={{ color: "#fff", fontWeight: 900, fontSize: "1.6rem", letterSpacing: "-0.02em" }}>
+                      {priceDisplay}
+                    </span>
+                    <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.72rem", marginTop: "0.2rem" }}>One-time payment · Instant delivery by email</p>
+                  </div>
+
                   {/* CTA */}
-                  <Link
+                  <a
                     href={primaryHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     id={`product-sidebar-cta-${slug}`}
                     style={{
                       display: "block",
@@ -475,18 +501,22 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       boxShadow: `0 0 25px ${accent}44`,
                     }}
                   >
-                    Get Instant Access →
-                  </Link>
+                    Buy Now — {priceDisplay}
+                  </a>
 
                   <p
                     style={{
-                      color: "rgba(255,255,255,0.35)",
-                      fontSize: "0.72rem",
+                      color: "rgba(255,255,255,0.3)",
+                      fontSize: "0.7rem",
                       textAlign: "center",
-                      marginTop: "0.75rem",
+                      marginTop: "0.6rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.35rem",
                     }}
                   >
-                    Secure checkout via Flutterwave. Delivery arrives automatically by email after payment is verified.
+                    🔐 Secure checkout via Flutterwave
                   </p>
                 </div>
               </div>
@@ -901,8 +931,10 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                 position: "relative",
               }}
             >
-              <Link
+              <a
                 href={primaryHref}
+                target="_blank"
+                rel="noopener noreferrer"
                 id={`product-bottom-cta-${slug}`}
                 style={{
                   display: "inline-flex",
@@ -919,11 +951,11 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   boxShadow: `0 0 40px ${accent}55`,
                 }}
               >
-                Request This Product →
-              </Link>
+                Buy Now — {priceDisplay}
+              </a>
               <Link
-                href="/digital-forge/resources"
-                id={`product-bottom-resources-${slug}`}
+                href="/digital-forge/products"
+                id={`product-bottom-browse-${slug}`}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -938,12 +970,76 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   borderRadius: "10px",
                 }}
               >
-                View Free Resources
+                Browse All Products
               </Link>
             </div>
+            <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.75rem", marginTop: "1.25rem", position: "relative" }}>
+              🔐 Secure checkout via Flutterwave · Instant delivery by email
+            </p>
           </div>
         </div>
       </section>
+
+      {/* ─── MOBILE STICKY BUY BAR ─── */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 999,
+          background: "rgba(5, 8, 20, 0.97)",
+          borderTop: `2px solid ${accent}`,
+          padding: "0.85rem 1.25rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "1rem",
+          backdropFilter: "blur(12px)",
+        }}
+        className="md:hidden"
+      >
+        <div>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.72rem", lineHeight: 1.2 }}>Digital Forge</p>
+          <p
+            style={{
+              color: "#fff",
+              fontWeight: 800,
+              fontSize: "0.92rem",
+              lineHeight: 1.3,
+              maxWidth: 180,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {product.title}
+          </p>
+        </div>
+        <a
+          href={primaryHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            padding: "0.75rem 1.4rem",
+            background: `linear-gradient(135deg, ${accent}, ${accent}bb)`,
+            color: "#fff",
+            textDecoration: "none",
+            fontWeight: 800,
+            fontSize: "0.85rem",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            borderRadius: "8px",
+            boxShadow: `0 0 20px ${accent}55`,
+            flexShrink: 0,
+          }}
+        >
+          Buy · {priceDisplay}
+        </a>
+      </div>
     </div>
   );
 }
