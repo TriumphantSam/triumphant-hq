@@ -59,7 +59,7 @@ const OFFER_STEPS = [
     eyebrow: "Core Offer — Most Popular",
     title: "Get the Starter System",
     description: "The complete business toolkit: guide, prompts, templates, launch assets, and operating documents to turn your idea into an offer.",
-    price: "From ₦25,000",
+    price: "From ₦15,000",
     accent: "#0066FF",
     accentBg: "rgba(0,102,255,0.08)",
     accentBorder: "rgba(0,102,255,0.3)",
