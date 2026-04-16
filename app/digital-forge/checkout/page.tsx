@@ -3,6 +3,20 @@ import { notFound } from "next/navigation";
 import CheckoutClient from "./CheckoutClient";
 import { formatOfferPrice, resolveProductOffer, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
+function parseLsVariantMap(raw: string): Record<string, number> {
+  if (!raw.trim()) return {};
+  try {
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    return Object.entries(parsed).reduce<Record<string, number>>((acc, [key, value]) => {
+      const maybe = Number(value);
+      if (Number.isFinite(maybe) && maybe > 0) acc[key] = maybe;
+      return acc;
+    }, {});
+  } catch {
+    return {};
+  }
+}
+
 type CheckoutPageProps = {
   searchParams: Promise<{
     slug?: string;
@@ -29,6 +43,8 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
 
   const priceLabel = formatOfferPrice(offer.amount, offer.currency);
   const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind);
+  const lsVariantMap = parseLsVariantMap(process.env.DIGITAL_FORGE_LS_VARIANT_MAP_JSON ?? "");
+  const hasInternationalCheckout = Boolean(lsVariantMap[offer.key]);
 
   return (
     <div className="min-h-screen pb-24">
@@ -193,6 +209,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 title={offer.title}
                 priceLabel={priceLabel}
                 usdPriceLabel={usdPriceLabel}
+                hasInternationalCheckout={hasInternationalCheckout}
               />
             </div>
           </div>

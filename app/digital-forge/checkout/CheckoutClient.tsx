@@ -9,6 +9,7 @@ type CheckoutClientProps = {
   title: string;
   priceLabel: string;
   usdPriceLabel?: string;
+  hasInternationalCheckout?: boolean;
 };
 
 export default function CheckoutClient({
@@ -18,6 +19,7 @@ export default function CheckoutClient({
   title,
   priceLabel,
   usdPriceLabel,
+  hasInternationalCheckout = false,
 }: CheckoutClientProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -209,7 +211,7 @@ export default function CheckoutClient({
               activeBorder: "rgba(255, 120, 0, 0.7)",
               activeText: "#FF9944"
             },
-            { 
+            ...hasInternationalCheckout ? [{ 
               id: "lemonsqueezy", 
               label: "Global Cards & Apple Pay", 
               desc: "International payments processing (USD & others)", 
@@ -217,7 +219,7 @@ export default function CheckoutClient({
               activeColor: "rgba(255, 194, 51, 0.12)",
               activeBorder: "rgba(255, 194, 51, 0.7)",
               activeText: "#FFD055"
-            },
+            }] : [],
           ].map((item) => {
             const isActive = provider === item.id;
             return (
