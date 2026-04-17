@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
               custom: {
                 offer_key: offer.key,
                 offer_kind: offer.kind,
-                product_slug: offer.slug ?? "",
+                product_slug: offer.slug ?? offer.key,
                 product_title: offer.title,
                 delivery_url: offer.deliveryUrl ?? "",
               },
