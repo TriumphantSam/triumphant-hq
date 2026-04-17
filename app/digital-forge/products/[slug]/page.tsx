@@ -9,11 +9,10 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-const CHECKOUT_URL = "https://flutterwave.com/pay/digitalforge";
 const DEFAULT_PRICE_NGN = 5000;
 
-function getCheckoutHref() {
-  return CHECKOUT_URL;
+function getCheckoutHref(slug: string) {
+  return `/digital-forge/checkout?offer=${encodeURIComponent(slug)}`;
 }
 
 function formatPrice(priceNgn?: number) {
@@ -87,7 +86,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
     })),
   };
 
-  const primaryHref = getCheckoutHref();
+  const primaryHref = getCheckoutHref(slug);
   const priceDisplay = formatPrice(product.priceNgn);
   const parsedBonuses = product.bonuses
     .map(parseBonusItem)
@@ -257,10 +256,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>one-time · instant delivery</span>
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.85rem" }}>
-                  <a
+                  <Link
                     href={primaryHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     id={`product-primary-cta-${slug}`}
                     style={{
                       display: "inline-flex",
@@ -279,7 +276,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                     }}
                   >
                     Buy Now — {priceDisplay}
-                  </a>
+                  </Link>
                   <Link
                     href="/digital-forge/products"
                     id={`product-browse-library-${slug}`}
@@ -480,10 +477,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   </div>
 
                   {/* CTA */}
-                  <a
+                  <Link
                     href={primaryHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     id={`product-sidebar-cta-${slug}`}
                     style={{
                       display: "block",
@@ -502,7 +497,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                     }}
                   >
                     Buy Now — {priceDisplay}
-                  </a>
+                  </Link>
 
                   <p
                     style={{
@@ -516,7 +511,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       gap: "0.35rem",
                     }}
                   >
-                    🔐 Secure checkout via Flutterwave
+                    🔐 Secure checkout · Local & International
                   </p>
                 </div>
               </div>
@@ -931,10 +926,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                 position: "relative",
               }}
             >
-              <a
+              <Link
                 href={primaryHref}
-                target="_blank"
-                rel="noopener noreferrer"
                 id={`product-bottom-cta-${slug}`}
                 style={{
                   display: "inline-flex",
@@ -952,7 +945,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                 }}
               >
                 Buy Now — {priceDisplay}
-              </a>
+              </Link>
               <Link
                 href="/digital-forge/products"
                 id={`product-bottom-browse-${slug}`}
@@ -974,7 +967,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               </Link>
             </div>
             <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.75rem", marginTop: "1.25rem", position: "relative" }}>
-              🔐 Secure checkout via Flutterwave · Instant delivery by email
+              🔐 Secure checkout · Local & International · Instant delivery by email
             </p>
           </div>
         </div>
@@ -1016,10 +1009,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             {product.title}
           </p>
         </div>
-        <a
+        <Link
           href={primaryHref}
-          target="_blank"
-          rel="noopener noreferrer"
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -1038,7 +1029,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
           }}
         >
           Buy · {priceDisplay}
-        </a>
+        </Link>
       </div>
     </div>
   );
