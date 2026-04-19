@@ -5,6 +5,7 @@ import Navigation from "@/components/Navigation";
 import AntigravityBackground from "@/components/AntigravityBackground";
 import Footer from "@/components/Footer";
 import PageReader from "@/components/PageReader";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,6 +58,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <PageReader />
+        <WhatsAppWidget />
       </body>
     </html>
   );

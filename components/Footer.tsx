@@ -119,7 +119,7 @@ export default function Footer() {
                                 <span className="text-xs text-gray-400 font-medium group-hover:text-white transition-colors">admin@triumphantech.com</span>
                             </a>
                             <a
-                                href="https://wa.me/2348107711190"
+                                href="https://wa.me/447478036301"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-[#3b82f6]/30 transition-all"
@@ -127,7 +127,7 @@ export default function Footer() {
                                 <div className="w-10 h-10 rounded-full bg-black/50 border border-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#3b82f6]/10 transition-colors">
                                     <svg className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                                 </div>
-                                <span className="text-xs text-gray-400 font-medium group-hover:text-white transition-colors truncate">+234 810 771 1190</span>
+                                <span className="text-xs text-gray-400 font-medium group-hover:text-white transition-colors truncate">+44 7478 036301</span>
                             </a>
                         </div>
                     </div>
