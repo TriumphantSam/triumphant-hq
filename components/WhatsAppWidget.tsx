@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const WA_NUMBER = "447478036301"; // UK number — no + or spaces
 const WA_MESSAGE = encodeURIComponent(
-  "Hi! I'm interested in the Digital Forge Starter System. Can you help me?"
+  "Hi, welcome to TriumphantHQ! 👋 I'd like to know more about your services."
 );
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
 
