@@ -1,47 +1,10 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Free Training — How To Build and Sell Your First AI Product From Nigeria | Digital Forge",
+  title: "Free Training — Coming Soon | Digital Forge",
   description:
-    "Watch the free Digital Forge training and learn how to build and sell your first AI-powered digital product from Nigeria. See the exact framework, the mistakes to avoid, and your clear next step.",
+    "The Digital Forge free training is launching alongside the full course. Join the waitlist to be first in when it goes live.",
 };
-
-const CURRICULUM = [
-  {
-    title: "Why Most People Stay Stuck",
-    description:
-      "Too many tools, no clear offer, no packaging discipline, and content that never leads anywhere. You will see exactly where the gaps are — and why fixing them is simpler than you think.",
-  },
-  {
-    title: "Why The Opportunity Is Still Wide Open",
-    description:
-      "Digital products still sell. AI has made building them faster and cheaper. Practical offers still beat noise when the positioning is sharp. This section shows you why it is not too late.",
-  },
-  {
-    title: "The 3-Step Digital Forge Framework",
-    description:
-      "Choose one clear angle. Build one practical product. Promote it with a simple, repeatable rhythm. This is the entire framework — and it works with very few tools and very little budget.",
-  },
-  {
-    title: "What the Full System Gives You",
-    description:
-      "After the training, you will know exactly what is inside the Starter System and the Course — and which one is right for where you are now. No pressure. Just clarity.",
-  },
-];
-
-const TAKEAWAYS = [
-  "A clear 3-step framework you can start with today",
-  "A sharper picture of what to sell first — and why",
-  "The most common mistakes that kill momentum before it starts",
-  "Practical next steps based on where you are right now",
-];
-
-const FOR_WHO = [
-  "Nigerian professionals exploring a side hustle that fits their lifestyle and local realities",
-  "African creators who have expertise but have never packaged it into something that sells",
-  "Global operators who want simple execution systems, not AI hype or theory",
-  "Anyone who has tried building an AI product once, got stuck, and is ready to try smarter",
-];
 
 export default function DigitalForgeTrainingPage() {
   return (
@@ -55,7 +18,7 @@ export default function DigitalForgeTrainingPage() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 18% 20%, rgba(0,204,255,0.22), transparent 32%), radial-gradient(circle at 82% 16%, rgba(0,102,255,0.14), transparent 24%), linear-gradient(180deg, rgba(5,10,24,0.96), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,204,255,0.18), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,102,255,0.14), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
           }}
         />
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
@@ -76,39 +39,37 @@ export default function DigitalForgeTrainingPage() {
             ← Back to Digital Forge
           </Link>
 
+          {/* Coming soon badge */}
           <div
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "0.55rem",
-              background: "rgba(0,204,255,0.1)",
-              border: "1px solid rgba(0,204,255,0.3)",
-              borderRadius: "999px",
-              padding: "0.4rem 1rem",
-              marginBottom: "1.4rem",
+              padding: "0.42rem 1rem",
+              borderRadius: 999,
+              border: "1px solid rgba(0,204,255,0.38)",
+              background: "rgba(0,204,255,0.08)",
+              marginBottom: "1.5rem",
             }}
           >
-            <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#00CCFF", fontSize: "0.73rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
-              Free Training • No Registration Required
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
+            <span style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+              Free Training — Coming Soon
             </span>
           </div>
 
           <h1
             style={{
-              fontSize: "clamp(2.5rem, 6vw, 4.8rem)",
+              fontSize: "clamp(2.5rem, 6vw, 4.9rem)",
               fontWeight: 900,
               lineHeight: 1.04,
               letterSpacing: "-0.03em",
               color: "#fff",
-              maxWidth: 920,
-              marginBottom: "1.2rem",
+              maxWidth: 860,
+              marginBottom: "1.3rem",
             }}
           >
-            How To Build and Sell Your
-            <br />
-            First AI-Powered Digital Product
-            <br />
+            How To Build and Sell Your{" "}
             <span
               style={{
                 background: "linear-gradient(90deg, #00CCFF, #0066FF)",
@@ -117,36 +78,39 @@ export default function DigitalForgeTrainingPage() {
                 backgroundClip: "text",
               }}
             >
-              From Nigeria
+              First AI Product
             </span>
+            <br />
+            From Nigeria
           </h1>
+
           <p
             style={{
               fontSize: "1.12rem",
               color: "rgba(255,255,255,0.74)",
               lineHeight: 1.9,
-              maxWidth: 740,
+              maxWidth: 760,
               marginBottom: "1rem",
             }}
           >
-            In this free training, you will see the exact Digital Forge framework — why most people stay stuck, why the opportunity is still real, and the simplest path from AI curiosity to a product that earns.
+            This free training — the complete Digital Forge framework in one focused class — launches alongside the full Course. It is currently in production.
           </p>
           <p
             style={{
-              color: "rgba(255,255,255,0.52)",
+              color: "rgba(255,255,255,0.5)",
               lineHeight: 1.85,
-              maxWidth: 740,
+              maxWidth: 760,
               fontSize: "0.97rem",
               marginBottom: "2.2rem",
             }}
           >
-            This is a 25–45 minute class built for practical people. No hype, no fluff, no selling you something you do not need. Just the clearest breakdown of what it actually takes to build and sell a digital product with AI tools — starting from Nigeria.
+            Join the waitlist below and you will be the first to know the moment it goes live. Waitlist members also get early access to the Course at the founder price.
           </p>
 
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
             <Link
-              href="/contact"
-              id="training-register-cta"
+              href="/digital-forge/course/waitlist"
+              id="training-waitlist-cta"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -159,10 +123,10 @@ export default function DigitalForgeTrainingPage() {
                 fontSize: "0.86rem",
                 color: "#fff",
                 background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                boxShadow: "0 0 32px rgba(0,102,255,0.38)",
+                boxShadow: "0 0 36px rgba(0,102,255,0.42)",
               }}
             >
-              Register for the Training
+              Join the Waitlist
             </Link>
             <Link
               href="/digital-forge/system"
@@ -180,201 +144,71 @@ export default function DigitalForgeTrainingPage() {
                 border: "1px solid rgba(255,255,255,0.16)",
               }}
             >
-              Skip to the Starter System
+              Get the Starter System Instead
             </Link>
           </div>
-          <p style={{ marginTop: "1rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.28)" }}>
-            By purchasing, you agree to our{" "}
-            <Link href="/terms" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Terms of Service</Link>
-            {" "}and{" "}
-            <Link href="/refund-policy" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Refund Policy</Link>.
+
+          <p style={{ marginTop: "1.2rem", color: "rgba(255,255,255,0.32)", fontSize: "0.83rem" }}>
+            Already have what you need? The Starter System is available right now at ₦15,000.
           </p>
         </div>
       </section>
 
-      {/* ── QUICK FACTS ── */}
-      <section style={{ paddingBottom: "4.5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "1rem",
-            }}
-          >
-            {[
-              { label: "Format", value: "Video class — slides, screen, and voice" },
-              { label: "Length", value: "25 to 45 minutes" },
-              { label: "Price", value: "Completely free" },
-              { label: "After the Training", value: "Clear path into the Starter System or Course" },
-            ].map((item) => (
-              <div
-                key={item.label}
-                style={{
-                  background: "rgba(0,102,255,0.05)",
-                  border: "1px solid rgba(0,102,255,0.18)",
-                  borderRadius: 18,
-                  padding: "1.2rem",
-                }}
-              >
-                <p style={{ color: "rgba(255,255,255,0.40)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem" }}>
-                  {item.label}
-                </p>
-                <p style={{ color: "#fff", fontWeight: 700, lineHeight: 1.6 }}>{item.value}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHAT YOU WILL LEARN + FOR WHO ── */}
-      <section style={{ paddingBottom: "5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)]">
-            <div
-              style={{
-                background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
-                border: "1px solid rgba(0,102,255,0.2)",
-                borderRadius: 24,
-                padding: "1.8rem",
-              }}
-            >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
-                What You Will Learn
-              </p>
-              <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
-                The clearest class on building
-                a digital product with AI — from Africa
-              </h2>
-              <div style={{ display: "grid", gap: "1.2rem" }}>
-                {CURRICULUM.map((item, index) => (
-                  <div
-                    key={item.title}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "44px minmax(0, 1fr)",
-                      gap: "1rem",
-                      alignItems: "start",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 14,
-                        background: "rgba(0,204,255,0.12)",
-                        border: "1px solid rgba(0,204,255,0.28)",
-                        color: "#00CCFF",
-                        fontWeight: 800,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "0.9rem",
-                      }}
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
-                    <div>
-                      <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.35rem", fontSize: "1rem" }}>{item.title}</h3>
-                      <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ display: "grid", gap: "1rem" }}>
-              <div
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 22,
-                  padding: "1.5rem",
-                }}
-              >
-                <p style={{ color: "#00CCFF", fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.8rem" }}>
-                  Who This Is For
-                </p>
-                <div style={{ display: "grid", gap: "0.8rem" }}>
-                  {FOR_WHO.map((item) => (
-                    <p key={item} style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.75, fontSize: "0.92rem" }}>
-                      → {item}
-                    </p>
-                  ))}
-                </div>
-              </div>
-              <div
-                style={{
-                  background: "rgba(0,102,255,0.06)",
-                  border: "1px solid rgba(0,102,255,0.2)",
-                  borderRadius: 22,
-                  padding: "1.5rem",
-                }}
-              >
-                <p style={{ color: "#00CCFF", fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.8rem" }}>
-                  What You Leave With
-                </p>
-                <div style={{ display: "grid", gap: "0.75rem" }}>
-                  {TAKEAWAYS.map((item) => (
-                    <div key={item} style={{ display: "flex", gap: "0.7rem", alignItems: "flex-start" }}>
-                      <span style={{ color: "#00CCFF", fontWeight: 900, flexShrink: 0, marginTop: 1 }}>✓</span>
-                      <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.7, fontSize: "0.92rem" }}>{item}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── THE JOURNEY ── */}
+      {/* ── WHAT THE TRAINING COVERS ── */}
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div
             style={{
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.07)",
+              background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
+              border: "1px solid rgba(0,204,255,0.2)",
               borderRadius: 24,
               padding: "2rem",
             }}
           >
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
-              Your Full Journey
+            <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
+              What the Training Will Cover
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1rem", maxWidth: 700 }}>
-              The training is where browsing ends and belief begins
+            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
+              The complete Digital Forge framework — free, in one class.
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.85, maxWidth: 820, marginBottom: "1.6rem" }}>
-              Most people find Digital Forge through the blog or a recommendation. They land on the training to understand if this is real. They leave convinced — and ready to buy the Starter System or enroll in the Course. That is the journey, and the training is the most important step in it.
-            </p>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: "1rem",
-              }}
-            >
+            <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
               {[
-                { step: "01", label: "Blog", detail: "Discover the opportunity through real use cases and practical articles", current: false },
-                { step: "02", label: "Free Training", detail: "Watch the framework, get clarity, decide what fits you", current: true },
-                { step: "03", label: "Starter System", detail: "Buy the complete toolkit and start building your first product", current: false },
-                { step: "04", label: "Course", detail: "Deepen your implementation with a full guided curriculum", current: false },
+                { num: "01", title: "Why This Opportunity Is Still Wide Open", body: "Understand why now is the right time to build AI-powered digital products — and what most people are getting wrong." },
+                { num: "02", title: "The Exact Framework", body: "Choose an audience, package an offer, use AI correctly, and launch without getting stuck. The full method in one sitting." },
+                { num: "03", title: "The Mistakes That Kill Launches", body: "The 4 patterns that cause smart people to fail before they start — and how to avoid every single one." },
+                { num: "04", title: "Your Clear Next Step", body: "Walk away knowing exactly what to do next: which product to build, how to start, and what path fits your situation." },
               ].map((item) => (
                 <div
-                  key={item.step}
+                  key={item.title}
                   style={{
-                    background: item.current ? "rgba(0,102,255,0.1)" : "rgba(255,255,255,0.02)",
-                    border: item.current ? "1px solid rgba(0,102,255,0.32)" : "1px solid rgba(255,255,255,0.07)",
-                    borderRadius: 18,
-                    padding: "1.1rem",
+                    display: "grid",
+                    gridTemplateColumns: "48px minmax(0, 1fr)",
+                    gap: "1rem",
+                    alignItems: "start",
                   }}
                 >
-                  <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
-                    Step {item.step}
-                  </p>
-                  <h3 style={{ color: item.current ? "#00CCFF" : "#fff", fontWeight: 800, marginBottom: "0.4rem" }}>{item.label}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, fontSize: "0.88rem" }}>{item.detail}</p>
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 14,
+                      background: "rgba(0,204,255,0.12)",
+                      border: "1px solid rgba(0,204,255,0.28)",
+                      color: "#00CCFF",
+                      fontWeight: 800,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "0.88rem",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {item.num}
+                  </div>
+                  <div>
+                    <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.35rem", fontSize: "1rem" }}>{item.title}</h3>
+                    <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.body}</p>
+                  </div>
                 </div>
               ))}
             </div>
@@ -382,33 +216,77 @@ export default function DigitalForgeTrainingPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── WHERE IT FITS ── */}
+      <section style={{ paddingBottom: "5rem" }}>
+        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+          <div style={{ marginBottom: "1.8rem" }}>
+            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              Where It Fits
+            </p>
+            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
+              The training is Step 2 — it bridges the blog and the Starter System
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
+            {[
+              { step: "01", label: "Blog", detail: "Discover the opportunity. Find your direction.", current: false, accent: "rgba(255,255,255,0.5)" },
+              { step: "02", label: "Free Training", detail: "See the framework. Build conviction. Decide your next step.", current: true, accent: "#00CCFF" },
+              { step: "03", label: "Starter System", detail: "Get the complete toolkit. Build your first product.", current: false, accent: "#0066FF" },
+              { step: "04", label: "Course", detail: "Follow the full guided curriculum. Own a reusable business system.", current: false, accent: "#8B5CF6" },
+            ].map((item) => (
+              <div
+                key={item.step}
+                style={{
+                  background: item.current ? "rgba(0,204,255,0.08)" : "rgba(255,255,255,0.02)",
+                  border: item.current ? "1px solid rgba(0,204,255,0.32)" : "1px solid rgba(255,255,255,0.07)",
+                  borderTop: item.current ? "3px solid #00CCFF" : undefined,
+                  borderRadius: 18,
+                  padding: "1.1rem",
+                }}
+              >
+                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
+                  Step {item.step}
+                </p>
+                <h3 style={{ color: item.current ? "#00CCFF" : "#fff", fontWeight: 800, marginBottom: "0.4rem" }}>{item.label}</h3>
+                <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, fontSize: "0.88rem" }}>{item.detail}</p>
+                {item.current && (
+                  <span style={{ display: "inline-block", marginTop: "0.7rem", fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#00CCFF", background: "rgba(0,204,255,0.1)", border: "1px solid rgba(0,204,255,0.25)", borderRadius: 999, padding: "0.25rem 0.7rem" }}>
+                    Coming Soon
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── BOTTOM CTA ── */}
       <section style={{ paddingBottom: "6rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div
             style={{
-              background: "linear-gradient(135deg, rgba(0,66,204,0.26), rgba(0,204,255,0.12))",
-              border: "1px solid rgba(0,102,255,0.3)",
+              background: "linear-gradient(135deg, rgba(0,204,255,0.12), rgba(0,66,204,0.24))",
+              border: "1px solid rgba(0,204,255,0.28)",
               borderRadius: 28,
               padding: "clamp(2rem, 5vw, 4.5rem)",
               textAlign: "center",
             }}
           >
             <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "1rem" }}>
-              It Is Free. Start Now.
+              Do Not Wait for the Training
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.3rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
-              Watch the training.
+            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
+              The Starter System is available right now.
               <br />
-              Walk away with a plan.
+              Everything you need — no training required.
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 700, margin: "0 auto 2rem", lineHeight: 1.9, fontSize: "1.01rem" }}>
-              The training gives you clarity. The Starter System gives you the toolkit. The Course gives you the full guided path. You can start with any of them — but the training is the smartest first move if you are not yet sure where to begin.
+            <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.9, fontSize: "1.01rem" }}>
+              The Starter System already contains the guide, prompts, templates, and launch assets to take action today. The free training will give you the &ldquo;why&rdquo; — the System gives you the &ldquo;how.&rdquo;
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <Link
-                href="/contact"
-                id="training-register-cta-bottom"
+                href="/digital-forge/system"
+                id="training-starter-cta"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -421,20 +299,20 @@ export default function DigitalForgeTrainingPage() {
                   textTransform: "uppercase",
                   letterSpacing: "0.1em",
                   fontSize: "0.86rem",
-                  boxShadow: "0 0 32px rgba(0,102,255,0.4)",
+                  boxShadow: "0 0 36px rgba(0,102,255,0.45)",
                 }}
               >
-                Register for the Training
+                Get the Starter System — From ₦15,000
               </Link>
               <Link
-                href="/digital-forge/system"
+                href="/digital-forge/course/waitlist"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
                   padding: "1rem 2rem",
                   borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.16)",
-                  color: "rgba(255,255,255,0.82)",
+                  border: "1px solid rgba(0,204,255,0.3)",
+                  color: "#00CCFF",
                   textDecoration: "none",
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -442,15 +320,9 @@ export default function DigitalForgeTrainingPage() {
                   fontSize: "0.86rem",
                 }}
               >
-                See the Starter System
+                Join the Waitlist Instead
               </Link>
             </div>
-            <p style={{ marginTop: "1.2rem", fontSize: "0.78rem", color: "rgba(255,255,255,0.28)" }}>
-              By purchasing, you agree to our{" "}
-              <Link href="/terms" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Terms of Service</Link>
-              {" "}and{" "}
-              <Link href="/refund-policy" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>Refund Policy</Link>.
-            </p>
           </div>
         </div>
       </section>
