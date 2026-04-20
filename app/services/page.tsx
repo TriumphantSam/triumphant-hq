@@ -37,9 +37,9 @@ const services: Record<ServiceCategory, { icon: string; title: string; color: st
             features: ['Flagship funnel deployment', 'Offer and copy rewrite systems', 'Dynamic digital forge architecture', 'A/B tested conversion flows'],
         },
         {
-            icon: '📈', title: 'Semantic SEO & Search', color: '#00CCFF',
-            description: 'Elite semantic SEO strategy and AI-citation optimization designed for modern generative search environments.',
-            features: ['Free SEO visibility snapshots', 'Monthly done-for-you execution', 'AI-citation (SGE) readiness', 'Technical infrastructure audits', 'Performance marketing alignment'],
+            icon: '📈', title: 'Top SEO Agency & Services', color: '#00CCFF',
+            description: 'We are the best SEO company in Nigeria, providing elite semantic SEO strategy, AI-citation optimization, and complete search dominance.',
+            features: ['Free SEO visibility snapshots', 'Monthly done-for-you execution', 'AI-citation (SGE) readiness', 'Top-tier SEO Services', 'Performance marketing alignment'],
         },
         {
             icon: '🤖', title: 'Autonomous AI Pipelines', color: '#3385FF',

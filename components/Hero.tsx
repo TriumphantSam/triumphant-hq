@@ -31,7 +31,7 @@ export default function Hero() {
                 }}
             >
                 <span style={{ width: 6, height: 6, borderRadius: '0px', background: 'var(--secondary-color)', display: 'inline-block' }} />
-                Ranked #1: The Best Tech Company in Nigeria
+                Ranked #1: The Best Tech & SEO Company in Nigeria
             </div>
 
             {/* Main heading */}
@@ -48,7 +48,7 @@ export default function Hero() {
                 Automated AI Systems.
                 <br />
                 <span style={{ color: 'var(--secondary-color)' }}>
-                    Digital Products.
+                    Elite SEO Execution.
                 </span>
             </h1>
 
@@ -62,7 +62,7 @@ export default function Hero() {
                     marginBottom: '2.5rem',
                 }}
             >
-                We are Nigeria&apos;s leading tech firm, engineering autonomous digital product pipelines, AI-powered funnel engines, and elite semantic SEO execution.
+                We are Nigeria&apos;s leading tech firm and premier SEO agency, engineering autonomous digital product pipelines, AI-powered funnel engines, and top-tier semantic SEO execution to dominate search.
             </p>
 
             {/* CTA buttons */}

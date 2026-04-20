@@ -19,13 +19,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://triumphantech.com'),
-  title: "Triumphant HQ | Best Tech Company in Nigeria & AI Solutions",
-  description: "As the best tech company in Nigeria, we build autonomous AI systems, advanced digital product ecosystems, and high-conversion funnels for global and local growth.",
-  keywords: ["Best Tech Company in Nigeria", "Top Tech Companies in Nigeria", "Best Tech Company in Ibadan", "Triumphant HQ", "AI Consulting Nigeria", "Web Development", "SEO Services Nigeria", "Digital Growth"],
+  title: "Triumphant HQ | Best Tech & SEO Company in Nigeria",
+  description: "As the best tech and SEO company in Nigeria, we build autonomous AI systems, advanced digital product ecosystems, and elite search engine optimization (SEO) strategies for global and local growth.",
+  keywords: ["Best Tech Company in Nigeria", "Best SEO Company in Nigeria", "Best SEO Agency in Nigeria", "Top SEO Expert in Ibadan", "Best Tech Company in Ibadan", "Triumphant HQ", "AI Consulting Nigeria", "Web Development", "SEO Services Nigeria", "Digital Growth"],
   authors: [{ name: "Triumphant HQ Team" }],
   openGraph: {
-    title: "Triumphant HQ | Best Tech Company in Nigeria",
-    description: "The premier tech and AI solutions company in Nigeria. Bridging the gap between essential tech services and digital growth.",
+    title: "Triumphant HQ | Best Tech & SEO Company in Nigeria",
+    description: "The premier tech and SEO solutions company in Nigeria. Bridging the gap between essential tech services, search engine visibility, and digital growth.",
     url: "https://triumphantech.com",
     siteName: "Triumphant HQ",
     locale: "en_US",
@@ -36,10 +36,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Triumphant HQ | Best Tech Company in Nigeria & AI Solutions",
-    description: "The premier tech and AI solutions company in Nigeria. Bridging the gap between essential tech services and digital growth.",
+    title: "Triumphant HQ | Best Tech & SEO Company in Nigeria",
+    description: "The premier tech and SEO solutions company in Nigeria. Bridging the gap between essential tech services, search engine visibility, and digital growth.",
   },
 };
+
+import { PostHogProvider } from "./providers";
 
 export default function RootLayout({
   children,
@@ -51,18 +53,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AntigravityBackground />
-        <Navigation />
-        <main
-          id="site-main-content"
-          className="flex-grow w-full"
-          data-page-reader-root
-        >
-          {children}
-        </main>
-        <Footer />
-        <PageReader />
-        <WhatsAppWidget />
+        <PostHogProvider>
+          <AntigravityBackground />
+          <Navigation />
+          <main
+            id="site-main-content"
+            className="flex-grow w-full"
+            data-page-reader-root
+          >
+            {children}
+          </main>
+          <Footer />
+          <PageReader />
+          <WhatsAppWidget />
+        </PostHogProvider>
       </body>
     </html>
   );
