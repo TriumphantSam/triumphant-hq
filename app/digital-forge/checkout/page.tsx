@@ -77,12 +77,8 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
           </Link>
 
           <div
-            style={{
-              display: "grid",
-              gap: "2rem",
-              gridTemplateColumns: "minmax(0, 1.05fr) minmax(320px, 0.95fr)",
-              alignItems: "start",
-            }}
+            className="grid gap-8 grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]"
+            style={{ alignItems: "start" }}
           >
             <div>
               <span

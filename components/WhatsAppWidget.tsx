@@ -21,7 +21,7 @@ export default function WhatsAppWidget() {
         aria-hidden={!hovered}
         style={{
           position: "fixed",
-          bottom: "5.8rem",
+          bottom: "9.5rem",
           right: "1.6rem",
           background: "#fff",
           color: "#111",
@@ -65,7 +65,7 @@ export default function WhatsAppWidget() {
         onMouseLeave={() => setHovered(false)}
         style={{
           position: "fixed",
-          bottom: "1.6rem",
+          bottom: "5.5rem",
           right: "1.6rem",
           width: 58,
           height: 58,
