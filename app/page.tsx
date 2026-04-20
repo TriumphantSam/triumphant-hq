@@ -152,7 +152,7 @@ export default function Home() {
         <h2
           className="text-3xl sm:text-4xl font-bold mb-12 text-center gradient-text"
         >
-          Why Choose Triumphant&nbsp;HQ?
+          Why Triumphant&nbsp;HQ is the Best Tech Company in Nigeria
         </h2>
 
         <div

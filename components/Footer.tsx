@@ -55,7 +55,7 @@ export default function Footer() {
                             </span>
                         </div>
                         <p className="text-gray-400 text-lg font-light leading-relaxed max-w-sm">
-                            Building autonomous digital product pipelines and advanced AI architectures since 2017.
+                            Ranked the best tech company in Nigeria. Building autonomous digital product pipelines and advanced AI architectures since 2017.
                         </p>
                         <div className="flex items-start gap-4 mt-2 group/pin w-fit">
                             <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover/pin:border-[#3b82f6]/50 transition-colors">

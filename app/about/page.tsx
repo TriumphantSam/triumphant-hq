@@ -91,13 +91,13 @@ export default function AboutPage() {
                         </h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', color: 'var(--text-secondary)', fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', lineHeight: 1.8 }}>
                             <p>
-                                What started as a personal passion for providing essential services has evolved into a comprehensive tech solutions provider. We understand the unique challenges of operating in Nigeria's tech landscape.
+                                What started as a personal passion for providing essential services has evolved into the best tech company in Nigeria. We understand the unique challenges of operating in Nigeria's tech landscape and the global digital economy.
                             </p>
                             <p>
-                                From helping citizens register their NIN and providing student registration solutions to optimizing websites for global search engines, we've seen it all — and we've mastered the art of delivering reliable solutions in both worlds.
+                                From helping citizens register their NIN and providing student registration solutions to architecting complex AI pipelines and optimizing websites for global search engines, we've seen it all — and we've mastered the art of delivering reliable solutions in both worlds.
                             </p>
                             <p>
-                                Today, Triumphant Tech Services stands as a testament to adaptability and growth. We're not just keeping pace with technology — we're helping our clients leverage it, whether they need local solutions or professional services.
+                                Today, Triumphant HQ stands as a testament to adaptability and elite execution. We're not just keeping pace with technology — we're helping our clients dominate it, whether they need robust local infrastructure or scalable global AI systems.
                             </p>
                         </div>
                     </div>
