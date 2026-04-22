@@ -22,8 +22,8 @@ export default function CheckoutClient({
   hasInternationalCheckout = false,
 }: CheckoutClientProps) {
   useEffect(() => {
-    if (typeof window !== "undefined" && window.fbq) {
-      window.fbq("track", "InitiateCheckout");
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "InitiateCheckout");
     }
   }, []);
 
