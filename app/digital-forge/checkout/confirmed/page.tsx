@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 
 type ConfirmedPageProps = {
   searchParams: Promise<{
@@ -19,6 +20,11 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
 
   return (
     <div className="min-h-screen pb-24">
+      {isSuccess && (
+        <Script id="meta-pixel-purchase">
+          {`if (typeof fbq !== 'undefined') fbq('track', 'Purchase');`}
+        </Script>
+      )}
       <section className="relative overflow-hidden pt-28 pb-20">
         <div
           aria-hidden

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 
 type CheckoutClientProps = {
   offerKey: string;
@@ -21,6 +21,12 @@ export default function CheckoutClient({
   usdPriceLabel,
   hasInternationalCheckout = false,
 }: CheckoutClientProps) {
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "InitiateCheckout");
+    }
+  }, []);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");

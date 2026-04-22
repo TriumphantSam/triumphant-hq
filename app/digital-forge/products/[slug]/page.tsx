@@ -108,6 +108,9 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
 
   return (
     <div className="min-h-screen pb-24">
+      <Script id={`meta-pixel-viewcontent-${product.slug}`}>
+        {`if (typeof fbq !== 'undefined') fbq('track', 'ViewContent');`}
+      </Script>
       {faqSchema.mainEntity.length > 0 ? (
         <Script id={`faq-schema-${product.slug}`} type="application/ld+json">
           {JSON.stringify(faqSchema)}
