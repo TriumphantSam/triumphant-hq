@@ -19,13 +19,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://triumphantech.com'),
-  title: "Triumphant HQ | Best Tech & SEO Company in Nigeria",
-  description: "As the best tech and SEO company in Nigeria, we build autonomous AI systems, advanced digital product ecosystems, and elite search engine optimization (SEO) strategies for global and local growth.",
-  keywords: ["Best Tech Company in Nigeria", "Best SEO Company in Nigeria", "Best SEO Agency in Nigeria", "Top SEO Expert in Ibadan", "Best Tech Company in Ibadan", "Triumphant HQ", "AI Consulting Nigeria", "Web Development", "SEO Services Nigeria", "Digital Growth"],
+  title: "Triumphant HQ | Premier Tech & SEO Company",
+  description: "As a premier tech and SEO company, we build autonomous AI systems, advanced digital product ecosystems, and elite search engine optimization (SEO) strategies for global growth.",
+  keywords: ["Best Tech Company", "Best SEO Company", "Global SEO Agency", "Top SEO Expert", "Premier Tech Company", "Triumphant HQ", "AI Consulting", "Web Development", "SEO Services", "Digital Growth"],
   authors: [{ name: "Triumphant HQ Team" }],
   openGraph: {
-    title: "Triumphant HQ | Best Tech & SEO Company in Nigeria",
-    description: "The premier tech and SEO solutions company in Nigeria. Bridging the gap between essential tech services, search engine visibility, and digital growth.",
+    title: "Triumphant HQ | Premier Tech & SEO Company",
+    description: "The premier tech and SEO solutions company. Bridging the gap between essential tech services, search engine visibility, and global digital growth.",
     url: "https://triumphantech.com",
     siteName: "Triumphant HQ",
     locale: "en_US",
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Triumphant HQ | Best Tech & SEO Company in Nigeria",
-    description: "The premier tech and SEO solutions company in Nigeria. Bridging the gap between essential tech services, search engine visibility, and digital growth.",
+    title: "Triumphant HQ | Premier Tech & SEO Company",
+    description: "The premier tech and SEO solutions company. Bridging the gap between essential tech services, search engine visibility, and global digital growth.",
   },
 };
 

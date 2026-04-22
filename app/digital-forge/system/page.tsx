@@ -26,7 +26,7 @@ const OUTCOMES = [
 ];
 
 const FOR_WHO = [
-  { title: "Nigerian Professionals", body: "Ready for a side hustle that actually fits local constraints — no fantasy income claims, just a real operating method." },
+  { title: "Professionals", body: "Ready for a side hustle that actually fits your schedule constraints — no fantasy income claims, just a real operating method." },
   { title: "Creators With Expertise", body: "You know your subject but cannot figure out how to package it into something people will pay for. This fixes that." },
   { title: "AI-Curious Operators", body: "You follow the AI space closely, but have not turned that curiosity into a product that earns. This is the activation layer." },
   { title: "Stalled Founders", body: "You started once and got stuck. The Starter System gives you the structure to restart and finish without the confusion." },
@@ -170,7 +170,7 @@ export default function DigitalForgeSystemPage() {
                   marginBottom: "2.2rem",
                 }}
               >
-                Built for Nigerian professionals, African creators, and anyone who has been circling the idea of an AI-powered side hustle — and needs a system that actually moves them into action.
+                Built for professionals, creators, and anyone who has been circling the idea of an AI-powered side hustle — and needs a system that actually moves them into action.
               </p>
 
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>

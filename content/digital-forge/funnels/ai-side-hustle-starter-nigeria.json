@@ -4,19 +4,19 @@
   "funnelType": "evergreen_training",
   "campaignName": "Digital Forge AI Side Hustle Starter Funnel",
   "productSlug": "digital-forge-side-hustle-starter-system",
-  "niche": "AI-powered digital products and side hustles for Nigerians",
+  "niche": "AI-powered digital products and side hustles for creators worldwide",
   "audience": {
-    "primary": "Nigerians who want to build and sell practical digital products using AI and simple tools.",
+    "primary": "Creators who want to build and sell practical digital products using AI and simple tools.",
     "secondary": "Creators, freelancers, operators, and knowledge workers who want a cleaner path into digital product income."
   },
   "promise": {
-    "headline": "How To Build and Sell Your First AI-Powered Digital Product From Nigeria",
+    "headline": "How To Build and Sell Your First AI-Powered Digital Product Online",
     "subheadline": "Free practical training showing you how to turn what you already know into a simple digital product, package it properly, and start promoting it with AI and everyday tools.",
     "cta": "Watch The Free Training"
   },
   "training": {
     "mode": "on_demand",
-    "title": "How To Build and Sell Your First AI-Powered Digital Product From Nigeria",
+    "title": "How To Build and Sell Your First AI-Powered Digital Product Online",
     "timeLabel": "Watch instantly",
     "duration": "30 minutes",
     "whatYouWillLearn": [
@@ -63,7 +63,7 @@
     "optIn": {
       "heroEyebrow": "Free Digital Forge Training",
       "whoItsFor": [
-        "Nigerians who want a practical digital side hustle",
+        "Professionals who want a practical digital side hustle",
         "Creators and freelancers who want to package useful knowledge into an offer",
         "Operators who want a cleaner path from idea to product to promotion"
       ],
@@ -78,7 +78,7 @@
       ]
     },
     "trainingPage": {
-      "headline": "How To Build and Sell Your First AI-Powered Digital Product From Nigeria",
+      "headline": "How To Build and Sell Your First AI-Powered Digital Product Online",
       "supportingLine": "A practical training showing you how to go from scattered ideas and AI confusion to one clear product, one clean offer, and one realistic path to selling it.",
       "cta": "See The Full System"
     },

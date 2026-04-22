@@ -8,7 +8,7 @@ const timelineData = [
         title: 'Foundation Years',
         icon: '🏁',
         color: '#0066FF',
-        description: 'Started in a local internet café serving the biggest Forum in Africa and providing essential services to the community.',
+        description: 'Started in a local internet café serving online forums and providing essential services to the community.',
         highlights: ['Nairaland Moderator', 'Document typing & printing', 'Email & internet support', 'School portal registrations', 'Building community trust'],
     },
     {
@@ -91,7 +91,7 @@ export default function AboutPage() {
                         </h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', color: 'var(--text-secondary)', fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', lineHeight: 1.8 }}>
                             <p>
-                                What started as a personal passion for providing essential services has evolved into the best tech and SEO company in Nigeria. We understand the unique challenges of operating in Nigeria's tech landscape and the global digital economy.
+                                What started as a personal passion for providing essential services has evolved into a premier tech and SEO company. We understand the unique challenges of operating in the global digital economy.
                             </p>
                             <p>
                                 From helping citizens register their NIN and providing student registration solutions to architecting complex AI pipelines and optimizing websites for global search engines, we've seen it all — and we've mastered the art of delivering reliable solutions in both worlds.

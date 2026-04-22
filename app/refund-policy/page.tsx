@@ -518,7 +518,7 @@ export default function RefundPolicyPage() {
                                     {
                                         icon: '📍',
                                         label: 'Office',
-                                        value: 'No 4, Kolawole Close, Ibadan, Nigeria',
+                                        value: 'Global Operations',
                                         href: undefined,
                                     },
                                 ].map((item) => (

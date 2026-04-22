@@ -210,7 +210,7 @@ export default function CheckoutClient({
           {[
             { 
               id: "flutterwave", 
-              label: "Local & African Cards", 
+              label: "Local Payment", 
               desc: "Pay securely in Naira (Cards, USSD, Bank Transfer)", 
               icon: "🇳🇬",
               activeColor: "rgba(255, 120, 0, 0.14)",

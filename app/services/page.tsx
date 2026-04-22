@@ -8,7 +8,7 @@ type ServiceCategory = 'ai_systems' | 'local';
 
 const categories: { key: ServiceCategory; label: string; description: string }[] = [
     { key: 'ai_systems', label: '🚀 Digital & AI Systems', description: 'Autonomous digital product pipelines, funnel engineering, and generative SEO architectures.' },
-    { key: 'local', label: '🏪 Local Tech', description: 'In-person tech support and essential technical services in Ibadan and beyond.' },
+    { key: 'local', label: '🏪 Local Tech', description: 'In-person tech support and essential technical services for our local partners.' },
 ];
 
 const services: Record<ServiceCategory, { icon: string; title: string; color: string; badge?: string; description: string; features: string[] }[]> = {
@@ -38,7 +38,7 @@ const services: Record<ServiceCategory, { icon: string; title: string; color: st
         },
         {
             icon: '📈', title: 'Top SEO Agency & Services', color: '#00CCFF',
-            description: 'We are the best SEO company in Nigeria, providing elite semantic SEO strategy, AI-citation optimization, and complete search dominance.',
+            description: 'We are a premier SEO company, providing elite semantic SEO strategy, AI-citation optimization, and complete search dominance.',
             features: ['Free SEO visibility snapshots', 'Monthly done-for-you execution', 'AI-citation (SGE) readiness', 'Top-tier SEO Services', 'Performance marketing alignment'],
         },
         {
@@ -254,7 +254,7 @@ export default function ServicesPage() {
 
                 {/* Location */}
                 <p style={{ marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                    📍 Visit us at: No 4, Kolawole Close, Ibadan, Nigeria
+                    📍 Global Digital Operations
                 </p>
             </section>
         </div>

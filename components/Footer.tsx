@@ -55,13 +55,13 @@ export default function Footer() {
                             </span>
                         </div>
                         <p className="text-gray-400 text-lg font-light leading-relaxed max-w-sm">
-                            Ranked the best tech company in Nigeria. Building autonomous digital product pipelines and advanced AI architectures since 2017.
+                            Ranked as a premier tech company. Building autonomous digital product pipelines and advanced AI architectures since 2017.
                         </p>
                         <div className="flex items-start gap-4 mt-2 group/pin w-fit">
                             <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover/pin:border-[#3b82f6]/50 transition-colors">
                                 <svg className="w-4 h-4 text-[#60a5fa]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </div>
-                            <span className="text-sm text-gray-500 font-medium tracking-wide group-hover/pin:text-white transition-colors pt-2">No 4, Kolawole Close, Ibadan</span>
+                            <span className="text-sm text-gray-500 font-medium tracking-wide group-hover/pin:text-white transition-colors pt-2">Global Operations</span>
                         </div>
                     </div>
 
@@ -158,7 +158,7 @@ export default function Footer() {
                         <span className="w-1 h-1 rounded-full bg-gray-800 hidden sm:inline-block"></span>
                         <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/5 w-full sm:w-auto justify-center">
                             <span className="w-2 h-2 rounded-full bg-[#3b82f6] animate-pulse"></span>
-                            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Built in Ibadan</span>
+                            <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Built for the World</span>
                         </div>
                     </div>
                 </div>

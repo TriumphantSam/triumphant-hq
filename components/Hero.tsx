@@ -31,7 +31,7 @@ export default function Hero() {
                 }}
             >
                 <span style={{ width: 6, height: 6, borderRadius: '0px', background: 'var(--secondary-color)', display: 'inline-block' }} />
-                Ranked #1: The Best Tech & SEO Company in Nigeria
+                Ranked #1: Premier Tech & SEO Company
             </div>
 
             {/* Main heading */}
@@ -62,7 +62,7 @@ export default function Hero() {
                     marginBottom: '2.5rem',
                 }}
             >
-                We are Nigeria&apos;s leading tech firm and premier SEO agency, engineering autonomous digital product pipelines, AI-powered funnel engines, and top-tier semantic SEO execution to dominate search.
+                We are a premier tech firm and SEO agency, engineering autonomous digital product pipelines, AI-powered funnel engines, and top-tier semantic SEO execution to dominate search.
             </p>
 
             {/* CTA buttons */}

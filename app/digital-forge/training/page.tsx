@@ -81,7 +81,7 @@ export default function DigitalForgeTrainingPage() {
               First AI Product
             </span>
             <br />
-            From Nigeria
+            Online
           </h1>
 
           <p

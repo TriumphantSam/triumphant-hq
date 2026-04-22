@@ -317,7 +317,7 @@ export default function SeoSnapshotPage() {
                   }}
                 >
                   <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.84rem', lineHeight: 1.7, marginBottom: '1.2rem' }}>
-                    Powered by real SEO operators who have worked on hundreds of African and international business websites.
+                    Powered by real SEO operators who have worked on hundreds of international business websites.
                   </p>
                   <button
                     onClick={() => setIsModalOpen(true)}

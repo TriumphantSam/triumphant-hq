@@ -4,7 +4,7 @@ import { getForgeProducts } from "@/lib/digital-forge";
 export const metadata = {
   title: "Digital Forge — Build, Package, and Sell AI-Powered Digital Products | Triumphant HQ",
   description:
-    "Digital Forge is the practical system for African creators, professionals, and operators who want to build and sell AI-powered digital products with better structure, stronger offers, and a real path to income.",
+    "Digital Forge is the practical system for creators, professionals, and operators worldwide who want to build and sell AI-powered digital products with better structure, stronger offers, and a real path to income.",
 };
 
 const WHY_DIGITAL_FORGE = [
@@ -83,7 +83,7 @@ const WHAT_YOU_GET = [
   "Ready-to-use prompts, templates, and checklists",
   "Launch assets and operating documents",
   "Training that moves you from idea to income",
-  "A framework built for Africa's real market conditions",
+  "A framework built for real market conditions",
 ];
 
 export default async function DigitalForgePage() {
@@ -220,7 +220,7 @@ export default async function DigitalForgePage() {
 
               <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
                 {[
-                  "Works for Nigeria, Africa, and beyond",
+                  "Works for global markets",
                   "No tech background needed",
                   "Clear path from idea to income",
                 ].map((item) => (
@@ -400,7 +400,7 @@ export default async function DigitalForgePage() {
                 </p>
                 <div style={{ display: "grid", gap: "0.75rem" }}>
                   {[
-                    "Nigerian professionals who want a side hustle built around AI",
+                    "Professionals who want a side hustle built around AI",
                     "Creators with knowledge but no packaged offer yet",
                     "Operators who understand AI matters but need a commercial path",
                     "Anyone who has tried and gotten stuck — and is ready to try smart",
@@ -516,7 +516,7 @@ export default async function DigitalForgePage() {
               {
                 href: "/digital-forge/training",
                 eyebrow: "Free Training",
-                title: "How To Build and Sell Your First AI Product From Nigeria",
+                title: "How To Build and Sell Your First AI Product Online",
                 description: "Learn the framework, see the mistakes to avoid, and walk away with a concrete next step — free, no strings.",
                 accent: "#00CCFF",
                 cta: "Watch the Training →",

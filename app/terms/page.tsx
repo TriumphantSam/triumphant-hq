@@ -272,7 +272,7 @@ export default function TermsPage() {
                             <p>
                                 These Terms of Service govern your use of this website and the purchase of digital products offered by{' '}
                                 <strong style={{ color: 'var(--accent-color)' }}>Triumphant Technological Services</strong>{' '}
-                                (also trading as <strong>Triumphanttech</strong>), a digital products and technology services business based in Ibadan, Nigeria.
+                                (also trading as <strong>Triumphanttech</strong>), a global digital products and technology services business.
                             </p>
                             <p>
                                 By purchasing or accessing our products, you agree to be bound by these terms. If you do not agree, please do not use our website or purchase our products.
@@ -489,7 +489,7 @@ export default function TermsPage() {
                                     {
                                         icon: '📍',
                                         label: 'Office',
-                                        value: 'No 4, Kolawole Close, Ibadan, Nigeria',
+                                        value: 'Global Operations',
                                         href: undefined,
                                     },
                                 ].map((item) => (

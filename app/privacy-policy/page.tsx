@@ -119,7 +119,7 @@ export default function PrivacyPolicyPage() {
                     >
                         {[
                             { label: 'Effective Date', value: '2019' },
-                            { label: 'Jurisdiction', value: 'Nigeria (NDPR)' },
+                            { label: 'Jurisdiction', value: 'Global Standards (incl. GDPR)' },
                             { label: 'Last Updated', value: 'March 2026' },
                         ].map((tag) => (
                             <div
@@ -447,7 +447,7 @@ export default function PrivacyPolicyPage() {
 
                         <PolicySection id="your-rights" icon="⚖️" title="Your Data Protection Rights">
                             <p>
-                                Consistent with global best practices and the <strong style={{ color: 'var(--secondary-color)' }}>Nigerian Data Protection Regulation (NDPR)</strong>, you reserve the right to:
+                                Consistent with global best practices and <strong style={{ color: 'var(--secondary-color)' }}>International Data Protection Regulations</strong>, you reserve the right to:
                             </p>
                             <div
                                 style={{
@@ -540,7 +540,7 @@ export default function PrivacyPolicyPage() {
                                     {
                                         icon: '📍',
                                         label: 'Office',
-                                        value: 'No 4, Kolawole Close, Ibadan, Nigeria',
+                                        value: 'Global Operations',
                                         href: undefined,
                                     },
                                 ].map((item) => (
