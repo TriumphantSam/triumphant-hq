@@ -15,7 +15,6 @@ const DELIVERABLES = [
   "Sales copy framework — write copy that converts, even if you hate writing",
   "Funnel planning worksheet — map out a simple path from attention to sale",
   "Distribution plan — get your product in front of buyers quickly",
-  "Optional audio companion and mini onboarding layer",
 ];
 
 const OUTCOMES = [
