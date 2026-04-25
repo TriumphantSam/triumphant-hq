@@ -82,153 +82,92 @@ export default function CheckoutClient({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "grid",
-        gap: "1rem",
-      }}
-    >
-      <div
-        style={{
-          display: "grid",
-          gap: "0.45rem",
-        }}
-      >
-        <label htmlFor="checkout-name" style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.88rem", fontWeight: 600 }}>
+    <form onSubmit={handleSubmit} className="grid gap-5">
+      <div className="grid gap-2">
+        <label htmlFor="checkout-name" className="text-white/80 text-sm font-bold tracking-wide">
           Full name
         </label>
-        <input
-          id="checkout-name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="Your name"
-          autoComplete="name"
-          style={{
-            width: "100%",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.14)",
-            background: "rgba(255,255,255,0.04)",
-            color: "#fff",
-            padding: "0.9rem 1rem",
-            outline: "none",
-            transition: "border-color 0.2s ease",
-          }}
-          onFocus={(e) => (e.target.style.borderColor = "rgba(0,204,255,0.5)")}
-          onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.14)")}
-        />
+        <div className="relative group">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-0 group-focus-within:opacity-20 transition duration-500" />
+          <input
+            id="checkout-name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            placeholder="Your name"
+            autoComplete="name"
+            className="relative w-full rounded-xl border border-white/10 bg-white/5 text-white px-4 py-3.5 outline-none transition-all duration-300 focus:border-blue-400/50 focus:bg-white/[0.08] placeholder:text-white/20 font-medium"
+          />
+        </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "0.45rem",
-        }}
-      >
-        <label htmlFor="checkout-email" style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.88rem", fontWeight: 600 }}>
+      <div className="grid gap-2">
+        <label htmlFor="checkout-email" className="text-white/80 text-sm font-bold tracking-wide">
           Email address
         </label>
-        <input
-          id="checkout-email"
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="you@example.com"
-          autoComplete="email"
-          style={{
-            width: "100%",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.14)",
-            background: "rgba(255,255,255,0.04)",
-            color: "#fff",
-            padding: "0.9rem 1rem",
-            outline: "none",
-            transition: "border-color 0.2s ease",
-          }}
-          onFocus={(e) => (e.target.style.borderColor = "rgba(0,204,255,0.5)")}
-          onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.14)")}
-        />
+        <div className="relative group">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-0 group-focus-within:opacity-20 transition duration-500" />
+          <input
+            id="checkout-email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="you@example.com"
+            autoComplete="email"
+            className="relative w-full rounded-xl border border-white/10 bg-white/5 text-white px-4 py-3.5 outline-none transition-all duration-300 focus:border-blue-400/50 focus:bg-white/[0.08] placeholder:text-white/20 font-medium"
+          />
+        </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "0.45rem",
-        }}
-      >
-        <label htmlFor="checkout-phone" style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.88rem", fontWeight: 600 }}>
-          Phone number <span style={{ color: "rgba(255,255,255,0.35)" }}>(optional)</span>
+      <div className="grid gap-2">
+        <label htmlFor="checkout-phone" className="text-white/80 text-sm font-bold tracking-wide flex items-center justify-between">
+          <span>Phone number</span>
+          <span className="text-white/30 text-xs font-medium uppercase tracking-wider">Optional</span>
         </label>
-        <input
-          id="checkout-phone"
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
-          placeholder="+234..."
-          autoComplete="tel"
-          style={{
-            width: "100%",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.14)",
-            background: "rgba(255,255,255,0.04)",
-            color: "#fff",
-            padding: "0.9rem 1rem",
-            outline: "none",
-            transition: "border-color 0.2s ease",
-          }}
-          onFocus={(e) => (e.target.style.borderColor = "rgba(0,204,255,0.5)")}
-          onBlur={(e) => (e.target.style.borderColor = "rgba(255,255,255,0.14)")}
-        />
+        <div className="relative group">
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-0 group-focus-within:opacity-20 transition duration-500" />
+          <input
+            id="checkout-phone"
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
+            placeholder="+234..."
+            autoComplete="tel"
+            className="relative w-full rounded-xl border border-white/10 bg-white/5 text-white px-4 py-3.5 outline-none transition-all duration-300 focus:border-blue-400/50 focus:bg-white/[0.08] placeholder:text-white/20 font-medium"
+          />
+        </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "0.8rem",
-          marginTop: "0.5rem",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <div style={{ height: "1px", background: "rgba(255,255,255,0.1)", flex: 1 }} />
-          <p
-            style={{
-              color: "rgba(255,255,255,0.72)",
-              fontSize: "0.84rem",
-              fontWeight: 700,
-              margin: 0,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-            }}
-          >
+      <div className="grid gap-4 mt-4">
+        <div className="flex items-center gap-4">
+          <div className="h-px bg-white/10 flex-1" />
+          <p className="text-white/40 text-xs font-bold uppercase tracking-[0.2em] m-0">
             Choose payment method
           </p>
-          <div style={{ height: "1px", background: "rgba(255,255,255,0.1)", flex: 1 }} />
+          <div className="h-px bg-white/10 flex-1" />
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            gap: "0.6rem",
-          }}
-        >
+        <div className="grid grid-cols-1 gap-3">
           {[
             ...(hasInternationalCheckout ? [{
               id: "lemonsqueezy",
               label: "Global Cards & Apple Pay",
               desc: "International checkout in USD and other supported currencies",
               icon: "🌍",
-              activeColor: "rgba(255, 194, 51, 0.12)",
-              activeBorder: "rgba(255, 194, 51, 0.7)",
-              activeText: "#FFD055"
+              activeColor: "bg-yellow-500/10",
+              activeBorder: "border-yellow-500/50",
+              activeText: "text-yellow-400",
+              hoverBorder: "hover:border-yellow-500/30",
+              shadow: "shadow-[0_0_20px_rgba(234,179,8,0.15)]",
             }] : []),
             {
               id: "flutterwave", 
               label: "Local Payment", 
               desc: "Pay securely in Naira (Cards, USSD, Bank Transfer)", 
               icon: "🇳🇬",
-              activeColor: "rgba(255, 120, 0, 0.14)",
-              activeBorder: "rgba(255, 120, 0, 0.7)",
-              activeText: "#FF9944"
+              activeColor: "bg-orange-500/10",
+              activeBorder: "border-orange-500/50",
+              activeText: "text-orange-400",
+              hoverBorder: "hover:border-orange-500/30",
+              shadow: "shadow-[0_0_20px_rgba(249,115,22,0.15)]",
             },
           ].map((item) => {
             const isActive = provider === item.id;
@@ -237,36 +176,18 @@ export default function CheckoutClient({
                 key={item.id}
                 type="button"
                 onClick={() => setProvider(item.id as "flutterwave" | "lemonsqueezy")}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "1rem",
-                  borderRadius: 14,
-                  border: isActive ? `1px solid ${item.activeBorder}` : "1px solid rgba(255,255,255,0.14)",
-                  background: isActive ? item.activeColor : "rgba(255,255,255,0.03)",
-                  padding: "1rem",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  transition: "all 0.25s ease-in-out",
-                  transform: isActive ? "translateY(-2px)" : "translateY(0)",
-                  boxShadow: isActive ? `0 6px 20px ${item.activeColor}` : "none",
-                }}
+                className={`flex items-center gap-4 rounded-xl p-4 cursor-pointer text-left transition-all duration-300 ${
+                  isActive 
+                    ? `border ${item.activeBorder} ${item.activeColor} ${item.shadow} scale-[1.02]` 
+                    : `border border-white/10 bg-white/5 ${item.hoverBorder} hover:bg-white/10 hover:scale-[1.01]`
+                }`}
               >
-                <div style={{ fontSize: "1.6rem" }}>{item.icon}</div>
+                <div className="text-3xl filter drop-shadow-md">{item.icon}</div>
                 <div>
-                  <div style={{ 
-                    color: isActive ? item.activeText : "rgba(255,255,255,0.9)", 
-                    fontSize: "0.96rem", 
-                    fontWeight: 800,
-                    marginBottom: "0.15rem"
-                  }}>
+                  <div className={`font-black text-base mb-1 ${isActive ? item.activeText : "text-white/90"}`}>
                     {item.label}
                   </div>
-                  <div style={{ 
-                    color: isActive ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.4)", 
-                    fontSize: "0.8rem", 
-                    fontWeight: 500 
-                  }}>
+                  <div className={`text-xs font-medium leading-relaxed ${isActive ? "text-white/80" : "text-white/40"}`}>
                     {item.desc}
                   </div>
                 </div>
@@ -277,17 +198,8 @@ export default function CheckoutClient({
       </div>
 
       {error ? (
-        <div
-          style={{
-            borderRadius: 12,
-            border: "1px solid rgba(239,68,68,0.35)",
-            background: "rgba(127,29,29,0.2)",
-            color: "#fecaca",
-            padding: "0.85rem 1rem",
-            fontSize: "0.88rem",
-            lineHeight: 1.6,
-          }}
-        >
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 text-red-200 p-4 text-sm font-medium leading-relaxed flex items-start gap-3">
+          <svg className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
           {error}
         </div>
       ) : null}
@@ -295,45 +207,33 @@ export default function CheckoutClient({
       <button
         type="submit"
         disabled={submitting}
-        style={{
-          marginTop: "0.5rem",
-          border: "none",
-          borderRadius: 14,
-          padding: "1.1rem 1.1rem",
-          background: provider === "lemonsqueezy" 
-            ? "linear-gradient(135deg, #E69B00, #FFC233)" 
-            : "linear-gradient(135deg, #D45000, #FF6B00)",
-          color: provider === "lemonsqueezy" ? "#000" : "#fff",
-          fontWeight: 900,
-          fontSize: "0.95rem",
-          letterSpacing: "0.05em",
-          textTransform: "uppercase",
-          cursor: submitting ? "wait" : "pointer",
-          opacity: submitting ? 0.75 : 1,
-          boxShadow: provider === "lemonsqueezy" 
-            ? "0 0 34px rgba(255, 194, 51, 0.3)" 
-            : "0 0 34px rgba(255, 107, 0, 0.38)",
-          transition: "all 0.3s ease",
-        }}
+        className={`relative mt-2 w-full rounded-xl p-4 font-black text-sm uppercase tracking-widest transition-all duration-300 overflow-hidden ${
+          submitting ? "cursor-wait opacity-80" : "hover:scale-[1.02] active:scale-[0.98] shadow-lg"
+        }`}
       >
-        {submitting ? "Opening Secure Checkout..." : 
-          provider === "lemonsqueezy" ? `Pay ${usdPriceLabel || "$10.00"} via international checkout` : `Pay ${priceLabel} via secure local checkout`
-        }
+        <span className={`absolute inset-0 w-full h-full transition-all duration-300 ${
+          provider === "lemonsqueezy" 
+            ? "bg-gradient-to-r from-yellow-500 to-amber-400 hover:from-amber-400 hover:to-yellow-500" 
+            : "bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400"
+        }`} />
+        <span className="relative z-10 flex items-center justify-center gap-2 text-black">
+          {submitting ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-black" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              Opening Secure Checkout...
+            </>
+          ) : (
+            <>
+              {provider === "lemonsqueezy" ? `Pay ${usdPriceLabel || "$10.00"} via international checkout` : `Pay ${priceLabel} via secure local checkout`}
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+            </>
+          )}
+        </span>
       </button>
 
-      <div style={{ textAlign: "center", marginTop: "0.2rem" }}>
-        <p
-          style={{
-            color: "rgba(255,255,255,0.42)",
-            fontSize: "0.8rem",
-            lineHeight: 1.6,
-            margin: 0,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.4rem"
-          }}
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+      <div className="text-center mt-2">
+        <p className="text-white/40 text-xs font-medium leading-relaxed m-0 inline-flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>

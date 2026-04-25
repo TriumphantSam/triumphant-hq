@@ -108,201 +108,111 @@ export default function DigitalForgeSystemPage() {
   const usdPriceLabel = resolveUsdPriceLabel(systemOffer.key, systemOffer.kind);
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen pb-24 bg-[#030614] text-white selection:bg-blue-500/30 font-sans">
 
       {/* ── HERO ── */}
       <section className="relative overflow-hidden pt-32 pb-24">
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(circle at 18% 20%, rgba(0,102,255,0.24), transparent 34%), radial-gradient(circle at 80% 16%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(4,9,24,0.96), rgba(5,5,16,1))",
-          }}
-        />
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
+        {/* Dynamic Background */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 -left-[10%] w-[60%] h-[60%] bg-blue-600/20 rounded-full blur-[140px] mix-blend-screen" />
+          <div className="absolute top-[20%] -right-[10%] w-[50%] h-[50%] bg-cyan-500/15 rounded-full blur-[120px] mix-blend-screen" />
+          <div className="absolute bottom-0 left-[20%] w-[60%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] mix-blend-screen" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030614]/80 to-[#030614]" />
+        </div>
+
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
           <Link
             href="/digital-forge"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.45rem",
-              color: "rgba(255,255,255,0.5)",
-              textDecoration: "none",
-              fontSize: "0.84rem",
-              fontWeight: 600,
-              letterSpacing: "0.08em",
-              marginBottom: "1.6rem",
-            }}
+            className="inline-flex items-center gap-2 text-white/50 hover:text-white/90 transition-colors text-sm font-semibold tracking-wider mb-8 uppercase"
           >
             ← Back to Digital Forge
           </Link>
 
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.55rem",
-              padding: "0.42rem 1rem",
-              borderRadius: 999,
-              border: "1px solid rgba(0,102,255,0.38)",
-              background: "rgba(0,102,255,0.1)",
-              marginBottom: "1.5rem",
-            }}
-          >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#0066FF", display: "inline-block" }} />
-            <span style={{ color: "#60A5FA", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-md mb-8 shadow-[0_0_20px_rgba(37,99,235,0.15)] animate-pulse">
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.9)]" />
+            <span className="text-blue-400 font-bold text-xs uppercase tracking-[0.2em]">
               Flagship System — Most Popular
             </span>
           </div>
 
-          <div
-            className="grid gap-10 lg:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)]"
-            style={{ alignItems: "start" }}
-          >
+          <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] items-start">
             <div>
-              <h1
-                style={{
-                  fontSize: "clamp(2.6rem, 6vw, 4.9rem)",
-                  fontWeight: 900,
-                  lineHeight: 1.03,
-                  letterSpacing: "-0.03em",
-                  color: "#fff",
-                  maxWidth: 860,
-                  marginBottom: "1.3rem",
-                }}
-              >
-                You have AI tools. Now ship a product people can actually buy.
+              <h1 className="text-[clamp(2.6rem,6vw,4.8rem)] font-black leading-[1.05] tracking-tight text-white max-w-[860px] mb-6 drop-shadow-xl">
+                You have AI tools. <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+                  Now ship a product people can actually buy.
+                </span>
               </h1>
-              <p
-                style={{
-                  fontSize: "1.15rem",
-                  color: "rgba(255,255,255,0.74)",
-                  lineHeight: 1.9,
-                  maxWidth: 740,
-                  marginBottom: "1rem",
-                }}
-              >
+              <p className="text-[1.15rem] text-white/80 leading-relaxed max-w-[740px] mb-4 font-medium">
                 Digital Forge gives you the practical system to build, package, and launch your first AI-powered digital product. No fake income claims, no prompt dump, no theory that leaves you stuck.
               </p>
-              <p
-                style={{
-                  color: "rgba(255,255,255,0.52)",
-                  lineHeight: 1.85,
-                  maxWidth: 740,
-                  fontSize: "0.97rem",
-                  marginBottom: "2.2rem",
-                }}
-              >
+              <p className="text-white/50 leading-relaxed max-w-[740px] text-[1rem] mb-10">
                 Built for professionals, creators, and operators who consume AI content but still do not have one clear offer, one useful product, and one simple sales path.
               </p>
 
-              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+              <div className="flex flex-wrap gap-4 mb-8">
                 <Link
                   href="/digital-forge/checkout?offer=system"
                   id="system-buy-cta"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "1rem 2rem",
-                    borderRadius: 10,
-                    textDecoration: "none",
-                    fontWeight: 800,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    fontSize: "0.86rem",
-                    color: "#fff",
-                    background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                    boxShadow: "0 0 36px rgba(0,102,255,0.42)",
-                  }}
+                  className="group relative inline-flex items-center justify-center px-8 py-4 rounded-2xl text-white font-extrabold text-sm uppercase tracking-widest overflow-hidden transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)] active:scale-[0.98]"
                 >
-                  Get the Starter System — {usdPriceLabel}
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:via-cyan-500 group-hover:to-blue-600" />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Get the Starter System — {usdPriceLabel}
+                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </span>
                 </Link>
                 <Link
                   href={whatsappHref}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "1rem 2rem",
-                    borderRadius: 10,
-                    textDecoration: "none",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    fontSize: "0.86rem",
-                    color: "rgba(255,255,255,0.82)",
-                    border: "1px solid rgba(255,255,255,0.16)",
-                  }}
+                  className="inline-flex items-center justify-center px-8 py-4 rounded-2xl text-white/80 font-bold text-sm uppercase tracking-widest border border-white/10 bg-white/5 backdrop-blur-sm transition-all hover:bg-white/10 hover:text-white hover:border-white/20 active:scale-[0.98]"
                 >
                   Need help deciding? Message on WhatsApp
                 </Link>
               </div>
 
-              <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.83rem" }}>
-                International checkout is available via Lemon Squeezy. Local naira checkout remains available for Nigerian buyers.
-              </p>
+              <div className="flex items-center gap-3 text-white/40 text-xs font-medium">
+                <svg className="w-5 h-5 flex-shrink-0 text-blue-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                <p>
+                  International checkout is available via Lemon Squeezy. Local naira checkout remains available for Nigerian buyers.
+                </p>
+              </div>
             </div>
 
-            {/* Outcome summary */}
-            <div
-              style={{
-                background: "rgba(9,14,32,0.92)",
-                border: "1px solid rgba(0,102,255,0.26)",
-                borderRadius: 24,
-                padding: "1.6rem",
-                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
-              }}
-            >
-              <p
-                style={{
-                  color: "#00CCFF",
-                  fontSize: "0.73rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.16em",
-                  fontWeight: 700,
-                  marginBottom: "0.8rem",
-                }}
-              >
-                What You Walk Away With
-              </p>
-              <div style={{ display: "grid", gap: "1rem" }}>
-                {OUTCOMES.map((item) => (
-                  <div key={item} style={{ display: "flex", gap: "0.85rem", alignItems: "flex-start" }}>
-                    <span
-                      style={{
-                        width: 22,
-                        height: 22,
-                        borderRadius: "50%",
-                        background: "rgba(0,102,255,0.2)",
-                        border: "1px solid rgba(0,102,255,0.4)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        marginTop: 2,
-                      }}
-                    >
-                      <span style={{ color: "#60A5FA", fontSize: "0.72rem", fontWeight: 900 }}>✓</span>
-                    </span>
-                    <p style={{ color: "rgba(255,255,255,0.78)", lineHeight: 1.7, fontSize: "0.94rem" }}>{item}</p>
-                  </div>
-                ))}
-              </div>
-              <div
-                style={{
-                  marginTop: "1.4rem",
-                  paddingTop: "1.2rem",
-                  borderTop: "1px solid rgba(255,255,255,0.07)",
-                }}
-              >
-                <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
-                  Price
+            {/* Outcome summary card */}
+            <div className="relative group">
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-blue-500/30 to-cyan-500/20 rounded-[2rem] blur-xl opacity-70 transition-all duration-500 group-hover:blur-2xl group-hover:opacity-100" />
+              <div className="relative bg-[#0A0F24]/95 backdrop-blur-2xl border border-blue-500/20 rounded-[2rem] p-8 shadow-2xl transition-transform duration-500 hover:-translate-y-1">
+                <div className="absolute top-0 right-0 p-6 opacity-5 pointer-events-none">
+                  <svg className="w-32 h-32 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                
+                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-6 flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  What You Walk Away With
                 </p>
-                <p style={{ color: "#fff", fontWeight: 800, fontSize: "1.4rem" }}>{usdPriceLabel}</p>
-                <p style={{ color: "rgba(255,255,255,0.44)", fontSize: "0.84rem", marginTop: "0.3rem" }}>
-                  Also available locally from {systemPrice} through Flutterwave.
-                </p>
+                
+                <div className="grid gap-4 relative z-10">
+                  {OUTCOMES.map((item) => (
+                    <div key={item} className="flex gap-4 items-start p-3 rounded-xl hover:bg-white/[0.03] transition-colors">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center mt-0.5 shadow-[0_0_10px_rgba(59,130,246,0.3)]">
+                        <span className="text-blue-400 text-xs font-black">✓</span>
+                      </span>
+                      <p className="text-white/80 leading-relaxed text-[0.95rem] font-medium">{item}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-8 pt-6 border-t border-white/10 relative z-10">
+                  <p className="text-white/40 text-xs uppercase tracking-[0.15em] mb-1 font-semibold">
+                    Instant Access Price
+                  </p>
+                  <p className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 font-black text-[2rem] mb-1">
+                    {usdPriceLabel}
+                  </p>
+                  <p className="text-white/50 text-sm font-medium">
+                    Also available locally from {systemPrice} through Flutterwave.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -310,50 +220,40 @@ export default function DigitalForgeSystemPage() {
       </section>
 
       {/* -- FOUNDER PROOF -- */}
-      <section style={{ paddingBottom: "5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div style={{ marginBottom: "1.8rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
-              Founder Proof
+      <section className="py-24 relative border-t border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
+          <div className="mb-12 max-w-3xl">
+            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 flex items-center gap-2">
+              <span className="w-8 h-[1px] bg-cyan-400/50" /> Founder Proof
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 720 }}>
-              Built from the same system used to create this offer
+            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight mb-5 tracking-tight">
+              Built from the same system <br className="hidden md:block"/> used to create this offer
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.66)", lineHeight: 1.85, maxWidth: 780, marginTop: "1rem" }}>
+            <p className="text-white/60 leading-relaxed text-[1.05rem]">
               Before there are testimonials, there is build proof: the product shows its own method. The Starter System turns the messy middle of AI product creation into a clear sequence: choose the offer, build the asset, package the bundle, and launch with a simple sales path.
             </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem", marginBottom: "1.2rem" }}>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {PROOF_ASSETS.map((item) => (
               <div
                 key={item.title}
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 20,
-                  padding: "1.4rem",
-                }}
+                className="group bg-white/[0.02] border border-white/5 rounded-[1.5rem] p-8 hover:bg-white/[0.04] hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 shadow-lg"
               >
-                <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", marginBottom: "0.7rem" }}>{item.title}</h3>
-                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.body}</p>
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-3">
+                  <span className="w-1.5 h-6 rounded-full bg-blue-500 group-hover:bg-cyan-400 transition-colors" />
+                  {item.title}
+                </h3>
+                <p className="text-white/60 leading-relaxed text-[0.95rem]">{item.body}</p>
               </div>
             ))}
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: "0.8rem",
-              border: "1px solid rgba(0,102,255,0.22)",
-              background: "rgba(0,102,255,0.07)",
-              borderRadius: 22,
-              padding: "1rem",
-            }}
-          >
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-blue-500/5 border border-blue-500/20 rounded-[1.5rem] p-6 backdrop-blur-sm">
             {STARTER_STEPS.map((item, index) => (
-              <div key={item} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", padding: "0.55rem" }}>
-                <span style={{ color: "#60A5FA", fontWeight: 900 }}>{String(index + 1).padStart(2, "0")}</span>
-                <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.6, fontSize: "0.9rem" }}>{item}</p>
+              <div key={item} className="flex gap-4 items-start p-4 rounded-xl hover:bg-blue-500/10 transition-colors">
+                <span className="text-blue-400 font-black text-xl opacity-60">{String(index + 1).padStart(2, "0")}</span>
+                <p className="text-white/80 leading-snug text-[0.9rem] font-medium">{item}</p>
               </div>
             ))}
           </div>
@@ -361,35 +261,29 @@ export default function DigitalForgeSystemPage() {
       </section>
 
       {/* ── WHO THIS IS FOR ── */}
-      <section style={{ paddingBottom: "5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div style={{ marginBottom: "1.8rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
-              Who This Is For
+      <section className="py-24">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div className="mb-14 text-center max-w-2xl mx-auto">
+            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 justify-center flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-cyan-400/50" /> Who This Is For <span className="w-8 h-[1px] bg-cyan-400/50" />
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 600 }}>
+            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight tracking-tight">
               Built for real people with real goals
             </h2>
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-              gap: "1rem",
-            }}
-          >
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {FOR_WHO.map((item) => (
               <div
                 key={item.title}
-                style={{
-                  background: "rgba(0,102,255,0.05)",
-                  border: "1px solid rgba(0,102,255,0.18)",
-                  borderRadius: 20,
-                  padding: "1.4rem",
-                }}
+                className="relative overflow-hidden group bg-gradient-to-br from-blue-900/10 to-transparent border border-blue-500/10 rounded-[1.5rem] p-8 hover:border-blue-400/40 transition-all duration-300"
               >
-                <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", marginBottom: "0.7rem" }}>{item.title}</h3>
-                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.body}</p>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-blue-400/20" />
+                <h3 className="text-white font-bold text-xl mb-3 relative z-10 flex items-center gap-3">
+                  <span className="w-1.5 h-6 rounded-full bg-cyan-500" />
+                  {item.title}
+                </h3>
+                <p className="text-white/60 leading-relaxed text-[0.95rem] relative z-10 ml-4">{item.body}</p>
               </div>
             ))}
           </div>
@@ -397,267 +291,181 @@ export default function DigitalForgeSystemPage() {
       </section>
 
       {/* ── WHAT YOU GET + MODULES ── */}
-      <section style={{ paddingBottom: "5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-            <div
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                borderRadius: 24,
-                padding: "1.8rem",
-              }}
-            >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.8rem" }}>
-                Everything Included
-              </p>
-              <h2 style={{ color: "#fff", fontSize: "1.8rem", fontWeight: 900, lineHeight: 1.15, marginBottom: "1.2rem" }}>
-                A complete business toolkit, not loose files
-              </h2>
-              <div style={{ display: "grid", gap: "0.9rem" }}>
-                {DELIVERABLES.map((item) => (
-                  <div
-                    key={item}
-                    style={{
-                      display: "flex",
-                      gap: "0.9rem",
-                      alignItems: "flex-start",
-                      paddingBottom: "0.9rem",
-                      borderBottom: "1px solid rgba(255,255,255,0.06)",
-                    }}
-                  >
-                    <span style={{ color: "#00CCFF", fontWeight: 900, flexShrink: 0 }}>→</span>
-                    <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.7, fontSize: "0.93rem" }}>{item}</p>
-                  </div>
-                ))}
+      <section className="py-24 relative">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+            {/* Left Column: Everything Included */}
+            <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative overflow-hidden group hover:border-white/10 transition-colors">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative z-10">
+                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-4 flex items-center gap-2">
+                  <span className="w-6 h-[1px] bg-cyan-400/50" /> Everything Included
+                </p>
+                <h2 className="text-white text-[1.8rem] font-black leading-tight mb-8">
+                  A complete business toolkit,<br/> not loose files
+                </h2>
+                <div className="grid gap-5">
+                  {DELIVERABLES.map((item) => (
+                    <div key={item} className="flex gap-4 items-start group/item">
+                      <span className="text-cyan-400 font-bold mt-1 group-hover/item:translate-x-1 transition-transform">→</span>
+                      <p className="text-white/70 leading-relaxed text-[0.95rem]">{item}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div
-              style={{
-                background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
-                border: "1px solid rgba(0,102,255,0.2)",
-                borderRadius: 24,
-                padding: "1.8rem",
-              }}
-            >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.8rem" }}>
-                How It Works
-              </p>
-              <h2 style={{ color: "#fff", fontSize: "1.8rem", fontWeight: 900, lineHeight: 1.15, marginBottom: "1.2rem" }}>
-                A guided build path, not a pile of random files
-              </h2>
-              <div style={{ display: "grid", gap: "1.2rem" }}>
-                {MODULES.map((item) => (
-                  <div
-                    key={item.title}
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "48px minmax(0, 1fr)",
-                      gap: "1rem",
-                      alignItems: "start",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: 14,
-                        background: "rgba(0,102,255,0.16)",
-                        border: "1px solid rgba(0,102,255,0.3)",
-                        color: "#60A5FA",
-                        fontWeight: 800,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "0.88rem",
-                      }}
-                    >
-                      {item.num}
+            {/* Right Column: How It Works */}
+            <div className="bg-gradient-to-b from-[#0B1026] to-[#050814] border border-blue-500/20 rounded-[2rem] p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]" />
+              <div className="relative z-10">
+                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-4 flex items-center gap-2">
+                  <span className="w-6 h-[1px] bg-cyan-400/50" /> How It Works
+                </p>
+                <h2 className="text-white text-[1.8rem] font-black leading-tight mb-10">
+                  A guided build path,<br/> not a pile of random files
+                </h2>
+                <div className="grid gap-8">
+                  {MODULES.map((item) => (
+                    <div key={item.title} className="flex gap-6 items-start group">
+                      <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400 font-black text-lg flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.15)] group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300">
+                        {item.num}
+                      </div>
+                      <div>
+                        <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
+                        <p className="text-white/60 leading-relaxed text-[0.95rem]">{item.description}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.35rem", fontSize: "1rem" }}>{item.title}</h3>
-                      <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── UPGRADE PATH ── */}
+      <section className="py-24">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div className="mb-14 text-center max-w-2xl mx-auto">
+            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 justify-center flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-cyan-400/50" /> What Comes Next <span className="w-8 h-[1px] bg-cyan-400/50" />
+            </p>
+            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight tracking-tight">
+              The Starter System is the beginning, not the ceiling
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Before */}
+            <div className="rounded-[1.5rem] border border-cyan-500/20 bg-cyan-500/5 p-8 flex flex-col hover:bg-cyan-500/10 transition-colors">
+              <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-4">Before the System</p>
+              <h3 className="text-white text-xl font-bold mb-3">Free Training</h3>
+              <p className="text-white/60 leading-relaxed text-sm mb-8 flex-grow">
+                Watch the training first if you want to see the full framework before buying. If you are ready to build now, the Starter System is the direct path.
+              </p>
+              <Link href="/digital-forge/training" className="text-cyan-400 font-bold text-sm hover:text-cyan-300 flex items-center gap-2 w-fit group">
+                Watch Free Training <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+            </div>
+            
+            {/* Current */}
+            <div className="rounded-[1.5rem] border-2 border-blue-500/50 bg-blue-500/10 p-8 flex flex-col relative overflow-hidden shadow-[0_0_30px_rgba(59,130,246,0.15)] transform md:-translate-y-4">
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-400 to-cyan-400" />
+              <p className="text-blue-400 text-xs uppercase tracking-[0.2em] font-bold mb-4 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" /> You Are Here
+              </p>
+              <h3 className="text-white text-xl font-bold mb-3">Starter System</h3>
+              <p className="text-white/70 leading-relaxed text-sm mb-8 flex-grow">
+                The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
+              </p>
+              <Link href="/digital-forge/checkout?offer=system" className="inline-flex items-center justify-center px-6 py-4 rounded-xl bg-blue-500 text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-400 transition-colors w-full text-center">
+                Get the System — {usdPriceLabel}
+              </Link>
+            </div>
+            
+            {/* Next */}
+            <div className="rounded-[1.5rem] border border-purple-500/20 bg-purple-500/5 p-8 flex flex-col hover:bg-purple-500/10 transition-colors">
+              <p className="text-purple-400 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Next Level</p>
+              <h3 className="text-white text-xl font-bold mb-3">Digital Forge Course</h3>
+              <p className="text-white/60 leading-relaxed text-sm mb-8 flex-grow">
+                The full guided curriculum for a deeper, more supported build-package-launch-grow journey. Takes you further than the system alone.
+              </p>
+              <Link href="/digital-forge/course" className="text-purple-400 font-bold text-sm hover:text-purple-300 flex items-center gap-2 w-fit group">
+                Explore the Course <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── FAQ ── */}
-      <section style={{ paddingBottom: "5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div style={{ marginBottom: "1.8rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
-              Common Questions
+      <section className="py-24 bg-white/[0.01] border-y border-white/5">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div className="mb-14 text-center max-w-2xl mx-auto">
+            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 justify-center flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-cyan-400/50" /> Common Questions <span className="w-8 h-[1px] bg-cyan-400/50" />
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.8rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 600 }}>
+            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight tracking-tight">
               Everything you need to know before buying
             </h2>
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              gap: "1rem",
-            }}
-          >
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {FAQ.map((item) => (
-              <div
-                key={item.q}
-                style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 20,
-                  padding: "1.4rem",
-                }}
-              >
-                <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.7rem", fontSize: "1rem" }}>{item.q}</h3>
-                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.a}</p>
+              <div key={item.q} className="bg-[#0A0F24] border border-white/10 rounded-[1.5rem] p-8 hover:border-blue-500/30 transition-colors">
+                <h3 className="text-white font-bold text-lg mb-3">{item.q}</h3>
+                <p className="text-white/60 leading-relaxed text-[0.95rem]">{item.a}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── UPGRADE PATH ── */}
-      <section style={{ paddingBottom: "5rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div style={{ marginBottom: "1.8rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
-              What Comes Next
-            </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
-              The Starter System is the beginning, not the ceiling
-            </h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem" }}>
-            <div
-              style={{
-                borderRadius: 22,
-                border: "1px solid rgba(0,204,255,0.2)",
-                background: "rgba(0,204,255,0.04)",
-                padding: "1.5rem",
-              }}
-            >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.7rem" }}>
-                Before the System
-              </p>
-              <h3 style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.6rem" }}>Free Training</h3>
-              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
-                Watch the training first if you want to see the full framework before buying. If you are ready to build now, the Starter System is the direct path.
-              </p>
-              <Link href="/digital-forge/training" style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
-                Watch Free Training →
-              </Link>
-            </div>
-            <div
-              style={{
-                borderRadius: 22,
-                border: "1px solid rgba(0,102,255,0.35)",
-                background: "rgba(0,102,255,0.12)",
-                padding: "1.5rem",
-              }}
-            >
-              <p style={{ color: "#60A5FA", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.7rem" }}>
-                You Are Here — Start Here
-              </p>
-              <h3 style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.6rem" }}>Starter System</h3>
-              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
-                The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
-              </p>
-              <Link href="/digital-forge/checkout?offer=system" style={{ color: "#60A5FA", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
-                Get the System — {usdPriceLabel} →
-              </Link>
-            </div>
-            <div
-              style={{
-                borderRadius: 22,
-                border: "1px solid rgba(139,92,246,0.22)",
-                background: "rgba(139,92,246,0.06)",
-                padding: "1.5rem",
-              }}
-            >
-              <p style={{ color: "#A78BFA", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.16em", fontWeight: 700, marginBottom: "0.7rem" }}>
-                The Next Level
-              </p>
-              <h3 style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.6rem" }}>Digital Forge Course</h3>
-              <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
-                The full guided curriculum for a deeper, more supported build-package-launch-grow journey. Takes you further than the system alone.
-              </p>
-              <Link href="/digital-forge/course" style={{ color: "#A78BFA", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
-                Explore the Course →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── CTA ── */}
-      <section style={{ paddingBottom: "6rem" }}>
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
-          <div
-            style={{
-              background: "linear-gradient(135deg, rgba(0,66,204,0.28), rgba(0,204,255,0.12))",
-              border: "1px solid rgba(0,102,255,0.32)",
-              borderRadius: 28,
-              padding: "clamp(2rem, 5vw, 4.5rem)",
-              textAlign: "center",
-            }}
-          >
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "1rem" }}>
-              Stop Dabbling. Start Building.
-            </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
-              This is the fastest path from
-              <br />
-              AI curiosity to one product you can sell.
-            </h2>
-            <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.9, fontSize: "1.01rem" }}>
-              The Starter System gives you the guide, prompts, worksheets, checklists, and launch assets to build one clear digital product and take it to market. No hype, no income guarantee, just a serious system for doing the work.
-            </p>
-            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-              <Link
-                href="/digital-forge/checkout?offer=system"
-                id="system-buy-cta-bottom"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  padding: "1rem 2rem",
-                  borderRadius: 10,
-                  background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                  color: "#fff",
-                  textDecoration: "none",
-                  fontWeight: 800,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  fontSize: "0.86rem",
-                  boxShadow: "0 0 36px rgba(0,102,255,0.45)",
-                }}
-              >
-                Get the Starter System — {usdPriceLabel}
-              </Link>
-              <Link
-                href={whatsappHref}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  padding: "1rem 2rem",
-                  borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.16)",
-                  color: "rgba(255,255,255,0.82)",
-                  textDecoration: "none",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em",
-                  fontSize: "0.86rem",
-                }}
-              >
-                Need help deciding? Message on WhatsApp
-              </Link>
+      <section className="py-32 relative">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
+          <div className="relative overflow-hidden rounded-[3rem] p-[clamp(3rem,8vw,6rem)] text-center shadow-[0_0_100px_rgba(0,102,255,0.1)] border border-blue-500/20 bg-[#0A0F24]">
+            {/* CTA Background Gradients */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              <div className="absolute -top-[50%] -left-[20%] w-[100%] h-[150%] bg-blue-600/10 rounded-full blur-[100px]" />
+              <div className="absolute top-[20%] -right-[20%] w-[80%] h-[100%] bg-cyan-500/10 rounded-full blur-[100px]" />
+            </div>
+
+            <div className="relative z-10 max-w-3xl mx-auto">
+              <p className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-6 flex justify-center items-center gap-3">
+                <span className="w-10 h-[1px] bg-cyan-400/50" />
+                Stop Dabbling. Start Building.
+                <span className="w-10 h-[1px] bg-cyan-400/50" />
+              </p>
+              
+              <h2 className="text-white text-[clamp(2.5rem,5vw,4rem)] font-black leading-[1.05] mb-8 tracking-tight drop-shadow-lg">
+                This is the fastest path from AI curiosity to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">one product you can sell.</span>
+              </h2>
+              
+              <p className="text-white/70 text-lg leading-relaxed mb-12 max-w-2xl mx-auto font-medium">
+                The Starter System gives you the guide, prompts, worksheets, checklists, and launch assets to build one clear digital product and take it to market. No hype, no income guarantee, just a serious system for doing the work.
+              </p>
+              
+              <div className="flex flex-wrap gap-4 justify-center">
+                <Link
+                  href="/digital-forge/checkout?offer=system"
+                  id="system-buy-cta-bottom"
+                  className="group relative inline-flex items-center justify-center px-10 py-5 rounded-2xl text-white font-black text-sm uppercase tracking-widest overflow-hidden transition-all hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(37,99,235,0.5)] active:scale-[0.98]"
+                >
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:via-cyan-500 group-hover:to-blue-600" />
+                  <span className="relative z-10 flex items-center gap-3">
+                    Get the Starter System — {usdPriceLabel}
+                    <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </span>
+                </Link>
+                <Link
+                  href={whatsappHref}
+                  className="inline-flex items-center justify-center px-8 py-5 rounded-2xl text-white/90 font-bold text-sm uppercase tracking-widest border border-white/20 bg-white/5 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/40 hover:text-white active:scale-[0.98]"
+                >
+                  Message on WhatsApp
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -665,3 +473,4 @@ export default function DigitalForgeSystemPage() {
     </div>
   );
 }
+

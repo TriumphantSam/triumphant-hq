@@ -48,93 +48,41 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   const primaryPriceLabel = hasInternationalCheckout ? usdPriceLabel : localPriceLabel;
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-screen pb-24 bg-[#030614] text-white font-sans selection:bg-blue-500/30">
       <section className="relative overflow-hidden pt-28 pb-20">
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.22), transparent 30%), radial-gradient(circle at 80% 18%, rgba(0,204,255,0.18), transparent 24%), linear-gradient(180deg, rgba(4,9,24,0.98), rgba(5,5,16,1))",
-          }}
-        />
+        {/* Dynamic Background */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 -left-[10%] w-[50%] h-[60%] bg-blue-600/15 rounded-full blur-[140px] mix-blend-screen" />
+          <div className="absolute top-[20%] -right-[10%] w-[40%] h-[50%] bg-indigo-500/10 rounded-full blur-[120px] mix-blend-screen" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030614]/80 to-[#030614]" />
+        </div>
 
-        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
           <Link
             href={offer.kind === "system" ? "/digital-forge/system" : `/digital-forge/products/${offer.slug}`}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.45rem",
-              color: "rgba(255,255,255,0.48)",
-              textDecoration: "none",
-              fontSize: "0.84rem",
-              fontWeight: 600,
-              marginBottom: "1.5rem",
-            }}
+            className="inline-flex items-center gap-2 text-white/50 hover:text-white/90 transition-colors text-sm font-semibold tracking-wider mb-10 uppercase"
           >
             ← Back to offer
           </Link>
 
-          <div
-            className="grid gap-8 grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)]"
-            style={{ alignItems: "start" }}
-          >
-            <div>
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.45rem",
-                  borderRadius: 999,
-                  padding: "0.45rem 0.9rem",
-                  border: "1px solid rgba(0,102,255,0.32)",
-                  background: "rgba(0,102,255,0.12)",
-                  color: "#60A5FA",
-                  fontSize: "0.74rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.14em",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                Secure Checkout
+          <div className="grid gap-12 grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-start">
+            <div className="animate-fade-in-up">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-md mb-6 shadow-[0_0_20px_rgba(37,99,235,0.15)]">
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                <span className="text-blue-400 font-bold text-xs uppercase tracking-[0.2em]">
+                  Secure Checkout
+                </span>
               </span>
 
-              <h1
-                style={{
-                  color: "#fff",
-                  fontSize: "clamp(2.2rem, 5vw, 4rem)",
-                  fontWeight: 900,
-                  lineHeight: 1.04,
-                  letterSpacing: "-0.03em",
-                  marginBottom: "1.1rem",
-                  maxWidth: 800,
-                }}
-              >
-                Complete your payment for {offer.title}
+              <h1 className="text-white text-[clamp(2.2rem,5vw,3.5rem)] font-black leading-[1.05] tracking-tight mb-6 max-w-[800px] drop-shadow-lg">
+                Complete your payment for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">{offer.title}</span>
               </h1>
 
-              <p
-                style={{
-                  color: "rgba(255,255,255,0.72)",
-                  fontSize: "1.05rem",
-                  lineHeight: 1.85,
-                  maxWidth: 760,
-                  marginBottom: "1.3rem",
-                }}
-              >
+              <p className="text-white/70 text-lg leading-relaxed max-w-[760px] mb-10 font-medium">
                 {offer.description}
               </p>
 
-              <div
-                style={{
-                  display: "grid",
-                  gap: "0.85rem",
-                  maxWidth: 560,
-                }}
-              >
+              <div className="grid gap-5 max-w-[560px]">
                 {[
                   hasInternationalCheckout
                     ? "International checkout is handled securely by Lemon Squeezy."
@@ -142,79 +90,47 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                   "Your purchase is verified before delivery is sent.",
                   "Access is delivered automatically to your email after successful payment.",
                 ].map((item) => (
-                  <div
-                    key={item}
-                    style={{
-                      display: "flex",
-                      gap: "0.65rem",
-                      alignItems: "flex-start",
-                      color: "rgba(255,255,255,0.7)",
-                    }}
-                  >
-                    <span style={{ color: "#00CCFF", fontWeight: 900 }}>✓</span>
-                    <span style={{ lineHeight: 1.7 }}>{item}</span>
+                  <div key={item} className="flex gap-4 items-start p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center mt-0.5 shadow-[0_0_10px_rgba(59,130,246,0.3)]">
+                      <span className="text-blue-400 text-xs font-black">✓</span>
+                    </span>
+                    <span className="text-white/80 leading-relaxed font-medium text-[0.95rem]">{item}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div
-              style={{
-                background: "rgba(9,14,32,0.92)",
-                border: "1px solid rgba(0,102,255,0.26)",
-                borderRadius: 24,
-                padding: "1.65rem",
-                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
-              }}
-            >
-              <p
-                style={{
-                  color: "rgba(255,255,255,0.45)",
-                  fontSize: "0.75rem",
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  fontWeight: 700,
-                  marginBottom: "0.6rem",
-                }}
-              >
-                Order summary
-              </p>
-              <h2
-                style={{
-                  color: "#fff",
-                  fontWeight: 800,
-                  fontSize: "1.3rem",
-                  lineHeight: 1.35,
-                  marginBottom: "0.6rem",
-                }}
-              >
-                {offer.title}
-              </h2>
-              <p
-                style={{
-                  color: "#60A5FA",
-                  fontWeight: 900,
-                  fontSize: "2rem",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                {primaryPriceLabel}
-              </p>
-              {hasInternationalCheckout ? (
-                <p style={{ color: "rgba(255,255,255,0.48)", fontSize: "0.84rem", lineHeight: 1.6, marginTop: "-0.7rem", marginBottom: "1.2rem" }}>
-                  Local Nigerian checkout is also available at {localPriceLabel}.
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 rounded-[2.5rem] blur-xl transition-all duration-500 group-hover:blur-2xl opacity-70" />
+              <div className="relative bg-[#0A0F24]/95 backdrop-blur-2xl border border-blue-500/20 rounded-[2rem] p-8 md:p-10 shadow-2xl transition-transform duration-500 hover:-translate-y-1">
+                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-3 flex items-center gap-2">
+                  <span className="w-4 h-[1px] bg-cyan-400/50" />
+                  Order summary
                 </p>
-              ) : null}
+                <h2 className="text-white font-black text-2xl leading-tight mb-3 pr-8">
+                  {offer.title}
+                </h2>
+                <div className="mb-8">
+                  <p className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 font-black text-4xl mb-2">
+                    {primaryPriceLabel}
+                  </p>
+                  {hasInternationalCheckout ? (
+                    <p className="text-white/50 text-sm font-medium">
+                      Local Nigerian checkout is also available at {localPriceLabel}.
+                    </p>
+                  ) : null}
+                </div>
 
-              <CheckoutClient
-                offerKey={offer.key}
-                offerKind={offer.kind}
-                slug={offer.slug}
-                title={offer.title}
-                priceLabel={localPriceLabel}
-                usdPriceLabel={usdPriceLabel}
-                hasInternationalCheckout={hasInternationalCheckout}
-              />
+                <CheckoutClient
+                  offerKey={offer.key}
+                  offerKind={offer.kind}
+                  slug={offer.slug}
+                  title={offer.title}
+                  priceLabel={localPriceLabel}
+                  usdPriceLabel={usdPriceLabel}
+                  hasInternationalCheckout={hasInternationalCheckout}
+                />
+              </div>
             </div>
           </div>
         </div>
