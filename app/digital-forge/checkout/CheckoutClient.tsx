@@ -12,19 +12,21 @@ type CheckoutClientProps = {
   hasInternationalCheckout?: boolean;
 };
 
+type MetaPixelWindow = Window & {
+  fbq?: (eventType: "track", eventName: string) => void;
+};
+
 export default function CheckoutClient({
   offerKey,
   offerKind,
   slug,
-  title,
   priceLabel,
   usdPriceLabel,
   hasInternationalCheckout = false,
 }: CheckoutClientProps) {
   useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).fbq) {
-      (window as any).fbq("track", "InitiateCheckout");
-    }
+    const pixel = (window as MetaPixelWindow).fbq;
+    pixel?.("track", "InitiateCheckout");
   }, []);
 
   const [name, setName] = useState("");
@@ -32,7 +34,9 @@ export default function CheckoutClient({
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [provider, setProvider] = useState<"flutterwave" | "lemonsqueezy">("flutterwave");
+  const [provider, setProvider] = useState<"flutterwave" | "lemonsqueezy">(
+    hasInternationalCheckout ? "lemonsqueezy" : "flutterwave",
+  );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -208,7 +212,16 @@ export default function CheckoutClient({
           }}
         >
           {[
-            { 
+            ...(hasInternationalCheckout ? [{
+              id: "lemonsqueezy",
+              label: "Global Cards & Apple Pay",
+              desc: "International checkout in USD and other supported currencies",
+              icon: "🌍",
+              activeColor: "rgba(255, 194, 51, 0.12)",
+              activeBorder: "rgba(255, 194, 51, 0.7)",
+              activeText: "#FFD055"
+            }] : []),
+            {
               id: "flutterwave", 
               label: "Local Payment", 
               desc: "Pay securely in Naira (Cards, USSD, Bank Transfer)", 
@@ -217,15 +230,6 @@ export default function CheckoutClient({
               activeBorder: "rgba(255, 120, 0, 0.7)",
               activeText: "#FF9944"
             },
-            ...hasInternationalCheckout ? [{ 
-              id: "lemonsqueezy", 
-              label: "Global Cards & Apple Pay", 
-              desc: "International payments processing (USD & others)", 
-              icon: "🌍",
-              activeColor: "rgba(255, 194, 51, 0.12)",
-              activeBorder: "rgba(255, 194, 51, 0.7)",
-              activeText: "#FFD055"
-            }] : [],
           ].map((item) => {
             const isActive = provider === item.id;
             return (
@@ -339,4 +343,3 @@ export default function CheckoutClient({
     </form>
   );
 }
-

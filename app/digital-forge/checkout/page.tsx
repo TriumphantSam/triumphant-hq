@@ -26,7 +26,7 @@ type CheckoutPageProps = {
 
 export const metadata = {
   title: "Secure Checkout | Digital Forge",
-  description: "Complete your Digital Forge purchase securely via Flutterwave.",
+  description: "Complete your Digital Forge purchase securely via Lemon Squeezy or local naira checkout.",
 };
 
 export default async function DigitalForgeCheckoutPage({ searchParams }: CheckoutPageProps) {
@@ -41,10 +41,11 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
 
   if (!offer) notFound();
 
-  const priceLabel = formatOfferPrice(offer.amount, offer.currency);
+  const localPriceLabel = formatOfferPrice(offer.amount, offer.currency);
   const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind);
   const lsVariantMap = parseLsVariantMap(process.env.DIGITAL_FORGE_LS_VARIANT_MAP_JSON ?? "");
   const hasInternationalCheckout = Boolean(lsVariantMap[offer.key]);
+  const primaryPriceLabel = hasInternationalCheckout ? usdPriceLabel : localPriceLabel;
 
   return (
     <div className="min-h-screen pb-24">
@@ -135,7 +136,9 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 }}
               >
                 {[
-                  "Payment is handled securely on Flutterwave.",
+                  hasInternationalCheckout
+                    ? "International checkout is handled securely by Lemon Squeezy."
+                    : "Payment is handled securely on Flutterwave.",
                   "Your purchase is verified before delivery is sent.",
                   "Access is delivered automatically to your email after successful payment.",
                 ].map((item) => (
@@ -195,15 +198,20 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                   marginBottom: "1.2rem",
                 }}
               >
-                {priceLabel}
+                {primaryPriceLabel}
               </p>
+              {hasInternationalCheckout ? (
+                <p style={{ color: "rgba(255,255,255,0.48)", fontSize: "0.84rem", lineHeight: 1.6, marginTop: "-0.7rem", marginBottom: "1.2rem" }}>
+                  Local Nigerian checkout is also available at {localPriceLabel}.
+                </p>
+              ) : null}
 
               <CheckoutClient
                 offerKey={offer.key}
                 offerKind={offer.kind}
                 slug={offer.slug}
                 title={offer.title}
-                priceLabel={priceLabel}
+                priceLabel={localPriceLabel}
                 usdPriceLabel={usdPriceLabel}
                 hasInternationalCheckout={hasInternationalCheckout}
               />

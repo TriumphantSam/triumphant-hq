@@ -80,9 +80,31 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
               }}
             >
               {isSuccess
-                ? "Once Flutterwave confirms the payment on our side, we automatically send your delivery email. If you do not see it within a few minutes, check spam or reply to us with your payment email."
-                : "We did not get a clean success signal yet. If Flutterwave charged you, keep your transaction reference and contact support so we can verify and deliver manually if needed."}
+                ? "Once the payment provider confirms the order on our side, we automatically send your delivery email. If you do not see it within a few minutes, check spam or contact support with your payment email."
+                : "We did not get a clean success signal yet. If the payment provider charged you, keep your transaction reference and contact support so we can verify and deliver manually if needed."}
             </p>
+
+            {isSuccess ? (
+              <div
+                style={{
+                  border: "1px solid rgba(0,204,255,0.22)",
+                  background: "rgba(0,102,255,0.08)",
+                  borderRadius: 18,
+                  padding: "1rem",
+                  marginBottom: "1.4rem",
+                }}
+              >
+                <p style={{ color: "#00CCFF", fontWeight: 800, fontSize: "0.8rem", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.55rem" }}>
+                  Start here after delivery
+                </p>
+                <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.7, fontSize: "0.92rem", marginBottom: "0.7rem" }}>
+                  Open <strong style={{ color: "#fff" }}>01 Start Here.pdf</strong> first, then complete the Offer Selection Worksheet before opening the other templates.
+                </p>
+                <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, fontSize: "0.88rem" }}>
+                  Reply to the delivery email with the product idea you plan to build first. That reply helps us support you and collect real buyer proof only with permission.
+                </p>
+              </div>
+            ) : null}
 
             {params.tx_ref ? (
               <p
@@ -98,7 +120,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
 
             <div style={{ display: "flex", gap: "0.9rem", flexWrap: "wrap" }}>
               <Link
-                href="/digital-forge/products"
+                href="/digital-forge/system"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -110,7 +132,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                   background: "linear-gradient(135deg, #0066FF, #00CCFF)",
                 }}
               >
-                Back to Product Library
+                Back to Starter System
               </Link>
               <Link
                 href="/contact"

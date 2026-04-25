@@ -13,6 +13,10 @@ const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? "";
 const EMAILJS_FROM_NAME = process.env.EMAILJS_FROM_NAME ?? "TriumphantHQ";
 const EMAILJS_TEMPLATE_ID_DIGITAL_FORGE_DELIVERY = process.env.EMAILJS_TEMPLATE_ID_DIGITAL_FORGE_DELIVERY ?? "";
 const SUPPORT_EMAIL = process.env.DIGITAL_FORGE_SUPPORT_EMAIL ?? "support@triumphanthq.com";
+const STARTER_USAGE_INSTRUCTION =
+  "Start with 01 Start Here.pdf, then complete the Offer Selection Worksheet before opening the other templates.";
+const BUYER_REPLY_PROMPT =
+  "Reply to this email with the product idea you plan to build first. We use those replies to help improve the system and collect real buyer proof with permission.";
 
 type VerifiedTransaction = {
   id: number;
@@ -198,6 +202,8 @@ async function sendDeliveryEmail(payload: {
         tx_ref: payload.txRef,
         support_email: SUPPORT_EMAIL,
         from_name: EMAILJS_FROM_NAME,
+        usage_start_instruction: STARTER_USAGE_INSTRUCTION,
+        buyer_reply_prompt: BUYER_REPLY_PROMPT,
       },
     }),
   });

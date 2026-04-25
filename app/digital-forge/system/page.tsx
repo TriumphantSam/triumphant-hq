@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatOfferPrice, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { formatOfferPrice, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
 export const metadata = {
   title: "Digital Forge Side Hustle Starter System — Build and Sell Your First AI Product | Digital Forge",
@@ -8,13 +8,13 @@ export const metadata = {
 };
 
 const DELIVERABLES = [
-  "Core implementation guide — the complete method in one place",
-  "Starter prompt pack — AI prompts tuned for product creation and packaging",
-  "Offer and packaging templates — position and present your product clearly",
-  "Launch checklist — know exactly what to do and in what order",
-  "Sales copy framework — write copy that converts, even if you hate writing",
-  "Funnel planning worksheet — map out a simple path from attention to sale",
-  "Distribution plan — get your product in front of buyers quickly",
+  "01 Start Here.pdf — the first-step guide so you know exactly where to begin",
+  "02 Main Guide.pdf — the complete build, package, and launch method in one place",
+  "03 Prompt Pack — AI prompts tuned for offer clarity, product creation, copy, and launch support",
+  "04 Launch Checklist.pdf — the practical sequence for moving from finished product to market",
+  "05 Product Build Checklist.pdf — quality checks before you ask anyone to buy",
+  "06 Content Planner.pdf — a simple promotion rhythm for getting the offer in front of people",
+  "Editable worksheets and templates — offer selection, product packaging, messaging, and launch planning",
 ];
 
 const OUTCOMES = [
@@ -23,6 +23,31 @@ const OUTCOMES = [
   "One product page or sales path with stronger messaging",
   "One simple promotion and launch workflow you can use again",
 ];
+
+const PROOF_ASSETS = [
+  {
+    title: "Built from the same workflow",
+    body: "The Starter System was created with the same choose-build-package-launch method it teaches, so the product itself is proof of the operating path.",
+  },
+  {
+    title: "Real implementation files",
+    body: "You get the guide, prompt pack, worksheets, checklists, content planner, and launch templates in a clear order, not a loose folder of random downloads.",
+  },
+  {
+    title: "No income fantasy",
+    body: "The promise is practical: clarify one offer, create one useful product, package it properly, and give yourself a real route to a first sale.",
+  },
+];
+
+const STARTER_STEPS = [
+  "Open 01 Start Here.pdf",
+  "Complete the Offer Selection Worksheet",
+  "Use the Product Packaging Template to make the bundle feel sellable",
+  "Run the Launch Checklist and Content Planner before publishing",
+];
+
+const whatsappHref =
+  "https://wa.me/2348107711190?text=Hi%20Adeyemi%2C%20I%20am%20interested%20in%20the%20Digital%20Forge%20Starter%20System.%20I%20want%20to%20know%20if%20it%20fits%20me.";
 
 const FOR_WHO = [
   { title: "Professionals", body: "Ready for a side hustle that actually fits your schedule constraints — no fantasy income claims, just a real operating method." },
@@ -80,6 +105,7 @@ const FAQ = [
 export default function DigitalForgeSystemPage() {
   const systemOffer = resolveSystemOffer();
   const systemPrice = formatOfferPrice(systemOffer.amount, systemOffer.currency);
+  const usdPriceLabel = resolveUsdPriceLabel(systemOffer.key, systemOffer.kind);
 
   return (
     <div className="min-h-screen pb-24">
@@ -147,7 +173,7 @@ export default function DigitalForgeSystemPage() {
                   marginBottom: "1.3rem",
                 }}
               >
-                The complete toolkit to build, package, and sell your first AI-powered digital product
+                You have AI tools. Now ship a product people can actually buy.
               </h1>
               <p
                 style={{
@@ -158,7 +184,7 @@ export default function DigitalForgeSystemPage() {
                   marginBottom: "1rem",
                 }}
               >
-                The Digital Forge Side Hustle Starter System is not just a PDF. It is the guide, the prompts, the templates, the launch assets, and the operating documents that turn scattered AI curiosity into one sellable product with a real path to income.
+                Digital Forge gives you the practical system to build, package, and launch your first AI-powered digital product. No fake income claims, no prompt dump, no theory that leaves you stuck.
               </p>
               <p
                 style={{
@@ -169,7 +195,7 @@ export default function DigitalForgeSystemPage() {
                   marginBottom: "2.2rem",
                 }}
               >
-                Built for professionals, creators, and anyone who has been circling the idea of an AI-powered side hustle — and needs a system that actually moves them into action.
+                Built for professionals, creators, and operators who consume AI content but still do not have one clear offer, one useful product, and one simple sales path.
               </p>
 
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
@@ -191,10 +217,10 @@ export default function DigitalForgeSystemPage() {
                     boxShadow: "0 0 36px rgba(0,102,255,0.42)",
                   }}
                 >
-                  Get the Starter System — From {systemPrice}
+                  Get the Starter System — {usdPriceLabel}
                 </Link>
                 <Link
-                  href="/digital-forge/training"
+                  href={whatsappHref}
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -209,12 +235,12 @@ export default function DigitalForgeSystemPage() {
                     border: "1px solid rgba(255,255,255,0.16)",
                   }}
                 >
-                  Watch the Free Training First
+                  Need help deciding? Message on WhatsApp
                 </Link>
               </div>
 
               <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.83rem" }}>
-                Secure checkout via Flutterwave. Delivery arrives automatically by email after payment is verified.
+                International checkout is available via Lemon Squeezy. Local naira checkout remains available for Nigerian buyers.
               </p>
             </div>
 
@@ -273,12 +299,63 @@ export default function DigitalForgeSystemPage() {
                 <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.74rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
                   Price
                 </p>
-                <p style={{ color: "#fff", fontWeight: 800, fontSize: "1.4rem" }}>From {systemPrice}</p>
+                <p style={{ color: "#fff", fontWeight: 800, fontSize: "1.4rem" }}>{usdPriceLabel}</p>
                 <p style={{ color: "rgba(255,255,255,0.44)", fontSize: "0.84rem", marginTop: "0.3rem" }}>
-                  The most practical first investment in your digital product business.
+                  Also available locally from {systemPrice} through Flutterwave.
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* -- FOUNDER PROOF -- */}
+      <section style={{ paddingBottom: "5rem" }}>
+        <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
+          <div style={{ marginBottom: "1.8rem" }}>
+            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              Founder Proof
+            </p>
+            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 720 }}>
+              Built from the same system used to create this offer
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.66)", lineHeight: 1.85, maxWidth: 780, marginTop: "1rem" }}>
+              Before there are testimonials, there is build proof: the product shows its own method. The Starter System turns the messy middle of AI product creation into a clear sequence: choose the offer, build the asset, package the bundle, and launch with a simple sales path.
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1rem", marginBottom: "1.2rem" }}>
+            {PROOF_ASSETS.map((item) => (
+              <div
+                key={item.title}
+                style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 20,
+                  padding: "1.4rem",
+                }}
+              >
+                <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1rem", marginBottom: "0.7rem" }}>{item.title}</h3>
+                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.body}</p>
+              </div>
+            ))}
+          </div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: "0.8rem",
+              border: "1px solid rgba(0,102,255,0.22)",
+              background: "rgba(0,102,255,0.07)",
+              borderRadius: 22,
+              padding: "1rem",
+            }}
+          >
+            {STARTER_STEPS.map((item, index) => (
+              <div key={item} style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", padding: "0.55rem" }}>
+                <span style={{ color: "#60A5FA", fontWeight: 900 }}>{String(index + 1).padStart(2, "0")}</span>
+                <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.6, fontSize: "0.9rem" }}>{item}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -471,7 +548,7 @@ export default function DigitalForgeSystemPage() {
               </p>
               <h3 style={{ color: "#fff", fontSize: "1.1rem", fontWeight: 800, marginBottom: "0.6rem" }}>Free Training</h3>
               <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginBottom: "1rem", fontSize: "0.92rem" }}>
-                Watch the training first if you want to see the full framework before buying. It is 100% free and takes 25–45 minutes.
+                Watch the training first if you want to see the full framework before buying. If you are ready to build now, the Starter System is the direct path.
               </p>
               <Link href="/digital-forge/training" style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
                 Watch Free Training →
@@ -493,7 +570,7 @@ export default function DigitalForgeSystemPage() {
                 The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
               </p>
               <Link href="/digital-forge/checkout?offer=system" style={{ color: "#60A5FA", fontWeight: 700, fontSize: "0.84rem", textDecoration: "none" }}>
-                Get the System — From {systemPrice} →
+                Get the System — {usdPriceLabel} →
               </Link>
             </div>
             <div
@@ -537,10 +614,10 @@ export default function DigitalForgeSystemPage() {
             <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
               This is the fastest path from
               <br />
-              AI curiosity to your first sale.
+              AI curiosity to one product you can sell.
             </h2>
             <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.9, fontSize: "1.01rem" }}>
-              The Starter System gives you every asset, every template, every prompt, and every workflow you need to build one clear digital product and take it to market. No more guessing. No more getting stuck. Just a complete, actionable system designed to produce results.
+              The Starter System gives you the guide, prompts, worksheets, checklists, and launch assets to build one clear digital product and take it to market. No hype, no income guarantee, just a serious system for doing the work.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
               <Link
@@ -561,10 +638,10 @@ export default function DigitalForgeSystemPage() {
                   boxShadow: "0 0 36px rgba(0,102,255,0.45)",
                 }}
               >
-                Get the Starter System — From {systemPrice}
+                Get the Starter System — {usdPriceLabel}
               </Link>
               <Link
-                href="/digital-forge/training"
+                href={whatsappHref}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -579,7 +656,7 @@ export default function DigitalForgeSystemPage() {
                   fontSize: "0.86rem",
                 }}
               >
-                Watch the Free Training First
+                Need help deciding? Message on WhatsApp
               </Link>
             </div>
           </div>
