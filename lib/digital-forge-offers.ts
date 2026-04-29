@@ -14,7 +14,8 @@ export type CheckoutOffer = {
 const DEFAULT_PRODUCT_PRICE_NGN = Number(process.env.DIGITAL_FORGE_PRODUCT_PRICE_NGN ?? "3000");
 const FIXED_SYSTEM_PRICE_NGN = 15000;
 const DEFAULT_CURRENCY = (process.env.DIGITAL_FORGE_CHECKOUT_CURRENCY ?? "NGN").toUpperCase() as "NGN" | "USD";
-const SYSTEM_DELIVERY_URL = process.env.DIGITAL_FORGE_SYSTEM_DELIVERY_URL ?? "";
+const DEFAULT_SYSTEM_DELIVERY_URL = "https://drive.google.com/file/d/1yFhf481gP2F4c2VkDOXKzrazYHKFFILA/view?usp=sharing";
+const SYSTEM_DELIVERY_URL = process.env.DIGITAL_FORGE_SYSTEM_DELIVERY_URL ?? DEFAULT_SYSTEM_DELIVERY_URL;
 const PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_PRICE_OVERRIDES_JSON ?? "");
 const DELIVERY_URL_OVERRIDES = parseStringOverrides(process.env.DIGITAL_FORGE_DELIVERY_URL_OVERRIDES_JSON ?? "");
 const LEGACY_SLUG_PRICE_HINTS: Record<string, number> = {
