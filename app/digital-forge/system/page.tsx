@@ -108,166 +108,381 @@ export default function DigitalForgeSystemPage() {
   const usdPriceLabel = resolveUsdPriceLabel(systemOffer.key, systemOffer.kind);
 
   return (
-    <div className="min-h-screen pb-24 bg-[#030614] text-white selection:bg-blue-500/30 font-sans">
-
+    <div style={{ background: "#050510", minHeight: "100vh", color: "#fff", fontFamily: "sans-serif", overflow: "hidden" }}>
+      
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden pt-32 pb-24">
-        {/* Dynamic Background */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 -left-[10%] w-[60%] h-[60%] bg-blue-600/20 rounded-full blur-[140px] mix-blend-screen" />
-          <div className="absolute top-[20%] -right-[10%] w-[50%] h-[50%] bg-cyan-500/15 rounded-full blur-[120px] mix-blend-screen" />
-          <div className="absolute bottom-0 left-[20%] w-[60%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] mix-blend-screen" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030614]/80 to-[#030614]" />
-        </div>
-
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
+      <section style={{ position: "relative", paddingTop: "clamp(6rem, 15vw, 8rem)", paddingBottom: "clamp(4rem, 10vw, 6rem)" }}>
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+          }}
+        />
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative">
+          
           <Link
             href="/digital-forge"
-            className="inline-flex items-center gap-2 text-white/50 hover:text-white/90 transition-colors text-sm font-semibold tracking-wider mb-8 uppercase"
+            style={{
+              display: "inline-block",
+              color: "rgba(255,255,255,0.5)",
+              textDecoration: "none",
+              fontSize: "clamp(0.85rem, 2vw, 0.95rem)",
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              marginBottom: "clamp(1.5rem, 5vw, 3rem)",
+            }}
           >
             ← Back to Digital Forge
           </Link>
 
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-md mb-8 shadow-[0_0_20px_rgba(37,99,235,0.15)] animate-pulse">
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.9)]" />
-            <span className="text-blue-400 font-bold text-xs uppercase tracking-[0.2em]">
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.55rem",
+              background: "rgba(0,102,255,0.1)",
+              border: "1px solid rgba(0,102,255,0.35)",
+              borderRadius: "999px",
+              padding: "0.42rem 1rem",
+              marginBottom: "1.6rem",
+            }}
+          >
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block", boxShadow: "0 0 10px rgba(0,204,255,0.8)" }} />
+            <span style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
               Flagship System — Most Popular
             </span>
           </div>
 
-          <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] items-start">
+          <div
+            className="grid gap-16 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]"
+            style={{ alignItems: "start" }}
+          >
             <div>
-              <h1 className="text-[clamp(2.6rem,6vw,4.8rem)] font-black leading-[1.05] tracking-tight text-white max-w-[860px] mb-6 drop-shadow-xl">
-                You have AI tools. <br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+              <h1
+                style={{
+                  fontSize: "clamp(2.8rem, 6vw, 5.2rem)",
+                  fontWeight: 900,
+                  lineHeight: 1.02,
+                  color: "#fff",
+                  letterSpacing: "-0.03em",
+                  maxWidth: 880,
+                  marginBottom: "1.8rem",
+                }}
+              >
+                You have AI tools.
+                <br />
+                <span
+                  style={{
+                    background: "linear-gradient(90deg, #0066FF, #00CCFF)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
                   Now ship a product people can actually buy.
                 </span>
               </h1>
-              <p className="text-[1.15rem] text-white/80 leading-relaxed max-w-[740px] mb-4 font-medium">
+              <p
+                style={{
+                  color: "rgba(255,255,255,0.78)",
+                  maxWidth: 700,
+                  lineHeight: 1.9,
+                  fontSize: "clamp(1.05rem, 2.5vw, 1.15rem)",
+                  marginBottom: "1.2rem",
+                }}
+              >
                 Digital Forge gives you the practical system to build, package, and launch your first AI-powered digital product. No fake income claims, no prompt dump, no theory that leaves you stuck.
               </p>
-              <p className="text-white/50 leading-relaxed max-w-[740px] text-[1rem] mb-10">
+              <p
+                style={{
+                  color: "rgba(255,255,255,0.52)",
+                  maxWidth: 700,
+                  lineHeight: 1.85,
+                  fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
+                  marginBottom: "2.5rem",
+                }}
+              >
                 Built for professionals, creators, and operators who consume AI content but still do not have one clear offer, one useful product, and one simple sales path.
               </p>
 
-              <div className="flex flex-wrap gap-4 mb-8">
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "2rem" }}>
                 <Link
                   href="/digital-forge/checkout?offer=system"
-                  id="system-buy-cta"
-                  className="group relative inline-flex items-center justify-center px-8 py-4 rounded-2xl text-white font-extrabold text-sm uppercase tracking-widest overflow-hidden transition-all hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)] active:scale-[0.98]"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    padding: "1rem 2rem",
+                    background: "linear-gradient(135deg, #0066FF, #0044CC)",
+                    color: "#fff",
+                    textDecoration: "none",
+                    fontWeight: 800,
+                    fontSize: "0.86rem",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    borderRadius: "10px",
+                    boxShadow: "0 0 32px rgba(0,102,255,0.38)",
+                  }}
                 >
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:via-cyan-500 group-hover:to-blue-600" />
-                  <span className="relative z-10 flex items-center gap-2">
-                    Get the Starter System — {usdPriceLabel}
-                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                  </span>
+                  Get the Starter System — {usdPriceLabel}
                 </Link>
                 <Link
                   href={whatsappHref}
-                  className="inline-flex items-center justify-center px-8 py-4 rounded-2xl text-white/80 font-bold text-sm uppercase tracking-widest border border-white/10 bg-white/5 backdrop-blur-sm transition-all hover:bg-white/10 hover:text-white hover:border-white/20 active:scale-[0.98]"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    padding: "1rem 2rem",
+                    border: "1px solid rgba(255,255,255,0.18)",
+                    color: "rgba(255,255,255,0.84)",
+                    textDecoration: "none",
+                    fontWeight: 700,
+                    fontSize: "0.86rem",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    borderRadius: "10px",
+                    background: "rgba(255,255,255,0.03)",
+                  }}
                 >
-                  Need help deciding? Message on WhatsApp
+                  Message on WhatsApp
                 </Link>
               </div>
 
-              <div className="flex items-center gap-3 text-white/40 text-xs font-medium">
-                <svg className="w-5 h-5 flex-shrink-0 text-blue-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                <p>
-                  International checkout is available via Lemon Squeezy. Local naira checkout remains available for Nigerian buyers.
-                </p>
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                {[
+                  "Secure checkout",
+                  "Instant email delivery",
+                  "International & local payments",
+                ].map((item) => (
+                  <span
+                    key={item}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.45rem",
+                      padding: "0.5rem 0.85rem",
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: "999px",
+                      color: "rgba(255,255,255,0.72)",
+                      fontSize: "0.82rem",
+                    }}
+                  >
+                    <span style={{ color: "#00CCFF", fontWeight: 900 }}>✓</span>
+                    {item}
+                  </span>
+                ))}
               </div>
             </div>
 
             {/* Outcome summary card */}
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-br from-blue-500/30 to-cyan-500/20 rounded-[2rem] blur-xl opacity-70 transition-all duration-500 group-hover:blur-2xl group-hover:opacity-100" />
-              <div className="relative bg-[#0A0F24]/95 backdrop-blur-2xl border border-blue-500/20 rounded-[2rem] p-8 shadow-2xl transition-transform duration-500 hover:-translate-y-1">
-                <div className="absolute top-0 right-0 p-6 opacity-5 pointer-events-none">
-                  <svg className="w-32 h-32 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                </div>
-                
-                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-6 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                  What You Walk Away With
-                </p>
-                
-                <div className="grid gap-4 relative z-10">
-                  {OUTCOMES.map((item) => (
-                    <div key={item} className="flex gap-4 items-start p-3 rounded-xl hover:bg-white/[0.03] transition-colors">
-                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center mt-0.5 shadow-[0_0_10px_rgba(59,130,246,0.3)]">
-                        <span className="text-blue-400 text-xs font-black">✓</span>
-                      </span>
-                      <p className="text-white/80 leading-relaxed text-[0.95rem] font-medium">{item}</p>
+            <div
+              style={{
+                background: "rgba(9,14,32,0.92)",
+                border: "1px solid rgba(0,102,255,0.22)",
+                borderRadius: 24,
+                padding: "clamp(1.2rem, 4vw, 2rem)",
+                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
+              }}
+            >
+              <p
+                style={{
+                  color: "#00CCFF",
+                  fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+                  fontWeight: 800,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  marginBottom: "1.5rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#00CCFF" }} />
+                What You Walk Away With
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "2rem" }}>
+                {OUTCOMES.map((item) => (
+                  <div key={item} style={{ display: "flex", gap: "0.8rem", alignItems: "flex-start" }}>
+                    <div
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: "50%",
+                        background: "rgba(0,102,255,0.15)",
+                        border: "1px solid rgba(0,102,255,0.3)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                        marginTop: 2,
+                      }}
+                    >
+                      <span style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", fontWeight: 900 }}>✓</span>
                     </div>
-                  ))}
-                </div>
+                    <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
 
-                <div className="mt-8 pt-6 border-t border-white/10 relative z-10">
-                  <p className="text-white/40 text-xs uppercase tracking-[0.15em] mb-1 font-semibold">
-                    Instant Access Price
-                  </p>
-                  <p className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 font-black text-[2rem] mb-1">
-                    {usdPriceLabel}
-                  </p>
-                  <p className="text-white/50 text-sm font-medium">
-                    Also available locally from {systemPrice} through Flutterwave.
-                  </p>
-                </div>
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.5rem" }}>
+                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.4rem", fontWeight: 600 }}>
+                  Instant Access Price
+                </p>
+                <p style={{ color: "#fff", fontSize: "2.2rem", fontWeight: 900, marginBottom: "0.4rem", margin: 0 }}>
+                  {usdPriceLabel}
+                </p>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
+                  Also available locally from {systemPrice} through Flutterwave.
+                </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── MID-PAGE CONVERSION STRIP ── */}
+      <section style={{ padding: "1.5rem 0", background: "rgba(0,102,255,0.05)", borderTop: "1px solid rgba(0,102,255,0.1)", borderBottom: "1px solid rgba(0,102,255,0.1)" }}>
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "clamp(1rem, 3vw, 1.5rem)", color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", fontWeight: 500 }}>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <strong style={{ color: "#00CCFF", fontSize: "1.2rem", fontWeight: 900 }}>{usdPriceLabel}</strong> one-time payment
+              </span>
+              <span style={{ width: 1, height: 20, background: "rgba(255,255,255,0.2)" }} className="hidden sm:block" />
+              <span>✦ Instant delivery</span>
+              <span style={{ width: 1, height: 20, background: "rgba(255,255,255,0.2)" }} className="hidden sm:block" />
+              <span>✦ Full toolkit included</span>
+            </div>
+            <Link
+              href="/digital-forge/checkout?offer=system"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                padding: "0.75rem 1.5rem",
+                background: "#0066FF",
+                color: "#fff",
+                textDecoration: "none",
+                fontWeight: 800,
+                fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                borderRadius: "8px",
+              }}
+            >
+              Get the System →
+            </Link>
           </div>
         </div>
       </section>
 
       {/* -- FOUNDER PROOF -- */}
-      <section className="py-24 relative border-t border-white/5 bg-gradient-to-b from-white/[0.02] to-transparent">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
-          <div className="mb-12 max-w-3xl">
-            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 flex items-center gap-2">
-              <span className="w-8 h-[1px] bg-cyan-400/50" /> Founder Proof
+      <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0", position: "relative" }}>
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div style={{ maxWidth: 800, marginBottom: "clamp(2rem, 6vw, 4rem)" }}>
+            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+              <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> Founder Proof
             </p>
-            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight mb-5 tracking-tight">
+            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem" }}>
               Built from the same system <br className="hidden md:block"/> used to create this offer
             </h2>
-            <p className="text-white/60 leading-relaxed text-[1.05rem]">
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(1rem, 2.5vw, 1.1rem)", lineHeight: 1.8 }}>
               Before there are testimonials, there is build proof: the product shows its own method. The Starter System turns the messy middle of AI product creation into a clear sequence: choose the offer, build the asset, package the bundle, and launch with a simple sales path.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6" style={{ marginBottom: "2rem" }}>
             {PROOF_ASSETS.map((item) => (
               <div
                 key={item.title}
-                className="group bg-white/[0.02] border border-white/5 rounded-[1.5rem] p-8 hover:bg-white/[0.04] hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 shadow-lg"
+                style={{
+                  background: "rgba(255,255,255,0.02)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  borderRadius: 24,
+                  padding: "clamp(1.2rem, 4vw, 2rem)",
+                }}
               >
-                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-3">
-                  <span className="w-1.5 h-6 rounded-full bg-blue-500 group-hover:bg-cyan-400 transition-colors" />
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ width: 4, height: 20, borderRadius: 4, background: "#0066FF" }} />
                   {item.title}
                 </h3>
-                <p className="text-white/60 leading-relaxed text-[0.95rem]">{item.body}</p>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: 0 }}>{item.body}</p>
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-blue-500/5 border border-blue-500/20 rounded-[1.5rem] p-6 backdrop-blur-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" style={{ background: "rgba(0,102,255,0.05)", border: "1px solid rgba(0,102,255,0.15)", borderRadius: 24, padding: "1.5rem" }}>
             {STARTER_STEPS.map((item, index) => (
-              <div key={item} className="flex gap-4 items-start p-4 rounded-xl hover:bg-blue-500/10 transition-colors">
-                <span className="text-blue-400 font-black text-xl opacity-60">{String(index + 1).padStart(2, "0")}</span>
-                <p className="text-white/80 leading-snug text-[0.9rem] font-medium">{item}</p>
+              <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1rem", background: "rgba(255,255,255,0.02)", borderRadius: 16 }}>
+                <span style={{ color: "#0066FF", fontWeight: 900, fontSize: "1.2rem", opacity: 0.8 }}>{String(index + 1).padStart(2, "0")}</span>
+                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.5, margin: 0, fontWeight: 500 }}>{item}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── WHO THIS IS FOR ── */}
-      <section className="py-24">
+      {/* ── WHAT YOU GET + MODULES ── */}
+      <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0", position: "relative" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="mb-14 text-center max-w-2xl mx-auto">
-            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 justify-center flex items-center gap-3">
-              <span className="w-8 h-[1px] bg-cyan-400/50" /> Who This Is For <span className="w-8 h-[1px] bg-cyan-400/50" />
+          <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
+            {/* Left Column: Everything Included */}
+            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 32, padding: "clamp(1.5rem, 5vw, 3rem)" }}>
+              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{ width: 24, height: 1, background: "rgba(0,204,255,0.5)" }} /> Everything Included
+              </p>
+              <h2 style={{ fontSize: "2rem", fontWeight: 900, lineHeight: 1.1, marginBottom: "2.5rem" }}>
+                A complete business toolkit,<br/> not loose files
+              </h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                {DELIVERABLES.map((item) => (
+                  <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
+                    <span style={{ color: "#00CCFF", fontWeight: 900, marginTop: 2 }}>→</span>
+                    <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right Column: How It Works */}
+            <div style={{ background: "linear-gradient(180deg, rgba(11,16,38,1) 0%, rgba(5,8,20,1) 100%)", border: "1px solid rgba(0,102,255,0.2)", borderRadius: 32, padding: "clamp(1.5rem, 5vw, 3rem)", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" }}>
+              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <span style={{ width: 24, height: 1, background: "rgba(0,204,255,0.5)" }} /> How It Works
+              </p>
+              <h2 style={{ fontSize: "2rem", fontWeight: 900, lineHeight: 1.1, marginBottom: "clamp(1.5rem, 5vw, 3rem)" }}>
+                A guided build path,<br/> not a pile of random files
+              </h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: "clamp(1.2rem, 4vw, 2rem)" }}>
+                {MODULES.map((item) => (
+                  <div key={item.title} style={{ display: "flex", gap: "clamp(1rem, 3vw, 1.5rem)", alignItems: "flex-start" }}>
+                    <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(0,102,255,0.1)", border: "1px solid rgba(0,102,255,0.3)", color: "#00CCFF", fontWeight: 900, fontSize: "1.1rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 0 15px rgba(0,102,255,0.15)" }}>
+                      {item.num}
+                    </div>
+                    <div>
+                      <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>{item.title}</h3>
+                      <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHO THIS IS FOR ── */}
+      <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0" }}>
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 4rem auto" }}>
+            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+              <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> Who This Is For <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} />
             </p>
-            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight tracking-tight">
+            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1 }}>
               Built for real people with real goals
             </h2>
           </div>
@@ -276,123 +491,73 @@ export default function DigitalForgeSystemPage() {
             {FOR_WHO.map((item) => (
               <div
                 key={item.title}
-                className="relative overflow-hidden group bg-gradient-to-br from-blue-900/10 to-transparent border border-blue-500/10 rounded-[1.5rem] p-8 hover:border-blue-400/40 transition-all duration-300"
+                style={{
+                  background: "linear-gradient(135deg, rgba(0,102,255,0.05), transparent)",
+                  border: "1px solid rgba(0,102,255,0.1)",
+                  borderRadius: 24,
+                  padding: "clamp(1.5rem, 5vw, 2.5rem)",
+                }}
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl -mr-16 -mt-16 transition-all duration-500 group-hover:bg-blue-400/20" />
-                <h3 className="text-white font-bold text-xl mb-3 relative z-10 flex items-center gap-3">
-                  <span className="w-1.5 h-6 rounded-full bg-cyan-500" />
+                <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                  <span style={{ width: 6, height: 24, borderRadius: 4, background: "#00CCFF" }} />
                   {item.title}
                 </h3>
-                <p className="text-white/60 leading-relaxed text-[0.95rem] relative z-10 ml-4">{item.body}</p>
+                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: "0 0 0 1.2rem" }}>{item.body}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── WHAT YOU GET + MODULES ── */}
-      <section className="py-24 relative">
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
-            {/* Left Column: Everything Included */}
-            <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-10 relative overflow-hidden group hover:border-white/10 transition-colors">
-              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10">
-                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-4 flex items-center gap-2">
-                  <span className="w-6 h-[1px] bg-cyan-400/50" /> Everything Included
-                </p>
-                <h2 className="text-white text-[1.8rem] font-black leading-tight mb-8">
-                  A complete business toolkit,<br/> not loose files
-                </h2>
-                <div className="grid gap-5">
-                  {DELIVERABLES.map((item) => (
-                    <div key={item} className="flex gap-4 items-start group/item">
-                      <span className="text-cyan-400 font-bold mt-1 group-hover/item:translate-x-1 transition-transform">→</span>
-                      <p className="text-white/70 leading-relaxed text-[0.95rem]">{item}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: How It Works */}
-            <div className="bg-gradient-to-b from-[#0B1026] to-[#050814] border border-blue-500/20 rounded-[2rem] p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px]" />
-              <div className="relative z-10">
-                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-4 flex items-center gap-2">
-                  <span className="w-6 h-[1px] bg-cyan-400/50" /> How It Works
-                </p>
-                <h2 className="text-white text-[1.8rem] font-black leading-tight mb-10">
-                  A guided build path,<br/> not a pile of random files
-                </h2>
-                <div className="grid gap-8">
-                  {MODULES.map((item) => (
-                    <div key={item.title} className="flex gap-6 items-start group">
-                      <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-400 font-black text-lg flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.15)] group-hover:scale-110 group-hover:bg-blue-500/20 transition-all duration-300">
-                        {item.num}
-                      </div>
-                      <div>
-                        <h3 className="text-white font-bold text-lg mb-2">{item.title}</h3>
-                        <p className="text-white/60 leading-relaxed text-[0.95rem]">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── UPGRADE PATH ── */}
-      <section className="py-24">
+      <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="mb-14 text-center max-w-2xl mx-auto">
-            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 justify-center flex items-center gap-3">
-              <span className="w-8 h-[1px] bg-cyan-400/50" /> What Comes Next <span className="w-8 h-[1px] bg-cyan-400/50" />
+          <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 4rem auto" }}>
+            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+              <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> What Comes Next <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} />
             </p>
-            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight tracking-tight">
+            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1 }}>
               The Starter System is the beginning, not the ceiling
             </h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Before */}
-            <div className="rounded-[1.5rem] border border-cyan-500/20 bg-cyan-500/5 p-8 flex flex-col hover:bg-cyan-500/10 transition-colors">
-              <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-4">Before the System</p>
-              <h3 className="text-white text-xl font-bold mb-3">Free Training</h3>
-              <p className="text-white/60 leading-relaxed text-sm mb-8 flex-grow">
+            <div style={{ borderRadius: 24, border: "1px solid rgba(0,204,255,0.2)", background: "rgba(0,204,255,0.03)", padding: "clamp(1.5rem, 5vw, 2.5rem)", display: "flex", flexDirection: "column" }}>
+              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 700, marginBottom: "1rem" }}>Before the System</p>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "1rem" }}>Free Training</h3>
+              <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
                 Watch the training first if you want to see the full framework before buying. If you are ready to build now, the Starter System is the direct path.
               </p>
-              <Link href="/digital-forge/training" className="text-cyan-400 font-bold text-sm hover:text-cyan-300 flex items-center gap-2 w-fit group">
-                Watch Free Training <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <Link href="/digital-forge/training" style={{ color: "#00CCFF", fontWeight: 700, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                Watch Free Training →
               </Link>
             </div>
             
             {/* Current */}
-            <div className="rounded-[1.5rem] border-2 border-blue-500/50 bg-blue-500/10 p-8 flex flex-col relative overflow-hidden shadow-[0_0_30px_rgba(59,130,246,0.15)] transform md:-translate-y-4">
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-400 to-cyan-400" />
-              <p className="text-blue-400 text-xs uppercase tracking-[0.2em] font-bold mb-4 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" /> You Are Here
+            <div style={{ borderRadius: 24, border: "2px solid rgba(0,102,255,0.5)", background: "rgba(0,102,255,0.08)", padding: "clamp(1.5rem, 5vw, 2.5rem)", display: "flex", flexDirection: "column", position: "relative", overflow: "hidden", boxShadow: "0 0 40px rgba(0,102,255,0.15)", transform: "translateY(-1rem)" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: "linear-gradient(90deg, #0066FF, #00CCFF)" }} />
+              <p style={{ color: "#0066FF", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 800, marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#0066FF" }} /> You Are Here
               </p>
-              <h3 className="text-white text-xl font-bold mb-3">Starter System</h3>
-              <p className="text-white/70 leading-relaxed text-sm mb-8 flex-grow">
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "1rem" }}>Starter System</h3>
+              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
                 The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
               </p>
-              <Link href="/digital-forge/checkout?offer=system" className="inline-flex items-center justify-center px-6 py-4 rounded-xl bg-blue-500 text-white font-bold text-xs uppercase tracking-wider hover:bg-blue-400 transition-colors w-full text-center">
+              <Link href="/digital-forge/checkout?offer=system" style={{ background: "#0066FF", color: "#fff", textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "1rem", borderRadius: 12, textAlign: "center" }}>
                 Get the System — {usdPriceLabel}
               </Link>
             </div>
             
             {/* Next */}
-            <div className="rounded-[1.5rem] border border-purple-500/20 bg-purple-500/5 p-8 flex flex-col hover:bg-purple-500/10 transition-colors">
-              <p className="text-purple-400 text-xs uppercase tracking-[0.2em] font-bold mb-4">The Next Level</p>
-              <h3 className="text-white text-xl font-bold mb-3">Digital Forge Course</h3>
-              <p className="text-white/60 leading-relaxed text-sm mb-8 flex-grow">
+            <div style={{ borderRadius: 24, border: "1px solid rgba(168,85,247,0.2)", background: "rgba(168,85,247,0.03)", padding: "clamp(1.5rem, 5vw, 2.5rem)", display: "flex", flexDirection: "column" }}>
+              <p style={{ color: "#A855F7", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 700, marginBottom: "1rem" }}>The Next Level</p>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "1rem" }}>Digital Forge Course</h3>
+              <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
                 The full guided curriculum for a deeper, more supported build-package-launch-grow journey. Takes you further than the system alone.
               </p>
-              <Link href="/digital-forge/course" className="text-purple-400 font-bold text-sm hover:text-purple-300 flex items-center gap-2 w-fit group">
-                Explore the Course <span className="group-hover:translate-x-1 transition-transform">→</span>
+              <Link href="/digital-forge/course" style={{ color: "#A855F7", fontWeight: 700, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                Explore the Course →
               </Link>
             </div>
           </div>
@@ -400,22 +565,22 @@ export default function DigitalForgeSystemPage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section className="py-24 bg-white/[0.01] border-y border-white/5">
+      <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0", background: "rgba(255,255,255,0.01)", borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="mb-14 text-center max-w-2xl mx-auto">
-            <p className="text-cyan-400 text-xs font-bold tracking-[0.2em] uppercase mb-4 justify-center flex items-center gap-3">
-              <span className="w-8 h-[1px] bg-cyan-400/50" /> Common Questions <span className="w-8 h-[1px] bg-cyan-400/50" />
+          <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 4rem auto" }}>
+            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+              <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> Common Questions <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} />
             </p>
-            <h2 className="text-white text-[clamp(2rem,4vw,3rem)] font-black leading-tight tracking-tight">
+            <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1 }}>
               Everything you need to know before buying
             </h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {FAQ.map((item) => (
-              <div key={item.q} className="bg-[#0A0F24] border border-white/10 rounded-[1.5rem] p-8 hover:border-blue-500/30 transition-colors">
-                <h3 className="text-white font-bold text-lg mb-3">{item.q}</h3>
-                <p className="text-white/60 leading-relaxed text-[0.95rem]">{item.a}</p>
+              <div key={item.q} style={{ background: "rgba(9,14,32,0.8)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, padding: "clamp(1.2rem, 4vw, 2rem)" }}>
+                <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "1rem" }}>{item.q}</h3>
+                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: 0 }}>{item.a}</p>
               </div>
             ))}
           </div>
@@ -423,45 +588,66 @@ export default function DigitalForgeSystemPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-32 relative">
+      <section style={{ padding: "8rem 0", position: "relative" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
-          <div className="relative overflow-hidden rounded-[3rem] p-[clamp(3rem,8vw,6rem)] text-center shadow-[0_0_100px_rgba(0,102,255,0.1)] border border-blue-500/20 bg-[#0A0F24]">
-            {/* CTA Background Gradients */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
-              <div className="absolute -top-[50%] -left-[20%] w-[100%] h-[150%] bg-blue-600/10 rounded-full blur-[100px]" />
-              <div className="absolute top-[20%] -right-[20%] w-[80%] h-[100%] bg-cyan-500/10 rounded-full blur-[100px]" />
+          <div style={{ background: "rgba(9,14,32,1)", border: "1px solid rgba(0,102,255,0.2)", borderRadius: 48, padding: "clamp(4rem, 8vw, 6rem) 2rem", textAlign: "center", boxShadow: "0 0 100px rgba(0,102,255,0.1)", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
+              <div style={{ position: "absolute", top: "-50%", left: "-20%", width: "100%", height: "150%", background: "rgba(0,102,255,0.1)", borderRadius: "50%", filter: "blur(100px)" }} />
+              <div style={{ position: "absolute", top: "20%", right: "-20%", width: "80%", height: "100%", background: "rgba(0,204,255,0.1)", borderRadius: "50%", filter: "blur(100px)" }} />
             </div>
 
-            <div className="relative z-10 max-w-3xl mx-auto">
-              <p className="text-cyan-400 text-sm font-bold tracking-[0.2em] uppercase mb-6 flex justify-center items-center gap-3">
-                <span className="w-10 h-[1px] bg-cyan-400/50" />
+            <div style={{ position: "relative", zIndex: 10, maxWidth: 800, margin: "0 auto" }}>
+              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+                <span style={{ width: 40, height: 1, background: "rgba(0,204,255,0.5)" }} />
                 Stop Dabbling. Start Building.
-                <span className="w-10 h-[1px] bg-cyan-400/50" />
+                <span style={{ width: 40, height: 1, background: "rgba(0,204,255,0.5)" }} />
               </p>
               
-              <h2 className="text-white text-[clamp(2.5rem,5vw,4rem)] font-black leading-[1.05] mb-8 tracking-tight drop-shadow-lg">
-                This is the fastest path from AI curiosity to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">one product you can sell.</span>
+              <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "2rem", textShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
+                This is the fastest path from AI curiosity to <span style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>one product you can sell.</span>
               </h2>
               
-              <p className="text-white/70 text-lg leading-relaxed mb-12 max-w-2xl mx-auto font-medium">
+              <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.1rem", lineHeight: 1.8, marginBottom: "clamp(1.5rem, 5vw, 3rem)", maxWidth: 650, margin: "0 auto 3rem auto" }}>
                 The Starter System gives you the guide, prompts, worksheets, checklists, and launch assets to build one clear digital product and take it to market. No hype, no income guarantee, just a serious system for doing the work.
               </p>
               
-              <div className="flex flex-wrap gap-4 justify-center">
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
                 <Link
                   href="/digital-forge/checkout?offer=system"
-                  id="system-buy-cta-bottom"
-                  className="group relative inline-flex items-center justify-center px-10 py-5 rounded-2xl text-white font-black text-sm uppercase tracking-widest overflow-hidden transition-all hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(37,99,235,0.5)] active:scale-[0.98]"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    padding: "1.25rem 2.5rem",
+                    background: "linear-gradient(135deg, #0066FF, #0044CC)",
+                    color: "#fff",
+                    textDecoration: "none",
+                    fontWeight: 800,
+                    fontSize: "0.86rem",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    borderRadius: "16px",
+                    boxShadow: "0 0 40px rgba(0,102,255,0.4)",
+                  }}
                 >
-                  <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-blue-500 group-hover:via-cyan-500 group-hover:to-blue-600" />
-                  <span className="relative z-10 flex items-center gap-3">
-                    Get the Starter System — {usdPriceLabel}
-                    <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                  </span>
+                  Get the Starter System — {usdPriceLabel}
                 </Link>
                 <Link
                   href={whatsappHref}
-                  className="inline-flex items-center justify-center px-8 py-5 rounded-2xl text-white/90 font-bold text-sm uppercase tracking-widest border border-white/20 bg-white/5 backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/40 hover:text-white active:scale-[0.98]"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    padding: "1.25rem 2.5rem",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    background: "rgba(255,255,255,0.05)",
+                    color: "#fff",
+                    textDecoration: "none",
+                    fontWeight: 700,
+                    fontSize: "0.86rem",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    borderRadius: "16px",
+                  }}
                 >
                   Message on WhatsApp
                 </Link>
@@ -473,4 +659,5 @@ export default function DigitalForgeSystemPage() {
     </div>
   );
 }
+
 

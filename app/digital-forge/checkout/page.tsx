@@ -48,41 +48,86 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   const primaryPriceLabel = hasInternationalCheckout ? usdPriceLabel : localPriceLabel;
 
   return (
-    <div className="min-h-screen pb-24 bg-[#030614] text-white font-sans selection:bg-blue-500/30">
-      <section className="relative overflow-hidden pt-28 pb-20">
+    <div style={{ background: "#050510", minHeight: "100vh", color: "#fff", fontFamily: "sans-serif", overflow: "hidden" }}>
+      <section style={{ position: "relative", paddingTop: "clamp(6rem, 15vw, 8rem)", paddingBottom: "clamp(4rem, 10vw, 6rem)" }}>
         {/* Dynamic Background */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 -left-[10%] w-[50%] h-[60%] bg-blue-600/15 rounded-full blur-[140px] mix-blend-screen" />
-          <div className="absolute top-[20%] -right-[10%] w-[40%] h-[50%] bg-indigo-500/10 rounded-full blur-[120px] mix-blend-screen" />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#030614]/80 to-[#030614]" />
-        </div>
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+          }}
+        />
 
-        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
+        <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative">
           <Link
             href={offer.kind === "system" ? "/digital-forge/system" : `/digital-forge/products/${offer.slug}`}
-            className="inline-flex items-center gap-2 text-white/50 hover:text-white/90 transition-colors text-sm font-semibold tracking-wider mb-10 uppercase"
+            style={{
+              display: "inline-block",
+              color: "rgba(255,255,255,0.5)",
+              textDecoration: "none",
+              fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              marginBottom: "clamp(2rem, 6vw, 4rem)",
+            }}
           >
             ← Back to offer
           </Link>
 
-          <div className="grid gap-12 grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-start">
-            <div className="animate-fade-in-up">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-md mb-6 shadow-[0_0_20px_rgba(37,99,235,0.15)]">
-                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-                <span className="text-blue-400 font-bold text-xs uppercase tracking-[0.2em]">
+          <div
+            className="grid gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]"
+            style={{ alignItems: "start" }}
+          >
+            <div>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.55rem",
+                  background: "rgba(0,102,255,0.1)",
+                  border: "1px solid rgba(0,102,255,0.35)",
+                  borderRadius: "999px",
+                  padding: "0.42rem 1rem",
+                  marginBottom: "1.6rem",
+                }}
+              >
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block", boxShadow: "0 0 10px rgba(0,204,255,0.8)" }} />
+                <span style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
                   Secure Checkout
                 </span>
-              </span>
+              </div>
 
-              <h1 className="text-white text-[clamp(2.2rem,5vw,3.5rem)] font-black leading-[1.05] tracking-tight mb-6 max-w-[800px] drop-shadow-lg">
-                Complete your payment for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">{offer.title}</span>
+              <h1
+                style={{
+                  fontSize: "clamp(2.4rem, 5vw, 4.2rem)",
+                  fontWeight: 900,
+                  lineHeight: 1.05,
+                  color: "#fff",
+                  letterSpacing: "-0.02em",
+                  maxWidth: 800,
+                  marginBottom: "1.8rem",
+                }}
+              >
+                Complete your payment for <span style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{offer.title}</span>
               </h1>
 
-              <p className="text-white/70 text-lg leading-relaxed max-w-[760px] mb-10 font-medium">
+              <p
+                style={{
+                  color: "rgba(255,255,255,0.78)",
+                  maxWidth: 760,
+                  lineHeight: 1.8,
+                  fontSize: "clamp(1.05rem, 2.5vw, 1.15rem)",
+                  marginBottom: "clamp(1.5rem, 5vw, 3rem)",
+                }}
+              >
                 {offer.description}
               </p>
 
-              <div className="grid gap-5 max-w-[560px]">
+              <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem", maxWidth: 600 }}>
                 {[
                   hasInternationalCheckout
                     ? "International checkout is handled securely by Lemon Squeezy."
@@ -90,37 +135,71 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                   "Your purchase is verified before delivery is sent.",
                   "Access is delivered automatically to your email after successful payment.",
                 ].map((item) => (
-                  <div key={item} className="flex gap-4 items-start p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center mt-0.5 shadow-[0_0_10px_rgba(59,130,246,0.3)]">
-                      <span className="text-blue-400 text-xs font-black">✓</span>
-                    </span>
-                    <span className="text-white/80 leading-relaxed font-medium text-[0.95rem]">{item}</span>
+                  <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1.2rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 16 }}>
+                    <div
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: "50%",
+                        background: "rgba(0,102,255,0.15)",
+                        border: "1px solid rgba(0,102,255,0.3)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                        marginTop: 2,
+                      }}
+                    >
+                      <span style={{ color: "#00CCFF", fontSize: "0.7rem", fontWeight: 900 }}>✓</span>
+                    </div>
+                    <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>
+                      {item}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 rounded-[2.5rem] blur-xl transition-all duration-500 group-hover:blur-2xl opacity-70" />
-              <div className="relative bg-[#0A0F24]/95 backdrop-blur-2xl border border-blue-500/20 rounded-[2rem] p-8 md:p-10 shadow-2xl transition-transform duration-500 hover:-translate-y-1">
-                <p className="text-cyan-400 text-xs uppercase tracking-[0.2em] font-bold mb-3 flex items-center gap-2">
-                  <span className="w-4 h-[1px] bg-cyan-400/50" />
-                  Order summary
+            <div
+              style={{
+                background: "rgba(9,14,32,0.92)",
+                border: "1px solid rgba(0,102,255,0.22)",
+                borderRadius: 32,
+                padding: "clamp(1.5rem, 5vw, 2.5rem)",
+                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
+              }}
+            >
+              <p
+                style={{
+                  color: "#00CCFF",
+                  fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+                  fontWeight: 800,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  marginBottom: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                <span style={{ width: 24, height: 1, background: "rgba(0,204,255,0.5)" }} />
+                Order summary
+              </p>
+              <h2 style={{ fontSize: "1.8rem", fontWeight: 900, lineHeight: 1.1, marginBottom: "1rem" }}>
+                {offer.title}
+              </h2>
+              <div style={{ marginBottom: "2rem" }}>
+                <p style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontSize: "2.5rem", fontWeight: 900, margin: "0 0 0.5rem 0" }}>
+                  {primaryPriceLabel}
                 </p>
-                <h2 className="text-white font-black text-2xl leading-tight mb-3 pr-8">
-                  {offer.title}
-                </h2>
-                <div className="mb-8">
-                  <p className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 font-black text-4xl mb-2">
-                    {primaryPriceLabel}
+                {hasInternationalCheckout ? (
+                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
+                    Local Nigerian checkout is also available at {localPriceLabel}.
                   </p>
-                  {hasInternationalCheckout ? (
-                    <p className="text-white/50 text-sm font-medium">
-                      Local Nigerian checkout is also available at {localPriceLabel}.
-                    </p>
-                  ) : null}
-                </div>
+                ) : null}
+              </div>
 
+              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "2rem" }}>
                 <CheckoutClient
                   offerKey={offer.key}
                   offerKind={offer.kind}
