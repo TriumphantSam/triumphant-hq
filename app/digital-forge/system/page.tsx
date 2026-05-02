@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CurrencyPrice from "@/components/CurrencyPrice";
 import { formatOfferPrice, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
 export const metadata = {
@@ -228,7 +229,7 @@ export default function DigitalForgeSystemPage() {
                     boxShadow: "0 0 32px rgba(0,102,255,0.38)",
                   }}
                 >
-                  Get the Starter System — {usdPriceLabel}
+                  Get the Starter System — <CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} />
                 </Link>
                 <Link
                   href={whatsappHref}
@@ -335,10 +336,10 @@ export default function DigitalForgeSystemPage() {
                   Instant Access Price
                 </p>
                 <p style={{ color: "#fff", fontSize: "2.2rem", fontWeight: 900, marginBottom: "0.4rem", margin: 0 }}>
-                  {usdPriceLabel}
+                  <CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} />
                 </p>
                 <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
-                  Also available locally from {systemPrice} through Flutterwave.
+                  One-time payment. Instant email delivery.
                 </p>
               </div>
             </div>
@@ -352,7 +353,7 @@ export default function DigitalForgeSystemPage() {
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "clamp(1rem, 3vw, 1.5rem)", color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", fontWeight: 500 }}>
               <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <strong style={{ color: "#00CCFF", fontSize: "1.2rem", fontWeight: 900 }}>{usdPriceLabel}</strong> one-time payment
+                <strong style={{ color: "#00CCFF", fontSize: "1.2rem", fontWeight: 900 }}><CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} /></strong> one-time payment
               </span>
               <span style={{ width: 1, height: 20, background: "rgba(255,255,255,0.2)" }} className="hidden sm:block" />
               <span>✦ Instant delivery</span>
@@ -545,7 +546,7 @@ export default function DigitalForgeSystemPage() {
                 The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
               </p>
               <Link href="/digital-forge/checkout?offer=system" style={{ background: "#0066FF", color: "#fff", textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "1rem", borderRadius: 12, textAlign: "center" }}>
-                Get the System — {usdPriceLabel}
+                Get the System — <CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} />
               </Link>
             </div>
             
@@ -630,7 +631,7 @@ export default function DigitalForgeSystemPage() {
                     boxShadow: "0 0 40px rgba(0,102,255,0.4)",
                   }}
                 >
-                  Get the Starter System — {usdPriceLabel}
+                  Get the Starter System — <CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} />
                 </Link>
                 <Link
                   href={whatsappHref}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CurrencyPrice from "@/components/CurrencyPrice";
 
 export const metadata = {
   title: "Free Training — Coming Soon | Digital Forge",
@@ -149,7 +150,7 @@ export default function DigitalForgeTrainingPage() {
           </div>
 
           <p style={{ marginTop: "1.2rem", color: "rgba(255,255,255,0.32)", fontSize: "0.83rem" }}>
-            Already have what you need? The Starter System is available right now at ₦15,000.
+            Already have what you need? The Starter System is available right now at <CurrencyPrice ngnLabel="₦15,000" usdLabel="$30.00" />.
           </p>
         </div>
       </section>
@@ -302,7 +303,7 @@ export default function DigitalForgeTrainingPage() {
                   boxShadow: "0 0 36px rgba(0,102,255,0.45)",
                 }}
               >
-                Get the Starter System — From ₦15,000
+                Get the Starter System — From <CurrencyPrice ngnLabel="₦15,000" usdLabel="$30" />
               </Link>
               <Link
                 href="/digital-forge/course/waitlist"

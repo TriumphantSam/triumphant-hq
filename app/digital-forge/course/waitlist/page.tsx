@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CurrencyPrice from "@/components/CurrencyPrice";
 import WaitlistForm from "./WaitlistForm";
 
 export const metadata = {
@@ -9,7 +10,7 @@ export const metadata = {
 
 const WAITLIST_BENEFITS = [
   "Be first to know when hosted course enrollment and access go live",
-  "Lock in your place at the launch price of ₦35,000 before it increases",
+  "Lock in your place at the launch price before it increases",
   "Get early visibility into what you will receive from day one",
   "Stay connected to the course so you do not miss the opening window",
   "Know whether the Starter System or full Course is the better next step for where you are now",
@@ -236,7 +237,7 @@ export default function DigitalForgeCourseWaitlistPage() {
                 <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.69rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.35rem" }}>
                   Launch Price
                 </p>
-                <p style={{ color: "#00CCFF", fontWeight: 900, fontSize: "1.5rem" }}>₦35,000</p>
+                <p style={{ color: "#00CCFF", fontWeight: 900, fontSize: "1.5rem" }}><CurrencyPrice ngnLabel="₦35,000" usdLabel="$70" /></p>
                 <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.86rem", marginTop: "0.2rem" }}>
                   Full curriculum + workbook + bundle delivery
                 </p>

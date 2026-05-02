@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CurrencyPrice from "@/components/CurrencyPrice";
 import { getForgeProducts } from "@/lib/digital-forge";
 
 export const metadata = {
@@ -60,6 +61,7 @@ const OFFER_STEPS = [
     title: "Get the Starter System",
     description: "The complete business toolkit: guide, prompts, templates, launch assets, and operating documents to turn your idea into an offer.",
     price: "From ₦15,000",
+    priceUsd: "From $30",
     accent: "#0066FF",
     accentBg: "rgba(0,102,255,0.08)",
     accentBorder: "rgba(0,102,255,0.3)",
@@ -71,6 +73,7 @@ const OFFER_STEPS = [
     title: "Enroll in the Course",
     description: "The guided build-package-launch-grow curriculum for people who want step-by-step instruction and a complete implementation path.",
     price: "From ₦35,000",
+    priceUsd: "From $70",
     accent: "#8B5CF6",
     accentBg: "rgba(139,92,246,0.06)",
     accentBorder: "rgba(139,92,246,0.24)",
@@ -277,7 +280,7 @@ export default async function DigitalForgePage() {
                           </p>
                           <h2 style={{ color: "#fff", fontWeight: 800, fontSize: "0.97rem", lineHeight: 1.3 }}>{item.title}</h2>
                         </div>
-                        <span style={{ color: item.accent, fontWeight: 800, fontSize: "0.78rem", whiteSpace: "nowrap" }}>{item.price}</span>
+                        <span style={{ color: item.accent, fontWeight: 800, fontSize: "0.78rem", whiteSpace: "nowrap" }}>{item.priceUsd ? <CurrencyPrice ngnLabel={item.price} usdLabel={item.priceUsd} /> : item.price}</span>
                       </div>
                       <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.65, fontSize: "0.84rem" }}>{item.description}</p>
                     </div>

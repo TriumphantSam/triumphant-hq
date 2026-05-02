@@ -2,6 +2,8 @@ import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { getForgeProduct, getForgeProductSlugs } from "@/lib/digital-forge";
+import { resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
+import CurrencyPrice from "@/components/CurrencyPrice";
 
 export const revalidate = 300;
 
@@ -88,6 +90,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
 
   const primaryHref = getCheckoutHref(slug);
   const priceDisplay = formatPrice(product.priceNgn);
+  const usdDisplay = resolveUsdPriceLabel(slug, "product");
   const parsedBonuses = product.bonuses
     .map(parseBonusItem)
     .filter(Boolean) as { asset: string; role: string; perceived_value: string }[];
@@ -254,7 +257,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               <div style={{ marginBottom: "2rem" }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem", marginBottom: "1rem", flexWrap: "wrap" }}>
                   <span style={{ color: "#fff", fontWeight: 900, fontSize: "2rem", letterSpacing: "-0.02em" }}>
-                    {priceDisplay}
+                    <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
                   </span>
                   <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>one-time · instant delivery</span>
                 </div>
@@ -278,7 +281,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       transition: "opacity 0.2s",
                     }}
                   >
-                    Buy Now — {priceDisplay}
+                    Buy Now — <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
                   </Link>
                   <Link
                     href="/digital-forge/products"
@@ -474,7 +477,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   {/* Price */}
                   <div style={{ textAlign: "center", marginBottom: "0.75rem" }}>
                     <span style={{ color: "#fff", fontWeight: 900, fontSize: "1.6rem", letterSpacing: "-0.02em" }}>
-                      {priceDisplay}
+                      <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
                     </span>
                     <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.72rem", marginTop: "0.2rem" }}>One-time payment · Instant delivery by email</p>
                   </div>
@@ -499,7 +502,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       boxShadow: `0 0 25px ${accent}44`,
                     }}
                   >
-                    Buy Now — {priceDisplay}
+                    Buy Now — <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
                   </Link>
 
                   <p

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CurrencyPrice from "@/components/CurrencyPrice";
 
 export const metadata = {
   title: "Get Course Access | Digital Forge",
@@ -11,7 +12,7 @@ const ACCESS_PATHS = [
     title: "Join the Waitlist",
     status: "Open Now — Priority Access",
     description:
-      "Be first in when enrollment and hosted course access open. Secure your place at the launch price of ₦35,000 and get notified the moment the course is ready to access.",
+      "Be first in when enrollment and hosted course access open. Secure your place at the launch price and get notified the moment the course is ready to access.",
     href: "/digital-forge/course/waitlist",
     cta: "Join the Waitlist",
     featured: true,
@@ -155,7 +156,7 @@ export default function DigitalForgeCourseAccessPage() {
               marginBottom: "2.2rem",
             }}
           >
-            Join the waitlist now to get priority access at the launch price of ₦35,000. While you wait, the Starter System and free training are both available right now.
+            Join the waitlist now to get priority access at the launch price of <CurrencyPrice ngnLabel="₦35,000" usdLabel="$70" />. While you wait, the Starter System and free training are both available right now.
           </p>
 
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
@@ -177,7 +178,7 @@ export default function DigitalForgeCourseAccessPage() {
                 boxShadow: "0 0 36px rgba(0,102,255,0.42)",
               }}
             >
-              Join the Waitlist — ₦35,000 at Launch
+              Join the Waitlist — <CurrencyPrice ngnLabel="₦35,000" usdLabel="$70" /> at Launch
             </Link>
             <Link
               href="/digital-forge/training"
