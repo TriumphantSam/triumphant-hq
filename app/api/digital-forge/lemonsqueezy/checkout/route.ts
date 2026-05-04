@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { resolveProductOffer, resolveSystemOffer, resolveUsdPriceCents } from "@/lib/digital-forge-offers";
+import { normalizeCountryCode } from "@/lib/currency-pricing";
 
 const LEMON_SQUEEZY_API_KEY = process.env.LEMON_SQUEEZY_API_KEY ?? "";
 const LEMON_SQUEEZY_STORE_ID = process.env.LEMON_SQUEEZY_STORE_ID ?? "";
@@ -13,6 +14,7 @@ type CheckoutBody = {
   name?: string;
   email?: string;
   phone?: string;
+  countryCode?: string;
 };
 
 function parseVariantMap(raw: string): Record<string, number> {
@@ -67,6 +69,7 @@ export async function POST(request: NextRequest) {
     const redirectUrl = new URL("/digital-forge/checkout/confirmed", SITE_URL);
     redirectUrl.searchParams.set("offer", offer.key);
     redirectUrl.searchParams.set("provider", "lemonsqueezy");
+    const customerCountry = normalizeCountryCode(body.countryCode || request.headers.get("x-vercel-ip-country"));
 
     const lemonResponse = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
       method: "POST",
@@ -79,9 +82,11 @@ export async function POST(request: NextRequest) {
         data: {
           type: "checkouts",
           attributes: {
+            custom_price: resolveUsdPriceCents(offer),
             checkout_data: {
               email: customerEmail,
               name: customerName,
+              ...(customerCountry ? { billing_address: { country: customerCountry } } : {}),
               custom: {
                 offer_key: offer.key,
                 offer_kind: offer.kind,
@@ -91,6 +96,7 @@ export async function POST(request: NextRequest) {
               },
             },
             product_options: {
+              enabled_variants: [variantId],
               redirect_url: redirectUrl.toString(),
               receipt_button_text: "Return to Digital Forge",
               receipt_link_url: redirectUrl.toString(),

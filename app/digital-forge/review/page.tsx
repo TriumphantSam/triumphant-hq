@@ -78,7 +78,7 @@ export default function ReviewPage() {
               Send My Idea on WhatsApp
             </a>
             <a href="/digital-forge/checkout?offer=system" style={{ display: "inline-flex", alignItems: "center", padding: "1.1rem 2.2rem", border: "1px solid rgba(255,255,255,0.18)", color: "rgba(255,255,255,0.84)", textDecoration: "none", fontWeight: 700, fontSize: "0.88rem", letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: 12, background: "rgba(255,255,255,0.03)" }}>
-              Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$30.00" />
+              Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$20.00" />
             </a>
           </div>
         </div>
@@ -157,7 +157,7 @@ export default function ReviewPage() {
               ))}
             </div>
             <a href="/digital-forge/checkout?offer=system" style={{ display: "inline-flex", alignItems: "center", padding: "1rem 2rem", background: "linear-gradient(135deg,#0066FF,#0044CC)", color: "#fff", textDecoration: "none", fontWeight: 800, fontSize: "0.84rem", letterSpacing: "0.1em", textTransform: "uppercase", borderRadius: 12, boxShadow: "0 0 32px rgba(0,102,255,0.38)" }}>
-              Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$30.00" />
+              Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$20.00" />
             </a>
           </div>
         </div>
@@ -263,7 +263,7 @@ export default function ReviewPage() {
                   Send My Idea on WhatsApp
                 </a>
                 <a href="/digital-forge/checkout?offer=system" style={{ display: "inline-flex", alignItems: "center", padding: "1.15rem 2.4rem", border: "1px solid rgba(255,255,255,0.18)", color: "rgba(255,255,255,0.84)", textDecoration: "none", fontWeight: 700, fontSize: "0.88rem", letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: 14, background: "rgba(255,255,255,0.03)" }}>
-                  Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$30.00" />
+                  Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$20.00" />
                 </a>
               </div>
             </div>

@@ -90,7 +90,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
 
   const primaryHref = getCheckoutHref(slug);
   const priceDisplay = formatPrice(product.priceNgn);
-  const usdDisplay = resolveUsdPriceLabel(slug, "product");
+  const usdDisplay = resolveUsdPriceLabel(slug, "product", product.priceNgn ?? DEFAULT_PRICE_NGN);
   const parsedBonuses = product.bonuses
     .map(parseBonusItem)
     .filter(Boolean) as { asset: string; role: string; perceived_value: string }[];
@@ -950,7 +950,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   boxShadow: `0 0 40px ${accent}55`,
                 }}
               >
-                Buy Now — {priceDisplay}
+                Buy Now — <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
               </Link>
               <Link
                 href="/digital-forge/products"
@@ -1034,7 +1034,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             flexShrink: 0,
           }}
         >
-          Buy · {priceDisplay}
+          Buy · <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
         </Link>
       </div>
     </div>

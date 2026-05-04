@@ -43,7 +43,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   if (!offer) notFound();
 
   const localPriceLabel = formatOfferPrice(offer.amount, offer.currency);
-  const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind);
+  const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind, offer.amount);
   const lsVariantMap = parseLsVariantMap(process.env.DIGITAL_FORGE_LS_VARIANT_MAP_JSON ?? "");
   const hasInternationalCheckout = Boolean(lsVariantMap[offer.key]);
 
@@ -190,14 +190,10 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
               </h2>
               <div style={{ marginBottom: "2rem" }}>
                 <p style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontSize: "2.5rem", fontWeight: 900, margin: "0 0 0.5rem 0" }}>
-                  {hasInternationalCheckout ? (
-                    <CurrencyPrice
-                      ngnLabel={localPriceLabel}
-                      usdLabel={usdPriceLabel}
-                    />
-                  ) : (
-                    localPriceLabel
-                  )}
+                  <CurrencyPrice
+                    ngnLabel={localPriceLabel}
+                    usdLabel={usdPriceLabel}
+                  />
                 </p>
                 {hasInternationalCheckout ? (
                   <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>

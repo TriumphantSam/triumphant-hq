@@ -237,7 +237,7 @@ export default function DigitalForgeCourseWaitlistPage() {
                 <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.69rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.35rem" }}>
                   Launch Price
                 </p>
-                <p style={{ color: "#00CCFF", fontWeight: 900, fontSize: "1.5rem" }}><CurrencyPrice ngnLabel="₦35,000" usdLabel="$70" /></p>
+                <p style={{ color: "#00CCFF", fontWeight: 900, fontSize: "1.5rem" }}><CurrencyPrice ngnLabel="₦35,000" usdLabel="$23.33" /></p>
                 <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.86rem", marginTop: "0.2rem" }}>
                   Full curriculum + workbook + bundle delivery
                 </p>

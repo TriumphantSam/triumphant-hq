@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState, useEffect } from "react";
+import CurrencyPrice, { useVisitorPricing } from "@/components/CurrencyPrice";
 
 type CheckoutClientProps = {
   offerKey: string;
@@ -24,6 +25,7 @@ export default function CheckoutClient({
   usdPriceLabel,
   hasInternationalCheckout = false,
 }: CheckoutClientProps) {
+  const visitorPricing = useVisitorPricing();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -35,20 +37,12 @@ export default function CheckoutClient({
   useEffect(() => {
     const pixel = (window as MetaPixelWindow).fbq;
     pixel?.("track", "InitiateCheckout");
+  }, []);
 
-    // Auto-select payment provider based on user's geo
-    if (hasInternationalCheckout) {
-      try {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
-        const isNigerian = tz === "Africa/Lagos" || tz.startsWith("Africa/");
-        if (!isNigerian) {
-          setProvider("lemonsqueezy");
-        }
-      } catch {
-        // Keep flutterwave as safe default
-      }
-    }
-  }, [hasInternationalCheckout]);
+  useEffect(() => {
+    if (!hasInternationalCheckout) return;
+    setProvider(visitorPricing.countryCode === "NG" ? "flutterwave" : "lemonsqueezy");
+  }, [hasInternationalCheckout, visitorPricing.countryCode]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -78,6 +72,7 @@ export default function CheckoutClient({
           name: name.trim(),
           email: email.trim(),
           phone: phone.trim(),
+          countryCode: visitorPricing.countryCode,
         }),
       });
 
@@ -236,7 +231,13 @@ export default function CheckoutClient({
             </>
           ) : (
             <>
-              {provider === "lemonsqueezy" ? `Pay ${usdPriceLabel || "$10.00"} via international checkout` : `Pay ${priceLabel} via secure local checkout`}
+              {provider === "lemonsqueezy" ? (
+                <>
+                  Pay <CurrencyPrice ngnLabel={priceLabel} usdLabel={usdPriceLabel || "$20.00"} /> via international checkout
+                </>
+              ) : (
+                `Pay ${priceLabel} via secure local checkout`
+              )}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
             </>
           )}

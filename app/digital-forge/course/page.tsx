@@ -265,7 +265,7 @@ export default function DigitalForgeCoursePage() {
                 <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem" }}>
                   {item.label}
                 </p>
-                <p style={{ color: "#fff", fontWeight: 700, lineHeight: 1.6 }}>{item.label === "Price" ? <CurrencyPrice ngnLabel={item.value} usdLabel="$70" /> : item.value}</p>
+                <p style={{ color: "#fff", fontWeight: 700, lineHeight: 1.6 }}>{item.label === "Price" ? <CurrencyPrice ngnLabel={item.value} usdLabel="$23.33" /> : item.value}</p>
               </div>
             ))}
           </div>
@@ -290,7 +290,7 @@ export default function DigitalForgeCoursePage() {
               Join the waitlist. Be first in when the course opens.
             </h2>
             <p style={{ color: "rgba(255,255,255,0.64)", lineHeight: 1.85, maxWidth: 840, marginBottom: "1.5rem" }}>
-              The Digital Forge Course curriculum, workbook, prompt packs, and all implementation assets are ready. Enrollment and hosted access are opening shortly. Join the waitlist now to be first in — and to reserve your place at the launch price of <CurrencyPrice ngnLabel="₦35,000" usdLabel="$70" />.
+              The Digital Forge Course curriculum, workbook, prompt packs, and all implementation assets are ready. Enrollment and hosted access are opening shortly. Join the waitlist now to be first in — and to reserve your place at the launch price of <CurrencyPrice ngnLabel="₦35,000" usdLabel="$23.33" />.
             </p>
             <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <Link

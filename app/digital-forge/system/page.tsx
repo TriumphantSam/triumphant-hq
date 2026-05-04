@@ -106,7 +106,7 @@ const FAQ = [
 export default function DigitalForgeSystemPage() {
   const systemOffer = resolveSystemOffer();
   const systemPrice = formatOfferPrice(systemOffer.amount, systemOffer.currency);
-  const usdPriceLabel = resolveUsdPriceLabel(systemOffer.key, systemOffer.kind);
+  const usdPriceLabel = resolveUsdPriceLabel(systemOffer.key, systemOffer.kind, systemOffer.amount);
 
   return (
     <div style={{ background: "#050510", minHeight: "100vh", color: "#fff", fontFamily: "sans-serif", overflow: "hidden" }}>

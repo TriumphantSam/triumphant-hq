@@ -156,7 +156,7 @@ export default function DigitalForgeCourseAccessPage() {
               marginBottom: "2.2rem",
             }}
           >
-            Join the waitlist now to get priority access at the launch price of <CurrencyPrice ngnLabel="₦35,000" usdLabel="$70" />. While you wait, the Starter System and free training are both available right now.
+            Join the waitlist now to get priority access at the launch price of <CurrencyPrice ngnLabel="₦35,000" usdLabel="$23.33" />. While you wait, the Starter System and free training are both available right now.
           </p>
 
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
@@ -178,7 +178,7 @@ export default function DigitalForgeCourseAccessPage() {
                 boxShadow: "0 0 36px rgba(0,102,255,0.42)",
               }}
             >
-              Join the Waitlist — <CurrencyPrice ngnLabel="₦35,000" usdLabel="$70" /> at Launch
+              Join the Waitlist — <CurrencyPrice ngnLabel="₦35,000" usdLabel="$23.33" /> at Launch
             </Link>
             <Link
               href="/digital-forge/training"

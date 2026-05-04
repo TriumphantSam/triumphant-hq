@@ -1,4 +1,5 @@
 import { getForgeProduct } from "@/lib/digital-forge";
+import { getNgnPerUsd } from "@/lib/currency-pricing";
 
 export type CheckoutOffer = {
   kind: "product" | "system";
@@ -147,12 +148,27 @@ export function resolveSystemOffer(): CheckoutOffer {
 }
 
 const USD_PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_USD_PRICE_OVERRIDES_JSON ?? "");
+const DEFAULT_USD_PRICE_OVERRIDES: Record<string, number> = {
+  "starter-system": 20,
+};
 
-export function resolveUsdPriceLabel(offerKey: string, offerKind: string): string {
-  if (offerKind === "system" || offerKey === "starter-system") {
-    return "$30.00";
-  }
-  const override = USD_PRICE_OVERRIDES[offerKey];
+export function resolveUsdAmount(amountNgn: number): number {
+  const amount = Number(amountNgn);
+  if (!Number.isFinite(amount) || amount <= 0) return 0;
+  return Math.round((amount / getNgnPerUsd()) * 100) / 100;
+}
+
+export function resolveUsdPriceCents(offer: CheckoutOffer): number {
+  const override = USD_PRICE_OVERRIDES[offer.key] ?? DEFAULT_USD_PRICE_OVERRIDES[offer.key];
+  const amount = override ?? resolveUsdAmount(offer.amount);
+  return Math.max(100, Math.round(amount * 100));
+}
+
+export function resolveUsdPriceLabel(offerKey: string, offerKind: string, amountNgn?: number): string {
+  const override = USD_PRICE_OVERRIDES[offerKey] ?? DEFAULT_USD_PRICE_OVERRIDES[offerKey];
   if (override) return `$${override.toFixed(2)}`;
-  return "$10.00";
+  const fallbackAmount = offerKind === "system" || offerKey === "starter-system"
+    ? FIXED_SYSTEM_PRICE_NGN
+    : DEFAULT_PRODUCT_PRICE_NGN;
+  return `$${resolveUsdAmount(amountNgn ?? fallbackAmount).toFixed(2)}`;
 }
