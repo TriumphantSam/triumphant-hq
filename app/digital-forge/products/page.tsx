@@ -485,7 +485,7 @@ export default async function DigitalForgeProductsPage() {
           >
             {[
               { icon: "⚡", title: "Instant Delivery", desc: "Files sent by email right after payment." },
-              { icon: "🔐", title: "Secure Checkout", desc: "Powered by Flutterwave — safe and fast." },
+              { icon: "🔐", title: "Secure Checkout", desc: "PCI-DSS compliant — safe and fast." },
               { icon: "📦", title: "Full Bundle", desc: "Guide + Prompts + Checklist + Bonuses." },
               { icon: "💬", title: "Direct Support", desc: "Questions? We reply — real humans." },
             ].map((item) => (

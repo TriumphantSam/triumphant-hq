@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CheckoutClient from "./CheckoutClient";
+import CurrencyPrice from "@/components/CurrencyPrice";
 import { formatOfferPrice, resolveProductOffer, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
 function parseLsVariantMap(raw: string): Record<string, number> {
@@ -26,7 +27,7 @@ type CheckoutPageProps = {
 
 export const metadata = {
   title: "Secure Checkout | Digital Forge",
-  description: "Complete your Digital Forge purchase securely via Lemon Squeezy or local naira checkout.",
+  description: "Complete your Digital Forge purchase securely. Global and local payment options available.",
 };
 
 export default async function DigitalForgeCheckoutPage({ searchParams }: CheckoutPageProps) {
@@ -45,7 +46,6 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind);
   const lsVariantMap = parseLsVariantMap(process.env.DIGITAL_FORGE_LS_VARIANT_MAP_JSON ?? "");
   const hasInternationalCheckout = Boolean(lsVariantMap[offer.key]);
-  const primaryPriceLabel = hasInternationalCheckout ? usdPriceLabel : localPriceLabel;
 
   return (
     <div style={{ background: "#050510", minHeight: "100vh", color: "#fff", fontFamily: "sans-serif", overflow: "hidden" }}>
@@ -190,11 +190,21 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
               </h2>
               <div style={{ marginBottom: "2rem" }}>
                 <p style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontSize: "2.5rem", fontWeight: 900, margin: "0 0 0.5rem 0" }}>
-                  {primaryPriceLabel}
+                  {hasInternationalCheckout ? (
+                    <CurrencyPrice
+                      ngnLabel={localPriceLabel}
+                      usdLabel={usdPriceLabel}
+                    />
+                  ) : (
+                    localPriceLabel
+                  )}
                 </p>
                 {hasInternationalCheckout ? (
                   <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
-                    Local Nigerian checkout is also available at {localPriceLabel}.
+                    <CurrencyPrice
+                      ngnLabel={`International checkout is also available at ${usdPriceLabel}.`}
+                      usdLabel={`Local Nigerian checkout is also available at ${localPriceLabel}.`}
+                    />
                   </p>
                 ) : null}
               </div>

@@ -24,19 +24,31 @@ export default function CheckoutClient({
   usdPriceLabel,
   hasInternationalCheckout = false,
 }: CheckoutClientProps) {
-  useEffect(() => {
-    const pixel = (window as MetaPixelWindow).fbq;
-    pixel?.("track", "InitiateCheckout");
-  }, []);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [provider, setProvider] = useState<"flutterwave" | "lemonsqueezy">(
-    hasInternationalCheckout ? "lemonsqueezy" : "flutterwave",
-  );
+  // Default to flutterwave (local), then auto-switch for non-Nigerian users
+  const [provider, setProvider] = useState<"flutterwave" | "lemonsqueezy">("flutterwave");
+
+  useEffect(() => {
+    const pixel = (window as MetaPixelWindow).fbq;
+    pixel?.("track", "InitiateCheckout");
+
+    // Auto-select payment provider based on user's geo
+    if (hasInternationalCheckout) {
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+        const isNigerian = tz === "Africa/Lagos" || tz.startsWith("Africa/");
+        if (!isNigerian) {
+          setProvider("lemonsqueezy");
+        }
+      } catch {
+        // Keep flutterwave as safe default
+      }
+    }
+  }, [hasInternationalCheckout]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

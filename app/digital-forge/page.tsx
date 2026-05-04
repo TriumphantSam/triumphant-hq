@@ -37,7 +37,7 @@ const OFFER_STEPS = [
     href: "/blog",
     eyebrow: "Start Here",
     title: "Read the Blog",
-    description: "Practical articles on digital products, AI tools, and offer building. Find your direction before spending a single naira.",
+    description: "Practical articles on digital products, AI tools, and offer building. Find your direction before spending a single cent.",
     price: "Free",
     accent: "rgba(255,255,255,0.5)",
     accentBg: "rgba(255,255,255,0.03)",
