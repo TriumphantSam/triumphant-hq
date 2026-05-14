@@ -13,6 +13,8 @@ const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? "";
 const EMAILJS_FROM_NAME = process.env.EMAILJS_FROM_NAME ?? "TriumphantHQ";
 const EMAILJS_TEMPLATE_ID_DIGITAL_FORGE_DELIVERY = process.env.EMAILJS_TEMPLATE_ID_DIGITAL_FORGE_DELIVERY ?? "";
 const SUPPORT_EMAIL = process.env.DIGITAL_FORGE_SUPPORT_EMAIL ?? "support@triumphanthq.com";
+const ELGCC_FORWARD_URL = process.env.ELGCC_FORWARD_URL ?? "";
+const ELGCC_FORWARD_SECRET = process.env.ELGCC_FORWARD_SECRET ?? "";
 const STARTER_USAGE_INSTRUCTION =
   "Start with 01 Start Here.pdf, then complete the Offer Selection Worksheet before opening the other templates.";
 const BUYER_REPLY_PROMPT =
@@ -224,6 +226,35 @@ async function resolveDelivery(meta: Record<string, string>) {
   return resolveProductOffer(slug);
 }
 
+function isElgccTosPayment(verified: VerifiedTransaction, meta: Record<string, string>) {
+  return (
+    verified.tx_ref?.startsWith("TOS26-") ||
+    meta.source === "elgcc_tos2026" ||
+    meta.registrationId?.startsWith("TOS26-")
+  );
+}
+
+async function forwardElgccWebhook(rawBody: string) {
+  if (!ELGCC_FORWARD_URL || !ELGCC_FORWARD_SECRET) {
+    throw new Error("ELGCC webhook forwarding env is not configured.");
+  }
+
+  const response = await fetch(ELGCC_FORWARD_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-elgcc-webhook-secret": ELGCC_FORWARD_SECRET,
+    },
+    body: rawBody,
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(`ELGCC webhook forwarding failed: ${response.status} ${detail}`);
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     if (!FLUTTERWAVE_SECRET_KEY || !FLUTTERWAVE_WEBHOOK_SECRET) {
@@ -249,11 +280,17 @@ export async function POST(request: NextRequest) {
     }
 
     const verified = await verifyTransaction(transactionId);
+    const meta = normalizeMeta(verified.meta);
+
+    if (isElgccTosPayment(verified, meta)) {
+      await forwardElgccWebhook(rawBody);
+      return NextResponse.json({ ok: true, forwarded: "elgcc_tos2026" });
+    }
+
     if (verified.status !== "successful") {
       return NextResponse.json({ ok: true, ignored: true, status: verified.status });
     }
 
-    const meta = normalizeMeta(verified.meta);
     const offer = await resolveDelivery(meta);
     const deliveryUrl = meta.delivery_url || offer?.deliveryUrl || "";
     const customerEmail = verified.customer?.email?.trim() ?? "";
