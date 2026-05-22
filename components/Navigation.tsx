@@ -19,7 +19,7 @@ export default function Navigation() {
     const pathname = usePathname();
     const [mobileOpen, setMobileOpen] = useState(false);
 
-    if (pathname.startsWith('/digital-forge/funnel/')) {
+    if (pathname.startsWith('/digital-forge/funnel/') || pathname.startsWith('/parent-home-routine')) {
         return null; // Isolate funnel engine pages
     }
 

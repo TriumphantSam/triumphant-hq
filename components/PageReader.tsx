@@ -42,6 +42,9 @@ function chunkForSpeech(text: string, maxLen = 320): string[] {
 
 export default function PageReader() {
     const pathname = usePathname();
+    if (pathname.startsWith('/parent-home-routine') || pathname.startsWith('/digital-forge/funnel/')) {
+        return null;
+    }
     const [mounted, setMounted] = useState(false);
     const [state, setState] = useState<ReaderState>('idle');
     const [expanded, setExpanded] = useState(false);

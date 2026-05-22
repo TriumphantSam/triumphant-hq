@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 const WA_NUMBER = "447478036301"; // UK number — no + or spaces
 const WA_MESSAGE = encodeURIComponent(
@@ -9,10 +10,14 @@ const WA_MESSAGE = encodeURIComponent(
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
 
 export default function WhatsAppWidget() {
+  const pathname = usePathname();
   const [hovered, setHovered] = useState(false);
   const [visible, setVisible] = useState(true);
 
   if (!visible) return null;
+  if (pathname.startsWith('/parent-home-routine') || pathname.startsWith('/digital-forge/funnel/')) {
+    return null;
+  }
 
   return (
     <>

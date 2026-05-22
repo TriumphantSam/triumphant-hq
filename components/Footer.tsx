@@ -30,7 +30,7 @@ const services = [
 export default function Footer() {
     const pathname = usePathname();
     
-    if (pathname.startsWith('/digital-forge/funnel/')) {
+    if (pathname.startsWith('/digital-forge/funnel/') || pathname.startsWith('/parent-home-routine')) {
         return null; // Isolate funnel engine pages
     }
 
