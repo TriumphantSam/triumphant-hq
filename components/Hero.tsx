@@ -41,15 +41,13 @@ export default function Hero() {
                     fontWeight: 800,
                     lineHeight: 1.1,
                     marginBottom: '1.5rem',
-                    maxWidth: 800,
+                    maxWidth: 850,
                     color: '#fff',
                 }}
             >
-                Automated AI Systems.
+                Premium Web Design.
                 <br />
-                <span style={{ color: 'var(--secondary-color)' }}>
-                    Elite SEO Execution.
-                </span>
+                Custom Apps. <span style={{ color: 'var(--secondary-color)' }}>Elite SEO.</span>
             </h1>
 
             {/* Subtitle */}
@@ -57,12 +55,12 @@ export default function Hero() {
                 style={{
                     fontSize: 'clamp(1rem, 2vw, 1.25rem)',
                     color: 'var(--text-secondary)',
-                    maxWidth: 600,
+                    maxWidth: 650,
                     lineHeight: 1.7,
                     marginBottom: '2.5rem',
                 }}
             >
-                We are a premier tech firm and SEO agency, engineering autonomous digital product pipelines, AI-powered funnel engines, and top-tier semantic SEO execution to dominate search.
+                We design high-converting websites, develop custom software applications, and execute advanced search engine optimization strategies to drive growth for your business.
             </p>
 
             {/* CTA buttons */}
@@ -91,10 +89,10 @@ export default function Hero() {
                         (e.target as HTMLElement).style.boxShadow = 'none';
                     }}
                 >
-                    Explore Solutions
+                    View Services
                 </a>
                 <a
-                    href="/about"
+                    href="/digital-forge"
                     style={{
                         display: 'inline-block',
                         padding: '0.9rem 2.5rem',
@@ -118,7 +116,7 @@ export default function Hero() {
                         (e.target as HTMLElement).style.color = 'var(--text-primary)';
                     }}
                 >
-                    Our Story →
+                    Explore Digital Forge →
                 </a>
             </div>
 

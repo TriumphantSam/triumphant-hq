@@ -6,57 +6,57 @@ import Hero from '@/components/Hero';
 
 const services = [
   {
-    icon: '⚡',
-    title: 'Funnel Engineering',
+    icon: '💻',
+    title: 'Website Design & UI/UX',
     color: '#0066FF',
-    description: 'High-converting flagship funnels, optimized checkout systems, and the underlying Digital Forge offering ecosystem.',
+    description: 'Modern, highly responsive designs, custom landing pages, and interactive interfaces engineered to scale conversions.',
+    link: '/services',
+  },
+  {
+    icon: '📱',
+    title: 'Custom App Development',
+    color: '#3385FF',
+    description: 'Tailored mobile apps (iOS/Android), custom web apps, APIs, and complex software systems built using Next.js/React.',
     link: '/services',
   },
   {
     icon: '📈',
-    title: 'Search & Generative Visibility',
+    title: 'Elite SEO Services',
     color: '#00CCFF',
-    description: 'Advanced semantic SEO, AI-citations optimization (SGE), and performance marketing architecture.',
-    link: '/seo-snapshot',
-  },
-  {
-    icon: '🛍️',
-    title: 'Digital Products Store',
-    color: '#f59e0b',
-    description: 'Ready-to-use AI playbooks, prompt packs, workflow systems, and creator toolkits. Buy and implement from day one.',
-    link: '/digital-forge/products',
+    description: 'Advanced semantic SEO, search rankings strategy, SGE/AI citation readiness, and visibility growth structures.',
+    link: '/services',
   },
   {
     icon: '🤖',
-    title: 'Autonomous AI Pipelines',
-    color: '#3385FF',
-    description: 'Custom implementation of AgentPrinter and other orchestrated workflows to scale your digital product generation unconditionally.',
+    title: 'Autonomous AI & Workflows',
+    color: '#a855f7',
+    description: 'Custom workflow automation, AI system integrations, automated data pipelines, and API integrations.',
     link: '/services',
   },
   {
-    icon: '🏗️',
-    title: 'Technical Infrastructure',
-    color: '#00A3CC',
-    description: 'Complete stack setups including Next.js web apps, automation webhooks, and private API worker integrations.',
-    link: '/services',
+    icon: '🛠️',
+    title: 'Digital Forge Showcase',
+    color: '#f59e0b',
+    description: 'Our proprietary lab containing pre-built digital products, workflow systems, prompt packs, and video training resources.',
+    link: '/digital-forge',
   },
 ];
 
 const reasons = [
   {
-    icon: '⚙️',
-    title: 'Autonomous Systems First',
-    description: "We don't just build websites; we build scalable digital architectures powered by AI and hands-free automation.",
+    icon: '🚀',
+    title: 'Engineered for Real Growth',
+    description: "We build systems with conversion optimization at the forefront, turning visitors into active customers.",
   },
   {
-    icon: '🎯',
-    title: 'Scalable Product Ecosystems',
-    description: "We help you transition from selling time to scaling digital assets through calculated funnel engineering.",
+    icon: '⚡',
+    title: 'Bleeding-Edge Development',
+    description: "Leveraging React, Next.js, Tailwind, and node/python backend systems for fast, secure, and modern applications.",
   },
   {
     icon: '🌍',
-    title: 'Local Roots, Global Output',
-    description: 'Backed by 7+ years of technical experience, our infrastructure delivers elite results capable of competing on the global stage.',
+    title: '7+ Years of Elite Experience',
+    description: 'Backed by extensive industry experience, our tech and SEO agency designs solutions that compete on the global stage.',
   },
 ];
 
@@ -82,13 +82,13 @@ export default function Home() {
         <h2
           className="text-3xl sm:text-4xl font-bold mb-4 text-center gradient-text"
         >
-          Our Services
+          Our Tech Services
         </h2>
         <p
           className="text-center mb-12"
           style={{ color: 'var(--text-secondary)', maxWidth: 560, margin: '0 auto 3rem' }}
         >
-          We engineer automated digital product ecosystems, high-conversion funnels, and generative-readiness for search.
+          We build responsive websites, develop custom software applications, and implement elite search engine marketing.
         </p>
 
         <div
@@ -152,7 +152,7 @@ export default function Home() {
         <h2
           className="text-3xl sm:text-4xl font-bold mb-12 text-center gradient-text"
         >
-          Why Triumphant&nbsp;HQ is the Premier Tech & SEO Company
+          Why Triumphant&nbsp;HQ is the Premier Tech & SEO Agency
         </h2>
 
         <div
@@ -180,6 +180,76 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===================== DIGITAL FORGE LAB SHOWCASE ===================== */}
+      <section
+        className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
+        style={{ paddingTop: '2rem', paddingBottom: '5rem' }}
+      >
+        <div
+          className="glass rounded-3xl"
+          style={{
+            padding: 'clamp(2rem, 5vw, 3.5rem)',
+            position: 'relative',
+            overflow: 'hidden',
+            border: '1px solid rgba(0, 204, 255, 0.2)',
+            background: 'radial-gradient(circle at top right, rgba(0, 204, 255, 0.08), transparent 40%), var(--glass-bg)',
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 4, bottom: 0, background: 'linear-gradient(180deg, var(--secondary-color), var(--accent-color))' }} />
+          
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <p
+                className="uppercase tracking-widest text-xs font-semibold mb-2"
+                style={{ color: 'var(--secondary-color)', letterSpacing: '0.25em' }}
+              >
+                Our Technical Lab
+              </p>
+              <h2 className="text-3xl font-bold mb-4 gradient-text">
+                The Digital Forge
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1.5rem', fontSize: '0.95rem' }}>
+                We don't just build software for clients — we package our expertise into production-ready blueprints, custom workflow automations, training courses, and starter templates.
+              </p>
+              <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1.5rem', fontSize: '0.95rem' }}>
+                Explore the Digital Forge to watch our free educational training or purchase assets to accelerate your own engineering pipelines.
+              </p>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                <a
+                  href="/digital-forge"
+                  className="px-6 py-2.5 bg-[#00CCFF]/10 border border-[#00CCFF]/35 text-[#00CCFF] hover:bg-[#00CCFF] hover:text-black font-bold text-xs uppercase tracking-wider transition-all"
+                  style={{ borderRadius: '2px', textDecoration: 'none' }}
+                >
+                  Enter the Forge
+                </a>
+                <a
+                  href="/digital-forge/products"
+                  className="px-6 py-2.5 bg-transparent border border-white/10 text-white hover:border-white font-bold text-xs uppercase tracking-wider transition-all"
+                  style={{ borderRadius: '2px', textDecoration: 'none' }}
+                >
+                  Browse Store
+                </a>
+              </div>
+            </div>
+            
+            <div className="hidden md:flex flex-col gap-4">
+              <div className="glass p-4 rounded-xl border border-white/5 bg-white/[0.01]">
+                <span className="text-sm font-bold text-white block mb-1">🛠️ Starter Product Blueprints</span>
+                <span className="text-xs text-gray-400">Step-by-step guides and template packages to build digital assets fast.</span>
+              </div>
+              <div className="glass p-4 rounded-xl border border-[#0066FF]/20 bg-[#0066FF]/5">
+                <span className="text-sm font-bold text-[#0066FF] block mb-1">🎓 High-Impact Video Training</span>
+                <span className="text-xs text-gray-400">Free conceptual deep-dives showing you how we automate revenue channels.</span>
+              </div>
+              <div className="glass p-4 rounded-xl border border-white/5 bg-white/[0.01]">
+                <span className="text-sm font-bold text-white block mb-1">⚡ Core System Automations</span>
+                <span className="text-xs text-gray-400">Fully developed automation codeblocks and custom webhook blueprints.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===================== CTA ===================== */}
       <section
         className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16"
@@ -199,12 +269,12 @@ export default function Home() {
           <h2
             className="text-3xl sm:text-4xl font-bold mb-4 gradient-text"
           >
-            Ready to Dominate Search & AI?
+            Ready to Dominate Search & Development?
           </h2>
           <p
             style={{ color: 'var(--text-secondary)', maxWidth: 520, margin: '0 auto 2rem', lineHeight: 1.7 }}
           >
-            Get a free visibility snapshot to see what is blocking your rankings, AI citations, and conversions right now.
+            Get a free visibility snapshot or contact us directly to discuss website design, app development, and technical workflows.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
@@ -231,10 +301,10 @@ export default function Home() {
                 (e.target as HTMLElement).style.boxShadow = 'none';
               }}
             >
-              Get Free SEO Snapshot
+              Get Free SEO Audit
             </a>
             <a
-              href="/digital-forge/products"
+              href="/services"
               style={{
                 display: 'inline-block',
                 padding: '0.9rem 2.5rem',
@@ -250,10 +320,10 @@ export default function Home() {
                 transition: 'all 0.2s ease',
               }}
             >
-              Browse Products →
+              View All Services →
             </a>
             <a
-              href="/services"
+              href="/contact"
               style={{
                 display: 'inline-block',
                 padding: '0.9rem 2.5rem',
@@ -277,7 +347,7 @@ export default function Home() {
                 (e.target as HTMLElement).style.color = 'var(--text-primary)';
               }}
             >
-              View Full Architecture →
+              Contact Us →
             </a>
           </div>
         </div>

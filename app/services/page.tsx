@@ -4,14 +4,57 @@ import { useState } from 'react';
 
 /* ──────────────── DATA ──────────────── */
 
-type ServiceCategory = 'ai_systems' | 'local';
+type ServiceCategory = 'tech_services' | 'digital_forge' | 'local';
 
 const categories: { key: ServiceCategory; label: string; description: string }[] = [
-    { key: 'ai_systems', label: '🚀 Digital & AI Systems', description: 'Autonomous digital product pipelines, funnel engineering, and generative SEO architectures.' },
-    { key: 'local', label: '🏪 Local Tech', description: 'In-person tech support and essential technical services for our local partners.' },
+    { key: 'tech_services', label: '💻 Tech & Development Services', description: 'Premium website design, custom software development, mobile apps, and search engine optimization.' },
+    { key: 'digital_forge', label: '🛠️ Digital Forge Ecosystem', description: 'Explore our showcase of ready-to-use digital templates, training courses, and automation systems.' },
+    { key: 'local', label: '🏪 Local Tech Support', description: 'In-person tech support and essential technical assistance for local businesses and individuals.' },
 ];
 
 const services: Record<ServiceCategory, { icon: string; title: string; color: string; badge?: string; description: string; features: string[] }[]> = {
+    tech_services: [
+        {
+            icon: '💻', title: 'Website Design & UI/UX', color: '#0066FF',
+            description: 'Custom React & Next.js websites built with premium layouts, responsive pages, and clean interactive elements.',
+            features: ['Custom design and development', 'Figma design to responsive code', 'High-performance loading speed', 'SEO-friendly architecture'],
+        },
+        {
+            icon: '📱', title: 'Custom App Development', color: '#3385FF',
+            description: 'Tailored web applications, iOS/Android mobile apps, custom backend APIs, and cloud database integrations.',
+            features: ['Web application dashboards', 'Hybrid mobile app development', 'REST & GraphQL API design', 'Secure database architecture'],
+        },
+        {
+            icon: '📈', title: 'Elite SEO Services', color: '#00CCFF',
+            description: 'Semantic SEO strategies, SGE / AI-citation optimization, and monthly done-for-you keyword growth plans.',
+            features: ['Comprehensive site auditing', 'Semantic content mapping', 'Google Search Console tuning', 'AI search visibility optimization'],
+        },
+        {
+            icon: '🤖', title: 'Workflows & AI Automations', color: '#a855f7',
+            description: 'Streamline business operations by automating manual data transfer and linking software systems with AI.',
+            features: ['Webhook and API integrations', 'Zapier & Make automations', 'Custom AI agent processing', 'Airtable operational mapping'],
+        },
+    ],
+    digital_forge: [
+        {
+            icon: '⚡', title: 'Funnel Engineering', color: '#0066FF',
+            badge: 'Digital Forge Engine',
+            description: 'Deploy high-converting flagship funnels and optimized checkout systems designed to scale digital asset sales.',
+            features: ['Flagship funnel deployment', 'Offer and copy rewrite systems', 'Dynamic digital forge architecture', 'A/B tested conversion flows'],
+        },
+        {
+            icon: '🤖', title: 'Autonomous AI Pipelines', color: '#3385FF',
+            badge: 'AgentPrinter',
+            description: 'Custom implementation of our AgentPrinter architecture to scale your digital product generation unconditionally.',
+            features: ['Ebook & Notion template factories', 'Shorts video content pipelines', 'Autonomous revenue generation', 'Fully free distribution logic'],
+        },
+        {
+            icon: '🛒', title: 'Digital Products Store', color: '#f59e0b',
+            badge: 'Digital Forge Products',
+            description: 'Browse and buy AI playbooks, workflow systems, prompt packs, and creator toolkits. Instant delivery — no waiting.',
+            features: ['AI automation playbooks', 'Prompt & template packs', 'Workflow operating systems', 'Creator business toolkits', 'Instant download bundles'],
+        },
+    ],
     local: [
         {
             icon: '🆔', title: 'NIMC Registration', color: '#0066FF',
@@ -29,42 +72,12 @@ const services: Record<ServiceCategory, { icon: string; title: string; color: st
             features: ['Document typing & formatting', 'Printing & scanning', 'Email setup & support', 'Online form filling'],
         },
     ],
-    ai_systems: [
-        {
-            icon: '⚡', title: 'Funnel Engineering', color: '#0066FF',
-            badge: 'Digital Forge Engine',
-            description: 'Deploy high-converting flagship funnels and optimized checkout systems designed to scale digital asset sales.',
-            features: ['Flagship funnel deployment', 'Offer and copy rewrite systems', 'Dynamic digital forge architecture', 'A/B tested conversion flows'],
-        },
-        {
-            icon: '📈', title: 'Top SEO Agency & Services', color: '#00CCFF',
-            description: 'We are a premier SEO company, providing elite semantic SEO strategy, AI-citation optimization, and complete search dominance.',
-            features: ['Free SEO visibility snapshots', 'Monthly done-for-you execution', 'AI-citation (SGE) readiness', 'Top-tier SEO Services', 'Performance marketing alignment'],
-        },
-        {
-            icon: '🤖', title: 'Autonomous AI Pipelines', color: '#3385FF',
-            badge: 'AgentPrinter',
-            description: 'Custom implementation of our AgentPrinter architecture to scale your digital product generation unconditionally.',
-            features: ['Ebook & Notion template factories', 'Shorts video content pipelines', 'Autonomous revenue generation', 'Fully free distribution logic'],
-        },
-        {
-            icon: '🏗️', title: 'Technical Architecture', color: '#00A3CC',
-            description: 'Complete stack setups including Next.js web apps and private API worker integrations.',
-            features: ['Next.js React development', 'API webhook orchestration', 'Backend worker scripts', 'Airtable operational mapping'],
-        },
-        {
-            icon: '🛒', title: 'Digital Products Store', color: '#f59e0b',
-            badge: 'Digital Forge Products',
-            description: 'Browse and buy AI playbooks, workflow systems, prompt packs, and creator toolkits. Instant delivery — no waiting.',
-            features: ['AI automation playbooks', 'Prompt & template packs', 'Workflow operating systems', 'Creator business toolkits', 'Instant download bundles'],
-        },
-    ],
 };
 
 /* ──────────────── COMPONENT ──────────────── */
 
 export default function ServicesPage() {
-    const [activeCategory, setActiveCategory] = useState<ServiceCategory>('ai_systems');
+    const [activeCategory, setActiveCategory] = useState<ServiceCategory>('tech_services');
 
     return (
         <div className="min-h-screen">
