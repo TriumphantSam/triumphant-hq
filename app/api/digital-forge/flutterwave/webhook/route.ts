@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { resolveCourseOffer, resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { scheduleFollowUpEmail } from "@/lib/follow-up-emails";
 
 const FLUTTERWAVE_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY ?? "";
 const FLUTTERWAVE_WEBHOOK_SECRET = process.env.FLUTTERWAVE_WEBHOOK_SECRET ?? "";
@@ -220,6 +221,9 @@ async function resolveDelivery(meta: Record<string, string>) {
   if (meta.offer_kind === "system" || meta.offer_key === "starter-system") {
     return resolveSystemOffer();
   }
+  if (meta.offer_kind === "course" || meta.offer_key === "digital-forge-course" || meta.offer_key === "course") {
+    return resolveCourseOffer();
+  }
 
   const slug = meta.product_slug || meta.offer_key;
   if (!slug) return null;
@@ -338,6 +342,31 @@ export async function POST(request: NextRequest) {
       },
       existingOrder?.id,
     );
+
+    const day3 = new Date();
+    day3.setDate(day3.getDate() + 3);
+    const day7 = new Date();
+    day7.setDate(day7.getDate() + 7);
+    await scheduleFollowUpEmail({
+      name: customerName,
+      email: customerEmail,
+      templateKey: "purchase_day3",
+      sequence: "post_purchase",
+      source: "flutterwave_webhook",
+      leadId: meta.offer_key || offer?.key || verified.tx_ref,
+      scheduledAt: day3,
+      metadata: { product_title: productTitle, support_email: SUPPORT_EMAIL },
+    });
+    await scheduleFollowUpEmail({
+      name: customerName,
+      email: customerEmail,
+      templateKey: "purchase_day7",
+      sequence: "post_purchase",
+      source: "flutterwave_webhook",
+      leadId: meta.offer_key || offer?.key || verified.tx_ref,
+      scheduledAt: day7,
+      metadata: { product_title: productTitle, support_email: SUPPORT_EMAIL },
+    });
 
     return NextResponse.json({ ok: true });
   } catch (error) {

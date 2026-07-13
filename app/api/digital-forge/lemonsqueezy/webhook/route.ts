@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { resolveCourseOffer, resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { scheduleFollowUpEmail } from "@/lib/follow-up-emails";
 
 const LEMON_SQUEEZY_WEBHOOK_SECRET = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET ?? "";
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
@@ -166,6 +167,9 @@ async function resolveDelivery(customData: Record<string, string>) {
   if (customData.offer_kind === "system" || customData.offer_key === "starter-system") {
     return resolveSystemOffer();
   }
+  if (customData.offer_kind === "course" || customData.offer_key === "digital-forge-course" || customData.offer_key === "course") {
+    return resolveCourseOffer();
+  }
 
   const slug = customData.product_slug || customData.offer_key;
   if (!slug) return null;
@@ -273,6 +277,31 @@ export async function POST(request: NextRequest) {
       },
       existingOrder?.id,
     );
+
+    const day3 = new Date();
+    day3.setDate(day3.getDate() + 3);
+    const day7 = new Date();
+    day7.setDate(day7.getDate() + 7);
+    await scheduleFollowUpEmail({
+      name: customerName,
+      email: customerEmail,
+      templateKey: "purchase_day3",
+      sequence: "post_purchase",
+      source: "lemonsqueezy_webhook",
+      leadId: customData.offer_key || offer?.key || txRef,
+      scheduledAt: day3,
+      metadata: { product_title: productTitle, support_email: SUPPORT_EMAIL },
+    });
+    await scheduleFollowUpEmail({
+      name: customerName,
+      email: customerEmail,
+      templateKey: "purchase_day7",
+      sequence: "post_purchase",
+      source: "lemonsqueezy_webhook",
+      leadId: customData.offer_key || offer?.key || txRef,
+      scheduledAt: day7,
+      metadata: { product_title: productTitle, support_email: SUPPORT_EMAIL },
+    });
 
     return NextResponse.json({ ok: true });
   } catch (error) {

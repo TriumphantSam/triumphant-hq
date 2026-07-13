@@ -1,365 +1,116 @@
-'use client';
+import type { Metadata } from "next";
+import CTABand from "@/components/marketing/CTABand";
+import SectionHeader from "@/components/marketing/SectionHeader";
+import ServiceIcon from "@/components/marketing/ServiceIcon";
+import { agencyServices } from "@/lib/services";
 
-import { useState } from 'react';
+export const metadata: Metadata = {
+  title: "About Triumphant HQ | Technology and Growth Agency",
+  description: "Meet the multidisciplinary technology partner behind websites, custom applications, SEO and automation systems.",
+};
 
-const timelineData = [
-    {
-        year: '2017–2019',
-        title: 'Foundation Years',
-        icon: '🏁',
-        color: '#0066FF',
-        description: 'Started in a local internet café serving online forums and providing essential services to the community.',
-        highlights: ['Nairaland Moderator', 'Document typing & printing', 'Email & internet support', 'School portal registrations', 'Building community trust'],
-    },
-    {
-        year: '2019–Present',
-        title: 'Technical Expertise',
-        icon: '🔧',
-        color: '#00CCFF',
-        description: 'Expanded into technical support and hardware services, becoming a trusted HP and Microsoft partner.',
-        highlights: ['HP printer setup & troubleshooting', 'Microsoft 365 support', 'Hardware diagnostics & repair', 'NIMC registration services'],
-    },
-    {
-        year: '2021–2023',
-        title: 'Digital Growth',
-        icon: '📈',
-        color: '#3385FF',
-        description: 'Pivoted into SEO and digital marketing, helping businesses grow their online presence.',
-        highlights: ['SEO strategy & implementation', 'WordPress website management', 'Content optimization', '40% organic traffic growth for clients'],
-    },
-    {
-        year: '2024–Present',
-        title: 'Automated Digital Pipelines',
-        icon: '🚀',
-        color: '#00A3CC',
-        description: 'Evolved into an AI agency focused on scaling autonomous digital empires through AgentPrinter, Digital Forge, and Semantic SEO.',
-        highlights: ['Autonomous AI Pipelines', 'Funnel Engineering', 'AI-citation (SGE) strategy', 'Digital product factories'],
-    },
+const principles = [
+  ["Clarity before complexity", "We define the real business problem before recommending technology or adding scope."],
+  ["Execution over theatre", "Our work is judged by what launches, improves and remains useful after handover."],
+  ["Close collaboration", "Clients stay informed through clear decisions, visible progress and direct communication."],
+  ["Durable foundations", "We build with maintainability, performance and the next stage of growth in mind."],
 ];
 
-const skills = [
-    { icon: '⚙️', title: 'Funnel Engineering', color: '#0066FF', items: ['Digital Forge Design', 'Offer Overhauls', 'Checkout Optimization', 'A/B Conversion Focus'] },
-    { icon: '🤖', title: 'Autonomous Pipelines', color: '#00CCFF', items: ['AgentPrinter Logic', 'Content Factories', 'Automated Workflows', 'Generative Integrations'] },
-    { icon: '📈', title: 'Semantic SEO', color: '#3385FF', items: ['SGE Readiness', 'Programmatic SEO', 'Technical Auditing', 'Trium-Seo Deployments'] },
-    { icon: '💻', title: 'Full-Stack Architecture', color: '#00A3CC', items: ['Next.js React Apps', 'Airtable Syncs', 'API Webhooks', 'Private Worker Routing'] },
-    { icon: '⚡', title: 'AI Productivity', color: '#0066FF', items: ['AI Tool Integration', 'Workflow Automation', 'Team Training', 'Process Optimization'] },
-    { icon: '🏪', title: 'Local Roots', color: '#00CCFF', items: ['NIMC Registrations', 'Hardware Support', 'Essential Web Operations', 'Community Trust'] },
+const timeline = [
+  ["2017", "Service roots", "Triumphant HQ began by helping people and local organisations navigate everyday digital services with care and reliability."],
+  ["2021", "Growth capability", "Our work expanded into websites, search optimization and the systems businesses need to compete online."],
+  ["2024", "Connected delivery", "Software engineering and automation became core capabilities, allowing us to solve operational as well as marketing challenges."],
+  ["Today", "One agency partner", "We bring design, development, SEO and automation together around focused business outcomes."],
 ];
 
 export default function AboutPage() {
-    const [activeTimeline, setActiveTimeline] = useState(0);
+  return (
+    <div>
+      <header className="page-hero">
+        <p className="eyebrow">About Triumphant HQ</p>
+        <h1>Practical technology, delivered with ambition and accountability.</h1>
+        <p>
+          We are a multidisciplinary technology and growth agency for organisations that need more than disconnected
+          freelancers, generic templates or strategy that never becomes implementation.
+        </p>
+      </header>
 
-    return (
-        <div className="min-h-screen">
-            {/* ===================== HERO SECTION ===================== */}
-            <section
-                className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingTop: '8rem', paddingBottom: '4rem', textAlign: 'center' }}
-            >
-                <p
-                    className="uppercase tracking-widest text-sm font-semibold mb-4"
-                    style={{ color: 'var(--accent-color)', letterSpacing: '0.25em' }}
-                >
-                    Who We Are
-                </p>
-                <h1
-                    className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6 gradient-text"
-                    style={{ lineHeight: 1.15 }}
-                >
-                    About Triumphant&nbsp;HQ
-                </h1>
-                <p
-                    className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
-                    style={{ color: 'var(--text-secondary)' }}
-                >
-                    Bridging the gap between essential local tech services and cutting-edge digital solutions  <strong style={{ color: 'var(--secondary-color)' }}></strong>.
-                </p>
-            </section>
-
-            {/* ===================== OUR STORY ===================== */}
-            <section className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
-                <div
-                    className="glass rounded-3xl overflow-hidden"
-                    style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 0 }}
-                >
-                    {/* Accent bar */}
-                    <div style={{ height: 4, background: 'linear-gradient(90deg, var(--accent-color), var(--secondary-color))' }} />
-
-                    <div style={{ padding: 'clamp(2rem, 5vw, 3.5rem)' }}>
-                        <h2 className="text-2xl sm:text-3xl font-bold mb-6" style={{ color: 'var(--accent-color)' }}>
-                            Our Story
-                        </h2>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', color: 'var(--text-secondary)', fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', lineHeight: 1.8 }}>
-                            <p>
-                                What started as a personal passion for providing essential services has evolved into a premier tech and SEO company. We understand the unique challenges of operating in the global digital economy.
-                            </p>
-                            <p>
-                                From helping citizens register their NIN and providing student registration solutions to architecting complex AI pipelines and optimizing websites for global search engines, we've seen it all — and we've mastered the art of delivering reliable solutions in both worlds.
-                            </p>
-                            <p>
-                                Today, Triumphant HQ stands as a testament to adaptability and elite execution. We're not just keeping pace with technology — we're helping our clients dominate it, whether they need robust local infrastructure or scalable global AI systems.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* ===================== TIMELINE ===================== */}
-            <section className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
-                <p
-                    className="uppercase tracking-widest text-sm font-semibold mb-2 text-center"
-                    style={{ color: 'var(--secondary-color)', letterSpacing: '0.25em' }}
-                >
-                    Our Journey
-                </p>
-                <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center gradient-text">
-                    7+ Years of Growth
-                </h2>
-
-                {/* Timeline navigation tabs */}
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '0.5rem',
-                        marginBottom: '2.5rem',
-                        flexWrap: 'wrap',
-                    }}
-                >
-                    {timelineData.map((item, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setActiveTimeline(i)}
-                            style={{
-                                padding: '0.6rem 1.2rem',
-                                borderRadius: '2px',
-                                border: `1px solid ${activeTimeline === i ? item.color : 'var(--glass-border)'}`,
-                                background: activeTimeline === i ? `${item.color}18` : 'var(--glass-bg)',
-                                color: activeTimeline === i ? item.color : 'var(--text-secondary)',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                fontSize: '0.8rem',
-                                fontWeight: 600,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.05em',
-                            }}
-                        >
-                            {item.icon} {item.year}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Active timeline card */}
-                <div
-                    className="glass rounded-lg border border-[#0066FF]/20"
-                    style={{
-                        maxWidth: 720,
-                        margin: '0 auto',
-                        padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-                        borderLeft: `4px solid ${timelineData[activeTimeline].color}`,
-                        transition: 'border-color 0.3s ease',
-                    }}
-                >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                        <span style={{ fontSize: '2.5rem' }}>{timelineData[activeTimeline].icon}</span>
-                        <div>
-                            <h3 className="text-xl sm:text-2xl font-bold" style={{ color: timelineData[activeTimeline].color }}>
-                                {timelineData[activeTimeline].title}
-                            </h3>
-                            <span className="text-sm uppercase tracking-wide opacity-80" style={{ color: 'var(--text-secondary)' }}>
-                                {timelineData[activeTimeline].year}
-                            </span>
-                        </div>
-                    </div>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1.25rem', lineHeight: 1.7 }}>
-                        {timelineData[activeTimeline].description}
-                    </p>
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                            gap: '0.75rem',
-                        }}
-                    >
-                        {timelineData[activeTimeline].highlights.map((h, j) => (
-                            <div
-                                key={j}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '0.5rem',
-                                    padding: '0.5rem 0.75rem',
-                                    borderRadius: '2px',
-                                    background: 'rgba(255,255,255,0.03)',
-                                    border: '1px solid var(--glass-border)',
-                                    fontSize: '0.8rem',
-                                    color: 'var(--text-secondary)',
-                                }}
-                            >
-                                <span style={{ color: timelineData[activeTimeline].color }}>✓</span> {h}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Progress dots */}
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', marginTop: '2rem' }}>
-                    {timelineData.map((item, i) => (
-                        <div
-                            key={i}
-                            onClick={() => setActiveTimeline(i)}
-                            style={{
-                                width: activeTimeline === i ? 40 : 12,
-                                height: 4,
-                                borderRadius: 0,
-                                background: activeTimeline === i ? item.color : 'var(--glass-border)',
-                                transition: 'all 0.3s ease',
-                                cursor: 'pointer',
-                            }}
-                        />
-                    ))}
-                </div>
-            </section>
-
-            {/* ===================== SKILLS ===================== */}
-            <section className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
-                <p
-                    className="uppercase tracking-widest text-sm font-semibold mb-2 text-center"
-                    style={{ color: 'var(--secondary-color)', letterSpacing: '0.25em' }}
-                >
-                    What We Do
-                </p>
-                <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center text-white">
-                    Skills & Expertise
-                </h2>
-
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                        gap: '1.25rem',
-                    }}
-                >
-                    {skills.map((skill, i) => (
-                        <div
-                            key={i}
-                            className="glass glass-hover rounded-sm"
-                            style={{
-                                padding: '1.75rem',
-                                borderTop: `3px solid ${skill.color}`,
-                                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                            }}
-                        >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-                                <span style={{ fontSize: '1.75rem' }}>{skill.icon}</span>
-                                <h3 className="text-lg font-bold" style={{ color: skill.color }}>
-                                    {skill.title}
-                                </h3>
-                            </div>
-                            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                                {skill.items.map((item, j) => (
-                                    <li
-                                        key={j}
-                                        style={{
-                                            fontSize: '0.875rem',
-                                            color: 'var(--text-secondary)',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                        }}
-                                    >
-                                        <span style={{ color: skill.color, fontSize: '0.6rem' }}>●</span> {item}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* ===================== PHILOSOPHY ===================== */}
-            <section className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16" style={{ paddingTop: '3rem', paddingBottom: '4rem' }}>
-                <div
-                    className="glass rounded-3xl text-center"
-                    style={{
-                        padding: 'clamp(2rem, 5vw, 4rem)',
-                        position: 'relative',
-                        overflow: 'hidden',
-                    }}
-                >
-                    {/* Decorative quote mark */}
-                    <div
-                        style={{
-                            position: 'absolute',
-                            top: '-1rem',
-                            left: '2rem',
-                            fontSize: '8rem',
-                            color: 'var(--accent-color)',
-                            opacity: 0.08,
-                            fontFamily: 'Georgia, serif',
-                            lineHeight: 1,
-                            pointerEvents: 'none',
-                        }}
-                    >
-                        "
-                    </div>
-
-                    <p
-                        className="uppercase tracking-widest text-sm font-semibold mb-4"
-                        style={{ color: 'var(--secondary-color)', letterSpacing: '0.25em' }}
-                    >
-                        Our Philosophy
-                    </p>
-                    <h2
-                        className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 gradient-text"
-                        style={{ lineHeight: 1.3 }}
-                    >
-                        "Technology should empower everyone, not just the tech&#8209;savvy."
-                    </h2>
-                    <p
-                        className="text-base sm:text-lg max-w-2xl mx-auto leading-relaxed"
-                        style={{ color: 'var(--text-secondary)' }}
-                    >
-                        Whether you're a citizen registering for NIN or a business scaling globally, we believe in making technology accessible, understandable, and effective. We bridge the gap between where you are and where you want to be.
-                    </p>
-                </div>
-            </section>
-
-            {/* ===================== CTA ===================== */}
-            <section className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16" style={{ paddingTop: '2rem', paddingBottom: '6rem', textAlign: 'center' }}>
-                <h2 className="text-3xl sm:text-4xl font-bold mb-4" style={{ color: 'var(--accent-color)' }}>
-                    Ready to Work Together?
-                </h2>
-                <p className="text-base sm:text-lg mb-8" style={{ color: 'var(--text-secondary)' }}>
-                    Let's bridge the gap between your current challenges and future success.
-                </p>
-                <a
-                    href="/contact"
-                    style={{
-                        display: 'inline-block',
-                        padding: '0.9rem 2.5rem',
-                        fontSize: '1rem',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        borderRadius: '0.75rem',
-                        background: 'var(--accent-color)',
-                        color: '#000',
-                        textDecoration: 'none',
-                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                        (e.target as HTMLElement).style.transform = 'translateY(-2px)';
-                        (e.target as HTMLElement).style.boxShadow = '0 0 30px rgba(0, 255, 136, 0.4)';
-                    }}
-                    onMouseLeave={(e) => {
-                        (e.target as HTMLElement).style.transform = 'translateY(0)';
-                        (e.target as HTMLElement).style.boxShadow = 'none';
-                    }}
-                >
-                    Get in Touch →
-                </a>
-            </section>
+      <section className="section-muted">
+        <div className="section-shell">
+          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p className="eyebrow">Our story</p>
+              <h2 className="mt-4 text-[clamp(2rem,4vw,3.5rem)] font-extrabold leading-[1.05] tracking-[-0.05em] text-slate-950">
+                Built from service, shaped by constant evolution.
+              </h2>
+            </div>
+            <div className="space-y-5 text-[1.02rem] leading-8 text-slate-600">
+              <p>
+                Triumphant HQ started in 2017 with a simple operating principle: make technology useful, understandable and
+                dependable for the person relying on it.
+              </p>
+              <p>
+                As our clients&apos; needs evolved, so did our capabilities. Essential digital support led to websites.
+                Websites led to search growth. Repetitive operational challenges led to custom software and automation.
+              </p>
+              <p>
+                Today, we apply that same service mindset to higher-value digital work—helping ambitious teams present
+                themselves credibly, create better customer experiences, build efficient operations and become easier to find.
+              </p>
+            </div>
+          </div>
         </div>
-    );
+      </section>
+
+      <section className="section-shell">
+        <SectionHeader
+          eyebrow="Capabilities"
+          title="Specialists where it matters. Connected where it counts."
+          description="Our four disciplines share one strategy, one standard and one understanding of the result the business needs."
+        />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {agencyServices.map((service) => (
+            <div className="agency-card" key={service.slug}>
+              <div className="service-icon"><ServiceIcon name={service.icon} /></div>
+              <h3 className="font-bold text-slate-950">{service.shortTitle}</h3>
+              <p className="card-copy text-sm">{service.promise}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-muted">
+        <div className="section-shell">
+          <SectionHeader eyebrow="How we operate" title="Principles that keep the work focused." />
+          <div className="agency-grid">
+            {principles.map(([title, copy], index) => (
+              <article className="agency-card" key={title}>
+                <span className="font-mono text-xs font-bold text-blue-600">0{index + 1}</span>
+                <h3 className="mt-5 text-xl font-bold text-slate-950">{title}</h3>
+                <p className="card-copy">{copy}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <SectionHeader eyebrow="2017 to present" title="A steady expansion of what we can solve." />
+        <div className="grid gap-0 border-y border-slate-200 md:grid-cols-4">
+          {timeline.map(([year, title, copy]) => (
+            <article className="p-6 first:pl-0 last:pr-0 [&+&]:border-l [&+&]:border-slate-200" key={year}>
+              <p className="text-sm font-extrabold text-blue-600">{year}</p>
+              <h3 className="mt-4 font-bold text-slate-950">{title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{copy}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <CTABand
+        eyebrow="Work with Triumphant HQ"
+        title="Bring us the challenge. We will help define the clearest way forward."
+      />
+    </div>
+  );
 }

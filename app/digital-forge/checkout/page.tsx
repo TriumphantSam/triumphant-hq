@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CheckoutClient from "./CheckoutClient";
 import CurrencyPrice from "@/components/CurrencyPrice";
-import { formatOfferPrice, resolveProductOffer, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
+import { formatOfferPrice, resolveCourseOffer, resolveProductOffer, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
 function parseLsVariantMap(raw: string): Record<string, number> {
   if (!raw.trim()) return {};
@@ -34,6 +34,8 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   const params = await searchParams;
   const offer = params.offer === "system"
     ? resolveSystemOffer()
+    : params.offer === "course"
+      ? resolveCourseOffer()
     : params.offer
       ? await resolveProductOffer(params.offer)
       : params.slug
@@ -45,10 +47,13 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   const localPriceLabel = formatOfferPrice(offer.amount, offer.currency);
   const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind, offer.amount);
   const lsVariantMap = parseLsVariantMap(process.env.DIGITAL_FORGE_LS_VARIANT_MAP_JSON ?? "");
-  const hasInternationalCheckout = Boolean(lsVariantMap[offer.key]);
+  const defaultLsVariantId = Number(process.env.DIGITAL_FORGE_LS_DEFAULT_VARIANT_ID ?? "");
+  const hasInternationalCheckout = Boolean(
+    lsVariantMap[offer.key] || (Number.isFinite(defaultLsVariantId) && defaultLsVariantId > 0),
+  );
 
   return (
-    <div style={{ background: "#050510", minHeight: "100vh", color: "#fff", fontFamily: "sans-serif", overflow: "hidden" }}>
+    <div style={{ background: "#ffffff", minHeight: "100vh", color: "var(--text-primary)", fontFamily: "sans-serif", overflow: "hidden" }}>
       <section style={{ position: "relative", paddingTop: "clamp(6rem, 15vw, 8rem)", paddingBottom: "clamp(4rem, 10vw, 6rem)" }}>
         {/* Dynamic Background */}
         <div
@@ -57,16 +62,22 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))",
           }}
         />
 
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative">
           <Link
-            href={offer.kind === "system" ? "/digital-forge/system" : `/digital-forge/products/${offer.slug}`}
+            href={
+              offer.kind === "system"
+                ? "/digital-forge/system"
+                : offer.kind === "course"
+                  ? "/digital-forge/course"
+                  : `/digital-forge/products/${offer.slug}`
+            }
             style={{
               display: "inline-block",
-              color: "rgba(255,255,255,0.5)",
+              color: "#64748b",
               textDecoration: "none",
               fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
               fontWeight: 600,
@@ -96,7 +107,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 }}
               >
                 <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block", boxShadow: "0 0 10px rgba(0,204,255,0.8)" }} />
-                <span style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+                <span style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
                   Secure Checkout
                 </span>
               </div>
@@ -106,18 +117,18 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                   fontSize: "clamp(2.4rem, 5vw, 4.2rem)",
                   fontWeight: 900,
                   lineHeight: 1.05,
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   letterSpacing: "-0.02em",
                   maxWidth: 800,
                   marginBottom: "1.8rem",
                 }}
               >
-                Complete your payment for <span style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>{offer.title}</span>
+                Complete your payment for <span style={{ color: "#075ee5" }}>{offer.title}</span>
               </h1>
 
               <p
                 style={{
-                  color: "rgba(255,255,255,0.78)",
+                  color: "#334155",
                   maxWidth: 760,
                   lineHeight: 1.8,
                   fontSize: "clamp(1.05rem, 2.5vw, 1.15rem)",
@@ -135,7 +146,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                   "Your purchase is verified before delivery is sent.",
                   "Access is delivered automatically to your email after successful payment.",
                 ].map((item) => (
-                  <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1.2rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 16 }}>
+                  <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1.2rem", background: "#ffffff", border: "1px solid #ffffff", borderRadius: 16 }}>
                     <div
                       style={{
                         width: 24,
@@ -150,9 +161,9 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                         marginTop: 2,
                       }}
                     >
-                      <span style={{ color: "#00CCFF", fontSize: "0.7rem", fontWeight: 900 }}>✓</span>
+                      <span style={{ color: "#0077b8", fontSize: "0.7rem", fontWeight: 900 }}>✓</span>
                     </div>
-                    <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ color: "#334155", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>
                       {item}
                     </p>
                   </div>
@@ -162,16 +173,16 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
 
             <div
               style={{
-                background: "rgba(9,14,32,0.92)",
+                background: "#ffffff",
                 border: "1px solid rgba(0,102,255,0.22)",
                 borderRadius: 32,
                 padding: "clamp(1.5rem, 5vw, 2.5rem)",
-                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
+                boxShadow: "0 20px 80px rgba(15,23,42,0.12)",
               }}
             >
               <p
                 style={{
-                  color: "#00CCFF",
+                  color: "#0077b8",
                   fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
                   fontWeight: 800,
                   letterSpacing: "0.18em",
@@ -189,14 +200,14 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 {offer.title}
               </h2>
               <div style={{ marginBottom: "2rem" }}>
-                <p style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontSize: "2.5rem", fontWeight: 900, margin: "0 0 0.5rem 0" }}>
+                <p style={{ color: "#075ee5", fontSize: "2.5rem", fontWeight: 900, margin: "0 0 0.5rem 0" }}>
                   <CurrencyPrice
                     ngnLabel={localPriceLabel}
                     usdLabel={usdPriceLabel}
                   />
                 </p>
                 {hasInternationalCheckout ? (
-                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
+                  <p style={{ color: "#64748b", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
                     <CurrencyPrice
                       ngnLabel={`International checkout is also available at ${usdPriceLabel}.`}
                       usdLabel={`Local Nigerian checkout is also available at ${localPriceLabel}.`}
@@ -205,7 +216,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 ) : null}
               </div>
 
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "2rem" }}>
+              <div style={{ borderTop: "1px solid rgba(15,23,42,0.11)", paddingTop: "2rem" }}>
                 <CheckoutClient
                   offerKey={offer.key}
                   offerKind={offer.kind}

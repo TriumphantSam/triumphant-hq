@@ -13,25 +13,25 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
     const { pages, training, offer } = funnel;
 
     return (
-        <div className="min-h-screen bg-[#03040F] text-white overflow-x-hidden" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+        <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
 
             {/* Sticky progress bar */}
             <div style={{
                 position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-                background: 'rgba(3,4,15,0.95)', backdropFilter: 'blur(12px)',
-                borderBottom: '1px solid rgba(255,255,255,0.05)',
+                background: '#ffffff', backdropFilter: 'blur(12px)',
+                borderBottom: '1px solid rgba(15,23,42,0.11)',
                 padding: '12px 24px',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#00CCFF', boxShadow: '0 0 8px #00CCFF' }} />
-                    <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    <span style={{ color: '#64748b', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                         Training Room
                     </span>
                 </div>
                 <Link href={`/digital-forge/funnel/${funnel.slug}/offer`} style={{
                     background: 'linear-gradient(135deg, #f59e0b, #d97706)',
-                    color: '#fff', fontSize: '12px', fontWeight: 800,
+                    color: 'var(--text-primary)', fontSize: '12px', fontWeight: 800,
                     padding: '8px 18px', borderRadius: '8px', textDecoration: 'none',
                     letterSpacing: '0.05em',
                 }}>
@@ -53,19 +53,19 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                         <span style={{ color: '#f59e0b', fontSize: '11px', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                             {training.title}
                         </span>
-                        <span style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', display: 'inline-block' }} />
-                        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '11px', fontWeight: 700 }}>
+                        <span style={{ width: 1, height: 16, background: '#ffffff', display: 'inline-block' }} />
+                        <span style={{ color: '#64748b', fontSize: '11px', fontWeight: 700 }}>
                             {training.duration}
                         </span>
                     </div>
 
                     <h1 style={{
                         fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 900, lineHeight: 1.1,
-                        letterSpacing: '-0.025em', color: '#fff', marginBottom: '20px',
+                        letterSpacing: '-0.025em', color: 'var(--text-primary)', marginBottom: '20px',
                     }}>
                         {pages.trainingPage.headline}
                     </h1>
-                    <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '1.1rem', lineHeight: 1.7, maxWidth: '600px', margin: '0 auto' }}>
+                    <p style={{ color: '#64748b', fontSize: '1.1rem', lineHeight: 1.7, maxWidth: '600px', margin: '0 auto' }}>
                         {pages.trainingPage.supportingLine}
                     </p>
                 </div>
@@ -81,8 +81,8 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                     background: '#000',
                     borderRadius: '16px',
                     overflow: 'hidden',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    boxShadow: '0 60px 120px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(15,23,42,0.11)',
+                    boxShadow: '0 60px 120px rgba(15,23,42,0.12), 0 0 0 1px rgba(255,255,255,0.05)',
                 }}>
                     {/* Grid overlay */}
                     <div style={{
@@ -105,7 +105,7 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                     }}>
                         <div style={{
                             width: 88, height: 88, borderRadius: '50%',
-                            background: 'linear-gradient(135deg, #0066FF 0%, #00CCFF 100%)',
+                            background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             margin: '0 auto 20px',
                             boxShadow: '0 0 60px rgba(0,102,255,0.5), 0 0 0 20px rgba(0,102,255,0.08)',
@@ -115,10 +115,10 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                                 <path d="M8 5v14l11-7z" />
                             </svg>
                         </div>
-                        <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                        <p style={{ color: '#64748b', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em' }}>
                             Click to Play
                         </p>
-                        <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px', marginTop: '4px' }}>
+                        <p style={{ color: '#64748b', fontSize: '11px', marginTop: '4px' }}>
                             {training.duration} · On Demand
                         </p>
                     </div>
@@ -133,7 +133,7 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                     
                     {/* Core Method */}
                     <div>
-                        <p style={{ color: '#00CCFF', fontSize: '11px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '24px' }}>
+                        <p style={{ color: '#0077b8', fontSize: '11px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '24px' }}>
                             The 3-Part Framework
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -141,8 +141,8 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                                 <div key={i} style={{
                                     display: 'flex', gap: '20px', alignItems: 'flex-start',
                                     padding: '24px',
-                                    background: 'rgba(255,255,255,0.02)',
-                                    border: '1px solid rgba(255,255,255,0.06)',
+                                    background: '#ffffff',
+                                    border: '1px solid rgba(15,23,42,0.11)',
                                     borderRadius: '12px',
                                 }}>
                                     <span style={{
@@ -152,7 +152,7 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                                     }}>
                                         {String(i + 1).padStart(2, '0')}
                                     </span>
-                                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '1rem', lineHeight: 1.6, fontWeight: 500, margin: 0 }}>{method}</p>
+                                    <p style={{ color: '#334155', fontSize: '1rem', lineHeight: 1.6, fontWeight: 500, margin: 0 }}>{method}</p>
                                 </div>
                             ))}
                         </div>
@@ -160,14 +160,14 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
 
                     {/* Learning Objectives */}
                     <div>
-                        <p style={{ color: '#00CCFF', fontSize: '11px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '24px' }}>
+                        <p style={{ color: '#0077b8', fontSize: '11px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '24px' }}>
                             What You&apos;ll Walk Away With
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                             {training.whatYouWillLearn.map((pt, i) => (
                                 <div key={i} style={{
                                     display: 'flex', gap: '14px', alignItems: 'flex-start', padding: '20px 0',
-                                    borderBottom: i < training.whatYouWillLearn.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                                    borderBottom: i < training.whatYouWillLearn.length - 1 ? '1px solid rgba(15,23,42,0.11)' : 'none',
                                 }}>
                                     <div style={{
                                         width: 28, height: 28, borderRadius: '50%',
@@ -178,7 +178,7 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                         </svg>
                                     </div>
-                                    <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '1rem', lineHeight: 1.6, margin: 0, fontWeight: 500 }}>{pt}</p>
+                                    <p style={{ color: '#334155', fontSize: '1rem', lineHeight: 1.6, margin: 0, fontWeight: 500 }}>{pt}</p>
                                 </div>
                             ))}
                         </div>
@@ -190,7 +190,7 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                 OFFER BRIDGE – Transition to next step
             ══════════════════════════════════════════════════════════ */}
             <section style={{
-                background: 'linear-gradient(135deg, #000814 0%, #001a3a 50%, #000814 100%)',
+                background: 'linear-gradient(135deg, #ffffff 0%, #ffffff 50%, #ffffff 100%)',
                 border: '1px solid rgba(0,102,255,0.15)',
                 margin: '0 24px 80px',
                 borderRadius: '24px',
@@ -213,16 +213,16 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                     }}>
                         <span style={{ color: '#f59e0b', fontSize: '11px', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase' }}>Up Next</span>
                     </div>
-                    <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: '#fff', marginBottom: '16px', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+                    <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: 'var(--text-primary)', marginBottom: '16px', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
                         Ready to Implement Everything You Just Learned?
                     </h2>
-                    <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.1rem', lineHeight: 1.7, maxWidth: '560px', margin: '0 auto 40px' }}>
+                    <p style={{ color: '#64748b', fontSize: '1.1rem', lineHeight: 1.7, maxWidth: '560px', margin: '0 auto 40px' }}>
                         We&apos;ve packaged the entire system — the tools, templates, and step-by-step workflow — so you can get it done without building everything from scratch.
                     </p>
                     <Link href={`/digital-forge/funnel/${funnel.slug}/offer`} style={{
                         display: 'inline-flex', alignItems: 'center', gap: '10px',
                         background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                        color: '#fff', fontWeight: 800, fontSize: '1rem',
+                        color: 'var(--text-primary)', fontWeight: 800, fontSize: '1rem',
                         padding: '18px 48px', borderRadius: '12px',
                         textDecoration: 'none',
                         boxShadow: '0 8px 32px rgba(245,158,11,0.35)',

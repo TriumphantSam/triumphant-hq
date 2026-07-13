@@ -104,7 +104,7 @@ export default async function DigitalForgePage() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))",
           }}
         />
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
@@ -121,7 +121,7 @@ export default async function DigitalForgePage() {
             }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#00CCFF", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+            <span style={{ color: "#0077b8", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
               Digital Forge by Triumphant HQ
             </span>
           </div>
@@ -136,7 +136,7 @@ export default async function DigitalForgePage() {
                   fontSize: "clamp(2.8rem, 6vw, 5.2rem)",
                   fontWeight: 900,
                   lineHeight: 1.02,
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   letterSpacing: "-0.03em",
                   maxWidth: 880,
                   marginBottom: "1.4rem",
@@ -148,7 +148,7 @@ export default async function DigitalForgePage() {
                 <br />
                 <span
                   style={{
-                    background: "linear-gradient(90deg, #0066FF, #00CCFF)",
+                    background: "linear-gradient(90deg, #075ee5, #0088d6)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -159,7 +159,7 @@ export default async function DigitalForgePage() {
               </h1>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.78)",
+                  color: "#334155",
                   maxWidth: 700,
                   lineHeight: 1.9,
                   fontSize: "1.12rem",
@@ -170,7 +170,7 @@ export default async function DigitalForgePage() {
               </p>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.52)",
+                  color: "#64748b",
                   maxWidth: 700,
                   lineHeight: 1.85,
                   fontSize: "0.97rem",
@@ -188,8 +188,8 @@ export default async function DigitalForgePage() {
                     alignItems: "center",
                     gap: "0.5rem",
                     padding: "1rem 2rem",
-                    background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                    color: "#fff",
+                    background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                    color: "var(--text-primary)",
                     textDecoration: "none",
                     fontWeight: 800,
                     fontSize: "0.86rem",
@@ -207,8 +207,8 @@ export default async function DigitalForgePage() {
                     display: "inline-flex",
                     alignItems: "center",
                     padding: "1rem 2rem",
-                    border: "1px solid rgba(255,255,255,0.18)",
-                    color: "rgba(255,255,255,0.84)",
+                    border: "1px solid rgba(15,23,42,0.11)",
+                    color: "#334155",
                     textDecoration: "none",
                     fontWeight: 700,
                     fontSize: "0.86rem",
@@ -234,14 +234,14 @@ export default async function DigitalForgePage() {
                       alignItems: "center",
                       gap: "0.45rem",
                       padding: "0.5rem 0.85rem",
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderRadius: "999px",
-                      color: "rgba(255,255,255,0.72)",
+                      color: "#334155",
                       fontSize: "0.82rem",
                     }}
                   >
-                    <span style={{ color: "#00CCFF", fontWeight: 900 }}>✓</span>
+                    <span style={{ color: "#0077b8", fontWeight: 900 }}>✓</span>
                     {item}
                   </span>
                 ))}
@@ -251,14 +251,14 @@ export default async function DigitalForgePage() {
             {/* Side card — the offer ladder */}
             <div
               style={{
-                background: "rgba(9,14,32,0.92)",
+                background: "#ffffff",
                 border: "1px solid rgba(0,102,255,0.22)",
                 borderRadius: 24,
                 padding: "1.6rem",
-                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
+                boxShadow: "0 20px 80px rgba(15,23,42,0.12)",
               }}
             >
-              <p style={{ color: "#00CCFF", fontSize: "0.73rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "1rem" }}>
+              <p style={{ color: "#0077b8", fontSize: "0.73rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "1rem" }}>
                 Your Journey Starts Here
               </p>
               <div style={{ display: "grid", gap: "0.85rem" }}>
@@ -275,14 +275,14 @@ export default async function DigitalForgePage() {
                     >
                       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "0.75rem", marginBottom: "0.4rem" }}>
                         <div>
-                          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.66rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.2rem" }}>
+                          <p style={{ color: "#64748b", fontSize: "0.66rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.2rem" }}>
                             {item.eyebrow}
                           </p>
-                          <h2 style={{ color: "#fff", fontWeight: 800, fontSize: "0.97rem", lineHeight: 1.3 }}>{item.title}</h2>
+                          <h2 style={{ color: "var(--text-primary)", fontWeight: 800, fontSize: "0.97rem", lineHeight: 1.3 }}>{item.title}</h2>
                         </div>
                         <span style={{ color: item.accent, fontWeight: 800, fontSize: "0.78rem", whiteSpace: "nowrap" }}>{item.priceUsd ? <CurrencyPrice ngnLabel={item.price} usdLabel={item.priceUsd} /> : item.price}</span>
                       </div>
-                      <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.65, fontSize: "0.84rem" }}>{item.description}</p>
+                      <p style={{ color: "#64748b", lineHeight: 1.65, fontSize: "0.84rem" }}>{item.description}</p>
                     </div>
                   </Link>
                 ))}
@@ -296,10 +296,10 @@ export default async function DigitalForgePage() {
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div style={{ marginBottom: "2rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
               Why Digital Forge Works
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
               The difference between staying stuck and getting your first sale
             </h2>
           </div>
@@ -314,14 +314,14 @@ export default async function DigitalForgePage() {
               <div
                 key={item.title}
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,23,42,0.11)",
                   borderRadius: 20,
                   padding: "1.5rem",
                 }}
               >
-                <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1.05rem", marginBottom: "0.65rem" }}>{item.title}</h3>
-                <p style={{ color: "rgba(255,255,255,0.6)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.description}</p>
+                <h3 style={{ color: "var(--text-primary)", fontWeight: 800, fontSize: "1.05rem", marginBottom: "0.65rem" }}>{item.title}</h3>
+                <p style={{ color: "#334155", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.description}</p>
               </div>
             ))}
           </div>
@@ -334,16 +334,16 @@ export default async function DigitalForgePage() {
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
             <div
               style={{
-                background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
+                background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)",
                 border: "1px solid rgba(0,102,255,0.2)",
                 borderRadius: 24,
                 padding: "2rem",
               }}
             >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.9rem" }}>
+              <p style={{ color: "#0077b8", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.9rem" }}>
                 What You Get
               </p>
-              <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.8rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.2rem" }}>
+              <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.9rem, 4vw, 2.8rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.2rem" }}>
                 Everything you need to go from idea to your first digital product sale
               </h2>
               <div style={{ display: "grid", gap: "0.85rem", marginBottom: "1.5rem" }}>
@@ -363,9 +363,9 @@ export default async function DigitalForgePage() {
                         marginTop: 2,
                       }}
                     >
-                      <span style={{ color: "#00CCFF", fontSize: "0.7rem", fontWeight: 900 }}>✓</span>
+                      <span style={{ color: "#0077b8", fontSize: "0.7rem", fontWeight: 900 }}>✓</span>
                     </span>
-                    <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.75 }}>{item}</p>
+                    <p style={{ color: "#334155", lineHeight: 1.75 }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -376,8 +376,8 @@ export default async function DigitalForgePage() {
                   alignItems: "center",
                   padding: "0.9rem 1.6rem",
                   borderRadius: 10,
-                  background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                  color: "#fff",
+                  background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                  color: "var(--text-primary)",
                   textDecoration: "none",
                   fontWeight: 800,
                   fontSize: "0.84rem",
@@ -398,7 +398,7 @@ export default async function DigitalForgePage() {
                   padding: "1.6rem",
                 }}
               >
-                <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "0.7rem" }}>
+                <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "0.7rem" }}>
                   Who This Is For
                 </p>
                 <div style={{ display: "grid", gap: "0.75rem" }}>
@@ -408,7 +408,7 @@ export default async function DigitalForgePage() {
                     "Operators who understand AI matters but need a commercial path",
                     "Anyone who has tried and gotten stuck — and is ready to try smart",
                   ].map((item) => (
-                    <p key={item} style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.7, fontSize: "0.93rem" }}>
+                    <p key={item} style={{ color: "#334155", lineHeight: 1.7, fontSize: "0.93rem" }}>
                       → {item}
                     </p>
                   ))}
@@ -432,7 +432,7 @@ export default async function DigitalForgePage() {
                     "Content and promotion systems that drive revenue",
                     "A foundation you can repeat, scale, or expand",
                   ].map((item) => (
-                    <p key={item} style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.7, fontSize: "0.93rem" }}>
+                    <p key={item} style={{ color: "#334155", lineHeight: 1.7, fontSize: "0.93rem" }}>
                       → {item}
                     </p>
                   ))}
@@ -448,13 +448,13 @@ export default async function DigitalForgePage() {
         <section style={{ paddingBottom: "5rem" }}>
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div style={{ marginBottom: "1.8rem" }}>
-              <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+              <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
                 Digital Products
               </p>
-              <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.8rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "0.8rem" }}>
+              <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.9rem, 4vw, 2.8rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "0.8rem" }}>
                 Real products you can buy and use today
               </h2>
-              <p style={{ color: "rgba(255,255,255,0.6)", maxWidth: 700, lineHeight: 1.85 }}>
+              <p style={{ color: "#334155", maxWidth: 700, lineHeight: 1.85 }}>
                 Practical, implementation-ready resources built by Digital Forge. Each product is designed to help you move faster, get clearer, and execute with more confidence.
               </p>
             </div>
@@ -471,19 +471,19 @@ export default async function DigitalForgePage() {
                     className="glass-hover"
                     style={{
                       height: "100%",
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderRadius: 20,
                       padding: "1.5rem",
                     }}
                   >
-                    <p style={{ color: "#00CCFF", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.7rem" }}>
+                    <p style={{ color: "#0077b8", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.7rem" }}>
                       {product.category}
                     </p>
-                    <h3 style={{ color: "#fff", fontWeight: 900, fontSize: "1.12rem", lineHeight: 1.3, marginBottom: "0.7rem" }}>
+                    <h3 style={{ color: "var(--text-primary)", fontWeight: 900, fontSize: "1.12rem", lineHeight: 1.3, marginBottom: "0.7rem" }}>
                       {product.title}
                     </h3>
-                    <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.75, marginBottom: "1rem" }}>
+                    <p style={{ color: "#334155", lineHeight: 1.75, marginBottom: "1rem" }}>
                       {product.promise}
                     </p>
                     <span style={{ color: "#0066FF", fontWeight: 800, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
@@ -501,10 +501,10 @@ export default async function DigitalForgePage() {
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div style={{ marginBottom: "2rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
               Everything Available
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 600 }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 600 }}>
               Pick where you are. Start from there.
             </h2>
           </div>
@@ -554,7 +554,7 @@ export default async function DigitalForgePage() {
                   className="glass-hover"
                   style={{
                     height: "100%",
-                    background: "rgba(255,255,255,0.03)",
+                    background: "#ffffff",
                     border: `1px solid ${item.accent}28`,
                     borderTop: `3px solid ${item.accent}`,
                     borderRadius: 20,
@@ -564,10 +564,10 @@ export default async function DigitalForgePage() {
                   <p style={{ color: item.accent, fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.15em", fontWeight: 700, marginBottom: "0.7rem" }}>
                     {item.eyebrow}
                   </p>
-                  <h3 style={{ color: "#fff", fontWeight: 900, fontSize: "1.18rem", lineHeight: 1.25, marginBottom: "0.75rem" }}>
+                  <h3 style={{ color: "var(--text-primary)", fontWeight: 900, fontSize: "1.18rem", lineHeight: 1.25, marginBottom: "0.75rem" }}>
                     {item.title}
                   </h3>
-                  <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.8, marginBottom: "1.2rem" }}>{item.description}</p>
+                  <p style={{ color: "#334155", lineHeight: 1.8, marginBottom: "1.2rem" }}>{item.description}</p>
                   <span style={{ color: item.accent, fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", fontSize: "0.8rem" }}>
                     {item.cta}
                   </span>
@@ -590,15 +590,15 @@ export default async function DigitalForgePage() {
               textAlign: "center",
             }}
           >
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "1rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "1rem" }}>
               Ready to Start?
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(2rem, 5vw, 3.5rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
               The fastest path is free.
               <br />
               The training is your first move.
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.85, fontSize: "1.02rem" }}>
+            <p style={{ color: "#334155", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.85, fontSize: "1.02rem" }}>
               Start with the free training — no credit card, no hype, no pressure. Get the framework, see the path, and then decide what fits you best. Everything is designed to move you forward, not trap you.
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -609,8 +609,8 @@ export default async function DigitalForgePage() {
                   alignItems: "center",
                   padding: "1rem 2rem",
                   borderRadius: 10,
-                  background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                  color: "#fff",
+                  background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                  color: "var(--text-primary)",
                   textDecoration: "none",
                   fontWeight: 800,
                   textTransform: "uppercase",
@@ -647,8 +647,8 @@ export default async function DigitalForgePage() {
                   alignItems: "center",
                   padding: "1rem 2rem",
                   borderRadius: 10,
-                  border: "1px solid rgba(255,255,255,0.16)",
-                  color: "rgba(255,255,255,0.84)",
+                  border: "1px solid rgba(15,23,42,0.11)",
+                  color: "#334155",
                   textDecoration: "none",
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -665,9 +665,9 @@ export default async function DigitalForgePage() {
                   alignItems: "center",
                   padding: "1rem 2rem",
                   borderRadius: 10,
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  color: "rgba(255,255,255,0.7)",
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,23,42,0.11)",
+                  color: "#334155",
                   textDecoration: "none",
                   fontWeight: 600,
                   textTransform: "uppercase",

@@ -91,7 +91,7 @@ export default async function DigitalForgeProductsPage() {
         style={{
           paddingTop: "7rem",
           paddingBottom: "2.5rem",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
+          borderBottom: "1px solid rgba(15,23,42,0.11)",
         }}
       >
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
@@ -100,7 +100,7 @@ export default async function DigitalForgeProductsPage() {
             <Link
               href="/digital-forge"
               style={{
-                color: "rgba(255,255,255,0.4)",
+                color: "#64748b",
                 fontSize: "0.82rem",
                 fontWeight: 600,
                 textDecoration: "none",
@@ -123,7 +123,7 @@ export default async function DigitalForgeProductsPage() {
             <div>
               <p
                 style={{
-                  color: "#00CCFF",
+                  color: "#0077b8",
                   fontSize: "0.72rem",
                   fontWeight: 700,
                   letterSpacing: "0.22em",
@@ -137,7 +137,7 @@ export default async function DigitalForgeProductsPage() {
                 style={{
                   fontSize: "clamp(1.8rem, 4vw, 2.6rem)",
                   fontWeight: 900,
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   lineHeight: 1.1,
                   letterSpacing: "-0.02em",
                 }}
@@ -146,7 +146,7 @@ export default async function DigitalForgeProductsPage() {
               </h1>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.5)",
+                  color: "#64748b",
                   marginTop: "0.6rem",
                   fontSize: "0.95rem",
                   lineHeight: 1.6,
@@ -181,7 +181,7 @@ export default async function DigitalForgeProductsPage() {
               />
               <span
                 style={{
-                  color: "#00CCFF",
+                  color: "#0077b8",
                   fontSize: "0.78rem",
                   fontWeight: 700,
                   letterSpacing: "0.1em",
@@ -207,7 +207,7 @@ export default async function DigitalForgeProductsPage() {
           >
             <span
               style={{
-                color: "rgba(255,255,255,0.35)",
+                color: "#64748b",
                 fontSize: "0.75rem",
                 fontWeight: 700,
                 letterSpacing: "0.12em",
@@ -221,10 +221,10 @@ export default async function DigitalForgeProductsPage() {
                 <span
                   key={item}
                   style={{
-                    color: "rgba(255,255,255,0.6)",
+                    color: "#334155",
                     fontSize: "0.82rem",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: "#ffffff",
+                    border: "1px solid rgba(15,23,42,0.11)",
                     borderRadius: "999px",
                     padding: "0.25rem 0.75rem",
                   }}
@@ -241,7 +241,7 @@ export default async function DigitalForgeProductsPage() {
       <section style={{ paddingTop: "2rem" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           {forgeProducts.length === 0 ? (
-            <div style={{ textAlign: "center", paddingTop: "5rem", color: "rgba(255,255,255,0.4)" }}>
+            <div style={{ textAlign: "center", paddingTop: "5rem", color: "#64748b" }}>
               <p style={{ fontSize: "1.1rem" }}>Products are being prepared. Check back soon.</p>
             </div>
           ) : (
@@ -261,8 +261,8 @@ export default async function DigitalForgeProductsPage() {
                   <div
                     key={product.slug}
                     style={{
-                      background: "rgba(8, 12, 28, 0.9)",
-                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderRadius: "16px",
                       overflow: "hidden",
                       display: "flex",
@@ -282,7 +282,7 @@ export default async function DigitalForgeProductsPage() {
                           width: "100%",
                           aspectRatio: "5/3",
                           overflow: "hidden",
-                          background: `linear-gradient(135deg, #06091a 0%, ${color}1a 60%, ${color}33 100%)`,
+                          background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
                           display: "flex",
                           flexDirection: "column",
                           alignItems: "flex-start",
@@ -335,12 +335,12 @@ export default async function DigitalForgeProductsPage() {
                         <div className="title-overlay" style={{
                           position: "absolute",
                           bottom: 0, left: 0, right: 0,
-                          background: `linear-gradient(to top, rgba(4,6,18,0.97) 0%, rgba(4,6,18,0.75) 70%, transparent 100%)`,
+                          background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
                           padding: "1.25rem 0.9rem 0.85rem",
                           pointerEvents: "none",
                         }}>
                           <p style={{
-                            color: "#fff",
+                            color: "var(--text-primary)",
                             fontWeight: 800,
                             fontSize: "0.82rem",
                             lineHeight: 1.35,
@@ -377,7 +377,7 @@ export default async function DigitalForgeProductsPage() {
                       >
                         <h2
                           style={{
-                            color: "#fff",
+                            color: "var(--text-primary)",
                             fontWeight: 800,
                             fontSize: "0.97rem",
                             lineHeight: 1.4,
@@ -394,7 +394,7 @@ export default async function DigitalForgeProductsPage() {
                       {/* Promise — 2 lines max */}
                       <p
                         style={{
-                          color: "rgba(255,255,255,0.5)",
+                          color: "#64748b",
                           fontSize: "0.82rem",
                           lineHeight: 1.6,
                           display: "-webkit-box",
@@ -410,7 +410,7 @@ export default async function DigitalForgeProductsPage() {
                       {/* Format tag */}
                       <p
                         style={{
-                          color: "rgba(255,255,255,0.28)",
+                          color: "#64748b",
                           fontSize: "0.72rem",
                           fontWeight: 500,
                           letterSpacing: "0.04em",
@@ -423,7 +423,7 @@ export default async function DigitalForgeProductsPage() {
                       <div style={{
                         marginTop: "0.25rem",
                         paddingTop: "0.75rem",
-                        borderTop: "1px solid rgba(255,255,255,0.07)",
+                        borderTop: "1px solid rgba(15,23,42,0.11)",
                         display: "flex",
                         flexDirection: "column",
                         gap: "0.5rem",
@@ -436,7 +436,7 @@ export default async function DigitalForgeProductsPage() {
                             textAlign: "center",
                             padding: "0.6rem 1rem",
                             background: `linear-gradient(135deg, ${color}, ${color}bb)`,
-                            color: "#fff",
+                            color: "var(--text-primary)",
                             textDecoration: "none",
                             fontWeight: 800,
                             fontSize: "0.82rem",
@@ -451,7 +451,7 @@ export default async function DigitalForgeProductsPage() {
                         <Link
                           href={`/digital-forge/products/${product.slug}`}
                           style={{
-                            color: "rgba(255,255,255,0.3)",
+                            color: "#64748b",
                             fontSize: "0.73rem",
                             textDecoration: "none",
                             textAlign: "center",
@@ -497,7 +497,7 @@ export default async function DigitalForgeProductsPage() {
                 <div>
                   <p
                     style={{
-                      color: "#fff",
+                      color: "var(--text-primary)",
                       fontWeight: 700,
                       fontSize: "0.85rem",
                       marginBottom: "0.2rem",
@@ -507,7 +507,7 @@ export default async function DigitalForgeProductsPage() {
                   </p>
                   <p
                     style={{
-                      color: "rgba(255,255,255,0.45)",
+                      color: "#64748b",
                       fontSize: "0.78rem",
                       lineHeight: 1.55,
                     }}
@@ -524,20 +524,20 @@ export default async function DigitalForgeProductsPage() {
               textAlign: "center",
               marginTop: "1.5rem",
               fontSize: "0.75rem",
-              color: "rgba(255,255,255,0.25)",
+              color: "#64748b",
             }}
           >
             By purchasing, you agree to our{" "}
             <Link
               href="/terms"
-              style={{ color: "rgba(255,255,255,0.4)", textDecoration: "underline" }}
+              style={{ color: "#64748b", textDecoration: "underline" }}
             >
               Terms
             </Link>{" "}
             and{" "}
             <Link
               href="/refund-policy"
-              style={{ color: "rgba(255,255,255,0.4)", textDecoration: "underline" }}
+              style={{ color: "#64748b", textDecoration: "underline" }}
             >
               Refund Policy
             </Link>
@@ -550,8 +550,8 @@ export default async function DigitalForgeProductsPage() {
       <style>{`
         .product-card:hover {
           transform: translateY(-4px);
-          box-shadow: 0 16px 48px rgba(0,0,0,0.4);
-          border-color: rgba(255,255,255,0.16);
+          box-shadow: 0 16px 48px rgba(15,23,42,0.12);
+          border-color: #64748b;
         }
         .title-overlay {
           opacity: 0;

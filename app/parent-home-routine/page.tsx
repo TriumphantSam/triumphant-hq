@@ -119,7 +119,7 @@ export default function ParentHomeRoutinePage() {
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
 
       {/* ═══ STICKY NAV ═══ */}
-      <nav className="fixed top-0 w-full z-[100] border-b" style={{ background: 'rgba(28,17,8,0.85)', backdropFilter: 'blur(16px)', borderColor: 'rgba(212,168,67,0.12)' }}>
+      <nav className="fixed top-0 w-full z-[100] border-b" style={{ background: '#ffffff', backdropFilter: 'blur(16px)', borderColor: 'rgba(212,168,67,0.12)' }}>
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/parent-home-routine" style={{ fontFamily: "'Playfair Display', serif" }} className="text-lg font-bold tracking-wide">
             <span style={{ color: GOLD }}>Parent</span><span style={{ color: CREAM }}>Peace</span>
@@ -135,7 +135,7 @@ export default function ParentHomeRoutinePage() {
       </nav>
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroR.ref} className="relative min-h-screen flex items-center pt-16 overflow-hidden" style={{ background: `linear-gradient(160deg, ${WARM_BG} 0%, #261A0C 40%, ${TEAL_DEEP} 100%)` }}>
+      <section ref={heroR.ref} className="relative min-h-screen flex items-center pt-16 overflow-hidden" style={{ background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)" }}>
         {/* Ambient orbs */}
         <div className="absolute top-20 left-1/4 w-[500px] h-[500px] rounded-full blur-[160px] pointer-events-none" style={{ background: `${TEAL}15` }} />
         <div className="absolute bottom-10 right-1/3 w-[400px] h-[400px] rounded-full blur-[140px] pointer-events-none" style={{ background: `${GOLD}10` }} />
@@ -187,7 +187,7 @@ export default function ParentHomeRoutinePage() {
           <div className={`relative transition-all duration-1000 delay-300 ${heroR.show ? 'opacity-100 translate-y-0 rotate-0' : 'opacity-0 translate-y-12 rotate-1'}`}>
             <div className="relative rounded-3xl overflow-hidden border shadow-2xl" style={{ borderColor: `${GOLD}15`, boxShadow: `0 25px 80px ${TEAL}30` }}>
               <Image src="/images/parent-routine/cover-hero.png" alt="Parent Home Routine Mega Bundle — complete system with workbook, printables, screen-time agreement, chore chart, and homework tracker" width={700} height={950} className="w-full h-auto object-cover" priority />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(28,17,8,0.5) 0%, transparent 40%)' }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(28,17,8,0.18) 0%, transparent 40%)' }} />
             </div>
             {/* Glow */}
             <div className="absolute -inset-6 rounded-3xl blur-3xl -z-10" style={{ background: `linear-gradient(135deg, ${GOLD}08, ${TEAL}10)` }} />
@@ -212,7 +212,7 @@ export default function ParentHomeRoutinePage() {
               { icon: icons.moon, title: 'The Bedtime Marathon', desc: 'One more story, one more cup of water. Reclaiming your evening at 10 PM instead of 8 PM, every single night.', bg: '#F3EDFA', border: '#D0B3F5' },
             ].map((p, i) => (
               <div key={i} className={`group relative p-8 rounded-2xl border-2 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg ${painR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ background: p.bg, borderColor: p.border, transitionDelay: `${i * 100}ms` }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: 'white', color: TEAL, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: 'white', color: TEAL, boxShadow: '0 2px 8px rgba(15,23,42,0.1)' }}>
                   {p.icon}
                 </div>
                 <h3 className="text-lg font-bold mb-2" style={{ color: TEAL_DEEP }}>{p.title}</h3>
@@ -275,7 +275,7 @@ export default function ParentHomeRoutinePage() {
 
             {/* Results */}
             <div className="lg:col-span-5 relative rounded-3xl overflow-hidden" style={{ background: `linear-gradient(135deg, ${TEAL}, ${TEAL_DEEP})` }}>
-              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, rgba(255,255,255,0.08), transparent 60%)' }} />
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 30% 20%, #ffffff, transparent 60%)' }} />
               <div className="relative z-10 p-8 flex flex-col justify-between h-full min-h-[400px]">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: GOLD_LIGHT }}>Your Stress Estimate</span>
@@ -304,7 +304,7 @@ export default function ParentHomeRoutinePage() {
       </section>
 
       {/* ═══ WHAT&apos;S INSIDE ═══ */}
-      <section ref={insideR.ref} id="inside" className="relative py-28 px-6" style={{ background: `linear-gradient(180deg, ${WARM_BG}, #261A0C)` }}>
+      <section ref={insideR.ref} id="inside" className="relative py-28 px-6" style={{ background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)" }}>
         <div className="max-w-5xl mx-auto">
           <div className={`text-center mb-16 transition-all duration-700 ${insideR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: GOLD }}>Everything Included</span>
@@ -492,10 +492,10 @@ export default function ParentHomeRoutinePage() {
           width: 22px; height: 22px; border-radius: 50%;
           background: ${TEAL}; cursor: pointer;
           border: 3px solid white;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.15), 0 0 0 3px ${TEAL}20;
+          box-shadow: 0 2px 8px rgba(15,23,42,0.12), 0 0 0 3px ${TEAL}20;
         }
         input[type="range"]::-webkit-slider-thumb:hover {
-          box-shadow: 0 2px 12px rgba(0,0,0,0.2), 0 0 0 5px ${TEAL}25;
+          box-shadow: 0 2px 12px rgba(15,23,42,0.12), 0 0 0 5px ${TEAL}25;
         }
         input[type="range"]::-moz-range-thumb {
           width: 22px; height: 22px; border-radius: 50%;

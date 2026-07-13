@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CurrencyPrice from "@/components/CurrencyPrice";
+import Testimonials from "@/components/Testimonials";
 import { formatOfferPrice, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
 export const metadata = {
@@ -109,7 +110,7 @@ export default function DigitalForgeSystemPage() {
   const usdPriceLabel = resolveUsdPriceLabel(systemOffer.key, systemOffer.kind, systemOffer.amount);
 
   return (
-    <div style={{ background: "#050510", minHeight: "100vh", color: "#fff", fontFamily: "sans-serif", overflow: "hidden" }}>
+    <div style={{ background: "#ffffff", minHeight: "100vh", color: "var(--text-primary)", fontFamily: "sans-serif", overflow: "hidden" }}>
       
       {/* ── HERO ── */}
       <section style={{ position: "relative", paddingTop: "clamp(6rem, 15vw, 8rem)", paddingBottom: "clamp(4rem, 10vw, 6rem)" }}>
@@ -119,7 +120,7 @@ export default function DigitalForgeSystemPage() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))",
           }}
         />
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative">
@@ -128,7 +129,7 @@ export default function DigitalForgeSystemPage() {
             href="/digital-forge"
             style={{
               display: "inline-block",
-              color: "rgba(255,255,255,0.5)",
+              color: "#64748b",
               textDecoration: "none",
               fontSize: "clamp(0.85rem, 2vw, 0.95rem)",
               fontWeight: 600,
@@ -153,7 +154,7 @@ export default function DigitalForgeSystemPage() {
             }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block", boxShadow: "0 0 10px rgba(0,204,255,0.8)" }} />
-            <span style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+            <span style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
               Flagship System — Most Popular
             </span>
           </div>
@@ -168,7 +169,7 @@ export default function DigitalForgeSystemPage() {
                   fontSize: "clamp(2.8rem, 6vw, 5.2rem)",
                   fontWeight: 900,
                   lineHeight: 1.02,
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   letterSpacing: "-0.03em",
                   maxWidth: 880,
                   marginBottom: "1.8rem",
@@ -178,7 +179,7 @@ export default function DigitalForgeSystemPage() {
                 <br />
                 <span
                   style={{
-                    background: "linear-gradient(90deg, #0066FF, #00CCFF)",
+                    background: "linear-gradient(90deg, #075ee5, #0088d6)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
@@ -189,7 +190,7 @@ export default function DigitalForgeSystemPage() {
               </h1>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.78)",
+                  color: "#334155",
                   maxWidth: 700,
                   lineHeight: 1.9,
                   fontSize: "clamp(1.05rem, 2.5vw, 1.15rem)",
@@ -200,7 +201,7 @@ export default function DigitalForgeSystemPage() {
               </p>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.52)",
+                  color: "#64748b",
                   maxWidth: 700,
                   lineHeight: 1.85,
                   fontSize: "clamp(0.95rem, 2vw, 1.05rem)",
@@ -218,8 +219,8 @@ export default function DigitalForgeSystemPage() {
                     alignItems: "center",
                     gap: "0.5rem",
                     padding: "1rem 2rem",
-                    background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                    color: "#fff",
+                    background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                    color: "var(--text-primary)",
                     textDecoration: "none",
                     fontWeight: 800,
                     fontSize: "0.86rem",
@@ -237,15 +238,15 @@ export default function DigitalForgeSystemPage() {
                     display: "inline-flex",
                     alignItems: "center",
                     padding: "1rem 2rem",
-                    border: "1px solid rgba(255,255,255,0.18)",
-                    color: "rgba(255,255,255,0.84)",
+                    border: "1px solid rgba(15,23,42,0.11)",
+                    color: "#334155",
                     textDecoration: "none",
                     fontWeight: 700,
                     fontSize: "0.86rem",
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
                     borderRadius: "10px",
-                    background: "rgba(255,255,255,0.03)",
+                    background: "#ffffff",
                   }}
                 >
                   Message on WhatsApp
@@ -265,14 +266,14 @@ export default function DigitalForgeSystemPage() {
                       alignItems: "center",
                       gap: "0.45rem",
                       padding: "0.5rem 0.85rem",
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderRadius: "999px",
-                      color: "rgba(255,255,255,0.72)",
+                      color: "#334155",
                       fontSize: "0.82rem",
                     }}
                   >
-                    <span style={{ color: "#00CCFF", fontWeight: 900 }}>✓</span>
+                    <span style={{ color: "#0077b8", fontWeight: 900 }}>✓</span>
                     {item}
                   </span>
                 ))}
@@ -282,16 +283,16 @@ export default function DigitalForgeSystemPage() {
             {/* Outcome summary card */}
             <div
               style={{
-                background: "rgba(9,14,32,0.92)",
+                background: "#ffffff",
                 border: "1px solid rgba(0,102,255,0.22)",
                 borderRadius: 24,
                 padding: "clamp(1.2rem, 4vw, 2rem)",
-                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
+                boxShadow: "0 20px 80px rgba(15,23,42,0.12)",
               }}
             >
               <p
                 style={{
-                  color: "#00CCFF",
+                  color: "#0077b8",
                   fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
                   fontWeight: 800,
                   letterSpacing: "0.18em",
@@ -322,23 +323,23 @@ export default function DigitalForgeSystemPage() {
                         marginTop: 2,
                       }}
                     >
-                      <span style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", fontWeight: 900 }}>✓</span>
+                      <span style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", fontWeight: 900 }}>✓</span>
                     </div>
-                    <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ color: "#334155", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>
                       {item}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.5rem" }}>
-                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.4rem", fontWeight: 600 }}>
+              <div style={{ borderTop: "1px solid rgba(15,23,42,0.11)", paddingTop: "1.5rem" }}>
+                <p style={{ color: "#64748b", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: "0.4rem", fontWeight: 600 }}>
                   Instant Access Price
                 </p>
-                <p style={{ color: "#fff", fontSize: "2.2rem", fontWeight: 900, marginBottom: "0.4rem", margin: 0 }}>
+                <p style={{ color: "var(--text-primary)", fontSize: "2.2rem", fontWeight: 900, marginBottom: "0.4rem", margin: 0 }}>
                   <CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} />
                 </p>
-                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
+                <p style={{ color: "#64748b", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
                   One-time payment. Instant email delivery.
                 </p>
               </div>
@@ -351,13 +352,13 @@ export default function DigitalForgeSystemPage() {
       <section style={{ padding: "1.5rem 0", background: "rgba(0,102,255,0.05)", borderTop: "1px solid rgba(0,102,255,0.1)", borderBottom: "1px solid rgba(0,102,255,0.1)" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "clamp(1rem, 3vw, 1.5rem)", color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", fontWeight: 500 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "clamp(1rem, 3vw, 1.5rem)", color: "#334155", fontSize: "0.9rem", fontWeight: 500 }}>
               <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <strong style={{ color: "#00CCFF", fontSize: "1.2rem", fontWeight: 900 }}><CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} /></strong> one-time payment
+                <strong style={{ color: "#0077b8", fontSize: "1.2rem", fontWeight: 900 }}><CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} /></strong> one-time payment
               </span>
-              <span style={{ width: 1, height: 20, background: "rgba(255,255,255,0.2)" }} className="hidden sm:block" />
+              <span style={{ width: 1, height: 20, background: "#ffffff" }} className="hidden sm:block" />
               <span>✦ Instant delivery</span>
-              <span style={{ width: 1, height: 20, background: "rgba(255,255,255,0.2)" }} className="hidden sm:block" />
+              <span style={{ width: 1, height: 20, background: "#ffffff" }} className="hidden sm:block" />
               <span>✦ Full toolkit included</span>
             </div>
             <Link
@@ -367,7 +368,7 @@ export default function DigitalForgeSystemPage() {
                 alignItems: "center",
                 padding: "0.75rem 1.5rem",
                 background: "#0066FF",
-                color: "#fff",
+                color: "var(--text-primary)",
                 textDecoration: "none",
                 fontWeight: 800,
                 fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
@@ -386,13 +387,13 @@ export default function DigitalForgeSystemPage() {
       <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0", position: "relative" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <div style={{ maxWidth: 800, marginBottom: "clamp(2rem, 6vw, 4rem)" }}>
-            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
               <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> Founder Proof
             </p>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem" }}>
               Built from the same system <br className="hidden md:block"/> used to create this offer
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(1rem, 2.5vw, 1.1rem)", lineHeight: 1.8 }}>
+            <p style={{ color: "#334155", fontSize: "clamp(1rem, 2.5vw, 1.1rem)", lineHeight: 1.8 }}>
               Before there are testimonials, there is build proof: the product shows its own method. The Starter System turns the messy middle of AI product creation into a clear sequence: choose the offer, build the asset, package the bundle, and launch with a simple sales path.
             </p>
           </div>
@@ -402,8 +403,8 @@ export default function DigitalForgeSystemPage() {
               <div
                 key={item.title}
                 style={{
-                  background: "rgba(255,255,255,0.02)",
-                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,23,42,0.11)",
                   borderRadius: 24,
                   padding: "clamp(1.2rem, 4vw, 2rem)",
                 }}
@@ -412,16 +413,16 @@ export default function DigitalForgeSystemPage() {
                   <span style={{ width: 4, height: 20, borderRadius: 4, background: "#0066FF" }} />
                   {item.title}
                 </h3>
-                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: 0 }}>{item.body}</p>
+                <p style={{ color: "#64748b", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: 0 }}>{item.body}</p>
               </div>
             ))}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" style={{ background: "rgba(0,102,255,0.05)", border: "1px solid rgba(0,102,255,0.15)", borderRadius: 24, padding: "1.5rem" }}>
             {STARTER_STEPS.map((item, index) => (
-              <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1rem", background: "rgba(255,255,255,0.02)", borderRadius: 16 }}>
+              <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "1rem", background: "#ffffff", borderRadius: 16 }}>
                 <span style={{ color: "#0066FF", fontWeight: 900, fontSize: "1.2rem", opacity: 0.8 }}>{String(index + 1).padStart(2, "0")}</span>
-                <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.5, margin: 0, fontWeight: 500 }}>{item}</p>
+                <p style={{ color: "#334155", fontSize: "0.9rem", lineHeight: 1.5, margin: 0, fontWeight: 500 }}>{item}</p>
               </div>
             ))}
           </div>
@@ -433,8 +434,8 @@ export default function DigitalForgeSystemPage() {
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
             {/* Left Column: Everything Included */}
-            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 32, padding: "clamp(1.5rem, 5vw, 3rem)" }}>
-              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div style={{ background: "#ffffff", border: "1px solid #ffffff", borderRadius: 32, padding: "clamp(1.5rem, 5vw, 3rem)" }}>
+              <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <span style={{ width: 24, height: 1, background: "rgba(0,204,255,0.5)" }} /> Everything Included
               </p>
               <h2 style={{ fontSize: "2rem", fontWeight: 900, lineHeight: 1.1, marginBottom: "2.5rem" }}>
@@ -443,16 +444,16 @@ export default function DigitalForgeSystemPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                 {DELIVERABLES.map((item) => (
                   <div key={item} style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
-                    <span style={{ color: "#00CCFF", fontWeight: 900, marginTop: 2 }}>→</span>
-                    <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>{item}</p>
+                    <span style={{ color: "#0077b8", fontWeight: 900, marginTop: 2 }}>→</span>
+                    <p style={{ color: "#334155", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>{item}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Right Column: How It Works */}
-            <div style={{ background: "linear-gradient(180deg, rgba(11,16,38,1) 0%, rgba(5,8,20,1) 100%)", border: "1px solid rgba(0,102,255,0.2)", borderRadius: 32, padding: "clamp(1.5rem, 5vw, 3rem)", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" }}>
-              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div style={{ background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)", border: "1px solid rgba(15,23,42,0.1)", borderRadius: 32, padding: "clamp(1.5rem, 5vw, 3rem)", boxShadow: "0 20px 50px rgba(15,23,42,0.08)" }}>
+              <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: "0.75rem" }}>
                 <span style={{ width: 24, height: 1, background: "rgba(0,204,255,0.5)" }} /> How It Works
               </p>
               <h2 style={{ fontSize: "2rem", fontWeight: 900, lineHeight: 1.1, marginBottom: "clamp(1.5rem, 5vw, 3rem)" }}>
@@ -461,12 +462,12 @@ export default function DigitalForgeSystemPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: "clamp(1.2rem, 4vw, 2rem)" }}>
                 {MODULES.map((item) => (
                   <div key={item.title} style={{ display: "flex", gap: "clamp(1rem, 3vw, 1.5rem)", alignItems: "flex-start" }}>
-                    <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(0,102,255,0.1)", border: "1px solid rgba(0,102,255,0.3)", color: "#00CCFF", fontWeight: 900, fontSize: "1.1rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 0 15px rgba(0,102,255,0.15)" }}>
+                    <div style={{ width: 56, height: 56, borderRadius: 16, background: "rgba(0,102,255,0.1)", border: "1px solid rgba(0,102,255,0.3)", color: "#0077b8", fontWeight: 900, fontSize: "1.1rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 0 15px rgba(0,102,255,0.15)" }}>
                       {item.num}
                     </div>
                     <div>
                       <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>{item.title}</h3>
-                      <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>{item.description}</p>
+                      <p style={{ color: "#334155", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.6, margin: 0 }}>{item.description}</p>
                     </div>
                   </div>
                 ))}
@@ -480,7 +481,7 @@ export default function DigitalForgeSystemPage() {
       <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 4rem auto" }}>
-            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
               <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> Who This Is For <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} />
             </p>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1 }}>
@@ -503,7 +504,7 @@ export default function DigitalForgeSystemPage() {
                   <span style={{ width: 6, height: 24, borderRadius: 4, background: "#00CCFF" }} />
                   {item.title}
                 </h3>
-                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: "0 0 0 1.2rem" }}>{item.body}</p>
+                <p style={{ color: "#334155", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: "0 0 0 1.2rem" }}>{item.body}</p>
               </div>
             ))}
           </div>
@@ -514,7 +515,7 @@ export default function DigitalForgeSystemPage() {
       <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 4rem auto" }}>
-            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
               <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> What Comes Next <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} />
             </p>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1 }}>
@@ -525,12 +526,12 @@ export default function DigitalForgeSystemPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Before */}
             <div style={{ borderRadius: 24, border: "1px solid rgba(0,204,255,0.2)", background: "rgba(0,204,255,0.03)", padding: "clamp(1.5rem, 5vw, 2.5rem)", display: "flex", flexDirection: "column" }}>
-              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 700, marginBottom: "1rem" }}>Before the System</p>
+              <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 700, marginBottom: "1rem" }}>Before the System</p>
               <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "1rem" }}>Free Training</h3>
-              <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
+              <p style={{ color: "#64748b", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
                 Watch the training first if you want to see the full framework before buying. If you are ready to build now, the Starter System is the direct path.
               </p>
-              <Link href="/digital-forge/training" style={{ color: "#00CCFF", fontWeight: 700, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <Link href="/digital-forge/training" style={{ color: "#0077b8", fontWeight: 700, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 Watch Free Training →
               </Link>
             </div>
@@ -542,10 +543,10 @@ export default function DigitalForgeSystemPage() {
                 <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#0066FF" }} /> You Are Here
               </p>
               <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "1rem" }}>Starter System</h3>
-              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
+              <p style={{ color: "#334155", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
                 The core paid toolkit. Everything you need to build, package, and sell your first AI-powered digital product.
               </p>
-              <Link href="/digital-forge/checkout?offer=system" style={{ background: "#0066FF", color: "#fff", textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "1rem", borderRadius: 12, textAlign: "center" }}>
+              <Link href="/digital-forge/checkout?offer=system" style={{ background: "#0066FF", color: "var(--text-primary)", textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "1rem", borderRadius: 12, textAlign: "center" }}>
                 Get the System — <CurrencyPrice ngnLabel={systemPrice} usdLabel={usdPriceLabel} />
               </Link>
             </div>
@@ -554,7 +555,7 @@ export default function DigitalForgeSystemPage() {
             <div style={{ borderRadius: 24, border: "1px solid rgba(168,85,247,0.2)", background: "rgba(168,85,247,0.03)", padding: "clamp(1.5rem, 5vw, 2.5rem)", display: "flex", flexDirection: "column" }}>
               <p style={{ color: "#A855F7", fontSize: "clamp(0.75rem, 1.5vw, 0.8rem)", textTransform: "uppercase", letterSpacing: "0.2em", fontWeight: 700, marginBottom: "1rem" }}>The Next Level</p>
               <h3 style={{ fontSize: "1.3rem", fontWeight: 800, marginBottom: "1rem" }}>Digital Forge Course</h3>
-              <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
+              <p style={{ color: "#64748b", fontSize: "0.9rem", lineHeight: 1.7, flexGrow: 1, marginBottom: "2rem" }}>
                 The full guided curriculum for a deeper, more supported build-package-launch-grow journey. Takes you further than the system alone.
               </p>
               <Link href="/digital-forge/course" style={{ color: "#A855F7", fontWeight: 700, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -566,10 +567,10 @@ export default function DigitalForgeSystemPage() {
       </section>
 
       {/* ── FAQ ── */}
-      <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0", background: "rgba(255,255,255,0.01)", borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+      <section style={{ padding: "clamp(4rem, 10vw, 6rem) 0", background: "#ffffff", borderTop: "1px solid #ffffff", borderBottom: "1px solid #ffffff" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16">
           <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto 4rem auto" }}>
-            <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
               <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} /> Common Questions <span style={{ width: 30, height: 1, background: "rgba(0,204,255,0.5)" }} />
             </p>
             <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1 }}>
@@ -579,9 +580,9 @@ export default function DigitalForgeSystemPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {FAQ.map((item) => (
-              <div key={item.q} style={{ background: "rgba(9,14,32,0.8)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 24, padding: "clamp(1.2rem, 4vw, 2rem)" }}>
+              <div key={item.q} style={{ background: "#ffffff", border: "1px solid #ffffff", borderRadius: 24, padding: "clamp(1.2rem, 4vw, 2rem)" }}>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "1rem" }}>{item.q}</h3>
-                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: 0 }}>{item.a}</p>
+                <p style={{ color: "#334155", fontSize: "clamp(0.95rem, 2vw, 1.05rem)", lineHeight: 1.7, margin: 0 }}>{item.a}</p>
               </div>
             ))}
           </div>
@@ -591,24 +592,24 @@ export default function DigitalForgeSystemPage() {
       {/* ── CTA ── */}
       <section style={{ padding: "8rem 0", position: "relative" }}>
         <div className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16 relative z-10">
-          <div style={{ background: "rgba(9,14,32,1)", border: "1px solid rgba(0,102,255,0.2)", borderRadius: 48, padding: "clamp(4rem, 8vw, 6rem) 2rem", textAlign: "center", boxShadow: "0 0 100px rgba(0,102,255,0.1)", position: "relative", overflow: "hidden" }}>
+          <div style={{ background: "rgba(15,23,42,0.1)", border: "1px solid rgba(0,102,255,0.2)", borderRadius: 48, padding: "clamp(4rem, 8vw, 6rem) 2rem", textAlign: "center", boxShadow: "0 0 100px rgba(0,102,255,0.1)", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
               <div style={{ position: "absolute", top: "-50%", left: "-20%", width: "100%", height: "150%", background: "rgba(0,102,255,0.1)", borderRadius: "50%", filter: "blur(100px)" }} />
               <div style={{ position: "absolute", top: "20%", right: "-20%", width: "80%", height: "100%", background: "rgba(0,204,255,0.1)", borderRadius: "50%", filter: "blur(100px)" }} />
             </div>
 
             <div style={{ position: "relative", zIndex: 10, maxWidth: 800, margin: "0 auto" }}>
-              <p style={{ color: "#00CCFF", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
+              <p style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: "1.5rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
                 <span style={{ width: 40, height: 1, background: "rgba(0,204,255,0.5)" }} />
                 Stop Dabbling. Start Building.
                 <span style={{ width: 40, height: 1, background: "rgba(0,204,255,0.5)" }} />
               </p>
               
               <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: "2rem", textShadow: "0 10px 30px rgba(0,0,0,0.5)" }}>
-                This is the fastest path from AI curiosity to <span style={{ background: "linear-gradient(90deg, #0066FF, #00CCFF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>one product you can sell.</span>
+                This is the fastest path from AI curiosity to <span style={{ color: "#075ee5" }}>one product you can sell.</span>
               </h2>
               
-              <p style={{ color: "rgba(255,255,255,0.7)", fontSize: "1.1rem", lineHeight: 1.8, marginBottom: "clamp(1.5rem, 5vw, 3rem)", maxWidth: 650, margin: "0 auto 3rem auto" }}>
+              <p style={{ color: "#334155", fontSize: "1.1rem", lineHeight: 1.8, marginBottom: "clamp(1.5rem, 5vw, 3rem)", maxWidth: 650, margin: "0 auto 3rem auto" }}>
                 The Starter System gives you the guide, prompts, worksheets, checklists, and launch assets to build one clear digital product and take it to market. No hype, no income guarantee, just a serious system for doing the work.
               </p>
               
@@ -620,8 +621,8 @@ export default function DigitalForgeSystemPage() {
                     alignItems: "center",
                     gap: "0.5rem",
                     padding: "1.25rem 2.5rem",
-                    background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                    color: "#fff",
+                    background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                    color: "var(--text-primary)",
                     textDecoration: "none",
                     fontWeight: 800,
                     fontSize: "0.86rem",
@@ -639,9 +640,9 @@ export default function DigitalForgeSystemPage() {
                     display: "inline-flex",
                     alignItems: "center",
                     padding: "1.25rem 2.5rem",
-                    border: "1px solid rgba(255,255,255,0.2)",
-                    background: "rgba(255,255,255,0.05)",
-                    color: "#fff",
+                    border: "1px solid rgba(15,23,42,0.11)",
+                    background: "#ffffff",
+                    color: "var(--text-primary)",
                     textDecoration: "none",
                     fontWeight: 700,
                     fontSize: "0.86rem",
@@ -657,6 +658,8 @@ export default function DigitalForgeSystemPage() {
           </div>
         </div>
       </section>
+
+      <Testimonials />
     </div>
   );
 }

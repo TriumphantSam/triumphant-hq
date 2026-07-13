@@ -2,7 +2,7 @@ import { getForgeProduct } from "@/lib/digital-forge";
 import { getNgnPerUsd } from "@/lib/currency-pricing";
 
 export type CheckoutOffer = {
-  kind: "product" | "system";
+  kind: "product" | "system" | "course" | "subscription";
   key: string;
   slug?: string;
   title: string;
@@ -14,9 +14,11 @@ export type CheckoutOffer = {
 
 const DEFAULT_PRODUCT_PRICE_NGN = Number(process.env.DIGITAL_FORGE_PRODUCT_PRICE_NGN ?? "3000");
 const FIXED_SYSTEM_PRICE_NGN = 15000;
+const FIXED_COURSE_PRICE_NGN = 35000;
 const DEFAULT_CURRENCY = (process.env.DIGITAL_FORGE_CHECKOUT_CURRENCY ?? "NGN").toUpperCase() as "NGN" | "USD";
 const DEFAULT_SYSTEM_DELIVERY_URL = "https://drive.google.com/file/d/1yFhf481gP2F4c2VkDOXKzrazYHKFFILA/view?usp=sharing";
 const SYSTEM_DELIVERY_URL = process.env.DIGITAL_FORGE_SYSTEM_DELIVERY_URL ?? DEFAULT_SYSTEM_DELIVERY_URL;
+const COURSE_DELIVERY_URL = process.env.DIGITAL_FORGE_COURSE_DELIVERY_URL ?? "https://triumphanthq.com/digital-forge/course/access";
 const PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_PRICE_OVERRIDES_JSON ?? "");
 const DELIVERY_URL_OVERRIDES = parseStringOverrides(process.env.DIGITAL_FORGE_DELIVERY_URL_OVERRIDES_JSON ?? "");
 const LEGACY_SLUG_PRICE_HINTS: Record<string, number> = {
@@ -147,9 +149,23 @@ export function resolveSystemOffer(): CheckoutOffer {
   };
 }
 
+export function resolveCourseOffer(): CheckoutOffer {
+  return {
+    kind: "course",
+    key: "digital-forge-course",
+    title: "Digital Forge Course",
+    description:
+      "The full guided curriculum with modules, worksheets, prompt packs, SOPs, and implementation assets for building and scaling AI-assisted digital products.",
+    amount: FIXED_COURSE_PRICE_NGN,
+    currency: DEFAULT_CURRENCY,
+    deliveryUrl: COURSE_DELIVERY_URL,
+  };
+}
+
 const USD_PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_USD_PRICE_OVERRIDES_JSON ?? "");
 const DEFAULT_USD_PRICE_OVERRIDES: Record<string, number> = {
   "starter-system": 20,
+  "digital-forge-course": 23.33,
 };
 
 export function resolveUsdAmount(amountNgn: number): number {
@@ -167,8 +183,11 @@ export function resolveUsdPriceCents(offer: CheckoutOffer): number {
 export function resolveUsdPriceLabel(offerKey: string, offerKind: string, amountNgn?: number): string {
   const override = USD_PRICE_OVERRIDES[offerKey] ?? DEFAULT_USD_PRICE_OVERRIDES[offerKey];
   if (override) return `$${override.toFixed(2)}`;
-  const fallbackAmount = offerKind === "system" || offerKey === "starter-system"
-    ? FIXED_SYSTEM_PRICE_NGN
-    : DEFAULT_PRODUCT_PRICE_NGN;
+  const fallbackAmount =
+    offerKind === "system" || offerKey === "starter-system"
+      ? FIXED_SYSTEM_PRICE_NGN
+      : offerKind === "course" || offerKey === "digital-forge-course"
+        ? FIXED_COURSE_PRICE_NGN
+        : DEFAULT_PRODUCT_PRICE_NGN;
   return `$${resolveUsdAmount(amountNgn ?? fallbackAmount).toFixed(2)}`;
 }

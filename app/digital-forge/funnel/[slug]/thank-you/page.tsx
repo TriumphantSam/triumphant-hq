@@ -13,13 +13,13 @@ export default async function FunnelThankYouPage(props: { params: Promise<{ slug
     const { pages, training, promise } = funnel;
 
     return (
-        <div className="min-h-screen bg-[#03040F] text-white overflow-x-hidden" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+        <div className="min-h-screen bg-white text-slate-900 overflow-x-hidden" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
             
             {/* ══════════════════════════════════════════════════════════
                 HERO – Confirmation energy
             ══════════════════════════════════════════════════════════ */}
             <section style={{
-                background: 'linear-gradient(180deg, #000814 0%, #001233 60%, #03040F 100%)',
+                background: 'linear-gradient(180deg, #ffffff 0%, #ffffff 60%, #ffffff 100%)',
                 minHeight: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
@@ -67,13 +67,13 @@ export default async function FunnelThankYouPage(props: { params: Promise<{ slug
                 </div>
                 <h1 style={{
                     fontSize: 'clamp(2rem, 5vw, 3.4rem)', fontWeight: 900,
-                    lineHeight: 1.1, letterSpacing: '-0.02em', color: '#fff',
+                    lineHeight: 1.1, letterSpacing: '-0.02em', color: 'var(--text-primary)',
                     margin: '0 0 20px', maxWidth: '640px',
                 }}>
                     {pages.thankYou.headline}
                 </h1>
                 <p style={{
-                    color: 'rgba(255,255,255,0.45)', fontSize: '1.1rem',
+                    color: '#64748b', fontSize: '1.1rem',
                     lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 64px',
                 }}>
                     You&apos;re moments away from learning exactly how to build and sell your first AI-powered digital product.
@@ -82,23 +82,23 @@ export default async function FunnelThankYouPage(props: { params: Promise<{ slug
                 {/* Session card */}
                 <div style={{
                     width: '100%', maxWidth: '520px',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: '#ffffff',
+                    border: '1px solid rgba(15,23,42,0.11)',
                     borderRadius: '20px', padding: '32px 40px',
                     marginBottom: '40px',
-                    boxShadow: '0 40px 80px rgba(0,0,0,0.5)',
+                    boxShadow: '0 40px 80px rgba(15,23,42,0.12)',
                     textAlign: 'left',
                 }}>
-                    <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '10px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '20px' }}>Your Session</p>
+                    <p style={{ color: '#64748b', fontSize: '10px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '20px' }}>Your Session</p>
                     
                     <div style={{
                         display: 'flex', alignItems: 'center', gap: '16px',
                         paddingBottom: '20px', marginBottom: '20px',
-                        borderBottom: '1px solid rgba(255,255,255,0.06)',
+                        borderBottom: '1px solid rgba(15,23,42,0.11)',
                     }}>
                         <div style={{
                             width: 52, height: 52, borderRadius: '12px',
-                            background: 'linear-gradient(135deg, #0066FF, #00CCFF)',
+                            background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             flexShrink: 0,
                         }}>
@@ -107,8 +107,8 @@ export default async function FunnelThankYouPage(props: { params: Promise<{ slug
                             </svg>
                         </div>
                         <div>
-                            <p style={{ color: '#fff', fontWeight: 800, fontSize: '1rem', marginBottom: '4px' }}>{training.title}</p>
-                            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '13px' }}>{training.timeLabel} · {training.duration}</p>
+                            <p style={{ color: 'var(--text-primary)', fontWeight: 800, fontSize: '1rem', marginBottom: '4px' }}>{training.title}</p>
+                            <p style={{ color: '#64748b', fontSize: '13px' }}>{training.timeLabel} · {training.duration}</p>
                         </div>
                     </div>
 
@@ -118,12 +118,12 @@ export default async function FunnelThankYouPage(props: { params: Promise<{ slug
                                 <div style={{
                                     width: 24, height: 24, borderRadius: '50%',
                                     background: 'rgba(0,204,255,0.1)', border: '1px solid rgba(0,204,255,0.2)',
-                                    color: '#00CCFF', fontSize: '11px', fontWeight: 900,
+                                    color: '#0077b8', fontSize: '11px', fontWeight: 900,
                                     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                                 }}>
                                     {i + 1}
                                 </div>
-                                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', lineHeight: 1.6, margin: 0 }}>{inst}</p>
+                                <p style={{ color: '#334155', fontSize: '14px', lineHeight: 1.6, margin: 0 }}>{inst}</p>
                             </div>
                         ))}
                     </div>
@@ -134,8 +134,8 @@ export default async function FunnelThankYouPage(props: { params: Promise<{ slug
                     href={`/digital-forge/funnel/${funnel.slug}/training`}
                     style={{
                         display: 'inline-flex', alignItems: 'center', gap: '10px',
-                        background: 'linear-gradient(135deg, #0066FF 0%, #0052cc 100%)',
-                        color: '#fff', fontWeight: 800, fontSize: '1rem',
+                        background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
+                        color: 'var(--text-primary)', fontWeight: 800, fontSize: '1rem',
                         padding: '18px 48px', borderRadius: '12px',
                         textDecoration: 'none', marginBottom: '16px',
                         boxShadow: '0 8px 32px rgba(0,102,255,0.4), 0 0 0 1px rgba(0,204,255,0.2)',
@@ -147,7 +147,7 @@ export default async function FunnelThankYouPage(props: { params: Promise<{ slug
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                 </Link>
-                <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px', marginTop: '8px' }}>Click above to watch the free masterclass</p>
+                <p style={{ color: '#64748b', fontSize: '12px', marginTop: '8px' }}>Click above to watch the free masterclass</p>
             </section>
         </div>
     );

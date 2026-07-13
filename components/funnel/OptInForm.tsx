@@ -59,14 +59,14 @@ export default function OptInForm({ slug, ctaText }: { slug: string; ctaText: st
                     required
                     style={{
                         width: '100%', boxSizing: 'border-box',
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.12)',
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
                         borderRadius: '10px', padding: '16px 20px',
-                        color: '#fff', fontSize: '15px', fontWeight: 500,
+                        color: '#0f172a', fontSize: '15px', fontWeight: 500,
                         outline: 'none',
                     }}
-                    onFocus={(e) => { e.target.style.borderColor = 'rgba(0,204,255,0.5)'; }}
-                    onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.12)'; }}
+                    onFocus={(e) => { e.target.style.borderColor = 'rgba(0,102,255,0.5)'; }}
+                    onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; }}
                 />
                 <input
                     type="email"
@@ -75,14 +75,14 @@ export default function OptInForm({ slug, ctaText }: { slug: string; ctaText: st
                     required
                     style={{
                         width: '100%', boxSizing: 'border-box',
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.12)',
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0',
                         borderRadius: '10px', padding: '16px 20px',
-                        color: '#fff', fontSize: '15px', fontWeight: 500,
+                        color: '#0f172a', fontSize: '15px', fontWeight: 500,
                         outline: 'none',
                     }}
-                    onFocus={(e) => { e.target.style.borderColor = 'rgba(0,204,255,0.5)'; }}
-                    onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.12)'; }}
+                    onFocus={(e) => { e.target.style.borderColor = 'rgba(0,102,255,0.5)'; }}
+                    onBlur={(e) => { e.target.style.borderColor = '#e2e8f0'; }}
                 />
             </div>
 
@@ -94,11 +94,11 @@ export default function OptInForm({ slug, ctaText }: { slug: string; ctaText: st
                     background: status === 'loading'
                         ? 'rgba(245,158,11,0.5)'
                         : 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
-                    color: '#fff', fontWeight: 800, fontSize: '1rem',
+                    color: 'var(--text-primary)', fontWeight: 800, fontSize: '1rem',
                     padding: '18px 32px', borderRadius: '10px', border: 'none',
                     cursor: status === 'loading' ? 'wait' : 'pointer',
                     letterSpacing: '0.04em', textTransform: 'uppercase',
-                    boxShadow: status === 'loading' ? 'none' : '0 8px 24px rgba(245,158,11,0.3)',
+                    boxShadow: status === 'loading' ? 'none' : '0 8px 24px rgba(245,158,11,0.2)',
                     transition: 'all 0.2s',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
                 }}
@@ -120,13 +120,13 @@ export default function OptInForm({ slug, ctaText }: { slug: string; ctaText: st
                 )}
             </button>
 
-            <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.25)', fontSize: '12px', marginTop: '16px', lineHeight: 1.5 }}>
+            <p style={{ textAlign: 'center', color: '#64748b', fontSize: '12px', marginTop: '16px', lineHeight: 1.5 }}>
                 🔒 100% free · No spam, ever · Unsubscribe any time
             </p>
 
             <style>{`
                 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                input::placeholder { color: rgba(255,255,255,0.3); }
+                input::placeholder { color: #94a3b8; }
             `}</style>
         </form>
     );

@@ -19,13 +19,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://triumphantech.com'),
-  title: "Triumphant HQ | Premier Tech & SEO Company",
-  description: "As a premier tech and SEO company, we build autonomous AI systems, advanced digital product ecosystems, and elite search engine optimization (SEO) strategies for global growth.",
-  keywords: ["Best Tech Company", "Best SEO Company", "Global SEO Agency", "Top SEO Expert", "Premier Tech Company", "Triumphant HQ", "AI Consulting", "Web Development", "SEO Services", "Digital Growth"],
+  title: "Triumphant HQ | Technology and Growth Agency",
+  description: "Triumphant HQ designs high-performing websites, custom applications, SEO growth systems and practical business automation.",
+  keywords: ["Technology Agency", "Web Design Agency", "Custom Application Development", "SEO Agency", "AI Automation", "Triumphant HQ", "Web Development", "Digital Growth"],
   authors: [{ name: "Triumphant HQ Team" }],
   openGraph: {
-    title: "Triumphant HQ | Premier Tech & SEO Company",
-    description: "The premier tech and SEO solutions company. Bridging the gap between essential tech services, search engine visibility, and global digital growth.",
+    title: "Triumphant HQ | Technology and Growth Agency",
+    description: "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
     url: "https://triumphantech.com",
     siteName: "Triumphant HQ",
     locale: "en_US",
@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Triumphant HQ | Premier Tech & SEO Company",
-    description: "The premier tech and SEO solutions company. Bridging the gap between essential tech services, search engine visibility, and global digital growth.",
+    title: "Triumphant HQ | Technology and Growth Agency",
+    description: "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
   },
 };
 

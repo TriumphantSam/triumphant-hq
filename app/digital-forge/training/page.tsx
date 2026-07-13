@@ -19,7 +19,7 @@ export default function DigitalForgeTrainingPage() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 15% 20%, rgba(0,204,255,0.18), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,102,255,0.14), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,204,255,0.18), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,102,255,0.14), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))",
           }}
         />
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
@@ -29,7 +29,7 @@ export default function DigitalForgeTrainingPage() {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.45rem",
-              color: "rgba(255,255,255,0.5)",
+              color: "#64748b",
               textDecoration: "none",
               fontSize: "0.84rem",
               fontWeight: 600,
@@ -54,7 +54,7 @@ export default function DigitalForgeTrainingPage() {
             }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+            <span style={{ color: "#0077b8", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
               Free Training — Coming Soon
             </span>
           </div>
@@ -65,7 +65,7 @@ export default function DigitalForgeTrainingPage() {
               fontWeight: 900,
               lineHeight: 1.04,
               letterSpacing: "-0.03em",
-              color: "#fff",
+              color: "var(--text-primary)",
               maxWidth: 860,
               marginBottom: "1.3rem",
             }}
@@ -73,7 +73,7 @@ export default function DigitalForgeTrainingPage() {
             How To Build and Sell Your{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #00CCFF, #0066FF)",
+                background: "linear-gradient(90deg, #075ee5, #0088d6)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -88,7 +88,7 @@ export default function DigitalForgeTrainingPage() {
           <p
             style={{
               fontSize: "1.12rem",
-              color: "rgba(255,255,255,0.74)",
+              color: "#334155",
               lineHeight: 1.9,
               maxWidth: 760,
               marginBottom: "1rem",
@@ -98,7 +98,7 @@ export default function DigitalForgeTrainingPage() {
           </p>
           <p
             style={{
-              color: "rgba(255,255,255,0.5)",
+              color: "#64748b",
               lineHeight: 1.85,
               maxWidth: 760,
               fontSize: "0.97rem",
@@ -122,8 +122,8 @@ export default function DigitalForgeTrainingPage() {
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 fontSize: "0.86rem",
-                color: "#fff",
-                background: "linear-gradient(135deg, #0066FF, #0044CC)",
+                color: "var(--text-primary)",
+                background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
                 boxShadow: "0 0 36px rgba(0,102,255,0.42)",
               }}
             >
@@ -141,15 +141,15 @@ export default function DigitalForgeTrainingPage() {
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 fontSize: "0.86rem",
-                color: "rgba(255,255,255,0.82)",
-                border: "1px solid rgba(255,255,255,0.16)",
+                color: "#334155",
+                border: "1px solid rgba(15,23,42,0.11)",
               }}
             >
               Get the Starter System Instead
             </Link>
           </div>
 
-          <p style={{ marginTop: "1.2rem", color: "rgba(255,255,255,0.32)", fontSize: "0.83rem" }}>
+          <p style={{ marginTop: "1.2rem", color: "#64748b", fontSize: "0.83rem" }}>
             Already have what you need? The Starter System is available right now at <CurrencyPrice ngnLabel="₦15,000" usdLabel="$20.00" />.
           </p>
         </div>
@@ -160,16 +160,16 @@ export default function DigitalForgeTrainingPage() {
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div
             style={{
-              background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
+              background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)",
               border: "1px solid rgba(0,204,255,0.2)",
               borderRadius: 24,
               padding: "2rem",
             }}
           >
-            <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
               What the Training Will Cover
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
               The complete Digital Forge framework — free, in one class.
             </h2>
             <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
@@ -195,7 +195,7 @@ export default function DigitalForgeTrainingPage() {
                       borderRadius: 14,
                       background: "rgba(0,204,255,0.12)",
                       border: "1px solid rgba(0,204,255,0.28)",
-                      color: "#00CCFF",
+                      color: "#0077b8",
                       fontWeight: 800,
                       display: "flex",
                       alignItems: "center",
@@ -207,8 +207,8 @@ export default function DigitalForgeTrainingPage() {
                     {item.num}
                   </div>
                   <div>
-                    <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.35rem", fontSize: "1rem" }}>{item.title}</h3>
-                    <p style={{ color: "rgba(255,255,255,0.62)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.body}</p>
+                    <h3 style={{ color: "var(--text-primary)", fontWeight: 800, marginBottom: "0.35rem", fontSize: "1rem" }}>{item.title}</h3>
+                    <p style={{ color: "#334155", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.body}</p>
                   </div>
                 </div>
               ))}
@@ -221,10 +221,10 @@ export default function DigitalForgeTrainingPage() {
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div style={{ marginBottom: "1.8rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
               Where It Fits
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
               The training is Step 2 — it bridges the blog and the Starter System
             </h2>
           </div>
@@ -238,20 +238,20 @@ export default function DigitalForgeTrainingPage() {
               <div
                 key={item.step}
                 style={{
-                  background: item.current ? "rgba(0,204,255,0.08)" : "rgba(255,255,255,0.02)",
-                  border: item.current ? "1px solid rgba(0,204,255,0.32)" : "1px solid rgba(255,255,255,0.07)",
+                  background: item.current ? "rgba(0,204,255,0.08)" : "#ffffff",
+                  border: item.current ? "1px solid rgba(0,204,255,0.32)" : "1px solid rgba(15,23,42,0.11)",
                   borderTop: item.current ? "3px solid #00CCFF" : undefined,
                   borderRadius: 18,
                   padding: "1.1rem",
                 }}
               >
-                <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
+                <p style={{ color: "#64748b", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
                   Step {item.step}
                 </p>
                 <h3 style={{ color: item.current ? "#00CCFF" : "#fff", fontWeight: 800, marginBottom: "0.4rem" }}>{item.label}</h3>
-                <p style={{ color: "rgba(255,255,255,0.58)", lineHeight: 1.7, fontSize: "0.88rem" }}>{item.detail}</p>
+                <p style={{ color: "#64748b", lineHeight: 1.7, fontSize: "0.88rem" }}>{item.detail}</p>
                 {item.current && (
-                  <span style={{ display: "inline-block", marginTop: "0.7rem", fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#00CCFF", background: "rgba(0,204,255,0.1)", border: "1px solid rgba(0,204,255,0.25)", borderRadius: 999, padding: "0.25rem 0.7rem" }}>
+                  <span style={{ display: "inline-block", marginTop: "0.7rem", fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: "#0077b8", background: "rgba(0,204,255,0.1)", border: "1px solid rgba(0,204,255,0.25)", borderRadius: 999, padding: "0.25rem 0.7rem" }}>
                     Coming Soon
                   </span>
                 )}
@@ -273,15 +273,15 @@ export default function DigitalForgeTrainingPage() {
               textAlign: "center",
             }}
           >
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "1rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.76rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "1rem" }}>
               Do Not Wait for the Training
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(2rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.08, marginBottom: "1.2rem" }}>
               The Starter System is available right now.
               <br />
               Everything you need — no training required.
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.68)", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.9, fontSize: "1.01rem" }}>
+            <p style={{ color: "#334155", maxWidth: 720, margin: "0 auto 2rem", lineHeight: 1.9, fontSize: "1.01rem" }}>
               The Starter System already contains the guide, prompts, templates, and launch assets to take action today. The free training will give you the &ldquo;why&rdquo; — the System gives you the &ldquo;how.&rdquo;
             </p>
             <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -293,8 +293,8 @@ export default function DigitalForgeTrainingPage() {
                   alignItems: "center",
                   padding: "1rem 2rem",
                   borderRadius: 10,
-                  background: "linear-gradient(135deg, #0066FF, #0044CC)",
-                  color: "#fff",
+                  background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                  color: "var(--text-primary)",
                   textDecoration: "none",
                   fontWeight: 800,
                   textTransform: "uppercase",
@@ -313,7 +313,7 @@ export default function DigitalForgeTrainingPage() {
                   padding: "1rem 2rem",
                   borderRadius: 10,
                   border: "1px solid rgba(0,204,255,0.3)",
-                  color: "#00CCFF",
+                  color: "#0077b8",
                   textDecoration: "none",
                   fontWeight: 700,
                   textTransform: "uppercase",

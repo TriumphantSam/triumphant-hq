@@ -84,7 +84,7 @@ export default function RefundPolicyPage() {
 
                     <h1
                         className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6"
-                        style={{ color: '#fff', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+                        style={{ color: 'var(--text-primary)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
                     >
                         Refund{' '}
                         <span style={{ color: 'var(--accent-color)' }}>Policy</span>
@@ -267,7 +267,7 @@ export default function RefundPolicyPage() {
                     <main>
                         <PolicySection id="overview" icon="📄" title="Overview">
                             <p>
-                                Due to the digital nature of our products, <strong style={{ color: '#fff' }}>all sales are generally final</strong> once access or download has been delivered. This is consistent with standard practice for digital goods.
+                                Due to the digital nature of our products, <strong style={{ color: 'var(--text-primary)' }}>all sales are generally final</strong> once access or download has been delivered. This is consistent with standard practice for digital goods.
                             </p>
                             <p>
                                 However, we stand behind our products. If you experience a genuine issue with your purchase — such as failed delivery, broken files, or a technical problem that prevents you from accessing what you paid for — we will take action to make it right.
@@ -398,7 +398,7 @@ export default function RefundPolicyPage() {
                                         </span>
                                         <div>
                                             <p style={{ color: '#fff !important', fontWeight: 700, fontSize: '0.9rem !important', marginBottom: '0.2rem !important' }}>
-                                                <span style={{ color: '#fff', fontWeight: 700 }}>{item.label}</span>
+                                                <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{item.label}</span>
                                             </p>
                                             <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '0 !important' }}>
                                                 {item.detail}
@@ -414,7 +414,7 @@ export default function RefundPolicyPage() {
 
                         <PolicySection id="timeframe" icon="🕐" title="Response Timeframe">
                             <p>
-                                We aim to respond to all support and refund-related inquiries within <strong style={{ color: '#fff' }}>2–5 business days</strong>.
+                                We aim to respond to all support and refund-related inquiries within <strong style={{ color: 'var(--text-primary)' }}>2–5 business days</strong>.
                             </p>
                             <p>
                                 Complex cases may take slightly longer, but we will acknowledge your request within 24–48 hours and keep you updated throughout the process.
@@ -643,7 +643,7 @@ function PolicySection({
                     style={{
                         fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
                         fontWeight: 700,
-                        color: '#fff',
+                        color: 'var(--text-primary)',
                         letterSpacing: '-0.01em',
                     }}
                 >
@@ -674,7 +674,7 @@ function EligibleCard({ icon, title, desc }: { icon: string; title: string; desc
             <span style={{ fontSize: '1.4rem', flexShrink: 0, marginTop: '0.1rem' }}>{icon}</span>
             <div>
                 <p style={{ color: 'var(--accent-color) !important', fontWeight: 700, fontSize: '0.9rem !important', marginBottom: '0.25rem !important' }}>
-                    <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.9rem' }}>{title}</span>
+                    <span style={{ color: 'var(--text-primary)', fontWeight: 700, fontSize: '0.9rem' }}>{title}</span>
                 </p>
                 <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: '0 !important' }}>
                     {desc}

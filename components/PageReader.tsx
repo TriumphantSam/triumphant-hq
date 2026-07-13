@@ -165,12 +165,12 @@ export default function PageReader() {
             {expanded && (
                 <div
                     className="glass rounded-2xl border border-[#0066FF]/25 p-4 shadow-lg min-w-[220px] max-w-[min(92vw,280px)]"
-                    style={{ background: 'rgba(5, 5, 16, 0.92)' }}
+                    style={{ background: '#ffffff' }}
                 >
-                    <p className="text-xs font-semibold uppercase tracking-widest text-[#00CCFF] mb-3">Page reader</p>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-[#0066FF] mb-3">Page reader</p>
                     <p className="text-xs text-[var(--text-secondary)] mb-3 leading-relaxed">
                         Site-wide: reads each page’s main content (not the nav or footer). Add{' '}
-                        <code className="text-[10px] text-[#00CCFF]/90">data-page-reader-content</code> on a section to read only that block.
+                        <code className="text-[10px] text-[#0066FF]">data-page-reader-content</code> on a section to read only that block.
                     </p>
                     <label className="block text-xs text-[var(--text-secondary)] mb-1" htmlFor="page-reader-rate">
                         Speed
@@ -194,38 +194,38 @@ export default function PageReader() {
                                 id="page-reader-voice"
                                 value={voiceURI}
                                 onChange={(e) => setVoiceURI(e.target.value)}
-                                className="w-full mb-3 text-sm rounded-lg bg-[#0a0a18] border border-[#0066FF]/30 text-[var(--text-primary)] px-2 py-1.5"
+                                className="w-full mb-3 text-sm rounded-lg bg-white border border-[#0066FF]/20 text-[var(--text-primary)] px-2 py-1.5 focus:outline-none"
                             >
                                 {enVoices.map((v) => (
                                     <option key={v.voiceURI} value={v.voiceURI}>
-                                        {v.name}
+                                        {v.name} ({v.lang})
                                     </option>
                                 ))}
                             </select>
                         </>
                     )}
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex gap-2">
                         {state === 'idle' ? (
                             <button
                                 type="button"
                                 onClick={startReading}
-                                className="flex-1 min-w-[100px] px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-[#0066FF] text-white hover:bg-[#0052cc] transition-colors"
+                                className="flex-1 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-[#0066FF] text-white hover:bg-[#0052cc] transition-colors"
                             >
-                                Play
+                                Listen
                             </button>
                         ) : (
                             <>
                                 <button
                                     type="button"
                                     onClick={togglePause}
-                                    className="flex-1 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-[#0066FF] text-[#00CCFF] hover:bg-[#0066FF]/10"
+                                    className="flex-1 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-[#0066FF] text-[#0066FF] hover:bg-[#0066FF]/10"
                                 >
                                     {state === 'playing' ? 'Pause' : 'Resume'}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={stopAll}
-                                    className="flex-1 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-white/20 text-gray-300 hover:bg-white/5"
+                                    className="flex-1 px-3 py-2 text-xs font-bold uppercase tracking-wider rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
                                 >
                                     Stop
                                 </button>
@@ -237,7 +237,7 @@ export default function PageReader() {
             <button
                 type="button"
                 onClick={() => setExpanded((e) => !e)}
-                className="flex items-center gap-2 rounded-full border border-[#0066FF]/40 bg-[#050510]/95 backdrop-blur-md px-4 py-3 shadow-[0_0_24px_rgba(0,102,255,0.2)] hover:border-[#00CCFF]/60 hover:shadow-[0_0_28px_rgba(0,204,255,0.15)] transition-all text-sm font-semibold text-white"
+                className="flex items-center gap-2 rounded-full border border-[#0066FF]/20 bg-white/95 backdrop-blur-md px-4 py-3 shadow-[0_4px_24px_rgba(0,102,255,0.08)] hover:border-[#0066FF]/60 hover:shadow-[0_8px_28px_rgba(0,102,255,0.15)] transition-all text-sm font-semibold text-[var(--text-primary)]"
                 aria-expanded={expanded}
                 aria-label={expanded ? 'Close page reader panel' : 'Open page reader — listen to this page'}
             >

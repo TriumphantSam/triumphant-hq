@@ -84,7 +84,9 @@ function formatLabel({
 
 export function useVisitorPricing() {
   const [context, setContext] = useState<VisitorPricingContext>(
-    cachedContext ?? inferVisitorPricingContextFromBrowser(),
+    // Keep the server render and the first client render identical. Browser
+    // location is applied after hydration by fetchVisitorPricingContext.
+    cachedContext ?? buildVisitorPricingContext(undefined, "default"),
   );
 
   useEffect(() => {

@@ -34,9 +34,9 @@ export default function WaitlistForm() {
     width: "100%",
     padding: "0.9rem 1rem",
     borderRadius: 10,
-    border: "1px solid rgba(255,255,255,0.12)",
-    background: "rgba(255,255,255,0.03)",
-    color: "#fff",
+    border: "1px solid rgba(15,23,42,0.11)",
+    background: "#ffffff",
+    color: "var(--text-primary)",
     fontSize: "0.95rem",
     outline: "none",
   };
@@ -89,10 +89,10 @@ export default function WaitlistForm() {
         }}
       >
         <div style={{ fontSize: "2.6rem", marginBottom: "0.8rem" }}>✅</div>
-        <h3 style={{ color: "#fff", fontSize: "1.2rem", fontWeight: 800, marginBottom: "0.55rem" }}>
+        <h3 style={{ color: "var(--text-primary)", fontSize: "1.2rem", fontWeight: 800, marginBottom: "0.55rem" }}>
           You're on the waitlist!
         </h3>
-        <p style={{ color: "rgba(255,255,255,0.68)", lineHeight: 1.8, marginBottom: "1.2rem" }}>
+        <p style={{ color: "#334155", lineHeight: 1.8, marginBottom: "1.2rem" }}>
           You'll be among the first to know when hosted enrollment opens and the course is ready to access. Check your email and WhatsApp for updates.
         </p>
         <button
@@ -105,9 +105,9 @@ export default function WaitlistForm() {
             alignItems: "center",
             padding: "0.9rem 1.3rem",
             borderRadius: 10,
-            border: "1px solid rgba(255,255,255,0.16)",
+            border: "1px solid rgba(15,23,42,0.11)",
             background: "transparent",
-            color: "rgba(255,255,255,0.82)",
+            color: "#334155",
             fontWeight: 700,
             cursor: "pointer",
           }}
@@ -127,13 +127,13 @@ export default function WaitlistForm() {
         padding: "1.6rem",
       }}
     >
-      <p style={{ color: "#00CCFF", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.5rem", fontWeight: 700 }}>
+      <p style={{ color: "#0077b8", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.5rem", fontWeight: 700 }}>
         Join the Waitlist
       </p>
-      <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1.15rem", marginBottom: "0.7rem" }}>
+      <h3 style={{ color: "var(--text-primary)", fontWeight: 800, fontSize: "1.15rem", marginBottom: "0.7rem" }}>
         Tell us how you want access
       </h3>
-      <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.4rem" }}>
+      <p style={{ color: "#334155", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.4rem" }}>
         Join the first-access list. Share how you want to receive the course and what you want most help with — that way when enrollment opens, your access and first steps are matched to exactly where you are.
       </p>
 
@@ -156,7 +156,7 @@ export default function WaitlistForm() {
       <form onSubmit={handleSubmit} style={{ display: "grid", gap: "1rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
           <div>
-            <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+            <label style={{ display: "block", color: "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
               Full Name
             </label>
             <input
@@ -169,7 +169,7 @@ export default function WaitlistForm() {
             />
           </div>
           <div>
-            <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+            <label style={{ display: "block", color: "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
               Email Address
             </label>
             <input
@@ -185,7 +185,7 @@ export default function WaitlistForm() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
           <div>
-            <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+            <label style={{ display: "block", color: "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
               WhatsApp Number
             </label>
             <input
@@ -197,16 +197,16 @@ export default function WaitlistForm() {
             />
           </div>
           <div>
-            <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+            <label style={{ display: "block", color: "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
               How Do You Want to Receive the Course?
             </label>
             <select
               value={formData.accessPath}
               onChange={(e) => setFormData({ ...formData, accessPath: e.target.value })}
-              style={{ ...inputStyle, colorScheme: "dark" }}
+              style={{ ...inputStyle, colorScheme: "light" }}
             >
               {ACCESS_OPTIONS.map((option) => (
-                <option key={option} value={option} style={{ background: "#050510", color: "#fff" }}>
+                <option key={option} value={option} style={{ background: "#ffffff", color: "var(--text-primary)" }}>
                   {option}
                 </option>
               ))}
@@ -215,16 +215,16 @@ export default function WaitlistForm() {
         </div>
 
         <div>
-          <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+          <label style={{ display: "block", color: "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
             What Do You Want Most Help With?
           </label>
           <select
             value={formData.helpTopic}
             onChange={(e) => setFormData({ ...formData, helpTopic: e.target.value })}
-            style={{ ...inputStyle, colorScheme: "dark" }}
+            style={{ ...inputStyle, colorScheme: "light" }}
           >
             {HELP_OPTIONS.map((option) => (
-              <option key={option} value={option} style={{ background: "#050510", color: "#fff" }}>
+              <option key={option} value={option} style={{ background: "#ffffff", color: "var(--text-primary)" }}>
                 {option}
               </option>
             ))}
@@ -232,7 +232,7 @@ export default function WaitlistForm() {
         </div>
 
         <div>
-          <label style={{ display: "block", color: "rgba(255,255,255,0.55)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
+          <label style={{ display: "block", color: "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.35rem" }}>
             Any Extra Notes? (Optional)
           </label>
           <textarea
@@ -258,8 +258,8 @@ export default function WaitlistForm() {
             textTransform: "uppercase",
             letterSpacing: "0.08em",
             fontSize: "0.82rem",
-            color: "#fff",
-            background: sending ? "rgba(0,102,255,0.35)" : "linear-gradient(135deg, #0066FF, #0044CC)",
+            color: "var(--text-primary)",
+            background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
             border: "none",
             cursor: sending ? "wait" : "pointer",
             boxShadow: sending ? "none" : "0 0 24px rgba(0,102,255,0.38)",
@@ -267,7 +267,7 @@ export default function WaitlistForm() {
         >
           {sending ? "Joining..." : "Join the Waitlist"}
         </button>
-        <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.82rem", textAlign: "center" }}>
+        <p style={{ color: "#64748b", fontSize: "0.82rem", textAlign: "center" }}>
           You will be notified as soon as enrollment and hosted access open.
         </p>
       </form>

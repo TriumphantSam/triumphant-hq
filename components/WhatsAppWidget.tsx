@@ -2,19 +2,18 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import posthog from "posthog-js";
+import { whatsappNumber } from "@/lib/services";
 
-const WA_NUMBER = "447478036301"; // UK number — no + or spaces
 const WA_MESSAGE = encodeURIComponent(
-  "Hi, welcome to TriumphantHQ! 👋 I'd like to know more about your services."
+  "Hi Triumphant HQ, I'd like to discuss a project with your agency."
 );
-const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
+const WA_URL = `https://wa.me/${whatsappNumber}?text=${WA_MESSAGE}`;
 
 export default function WhatsAppWidget() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState(false);
-  const [visible, setVisible] = useState(true);
 
-  if (!visible) return null;
   if (pathname.startsWith('/parent-home-routine') || pathname.startsWith('/digital-forge/funnel/')) {
     return null;
   }
@@ -34,7 +33,7 @@ export default function WhatsAppWidget() {
           fontWeight: 600,
           padding: "0.55rem 0.95rem",
           borderRadius: 10,
-          boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
+          boxShadow: "0 4px 24px rgba(15,23,42,0.12)",
           whiteSpace: "nowrap",
           pointerEvents: "none",
           opacity: hovered ? 1 : 0,
@@ -68,6 +67,7 @@ export default function WhatsAppWidget() {
         aria-label="Chat with us on WhatsApp"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={() => posthog.capture("whatsapp_clicked", { location: "floating_widget" })}
         style={{
           position: "fixed",
           bottom: "5.5rem",
@@ -75,7 +75,7 @@ export default function WhatsAppWidget() {
           width: 58,
           height: 58,
           borderRadius: "50%",
-          background: "linear-gradient(135deg, #25D366, #128C7E)",
+          background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
           boxShadow: hovered
             ? "0 8px 32px rgba(37,211,102,0.55)"
             : "0 4px 20px rgba(37,211,102,0.38)",

@@ -1,143 +1,70 @@
-'use client';
+import Link from "next/link";
+import Image from "next/image";
+import { discoveryCallUrl } from "@/lib/services";
 
 export default function Hero() {
-    return (
-        <section
-            style={{
-                minHeight: '85vh',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
-                padding: '2rem 1.5rem',
-                position: 'relative',
-            }}
-        >
-            <div
-                style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '0.5rem 1.25rem',
-                    borderRadius: '2px', // Angular
-                    border: '1px solid var(--glass-border)',
-                    background: 'var(--glass-bg)',
-                    marginBottom: '2rem',
-                    fontSize: '0.85rem',
-                    color: 'var(--text-secondary)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                }}
-            >
-                <span style={{ width: 6, height: 6, borderRadius: '0px', background: 'var(--secondary-color)', display: 'inline-block' }} />
-                Ranked #1: Premier Tech & SEO Company
+  return (
+    <section className="relative overflow-hidden border-b border-slate-200">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_12%,rgba(7,94,229,0.12),transparent_28rem)]" />
+      <div className="mx-auto grid min-h-[760px] max-w-[1240px] items-center gap-14 px-5 py-20 lg:grid-cols-[1.02fr_0.98fr] lg:px-8">
+        <div>
+          <p className="eyebrow">Technology and growth agency</p>
+          <h1 className="mt-5 max-w-[820px] text-[clamp(3.1rem,7vw,6.2rem)] font-[820] leading-[0.94] tracking-[-0.07em] text-slate-950">
+            Digital systems built to move business forward.
+          </h1>
+          <p className="mt-7 max-w-[680px] text-[clamp(1.05rem,2vw,1.25rem)] leading-8 text-slate-600">
+            We design high-performing websites, custom applications, search growth systems and practical automation for
+            ambitious teams ready to operate at a higher level.
+          </p>
+          <div className="button-row mt-9">
+            <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
+              Book a discovery call
+            </a>
+            <Link className="button button-secondary" href="/services">
+              Explore services
+            </Link>
+          </div>
+          <div className="mt-12 grid max-w-[650px] grid-cols-3 gap-2.5">
+            {[
+              ["Since 2017", "Digital delivery"],
+              ["4 disciplines", "One expert partner"],
+              ["Global ready", "Local accountability"],
+            ].map(([value, label]) => (
+              <div className="rounded-2xl border border-slate-200/80 bg-white/75 px-4 py-4 shadow-[0_8px_24px_rgba(15,23,42,0.04)] backdrop-blur-sm" key={value}>
+                <strong className="block text-sm font-extrabold text-slate-950">{value}</strong>
+                <span className="mt-1 block text-xs leading-5 text-slate-500">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative">
+          <div className="absolute -inset-10 -z-10 rounded-full bg-blue-100/70 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[2rem] border border-white bg-white p-2.5 shadow-[0_30px_90px_rgba(7,45,100,0.18)]">
+            <Image
+              src="/images/agency-digital-systems-hero.png"
+              alt="Connected website, application, analytics and automation systems"
+              width={1024}
+              height={768}
+              className="aspect-[4/3] w-full rounded-[1.45rem] object-cover"
+              priority
+            />
+            <div className="absolute inset-x-7 bottom-7 rounded-2xl border border-white/70 bg-white/88 p-4 shadow-xl backdrop-blur-xl">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-blue-600">Connected delivery</p>
+                  <p className="mt-1 text-sm font-bold text-slate-950">Strategy, design, engineering and growth</p>
+                </div>
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-blue-600 text-white">↗</span>
+              </div>
             </div>
-
-            {/* Main heading */}
-            <h1
-                style={{
-                    fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-                    fontWeight: 800,
-                    lineHeight: 1.1,
-                    marginBottom: '1.5rem',
-                    maxWidth: 850,
-                    color: '#fff',
-                }}
-            >
-                Premium Web Design.
-                <br />
-                Custom Apps. <span style={{ color: 'var(--secondary-color)' }}>Elite SEO.</span>
-            </h1>
-
-            {/* Subtitle */}
-            <p
-                style={{
-                    fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-                    color: 'var(--text-secondary)',
-                    maxWidth: 650,
-                    lineHeight: 1.7,
-                    marginBottom: '2.5rem',
-                }}
-            >
-                We design high-converting websites, develop custom software applications, and execute advanced search engine optimization strategies to drive growth for your business.
-            </p>
-
-            {/* CTA buttons */}
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <a
-                    href="/services"
-                    style={{
-                        display: 'inline-block',
-                        padding: '0.9rem 2.5rem',
-                        fontSize: '1rem',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        borderRadius: '2px', // Angular
-                        background: 'var(--accent-color)',
-                        color: '#fff',
-                        textDecoration: 'none',
-                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                        (e.target as HTMLElement).style.transform = 'translateY(-2px)';
-                        (e.target as HTMLElement).style.boxShadow = '0 0 30px rgba(0, 102, 255, 0.4)';
-                    }}
-                    onMouseLeave={(e) => {
-                        (e.target as HTMLElement).style.transform = 'translateY(0)';
-                        (e.target as HTMLElement).style.boxShadow = 'none';
-                    }}
-                >
-                    View Services
-                </a>
-                <a
-                    href="/digital-forge"
-                    style={{
-                        display: 'inline-block',
-                        padding: '0.9rem 2.5rem',
-                        fontSize: '1rem',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                        borderRadius: '2px', // Angular
-                        background: 'transparent',
-                        border: '1px solid var(--glass-border)',
-                        color: 'var(--text-primary)',
-                        textDecoration: 'none',
-                        transition: 'all 0.2s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                        (e.target as HTMLElement).style.borderColor = 'var(--secondary-color)';
-                        (e.target as HTMLElement).style.color = 'var(--secondary-color)';
-                    }}
-                    onMouseLeave={(e) => {
-                        (e.target as HTMLElement).style.borderColor = 'var(--glass-border)';
-                        (e.target as HTMLElement).style.color = 'var(--text-primary)';
-                    }}
-                >
-                    Explore Digital Forge →
-                </a>
-            </div>
-
-            {/* Scroll indicator */}
-            <div
-                style={{
-                    position: 'absolute',
-                    bottom: '2rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    color: 'var(--text-secondary)',
-                    fontSize: '0.75rem',
-                    opacity: 0.6,
-                    animation: 'float-slow 3s ease-in-out infinite',
-                }}
-            >
-                <span style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }} >Scroll</span>
-                <span style={{ fontSize: '1.25rem' }}>↓</span>
-            </div>
-        </section>
-    );
+          </div>
+          <div className="absolute right-5 top-5 rounded-2xl border border-blue-100 bg-white/90 px-4 py-3 shadow-xl backdrop-blur-md">
+            <p className="text-[0.62rem] font-bold uppercase tracking-wider text-slate-400">Built around</p>
+            <p className="mt-1 text-sm font-extrabold text-slate-950">Business outcomes</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }

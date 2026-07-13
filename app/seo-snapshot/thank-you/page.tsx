@@ -34,7 +34,7 @@ export default function SeoSnapshotThankYouPage() {
           inset: 0,
           pointerEvents: 'none',
           background:
-            'radial-gradient(circle at 25% 25%, rgba(0,102,255,0.16), transparent 38%), radial-gradient(circle at 78% 72%, rgba(0,204,255,0.08), transparent 34%), linear-gradient(180deg, rgba(5,5,16,0.98), rgba(2,2,5,1))',
+            'radial-gradient(circle at 25% 25%, rgba(0,102,255,0.16), transparent 38%), radial-gradient(circle at 78% 72%, rgba(0,204,255,0.08), transparent 34%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))',
         }}
       />
 
@@ -51,7 +51,7 @@ export default function SeoSnapshotThankYouPage() {
                   width: 96,
                   height: 96,
                   borderRadius: 24,
-                  background: 'linear-gradient(135deg, #0066FF, #00CCFF)',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -77,7 +77,7 @@ export default function SeoSnapshotThankYouPage() {
               }}
             >
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#00CCFF', display: 'inline-block' }} />
-              <span style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+              <span style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
                 Request Received
               </span>
             </div>
@@ -87,7 +87,7 @@ export default function SeoSnapshotThankYouPage() {
                 fontSize: 'clamp(2.8rem, 6vw, 5rem)',
                 fontWeight: 900,
                 lineHeight: 1.04,
-                color: '#fff',
+                color: 'var(--text-primary)',
                 letterSpacing: '-0.03em',
                 marginBottom: '1.2rem',
               }}
@@ -96,7 +96,7 @@ export default function SeoSnapshotThankYouPage() {
               <br />
               <span
                 style={{
-                  background: 'linear-gradient(90deg, #0066FF, #00CCFF)',
+                  background: 'linear-gradient(90deg, #075ee5, #0088d6)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -108,7 +108,7 @@ export default function SeoSnapshotThankYouPage() {
             <p
               style={{
                 fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-                color: 'rgba(255,255,255,0.65)',
+                color: '#334155',
                 lineHeight: 1.85,
                 maxWidth: 680,
                 margin: '0 auto',
@@ -124,7 +124,7 @@ export default function SeoSnapshotThankYouPage() {
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div
               style={{
-                background: 'linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))',
+                background: 'linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)',
                 border: '1px solid rgba(0,102,255,0.2)',
                 borderRadius: 24,
                 padding: 'clamp(1.5rem, 4vw, 3rem)',
@@ -132,7 +132,7 @@ export default function SeoSnapshotThankYouPage() {
             >
               <p
                 style={{
-                  color: '#00CCFF',
+                  color: '#0077b8',
                   fontSize: '0.75rem',
                   fontWeight: 700,
                   letterSpacing: '0.18em',
@@ -145,7 +145,7 @@ export default function SeoSnapshotThankYouPage() {
               </p>
               <h2
                 style={{
-                  color: '#fff',
+                  color: 'var(--text-primary)',
                   fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)',
                   fontWeight: 900,
                   lineHeight: 1.1,
@@ -164,8 +164,8 @@ export default function SeoSnapshotThankYouPage() {
                       gridTemplateColumns: '64px minmax(0,1fr)',
                       gap: '1.2rem',
                       alignItems: 'flex-start',
-                      background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid rgba(255,255,255,0.07)',
+                      background: '#ffffff',
+                      border: '1px solid rgba(15,23,42,0.11)',
                       borderRadius: 18,
                       padding: '1.2rem',
                     }}
@@ -186,8 +186,8 @@ export default function SeoSnapshotThankYouPage() {
                       <span style={{ color: '#60A5FA', fontWeight: 900, fontSize: '1rem' }}>{item.num}</span>
                     </div>
                     <div>
-                      <h3 style={{ color: '#fff', fontWeight: 800, marginBottom: '0.35rem', fontSize: '1.05rem' }}>{item.title}</h3>
-                      <p style={{ color: 'rgba(255,255,255,0.62)', lineHeight: 1.75, fontSize: '0.93rem' }}>{item.desc}</p>
+                      <h3 style={{ color: 'var(--text-primary)', fontWeight: 800, marginBottom: '0.35rem', fontSize: '1.05rem' }}>{item.title}</h3>
+                      <p style={{ color: '#334155', lineHeight: 1.75, fontSize: '0.93rem' }}>{item.desc}</p>
                     </div>
                   </div>
                 ))}
@@ -208,15 +208,15 @@ export default function SeoSnapshotThankYouPage() {
                 textAlign: 'center',
               }}
             >
-              <p style={{ color: '#00CCFF', fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
+              <p style={{ color: '#0077b8', fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
                 Want Faster Results?
               </p>
-              <h2 style={{ color: '#fff', fontSize: 'clamp(2rem, 4.5vw, 3.2rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: '1rem' }}>
+              <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(2rem, 4.5vw, 3.2rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: '1rem' }}>
                 Skip the wait.
                 <br />
                 Book a live strategy call.
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 680, margin: '0 auto 2rem', lineHeight: 1.85, fontSize: '1rem' }}>
+              <p style={{ color: '#334155', maxWidth: 680, margin: '0 auto 2rem', lineHeight: 1.85, fontSize: '1rem' }}>
                 In 30 minutes, we will walk through your results together, explain exactly what is stopping your rankings, and give you a prioritized plan you can act on immediately. No sales pitch — just clear, useful SEO direction.
               </p>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -229,8 +229,8 @@ export default function SeoSnapshotThankYouPage() {
                     gap: '0.5rem',
                     padding: '1rem 2rem',
                     borderRadius: 10,
-                    background: 'linear-gradient(135deg, #0066FF, #0044CC)',
-                    color: '#fff',
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
+                    color: 'var(--text-primary)',
                     textDecoration: 'none',
                     fontWeight: 800,
                     textTransform: 'uppercase',
@@ -248,8 +248,8 @@ export default function SeoSnapshotThankYouPage() {
                     alignItems: 'center',
                     padding: '1rem 2rem',
                     borderRadius: 10,
-                    border: '1px solid rgba(255,255,255,0.14)',
-                    color: 'rgba(255,255,255,0.7)',
+                    border: '1px solid rgba(15,23,42,0.11)',
+                    color: '#334155',
                     textDecoration: 'none',
                     fontWeight: 700,
                     textTransform: 'uppercase',
@@ -260,7 +260,7 @@ export default function SeoSnapshotThankYouPage() {
                   Run Another Snapshot
                 </Link>
               </div>
-              <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.82rem', marginTop: '1.4rem' }}>
+              <p style={{ color: '#64748b', fontSize: '0.82rem', marginTop: '1.4rem' }}>
                 30-minute call · Free · No obligation · Real action from day one
               </p>
             </div>

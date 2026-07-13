@@ -1,280 +1,187 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
+import { agencyServices, discoveryCallUrl, whatsappNumber } from "@/lib/services";
 
-const contactMethods = [
-    { icon: '📧', title: 'Email', value: 'admin@triumphantech.com', href: 'mailto:admin@triumphantech.com', color: '#0066FF' },
-    { icon: '📱', title: 'WhatsApp', value: '+234 810 771 1190', href: 'https://wa.me/2348107711190', color: '#00CCFF' },
-    { icon: '📍', title: 'Global Presence', value: 'Serving Clients Worldwide', href: '#', color: '#3385FF' },
-];
+const serviceLabels: Record<string, string> = Object.fromEntries(
+  agencyServices.map((service) => [service.slug, service.shortTitle]),
+);
 
-const serviceLabels: Record<string, string> = {
-    nimc: 'NIMC Registration',
-    school: 'School Registrations',
-    internet: 'Internet Services',
-    seo: 'SEO & Website Management',
-    ai: 'AI Data Consulting',
-    tech: 'Technical Support',
-    productivity: 'AI-Enhanced Productivity',
-    other: 'Other',
-};
+const initialForm = { name: "", email: "", company: "", service: "", budget: "", timeline: "", message: "" };
 
 export default function ContactPage() {
-    const [formData, setFormData] = useState({ name: '', email: '', service: '', message: '' });
-    const [sending, setSending] = useState(false);
-    const [sent, setSent] = useState(false);
-    const [error, setError] = useState('');
+  const [formData, setFormData] = useState(initialForm);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setSending(true);
-        setError('');
-        try {
-            const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    service_id: 'service_fgz42ok',
-                    template_id: 'template_2bilwne',
-                    user_id: 'TCsiAiLBlJkqHpCn5',
-                    template_params: {
-                        from_name: formData.name,
-                        reply_to: formData.email,
-                        service: serviceLabels[formData.service] || formData.service || 'Not specified',
-                        message: formData.message,
-                    },
-                }),
-            });
-            if (!res.ok) throw new Error('Failed to send message');
-            setSent(true);
-            setFormData({ name: '', email: '', service: '', message: '' });
-        } catch (err: unknown) {
-            setError(err instanceof Error ? err.message : 'Failed to send. Please try again.');
-        } finally {
-            setSending(false);
-        }
-    };
+  const projectMessage = [
+    formData.company ? `Company: ${formData.company}` : "",
+    formData.budget ? `Budget: ${formData.budget}` : "",
+    formData.timeline ? `Timeline: ${formData.timeline}` : "",
+    "",
+    formData.message,
+  ].filter(Boolean).join("\n");
 
-    const inputStyle: React.CSSProperties = {
-        width: '100%',
-        padding: '0.85rem 1rem',
-        borderRadius: '2px',
-        border: '1px solid var(--glass-border)',
-        background: 'rgba(255, 255, 255, 0.03)',
-        color: 'var(--text-primary)',
-        fontSize: '0.95rem',
-        outline: 'none',
-        transition: 'border-color 0.2s',
-    };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setSending(true);
+    setError("");
+    try {
+      const leadResponse = await fetch("/api/contact-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          service: serviceLabels[formData.service] || formData.service || "Not specified",
+          message: projectMessage,
+        }),
+      });
+      if (!leadResponse.ok) throw new Error("We could not save your enquiry. Please try again.");
 
-    return (
-        <div className="min-h-screen">
-            {/* ===================== HERO ===================== */}
-            <section
-                className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingTop: '8rem', paddingBottom: '3rem', textAlign: 'center' }}
-            >
-                <p
-                    className="uppercase tracking-widest text-sm font-semibold mb-4"
-                    style={{ color: 'var(--accent-color)', letterSpacing: '0.25em' }}
-                >
-                    Get in Touch
-                </p>
-                <h1
-                    className="text-white"
-                    style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.15, marginBottom: '1.25rem' }}
-                >
-                    {"Let's Work Together"}
-                </h1>
-                <p style={{ fontSize: 'clamp(1rem, 1.8vw, 1.15rem)', color: 'var(--text-secondary)', maxWidth: 550, margin: '0 auto', lineHeight: 1.7 }}>
-                    Have a project in mind, need tech support, or want to explore how we can help? Reach out — we respond within 24 hours.
-                </p>
-            </section>
+      const emailResponse = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          service_id: "service_fgz42ok",
+          template_id: "template_2bilwne",
+          user_id: "TCsiAiLBlJkqHpCn5",
+          template_params: {
+            from_name: formData.name,
+            reply_to: formData.email,
+            service: serviceLabels[formData.service] || formData.service || "Not specified",
+            message: projectMessage,
+          },
+        }),
+      });
+      if (!emailResponse.ok) throw new Error("We could not send your enquiry. Please try again.");
 
-            {/* ===================== CONTACT METHODS ===================== */}
-            <section
-                className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingBottom: '3rem' }}
-            >
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-                        gap: '1.25rem',
-                    }}
-                >
-                    {contactMethods.map((m, i) => (
-                        <a
-                            key={i}
-                            href={m.href}
-                            target={m.href.startsWith('http') ? '_blank' : undefined}
-                            rel={m.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                            className="glass glass-hover rounded-sm"
-                            style={{
-                                padding: '1.75rem',
-                                textDecoration: 'none',
-                                textAlign: 'center',
-                                borderTop: `3px solid ${m.color}`,
-                                transition: 'transform 0.3s, box-shadow 0.3s',
-                            }}
-                        >
-                            <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.75rem' }}>{m.icon}</span>
-                            <h3 style={{ fontSize: '1rem', fontWeight: 700, color: m.color, marginBottom: '0.35rem' }}>{m.title}</h3>
-                            <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{m.value}</p>
-                        </a>
-                    ))}
+      setSent(true);
+      setFormData(initialForm);
+    } catch (submissionError) {
+      setError(submissionError instanceof Error ? submissionError.message : "Failed to send. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const update = (field: keyof typeof initialForm, value: string) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+  };
+
+  const fieldClass =
+    "mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100";
+  const labelClass = "text-xs font-extrabold uppercase tracking-[0.1em] text-slate-600";
+
+  return (
+    <div>
+      <header className="page-hero">
+        <p className="eyebrow">Work with us</p>
+        <h1>Tell us what the business needs to achieve.</h1>
+        <p>
+          Share the context, the challenge and where you want to get to. We will review your enquiry and respond with a
+          practical next step within one business day.
+        </p>
+      </header>
+
+      <section className="section-muted">
+        <div className="section-shell grid gap-12 lg:grid-cols-[0.72fr_1.28fr]">
+          <aside>
+            <p className="eyebrow">Before you submit</p>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-slate-950">A useful first conversation starts with context.</h2>
+            <p className="mt-4 leading-7 text-slate-600">
+              You do not need a complete specification. A clear description of the problem, the desired outcome and your
+              timing is enough for us to recommend the next step.
+            </p>
+            <div className="mt-8 grid gap-3">
+              {[
+                ["Response time", "Within one business day"],
+                ["Discovery call", "30 minutes, no pressure"],
+                ["Project fit", "Honest guidance before a proposal"],
+              ].map(([label, value]) => (
+                <div className="rounded-xl border border-slate-200 bg-white p-4" key={label}>
+                  <p className="text-xs font-bold uppercase tracking-wider text-slate-500">{label}</p>
+                  <p className="mt-1 text-sm font-bold text-slate-950">{value}</p>
                 </div>
-            </section>
+              ))}
+            </div>
+            <div className="mt-7 flex flex-col items-start gap-3">
+              <a className="text-link !mt-0 !pt-0" href={discoveryCallUrl} target="_blank" rel="noreferrer">Book directly instead <span>→</span></a>
+              <a className="text-sm font-semibold text-slate-600 hover:text-blue-700" href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer">WhatsApp: +234 810 771 1190</a>
+              <a className="text-sm font-semibold text-slate-600 hover:text-blue-700" href="mailto:admin@triumphantech.com">admin@triumphantech.com</a>
+            </div>
+          </aside>
 
-            {/* ===================== FORM ===================== */}
-            <section
-                className="max-w-screen-md mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingTop: '2rem', paddingBottom: '6rem' }}
-            >
-                <div
-                    className="glass rounded-lg border border-[#0066FF]/20"
-                    style={{ padding: 'clamp(2rem, 5vw, 3rem)', position: 'relative', overflow: 'hidden' }}
-                >
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'linear-gradient(90deg, var(--accent-color), var(--secondary-color))' }} />
-
-                    <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--accent-color)', marginBottom: '0.5rem' }}>
-                        Send Us a Message
-                    </h2>
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                        Fill out the form and we will get back to you as soon as possible.
-                    </p>
-
-                    {error && (
-                        <div style={{
-                            padding: '0.75rem 1rem', marginBottom: '1.5rem', borderRadius: '2px',
-                            background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)',
-                            color: '#ef4444', fontSize: '0.9rem',
-                        }}>
-                            {error}
-                        </div>
-                    )}
-
-                    {sent ? (
-                        <div style={{ textAlign: 'center', padding: '3rem 0' }}>
-                            <span style={{ fontSize: '3rem', display: 'block', marginBottom: '1rem' }}>✅</span>
-                            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--accent-color)', marginBottom: '0.5rem' }}>
-                                Message Sent!
-                            </h3>
-                            <p style={{ color: 'var(--text-secondary)' }}>{"We'll get back to you within 24 hours."}</p>
-                            <button
-                                onClick={() => { setSent(false); setError(''); }}
-                                style={{
-                                    marginTop: '1.5rem', padding: '0.6rem 1.5rem', borderRadius: '2px',
-                                    border: '1px solid var(--glass-border)', background: 'transparent',
-                                    color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.9rem',
-                                    fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em'
-                                }}
-                            >
-                                Send Another Message
-                            </button>
-                        </div>
-                    ) : (
-                        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                            {/* Name & Email row */}
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem' }}>
-                                <div>
-                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                        Your Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        placeholder="John Doe"
-                                        style={inputStyle}
-                                        onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-color)'}
-                                        onBlur={(e) => e.currentTarget.style.borderColor = 'var(--glass-border)'}
-                                    />
-                                </div>
-                                <div>
-                                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                        Email Address
-                                    </label>
-                                    <input
-                                        type="email"
-                                        required
-                                        value={formData.email}
-                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        placeholder="you@example.com"
-                                        style={inputStyle}
-                                        onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-color)'}
-                                        onBlur={(e) => e.currentTarget.style.borderColor = 'var(--glass-border)'}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Service dropdown */}
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                    Service Needed
-                                </label>
-                                <select
-                                    value={formData.service}
-                                    onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                                    style={{ ...inputStyle, cursor: 'pointer', appearance: 'auto', colorScheme: 'dark' }}
-                                    onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-color)'}
-                                    onBlur={(e) => e.currentTarget.style.borderColor = 'var(--glass-border)'}
-                                >
-                                    <option value="" style={{ background: '#050510', color: '#ccc' }}>Select a service...</option>
-                                    <option value="nimc" style={{ background: '#050510', color: '#fff' }}>NIMC Registration</option>
-                                    <option value="school" style={{ background: '#050510', color: '#fff' }}>School Registrations</option>
-                                    <option value="internet" style={{ background: '#050510', color: '#fff' }}>Internet Services</option>
-                                    <option value="seo" style={{ background: '#050510', color: '#fff' }}>SEO &amp; Website Management</option>
-                                    <option value="ai" style={{ background: '#050510', color: '#fff' }}>AI Data Consulting</option>
-                                    <option value="tech" style={{ background: '#050510', color: '#fff' }}>Technical Support</option>
-                                    <option value="productivity" style={{ background: '#050510', color: '#fff' }}>AI-Enhanced Productivity</option>
-                                    <option value="other" style={{ background: '#050510', color: '#fff' }}>Other</option>
-                                </select>
-                            </div>
-
-                            {/* Message */}
-                            <div>
-                                <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                    Your Message
-                                </label>
-                                <textarea
-                                    required
-                                    rows={5}
-                                    value={formData.message}
-                                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                    placeholder="Tell us about your project or how we can help..."
-                                    style={{ ...inputStyle, resize: 'vertical' }}
-                                    onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-color)'}
-                                    onBlur={(e) => e.currentTarget.style.borderColor = 'var(--glass-border)'}
-                                />
-                            </div>
-
-                            {/* Submit */}
-                            <button
-                                type="submit"
-                                disabled={sending}
-                                style={{
-                                    padding: '0.9rem 2.5rem',
-                                    fontSize: '0.9rem',
-                                    fontWeight: 700,
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.1em',
-                                    borderRadius: '2px',
-                                    background: sending ? 'var(--glass-bg)' : 'var(--accent-color)',
-                                    color: sending ? 'var(--text-secondary)' : '#fff',
-                                    border: 'none',
-                                    cursor: sending ? 'wait' : 'pointer',
-                                    transition: 'transform 0.2s, box-shadow 0.2s',
-                                    alignSelf: 'flex-start',
-                                }}
-                            >
-                                {sending ? 'Sending...' : 'Send Message'}
-                            </button>
-                        </form>
-                    )}
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.08)] sm:p-9">
+            {sent ? (
+              <div className="grid min-h-[460px] place-items-center text-center">
+                <div>
+                  <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-blue-600 text-xl text-white">✓</span>
+                  <h2 className="mt-5 text-2xl font-extrabold text-slate-950">Your project enquiry is with us.</h2>
+                  <p className="mt-3 text-slate-600">We will review the details and reply within one business day.</p>
+                  <button className="button button-secondary mt-7" onClick={() => setSent(false)}>Send another enquiry</button>
                 </div>
-            </section>
+              </div>
+            ) : (
+              <form className="grid gap-5" onSubmit={handleSubmit}>
+                <div>
+                  <p className="eyebrow">Project enquiry</p>
+                  <h2 className="mt-3 text-2xl font-extrabold text-slate-950">Help us understand the opportunity.</h2>
+                </div>
+
+                {error ? <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div> : null}
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className={labelClass}>Your name
+                    <input required className={fieldClass} value={formData.name} onChange={(e) => update("name", e.target.value)} placeholder="Full name" />
+                  </label>
+                  <label className={labelClass}>Work email
+                    <input required type="email" className={fieldClass} value={formData.email} onChange={(e) => update("email", e.target.value)} placeholder="you@company.com" />
+                  </label>
+                </div>
+                <label className={labelClass}>Company or organisation
+                  <input className={fieldClass} value={formData.company} onChange={(e) => update("company", e.target.value)} placeholder="Optional" />
+                </label>
+                <label className={labelClass}>Primary service
+                  <select required className={fieldClass} value={formData.service} onChange={(e) => update("service", e.target.value)}>
+                    <option value="">Select the closest fit</option>
+                    {agencyServices.map((service) => <option key={service.slug} value={service.slug}>{service.shortTitle}</option>)}
+                    <option value="Not sure yet">Not sure yet</option>
+                  </select>
+                </label>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className={labelClass}>Indicative budget
+                    <select className={fieldClass} value={formData.budget} onChange={(e) => update("budget", e.target.value)}>
+                      <option value="">Select a range</option>
+                      <option>Under ₦350,000</option>
+                      <option>₦350,000 – ₦1,000,000</option>
+                      <option>₦1,000,000 – ₦3,000,000</option>
+                      <option>Above ₦3,000,000</option>
+                      <option>Monthly retainer</option>
+                    </select>
+                  </label>
+                  <label className={labelClass}>Desired timeline
+                    <select className={fieldClass} value={formData.timeline} onChange={(e) => update("timeline", e.target.value)}>
+                      <option value="">Select timing</option>
+                      <option>As soon as possible</option>
+                      <option>Within 1–2 months</option>
+                      <option>Within 3–6 months</option>
+                      <option>Exploring for later</option>
+                    </select>
+                  </label>
+                </div>
+                <label className={labelClass}>Project context
+                  <textarea required rows={6} className={`${fieldClass} resize-y`} value={formData.message} onChange={(e) => update("message", e.target.value)} placeholder="What is the current challenge, what would success look like, and is there anything we should know?" />
+                </label>
+                <button className="button button-primary sm:justify-self-start" disabled={sending} type="submit">
+                  {sending ? "Sending enquiry…" : "Send project enquiry"}
+                </button>
+              </form>
+            )}
+          </div>
         </div>
-    );
+      </section>
+    </div>
+  );
 }

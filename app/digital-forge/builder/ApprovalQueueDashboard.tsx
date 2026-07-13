@@ -26,7 +26,7 @@ type BuilderAction = "approve_for_publish" | "request_revision" | "push_to_publi
 const QUEUE_LANES: { status: QueueStatus; label: string; color: string; bg: string; desc: string }[] = [
   { status: "ready_for_review",     label: "Needs Review",          color: "#f59e0b", bg: "rgba(245,158,11,0.08)",   desc: "Awaiting editorial approval" },
   { status: "needs_revision",       label: "Needs Revision",        color: "#f97316", bg: "rgba(249,115,22,0.08)",  desc: "Flagged — revisions requested" },
-  { status: "approved_for_publish", label: "Ready to Publish",      color: "#00CCFF", bg: "rgba(0,204,255,0.07)",   desc: "Cleared — ready to go live" },
+  { status: "approved_for_publish", label: "Ready to Publish",      color: "#0077b8", bg: "rgba(0,204,255,0.07)",   desc: "Cleared — ready to go live" },
   { status: "published",            label: "Live",                  color: "#10b981", bg: "rgba(16,185,129,0.07)", desc: "Live on the public store" },
   { status: "distribution_pending", label: "Ready for Distribution",color: "#8b5cf6", bg: "rgba(139,92,246,0.07)", desc: "Published but channels not sent" },
   { status: "draft",                label: "Draft",                 color: "#64748b", bg: "rgba(100,116,139,0.06)", desc: "Generated — not yet in review" },
@@ -147,7 +147,7 @@ function getAvailableActions(product: ForgeProduct): Array<{ action: BuilderActi
     actions.push({
       action: "push_to_publish",
       label: "Publish Live",
-      color: "#00CCFF",
+      color: "#0077b8",
       bg: "rgba(0,204,255,0.08)",
       border: "rgba(0,204,255,0.3)",
     });
@@ -203,7 +203,7 @@ function StatusDot({ ok }: { ok: boolean }) {
   return (
     <span style={{
       display: "inline-block", width: 7, height: 7, borderRadius: "50%", flexShrink: 0,
-      background: ok ? "#10b981" : "rgba(255,255,255,0.14)",
+      background: ok ? "#10b981" : "#ffffff",
       boxShadow: ok ? "0 0 5px #10b981" : "none",
     }} />
   );
@@ -213,7 +213,7 @@ function StatusRow({ ok, label }: { ok: boolean; label: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.2rem 0" }}>
       <StatusDot ok={ok} />
-      <span style={{ fontSize: "0.75rem", color: ok ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.28)", fontWeight: ok ? 500 : 400 }}>
+      <span style={{ fontSize: "0.75rem", color: ok ? "#334155" : "#64748b", fontWeight: ok ? 500 : 400 }}>
         {label}
       </span>
     </div>
@@ -235,8 +235,8 @@ function Badge({ label, color, bg }: { label: string; color: string; bg: string 
 
 function MiniPanel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "8px", padding: "0.75rem 0.9rem" }}>
-      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "0.5rem" }}>{title}</p>
+    <div style={{ background: "#ffffff", border: "1px solid #ffffff", borderRadius: "8px", padding: "0.75rem 0.9rem" }}>
+      <p style={{ color: "#64748b", fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: "0.5rem" }}>{title}</p>
       {children}
     </div>
   );
@@ -274,28 +274,28 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
       {/* Drawer */}
       <div style={{
         position: "fixed", top: 0, right: 0, bottom: 0, width: "min(640px, 100vw)",
-        background: "rgba(6,10,25,0.98)", borderLeft: "1px solid rgba(255,255,255,0.08)",
+        background: "#ffffff", borderLeft: "1px solid #ffffff",
         zIndex: 50, overflowY: "auto", padding: "2rem 1.75rem",
       }}>
         {/* Close */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-          <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+          <span style={{ color: "#64748b", fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
             Product Workspace
           </span>
-          <button onClick={onClose} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", padding: "0.35rem 0.75rem", color: "rgba(255,255,255,0.5)", fontSize: "0.75rem", cursor: "pointer" }}>
+          <button onClick={onClose} style={{ background: "#64748b", border: "1px solid #64748b", borderRadius: "6px", padding: "0.35rem 0.75rem", color: "#64748b", fontSize: "0.75rem", cursor: "pointer" }}>
             ✕ Close
           </button>
         </div>
 
         {/* Block 1: Identity */}
-        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(15,23,42,0.11)" }}>
           <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
             {laneMeta && <Badge label={laneMeta.label} color={laneMeta.color} bg={laneMeta.bg} />}
             <Badge label={product.category} color="rgba(255,255,255,0.5)" bg="rgba(255,255,255,0.04)" />
             {product.generationProfile && <Badge label={product.generationProfile} color="#a78bfa" bg="rgba(124,58,237,0.1)" />}
           </div>
-          <h2 style={{ color: "#fff", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.35rem", lineHeight: 1.3 }}>{product.title}</h2>
-          <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.72rem", fontFamily: "monospace", marginBottom: "0.5rem" }}>/digital-forge/products/{product.slug}</p>
+          <h2 style={{ color: "var(--text-primary)", fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.35rem", lineHeight: 1.3 }}>{product.title}</h2>
+          <p style={{ color: "#64748b", fontSize: "0.72rem", fontFamily: "monospace", marginBottom: "0.5rem" }}>/digital-forge/products/{product.slug}</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.4rem" }}>
             {[
               { k: "Format",      v: product.format },
@@ -305,18 +305,18 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
               { k: "Review",      v: block.reviewStatus ?? "not_reviewed" },
               { k: "Launch",      v: block.launchStatus ?? "not_started" },
             ].map(({ k, v }) => (
-              <div key={k} style={{ background: "rgba(255,255,255,0.03)", borderRadius: "6px", padding: "0.45rem 0.6rem" }}>
-                <div style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" }}>{k}</div>
-                <div style={{ color: "rgba(255,255,255,0.72)", fontSize: "0.78rem", fontWeight: 600 }}>{String(v)}</div>
+              <div key={k} style={{ background: "#ffffff", borderRadius: "6px", padding: "0.45rem 0.6rem" }}>
+                <div style={{ color: "#64748b", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" }}>{k}</div>
+                <div style={{ color: "#334155", fontSize: "0.78rem", fontWeight: 600 }}>{String(v)}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Block 2: Page Quality */}
-        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(15,23,42,0.11)" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.75rem" }}>
-            <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Page Quality</p>
+            <p style={{ color: "#64748b", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Page Quality</p>
             <span style={{ background: score >= 5 ? "rgba(16,185,129,0.12)" : "rgba(249,115,22,0.12)", border: `1px solid ${score >= 5 ? "rgba(16,185,129,0.3)" : "rgba(249,115,22,0.3)"}`, borderRadius: "100px", padding: "0.18rem 0.6rem", fontSize: "0.67rem", fontWeight: 700, color: score >= 5 ? "#10b981" : "#f97316" }}>
               {score}/{checks.length}
             </span>
@@ -324,11 +324,11 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
           <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.75rem" }}>
             {checks.map((c) => (
               <span key={c.label} style={{
-                background: c.ok ? "rgba(16,185,129,0.08)" : "rgba(255,255,255,0.03)",
-                border: `1px solid ${c.ok ? "rgba(16,185,129,0.25)" : "rgba(255,255,255,0.07)"}`,
+                background: c.ok ? "rgba(16,185,129,0.08)" : "#ffffff",
+                border: `1px solid ${c.ok ? "rgba(16,185,129,0.25)" : "rgba(15,23,42,0.11)"}`,
                 borderRadius: "100px", padding: "0.18rem 0.55rem",
                 fontSize: "0.65rem", fontWeight: 600,
-                color: c.ok ? "#10b981" : "rgba(255,255,255,0.28)",
+                color: c.ok ? "#10b981" : "#64748b",
               }}>
                 {c.ok ? "✓" : "○"} {c.label}
               </span>
@@ -341,22 +341,22 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
             </div>
           )}
           {has(product.headline) && (
-            <div style={{ marginTop: "0.75rem", padding: "0.75rem 0.9rem", background: "rgba(255,255,255,0.03)", borderRadius: "8px", borderLeft: "3px solid rgba(0,204,255,0.3)" }}>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Headline</p>
-              <p style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.82rem", lineHeight: 1.55 }}>{product.headline}</p>
+            <div style={{ marginTop: "0.75rem", padding: "0.75rem 0.9rem", background: "#ffffff", borderRadius: "8px", borderLeft: "3px solid rgba(0,204,255,0.3)" }}>
+              <p style={{ color: "#64748b", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Headline</p>
+              <p style={{ color: "#334155", fontSize: "0.82rem", lineHeight: 1.55 }}>{product.headline}</p>
             </div>
           )}
           {has(product.subheadline) && (
-            <div style={{ marginTop: "0.5rem", padding: "0.75rem 0.9rem", background: "rgba(255,255,255,0.02)", borderRadius: "8px" }}>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Subheadline</p>
-              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.78rem", lineHeight: 1.55 }}>{product.subheadline}</p>
+            <div style={{ marginTop: "0.5rem", padding: "0.75rem 0.9rem", background: "#ffffff", borderRadius: "8px" }}>
+              <p style={{ color: "#64748b", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "0.3rem" }}>Subheadline</p>
+              <p style={{ color: "#334155", fontSize: "0.78rem", lineHeight: 1.55 }}>{product.subheadline}</p>
             </div>
           )}
         </div>
 
         {/* Block 3: Approval Decision */}
-        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Approval Decision</p>
+        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(15,23,42,0.11)" }}>
+          <p style={{ color: "#64748b", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Approval Decision</p>
           <div style={{ display: "grid", gap: "0.4rem", marginBottom: "0.85rem" }}>
             {[
               { k: "Review status",  v: block.reviewStatus ?? "not_reviewed" },
@@ -364,21 +364,21 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
               { k: "Reviewed at",    v: formatTimestamp(block.reviewedAt) },
                 { k: "Published at",   v: publishedAt ?? "—" },
             ].map(({ k, v }) => (
-              <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "0.4rem 0", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-                <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.73rem" }}>{k}</span>
-                <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.73rem", fontWeight: 600 }}>{v}</span>
+              <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "0.4rem 0", borderBottom: "1px solid rgba(15,23,42,0.11)" }}>
+                <span style={{ color: "#64748b", fontSize: "0.73rem" }}>{k}</span>
+                <span style={{ color: "#334155", fontSize: "0.73rem", fontWeight: 600 }}>{v}</span>
               </div>
             ))}
           </div>
           {block.approvalNotes && (
             <div style={{ padding: "0.6rem 0.8rem", background: "rgba(16,185,129,0.06)", borderRadius: "7px", marginBottom: "0.5rem" }}>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", marginBottom: "0.25rem" }}>Approval Notes</p>
-              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", lineHeight: 1.6 }}>{block.approvalNotes}</p>
+              <p style={{ color: "#64748b", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", marginBottom: "0.25rem" }}>Approval Notes</p>
+              <p style={{ color: "#334155", fontSize: "0.75rem", lineHeight: 1.6 }}>{block.approvalNotes}</p>
             </div>
           )}
           {block.revisionNotes && (
             <div style={{ padding: "0.6rem 0.8rem", background: "rgba(249,115,22,0.06)", borderRadius: "7px" }}>
-              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", marginBottom: "0.25rem" }}>Revision Notes</p>
+              <p style={{ color: "#64748b", fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", marginBottom: "0.25rem" }}>Revision Notes</p>
               <p style={{ color: "rgba(249,115,22,0.75)", fontSize: "0.75rem", lineHeight: 1.6 }}>{block.revisionNotes}</p>
             </div>
           )}
@@ -396,33 +396,33 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
         </div>
 
         {/* Block 4: Publishing State */}
-        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Publishing State</p>
+        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(15,23,42,0.11)" }}>
+          <p style={{ color: "#64748b", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Publishing State</p>
           <StatusRow ok={has(product.headline) && has(product.deliverables)} label="Website payload present" />
           <StatusRow ok={product.status === "published"} label={`Website status: ${product.status ?? "draft"}`} />
           <StatusRow ok={block.websiteSyncStatus === "synced" || block.websiteSyncStatus === "success"} label={`Airtable sync: ${block.websiteSyncStatus ?? "pending"}`} />
           <StatusRow ok={product.status === "published" && getPageScore(product) >= 5} label="Live eligible" />
           {publishedAt && (
-            <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.72rem", marginTop: "0.5rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.72rem", marginTop: "0.5rem" }}>
               Published: {publishedAt}
             </p>
           )}
           {block.lastWebsiteSyncAt && (
-            <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.7rem", marginTop: publishedAt ? "0.2rem" : "0.5rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.7rem", marginTop: publishedAt ? "0.2rem" : "0.5rem" }}>
               Last sync: {formatTimestamp(block.lastWebsiteSyncAt)}
             </p>
           )}
           {product.status === "published" && (
             <Link href={`/digital-forge/products/${product.slug}`} target="_blank"
-              style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", marginTop: "0.65rem", color: "#00CCFF", fontSize: "0.72rem", fontWeight: 600, textDecoration: "none" }}>
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem", marginTop: "0.65rem", color: "#0077b8", fontSize: "0.72rem", fontWeight: 600, textDecoration: "none" }}>
               Open Live Page ↗
             </Link>
           )}
         </div>
 
         {/* Block 5: Asset Readiness */}
-        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Asset Readiness</p>
+        <div style={{ marginBottom: "1.25rem", paddingBottom: "1.25rem", borderBottom: "1px solid rgba(15,23,42,0.11)" }}>
+          <p style={{ color: "#64748b", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Asset Readiness</p>
           <StatusRow ok={has(r.bundlePdfPath)}    label="PDF ebook" />
           <StatusRow ok={has(r.bundleZipPath)}    label="ZIP bundle" />
           <StatusRow ok={has(r.driveFolderLink)}  label="Drive folder" />
@@ -439,18 +439,18 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
 
         {/* Block 6: Distribution Matrix */}
         <div>
-          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Distribution Matrix</p>
+          <p style={{ color: "#64748b", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Distribution Matrix</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
             {distChannels.map((ch) => (
               <div key={ch.name} style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
-                background: "rgba(255,255,255,0.03)", borderRadius: "7px", padding: "0.5rem 0.7rem",
-                border: "1px solid rgba(255,255,255,0.05)",
+                background: "#ffffff", borderRadius: "7px", padding: "0.5rem 0.7rem",
+                border: "1px solid rgba(15,23,42,0.11)",
               }}>
-                <span style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.75rem", fontWeight: 500 }}>{ch.name}</span>
+                <span style={{ color: "#64748b", fontSize: "0.75rem", fontWeight: 500 }}>{ch.name}</span>
                 <span style={{
                   fontSize: "0.63rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
-                  color: ch.ok ? "#10b981" : "rgba(255,255,255,0.28)",
+                  color: ch.ok ? "#10b981" : "#64748b",
                 }}>
                   {ch.ok ? "sent" : "pending"}
                 </span>
@@ -458,7 +458,7 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
             ))}
           </div>
           {block.lastDistributionAttemptAt && (
-            <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.7rem", marginTop: "0.6rem" }}>Last attempt: {block.lastDistributionAttemptAt}</p>
+            <p style={{ color: "#64748b", fontSize: "0.7rem", marginTop: "0.6rem" }}>Last attempt: {block.lastDistributionAttemptAt}</p>
           )}
         </div>
       </div>
@@ -485,7 +485,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
 
   return (
     <div style={{
-      background: "rgba(6,10,25,0.9)", border: "1px solid rgba(255,255,255,0.07)",
+      background: "#ffffff", border: "1px solid #ffffff",
       borderTop: `3px solid ${laneMeta.color}`, borderRadius: "14px", overflow: "hidden",
       transition: "border-color 0.2s",
     }}>
@@ -516,14 +516,14 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
           )}
         </div>
 
-        <h3 style={{ color: "#fff", fontWeight: 700, fontSize: "0.92rem", lineHeight: 1.3, marginBottom: "0.25rem" }}>
+        <h3 style={{ color: "var(--text-primary)", fontWeight: 700, fontSize: "0.92rem", lineHeight: 1.3, marginBottom: "0.25rem" }}>
           {product.title}
         </h3>
-          <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.7rem", fontFamily: "monospace" }}>
+          <p style={{ color: "#64748b", fontSize: "0.7rem", fontFamily: "monospace" }}>
             /{product.slug}
           </p>
           {publishedAt && (
-            <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.68rem", marginTop: "0.3rem" }}>
+            <p style={{ color: "#64748b", fontSize: "0.68rem", marginTop: "0.3rem" }}>
               Published: {formatTimestamp(publishedAt)}
             </p>
           )}
@@ -556,7 +556,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
       </div>
 
       {/* Action footer */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.65rem 1.1rem", borderTop: "1px solid rgba(255,255,255,0.05)", flexWrap: "wrap", gap: "0.5rem" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.65rem 1.1rem", borderTop: "1px solid rgba(15,23,42,0.11)", flexWrap: "wrap", gap: "0.5rem" }}>
         <div style={{ display: "flex", gap: "0.5rem" }}>
           <button onClick={onSelect}
             style={{ padding: "0.42rem 0.9rem", background: `${laneMeta.color}20`, border: `1px solid ${laneMeta.color}50`, borderRadius: "7px", color: laneMeta.color, fontSize: "0.72rem", fontWeight: 700, cursor: "pointer", letterSpacing: "0.08em" }}>
@@ -564,7 +564,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
           </button>
           {product.status === "published" && (
             <Link href={`/digital-forge/products/${product.slug}`} target="_blank"
-              style={{ display: "inline-flex", alignItems: "center", padding: "0.42rem 0.9rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "7px", color: "rgba(255,255,255,0.5)", fontSize: "0.72rem", fontWeight: 700, textDecoration: "none" }}>
+              style={{ display: "inline-flex", alignItems: "center", padding: "0.42rem 0.9rem", background: "#64748b", border: "1px solid #64748b", borderRadius: "7px", color: "#64748b", fontSize: "0.72rem", fontWeight: 700, textDecoration: "none" }}>
               Live ↗
             </Link>
           )}
@@ -575,7 +575,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
               key={a.action}
               onClick={() => onQuickAction(a.action, product)}
               disabled={actionPending !== null}
-              style={{ padding: "0.38rem 0.7rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: "6px", color: actionPending === a.action ? "#00CCFF" : "rgba(255,255,255,0.55)", fontSize: "0.65rem", fontWeight: 600, cursor: actionPending ? "wait" : "pointer" }}>
+              style={{ padding: "0.38rem 0.7rem", background: "#64748b", border: "1px solid #64748b", borderRadius: "6px", color: actionPending === a.action ? "#00CCFF" : "#64748b", fontSize: "0.65rem", fontWeight: 600, cursor: actionPending ? "wait" : "pointer" }}>
               {actionPending === a.action ? "Working…" : a.label}
             </button>
           ))}
@@ -609,11 +609,11 @@ function QueueLane({ lane, products, onSelect, onQuickAction, busySlug, busyActi
         <span style={{ width: 8, height: 8, borderRadius: "50%", background: lane.color, boxShadow: `0 0 6px ${lane.color}`, flexShrink: 0, display: "inline-block" }} />
         <span style={{ color: lane.color, fontWeight: 800, fontSize: "0.85rem", letterSpacing: "0.04em", flex: 1, textAlign: "left" }}>{lane.label}</span>
         <span style={{ background: `${lane.color}20`, border: `1px solid ${lane.color}40`, borderRadius: "100px", padding: "0.12rem 0.55rem", fontSize: "0.68rem", fontWeight: 700, color: lane.color }}>{products.length}</span>
-        <span style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.8rem" }}>{collapsed ? "▸" : "▾"}</span>
+        <span style={{ color: "#64748b", fontSize: "0.8rem" }}>{collapsed ? "▸" : "▾"}</span>
       </button>
 
       {!collapsed && products.length === 0 && (
-        <div style={{ padding: "1.25rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "10px", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: "0.78rem" }}>
+        <div style={{ padding: "1.25rem", background: "#64748b", border: "1px solid #64748b", borderRadius: "10px", textAlign: "center", color: "#64748b", fontSize: "0.78rem" }}>
           No products in this lane
         </div>
       )}
@@ -751,20 +751,20 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
               <div>
                 <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(0,102,255,0.08)", border: "1px solid rgba(0,102,255,0.25)", borderRadius: "100px", padding: "0.3rem 0.9rem", marginBottom: "0.85rem" }}>
                   <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#00CCFF", boxShadow: "0 0 6px #00CCFF", display: "inline-block" }} />
-                  <span style={{ color: "#00CCFF", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Internal — Digital Forge Command Center</span>
+                  <span style={{ color: "#0077b8", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Internal — Digital Forge Command Center</span>
                 </div>
-                <h1 style={{ fontSize: "clamp(1.7rem, 4vw, 2.6rem)", fontWeight: 900, color: "#fff", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "0.4rem" }}>
+                <h1 style={{ fontSize: "clamp(1.7rem, 4vw, 2.6rem)", fontWeight: 900, color: "var(--text-primary)", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "0.4rem" }}>
                   Approval Queue &amp; Launch Dashboard
                 </h1>
-                <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "0.85rem", maxWidth: "520px" }}>
+                <p style={{ color: "#64748b", fontSize: "0.85rem", maxWidth: "520px" }}>
                   Review products, approve publishing, track live sync, and monitor distribution from one place.
                 </p>
               </div>
               <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap" }}>
-                <Link href="/digital-forge/products" style={{ display: "inline-flex", alignItems: "center", padding: "0.55rem 1rem", background: "rgba(0,102,255,0.08)", border: "1px solid rgba(0,102,255,0.25)", borderRadius: "8px", color: "#00CCFF", textDecoration: "none", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <Link href="/digital-forge/products" style={{ display: "inline-flex", alignItems: "center", padding: "0.55rem 1rem", background: "rgba(0,102,255,0.08)", border: "1px solid rgba(0,102,255,0.25)", borderRadius: "8px", color: "#0077b8", textDecoration: "none", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                   Live Store ↗
                 </Link>
-                <Link href="/digital-forge" style={{ display: "inline-flex", alignItems: "center", padding: "0.55rem 1rem", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", color: "rgba(255,255,255,0.45)", textDecoration: "none", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                <Link href="/digital-forge" style={{ display: "inline-flex", alignItems: "center", padding: "0.55rem 1rem", background: "#64748b", border: "1px solid #64748b", borderRadius: "8px", color: "#64748b", textDecoration: "none", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                   Product Library
                 </Link>
               </div>
@@ -772,7 +772,7 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
 
             {/* Doctrine strip */}
             <div style={{ padding: "0.8rem 1.1rem", background: "rgba(0,102,255,0.05)", border: "1px solid rgba(0,102,255,0.13)", borderRadius: "9px", marginBottom: "1.5rem" }}>
-              <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.78rem", lineHeight: 1.7 }}>
+              <p style={{ color: "#64748b", fontSize: "0.78rem", lineHeight: 1.7 }}>
                 <strong style={{ color: "rgba(0,204,255,0.6)" }}>Pipeline:</strong> Digital Forge products move through a controlled pipeline: generated → reviewed → approved → published → distributed. This dashboard shows where each product stands and what needs action next.
               </p>
             </div>
@@ -783,14 +783,14 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
                 { label: "Total",             value: counts.total,    color: "#0066FF" },
                 { label: "Queued for Review", value: counts.review,   color: "#f59e0b" },
                 { label: "Needs Revision",    value: counts.revision, color: "#f97316" },
-                { label: "Approved",          value: counts.approved, color: "#00CCFF" },
+                { label: "Approved",          value: counts.approved, color: "#0077b8" },
                 { label: "Live",              value: counts.live,     color: "#10b981" },
                 { label: "Dist. Pending",     value: counts.distPend, color: "#8b5cf6" },
                 { label: "Blocked",           value: counts.blocked,  color: "#ef4444" },
               ].map((s) => (
-                <div key={s.label} style={{ background: "rgba(5,8,20,0.85)", border: "1px solid rgba(255,255,255,0.07)", borderLeft: `3px solid ${s.color}`, borderRadius: "10px", padding: "0.8rem 0.9rem" }}>
+                <div key={s.label} style={{ background: "#ffffff", border: "1px solid #ffffff", borderLeft: `3px solid ${s.color}`, borderRadius: "10px", padding: "0.8rem 0.9rem" }}>
                   <div style={{ fontSize: "1.75rem", fontWeight: 900, color: s.color, lineHeight: 1, marginBottom: "0.2rem" }}>{s.value}</div>
-                  <div style={{ fontSize: "0.63rem", color: "rgba(255,255,255,0.35)", fontWeight: 600, letterSpacing: "0.09em", textTransform: "uppercase", lineHeight: 1.3 }}>{s.label}</div>
+                  <div style={{ fontSize: "0.63rem", color: "#64748b", fontWeight: 600, letterSpacing: "0.09em", textTransform: "uppercase", lineHeight: 1.3 }}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -802,14 +802,14 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
               {/* View tabs */}
-              <div style={{ display: "flex", gap: "0.4rem", background: "rgba(255,255,255,0.04)", borderRadius: "10px", padding: "0.3rem" }}>
+              <div style={{ display: "flex", gap: "0.4rem", background: "#ffffff", borderRadius: "10px", padding: "0.3rem" }}>
                 {views.map((v) => (
                   <button key={v.id} onClick={() => setActiveView(v.id)}
                     style={{
                       padding: "0.4rem 0.85rem", borderRadius: "7px", fontSize: "0.75rem", fontWeight: 700,
                       cursor: "pointer", letterSpacing: "0.06em", border: "none",
                       background: activeView === v.id ? "rgba(0,102,255,0.2)" : "transparent",
-                      color: activeView === v.id ? "#00CCFF" : "rgba(255,255,255,0.4)",
+                      color: activeView === v.id ? "#00CCFF" : "#64748b",
                       outline: activeView === v.id ? "1px solid rgba(0,102,255,0.3)" : "none",
                     }}>
                     {v.label}
@@ -821,9 +821,9 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
               <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
                 <input value={search} onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search title or slug…"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "0.42rem 0.75rem", color: "#fff", fontSize: "0.78rem", width: "200px", outline: "none" }} />
+                  style={{ background: "#64748b", border: "1px solid #64748b", borderRadius: "8px", padding: "0.42rem 0.75rem", color: "var(--text-primary)", fontSize: "0.78rem", width: "200px", outline: "none" }} />
                 <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}
-                  style={{ background: "rgba(5,8,20,0.9)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "8px", padding: "0.42rem 0.75rem", color: "rgba(255,255,255,0.6)", fontSize: "0.75rem", outline: "none", cursor: "pointer" }}>
+                  style={{ background: "#ffffff", border: "1px solid #64748b", borderRadius: "8px", padding: "0.42rem 0.75rem", color: "#334155", fontSize: "0.75rem", outline: "none", cursor: "pointer" }}>
                   {categories.map((c) => <option key={c} value={c}>{c === "all" ? "All categories" : c}</option>)}
                 </select>
               </div>
@@ -836,7 +836,7 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
             )}
 
             {/* View label */}
-            <p style={{ color: "rgba(255,255,255,0.22)", fontSize: "0.72rem", marginBottom: "1.25rem", fontStyle: "italic" }}>
+            <p style={{ color: "#64748b", fontSize: "0.72rem", marginBottom: "1.25rem", fontStyle: "italic" }}>
               {activeView === "products"     && `Showing all ${filtered.length} products grouped by queue stage.`}
               {activeView === "funnels"      && `Showing all built funnels in the payload engine.`}
               {activeView === "live"         && `Showing ${filtered.length} currently published products, newest live items first.`}
@@ -862,7 +862,7 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
             ) : (
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "0.85rem" }}>
                 {filtered.length === 0 ? (
-                  <div style={{ gridColumn: "1/-1", padding: "2rem", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: "0.85rem", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: "12px" }}>
+                  <div style={{ gridColumn: "1/-1", padding: "2rem", textAlign: "center", color: "#64748b", fontSize: "0.85rem", background: "#64748b", border: "1px solid #64748b", borderRadius: "12px" }}>
                     No products match this view.
                   </div>
                 ) : (

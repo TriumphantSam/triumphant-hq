@@ -5,10 +5,10 @@ excerpt: "Stop passively consuming audiobooks and start actively co-creating wit
 category: "AI & Automation"
 readTime: "6 min read"
 published: true
-productHref: "/digital-forge/products/beyond-listening-how-to-co-create-your-favorite-au"
+productHref: "/digital-forge/system"
 ctaLabel: "View the product"
 faqSchema: [{"question": "What does it mean to 'co-create an audiobook'?", "answer": "It means using AI tools to actively interact with the audiobook's content. Instead of just listening, you ask questions, generate summaries, create checklists, and adapt concepts to your specific context, turning a passive experience into an active workshop."}, {"question": "Do I need to be a tech expert or a programmer to use this system?", "answer": "Not at all. The 'Beyond Listening' playbook is designed for busy operators, not engineers. The entire system can be run from your smartphone using user-friendly tools. We provide a step-by-step checklist for setup."}, {"question": "Is this just a more complicated way to summarize books?", "answer": "No. Summarization is just one small feature. The core of the system is about dialogue, extraction, and application. It's designed to help you generate actionable assets—like plans, memos, and frameworks—directly from the book's content, ready for immediate use."}]
-relatedLinks: [{"label": "Get the Playbook: Beyond Listening: How to Co-Create Your Favorite Audiobooks", "href": "/digital-forge/products/beyond-listening-how-to-co-create-your-favorite-au"}, {"label": "Explore More Operator Systems at Digital Forge", "href": "/digital-forge"}, {"label": "Read More Articles on the Digital Forge Blog", "href": "/blog"}]
+relatedLinks: [{"label": "Get the Digital Forge Starter System", "href": "/digital-forge/system"}, {"label": "Explore More Operator Systems at Digital Forge", "href": "/digital-forge"}, {"label": "Read More Articles on the Digital Forge Blog", "href": "/blog"}]
 ---
 Your audiobook library is probably overflowing. That ever-growing list of titles you bought with the best intentions now feels less like an asset and more like a low-grade source of anxiety. You listen in the car, on a run, while doing chores. You consume. But are you implementing?
 
@@ -67,7 +67,7 @@ Instantly, a generic global strategy becomes a nuanced, localized playbook. This
 
 Understanding the *what* and the *why* is the easy part. The real challenge is the *how*. Which AI tools? What specific prompts deliver results instead of generic summaries? How do you build this into a repeatable workflow that doesn't add more complexity to your day?
 
-We saw this gap clearly. Operators are drowning in content and starved for systems. That's why we built **[Beyond Listening: How to Co-Create Your Favorite Audiobooks]( /digital-forge/products/beyond-listening-how-to-co-create-your-favorite-au)**.
+We saw this gap clearly. Operators are drowning in content and starved for systems. That's why we built the **[Digital Forge Side Hustle Starter System](/digital-forge/system)**.
 
 This isn't another book telling you to take better notes. It is a complete operating system in a box. It packages the entire workflow into a step-by-step playbook with clear assets and practical guidance built for fast action.
 
@@ -93,8 +93,8 @@ Check out the rest of our insights on our [blog](/blog).
 
 ## Want the full playbook?
 
-This article gives you the thinking. [Beyond Listening: How to Co-Create Your Favorite Audiobooks (And Why You'll Never Go Back to Passive Playlists)](/digital-forge/products/beyond-listening-how-to-co-create-your-favorite-au) gives you the actual system, assets, and execution path.
+This article gives you the thinking. The [Digital Forge Side Hustle Starter System](/digital-forge/system) gives you the actual system, assets, and execution path.
 
-- See the product page: [Beyond Listening: How to Co-Create Your Favorite Audiobooks (And Why You'll Never Go Back to Passive Playlists)](/digital-forge/products/beyond-listening-how-to-co-create-your-favorite-au)
+- See the product page: [Digital Forge Side Hustle Starter System](/digital-forge/system)
 - Explore more resources: [Digital Forge](/digital-forge)
 - Read more practical breakdowns: [Journal](/blog)

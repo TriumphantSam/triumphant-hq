@@ -43,7 +43,7 @@ export default function DigitalForgeCourseWaitlistPage() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.22), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.14), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.22), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.14), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))",
           }}
         />
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
@@ -53,7 +53,7 @@ export default function DigitalForgeCourseWaitlistPage() {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.45rem",
-              color: "rgba(255,255,255,0.5)",
+              color: "#64748b",
               textDecoration: "none",
               fontSize: "0.84rem",
               fontWeight: 600,
@@ -77,7 +77,7 @@ export default function DigitalForgeCourseWaitlistPage() {
             }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+            <span style={{ color: "#0077b8", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
               Course Waitlist — Priority Access
             </span>
           </div>
@@ -88,7 +88,7 @@ export default function DigitalForgeCourseWaitlistPage() {
               fontWeight: 900,
               lineHeight: 1.04,
               letterSpacing: "-0.03em",
-              color: "#fff",
+              color: "var(--text-primary)",
               maxWidth: 920,
               marginBottom: "1.3rem",
             }}
@@ -99,7 +99,7 @@ export default function DigitalForgeCourseWaitlistPage() {
             <br />
             <span
               style={{
-                background: "linear-gradient(90deg, #0066FF, #00CCFF)",
+                background: "linear-gradient(90deg, #075ee5, #0088d6)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -112,7 +112,7 @@ export default function DigitalForgeCourseWaitlistPage() {
           <p
             style={{
               fontSize: "1.08rem",
-              color: "rgba(255,255,255,0.72)",
+              color: "#334155",
               lineHeight: 1.9,
               maxWidth: 760,
               marginBottom: "1rem",
@@ -122,7 +122,7 @@ export default function DigitalForgeCourseWaitlistPage() {
           </p>
           <p
             style={{
-              color: "rgba(255,255,255,0.52)",
+              color: "#64748b",
               lineHeight: 1.85,
               maxWidth: 760,
               fontSize: "0.97rem",
@@ -145,8 +145,8 @@ export default function DigitalForgeCourseWaitlistPage() {
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 fontSize: "0.86rem",
-                color: "#fff",
-                background: "linear-gradient(135deg, #0066FF, #0044CC)",
+                color: "var(--text-primary)",
+                background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
                 boxShadow: "0 0 36px rgba(0,102,255,0.42)",
               }}
             >
@@ -164,8 +164,8 @@ export default function DigitalForgeCourseWaitlistPage() {
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 fontSize: "0.86rem",
-                color: "rgba(255,255,255,0.82)",
-                border: "1px solid rgba(255,255,255,0.16)",
+                color: "#334155",
+                border: "1px solid rgba(15,23,42,0.11)",
               }}
             >
               Start with the Starter System
@@ -189,16 +189,16 @@ export default function DigitalForgeCourseWaitlistPage() {
             <WaitlistForm />
             <div
               style={{
-                background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
+                background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)",
                 border: "1px solid rgba(0,102,255,0.2)",
                 borderRadius: 24,
                 padding: "1.8rem",
               }}
             >
-              <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
+              <p style={{ color: "#0077b8", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
                 Why Join the Waitlist
               </p>
-              <h2 style={{ color: "#fff", fontSize: "clamp(1.5rem, 4vw, 2.1rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
+              <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.5rem, 4vw, 2.1rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
                 Stay connected to the strongest next step.
               </h2>
               <div style={{ display: "grid", gap: "0.85rem" }}>
@@ -218,9 +218,9 @@ export default function DigitalForgeCourseWaitlistPage() {
                         marginTop: 1,
                       }}
                     >
-                      <span style={{ color: "#00CCFF", fontSize: "0.7rem", fontWeight: 900 }}>✓</span>
+                      <span style={{ color: "#0077b8", fontSize: "0.7rem", fontWeight: 900 }}>✓</span>
                     </span>
-                    <p style={{ color: "rgba(255,255,255,0.72)", lineHeight: 1.8 }}>{item}</p>
+                    <p style={{ color: "#334155", lineHeight: 1.8 }}>{item}</p>
                   </div>
                 ))}
               </div>
@@ -234,11 +234,11 @@ export default function DigitalForgeCourseWaitlistPage() {
                   borderRadius: 14,
                 }}
               >
-                <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.69rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.35rem" }}>
+                <p style={{ color: "#64748b", fontSize: "0.69rem", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.35rem" }}>
                   Launch Price
                 </p>
-                <p style={{ color: "#00CCFF", fontWeight: 900, fontSize: "1.5rem" }}><CurrencyPrice ngnLabel="₦35,000" usdLabel="$23.33" /></p>
-                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.86rem", marginTop: "0.2rem" }}>
+                <p style={{ color: "#0077b8", fontWeight: 900, fontSize: "1.5rem" }}><CurrencyPrice ngnLabel="₦35,000" usdLabel="$23.33" /></p>
+                <p style={{ color: "#64748b", fontSize: "0.86rem", marginTop: "0.2rem" }}>
                   Full curriculum + workbook + bundle delivery
                 </p>
               </div>
@@ -251,10 +251,10 @@ export default function DigitalForgeCourseWaitlistPage() {
       <section style={{ paddingBottom: "6rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div style={{ marginBottom: "1.4rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.6rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.6rem" }}>
               Move Now While You Wait
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 900, lineHeight: 1.1 }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 900, lineHeight: 1.1 }}>
               Two strong options open right now.
             </h2>
           </div>
@@ -269,14 +269,14 @@ export default function DigitalForgeCourseWaitlistPage() {
               <div
                 key={item.title}
                 style={{
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,23,42,0.11)",
                   borderRadius: 22,
                   padding: "1.4rem",
                 }}
               >
-                <h3 style={{ color: "#fff", fontWeight: 800, fontSize: "1.05rem", marginBottom: "0.75rem" }}>{item.title}</h3>
-                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.2rem" }}>{item.description}</p>
+                <h3 style={{ color: "var(--text-primary)", fontWeight: 800, fontSize: "1.05rem", marginBottom: "0.75rem" }}>{item.title}</h3>
+                <p style={{ color: "#334155", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.2rem" }}>{item.description}</p>
                 <Link
                   href={item.href}
                   style={{
@@ -289,8 +289,8 @@ export default function DigitalForgeCourseWaitlistPage() {
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
                     fontSize: "0.8rem",
-                    color: "rgba(255,255,255,0.82)",
-                    border: "1px solid rgba(255,255,255,0.14)",
+                    color: "#334155",
+                    border: "1px solid rgba(15,23,42,0.11)",
                   }}
                 >
                   {item.cta}

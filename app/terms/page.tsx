@@ -87,7 +87,7 @@ export default function TermsPage() {
 
                     <h1
                         className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-6"
-                        style={{ color: '#fff', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+                        style={{ color: 'var(--text-primary)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
                     >
                         Terms of{' '}
                         <span style={{ color: 'var(--accent-color)' }}>Service</span>
@@ -614,7 +614,7 @@ function PolicySection({
                     style={{
                         fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
                         fontWeight: 700,
-                        color: '#fff',
+                        color: 'var(--text-primary)',
                         letterSpacing: '-0.01em',
                     }}
                 >

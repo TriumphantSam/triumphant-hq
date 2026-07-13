@@ -19,6 +19,8 @@ const START_STEPS = [
   { num: "03", text: "Use the Product Packaging Template to shape a bundle people want to buy." },
   { num: "04", text: "Run the Launch Checklist and Content Planner before publishing." },
 ];
+const STRATEGY_CALL_URL =
+  process.env.NEXT_PUBLIC_SEO_BOOKING_URL || "https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call";
 
 export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }: ConfirmedPageProps) {
   const params = await searchParams;
@@ -26,10 +28,15 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
   const isSuccess = !status || status === "successful" || status === "completed";
 
   return (
-    <div style={{ background: "#050510", minHeight: "100vh", color: "#fff", fontFamily: "sans-serif", overflow: "hidden" }}>
+    <div style={{ background: "#ffffff", minHeight: "100vh", color: "var(--text-primary)", fontFamily: "sans-serif", overflow: "hidden" }}>
       {isSuccess && (
         <Script id="meta-pixel-purchase">
-          {`if (typeof fbq !== 'undefined') fbq('track', 'Purchase');`}
+          {`
+            if (typeof fbq !== 'undefined') fbq('track', 'Purchase');
+            if (typeof window !== 'undefined' && window.posthog) {
+              window.posthog.capture('purchase_completed');
+            }
+          `}
         </Script>
       )}
       <section style={{ position: "relative", paddingTop: "clamp(6rem, 15vw, 8rem)", paddingBottom: "clamp(4rem, 10vw, 6rem)" }}>
@@ -41,8 +48,8 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
             inset: 0,
             background:
               isSuccess 
-                ? "radial-gradient(circle at 15% 20%, rgba(16,185,129,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))"
-                : "radial-gradient(circle at 15% 20%, rgba(245,158,11,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(249,115,22,0.16), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+                ? "radial-gradient(circle at 15% 20%, rgba(16,185,129,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.16), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))"
+                : "radial-gradient(circle at 15% 20%, rgba(245,158,11,0.24), transparent 32%), radial-gradient(circle at 85% 15%, rgba(249,115,22,0.16), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))",
           }}
         />
 
@@ -62,11 +69,11 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
             <div 
               style={{
                 position: "relative",
-                background: "rgba(9,14,32,0.92)",
+                background: "#ffffff",
                 border: isSuccess ? "1px solid rgba(16,185,129,0.3)" : "1px solid rgba(245,158,11,0.3)",
                 borderRadius: "2rem",
                 padding: "clamp(2rem, 6vw, 3.5rem)",
-                boxShadow: "0 20px 80px rgba(0,0,0,0.4)",
+                boxShadow: "0 20px 80px rgba(15,23,42,0.12)",
               }}
             >
               
@@ -108,7 +115,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
 
               <h1 
                 style={{
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   textAlign: "center",
                   fontSize: "clamp(2rem, 4vw, 3rem)",
                   fontWeight: 900,
@@ -122,7 +129,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
 
               <p 
                 style={{
-                  color: "rgba(255,255,255,0.7)",
+                  color: "#334155",
                   textAlign: "center",
                   lineHeight: 1.8,
                   fontSize: "clamp(1.05rem, 2.5vw, 1.15rem)",
@@ -151,7 +158,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                 >
                   <p 
                     style={{
-                      color: "#00CCFF",
+                      color: "#0077b8",
                       fontWeight: 800,
                       fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
                       letterSpacing: "0.2em",
@@ -166,14 +173,14 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                   </p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                     {START_STEPS.map((step) => (
-                      <div key={step.num} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "0.75rem", background: "rgba(255,255,255,0.02)", borderRadius: "0.75rem" }}>
+                      <div key={step.num} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "0.75rem", background: "#ffffff", borderRadius: "0.75rem" }}>
                         <span style={{ flexShrink: 0, width: "2rem", height: "2rem", borderRadius: "0.5rem", background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#60A5FA", fontWeight: 900, fontSize: "0.75rem", boxShadow: "0 0 10px rgba(59,130,246,0.15)" }}>{step.num}</span>
-                        <p style={{ color: "rgba(255,255,255,0.8)", lineHeight: 1.6, fontSize: "clamp(0.95rem, 2vw, 1.05rem)", fontWeight: 500, margin: 0 }}>{step.text}</p>
+                        <p style={{ color: "#334155", lineHeight: 1.6, fontSize: "clamp(0.95rem, 2vw, 1.05rem)", fontWeight: 500, margin: 0 }}>{step.text}</p>
                       </div>
                     ))}
                   </div>
-                  <div style={{ height: 1, width: "100%", background: "rgba(255,255,255,0.1)", margin: "1.5rem 0" }} />
-                  <p style={{ color: "rgba(255,255,255,0.5)", lineHeight: 1.6, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", display: "flex", alignItems: "flex-start", gap: "0.75rem", margin: 0 }}>
+                  <div style={{ height: 1, width: "100%", background: "#ffffff", margin: "1.5rem 0" }} />
+                  <p style={{ color: "#64748b", lineHeight: 1.6, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", display: "flex", alignItems: "flex-start", gap: "0.75rem", margin: 0 }}>
                     <svg style={{ width: "1.25rem", height: "1.25rem", flexShrink: 0, color: "rgba(0,204,255,0.5)", marginTop: 2 }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                     Reply to the delivery email with the product idea you plan to build first. That reply helps us support you and collect real buyer proof — only with your permission.
                   </p>
@@ -181,15 +188,36 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
               ) : null}
 
               {params.tx_ref ? (
-                <div style={{ textAlign: "center", marginBottom: "2.5rem", padding: "1rem", borderRadius: "0.75rem", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", fontWeight: 500, margin: 0 }}>
+                <div style={{ textAlign: "center", marginBottom: "2.5rem", padding: "1rem", borderRadius: "0.75rem", background: "#ffffff", border: "1px solid #ffffff" }}>
+                  <p style={{ color: "#64748b", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", fontWeight: 500, margin: 0 }}>
                     Transaction reference:<br/>
-                    <strong style={{ color: "rgba(255,255,255,0.9)", fontSize: "1.125rem", marginTop: "0.25rem", display: "block", letterSpacing: "0.05em", fontFamily: "monospace" }}>{params.tx_ref}</strong>
+                    <strong style={{ color: "#334155", fontSize: "1.125rem", marginTop: "0.25rem", display: "block", letterSpacing: "0.05em", fontFamily: "monospace" }}>{params.tx_ref}</strong>
                   </p>
                 </div>
               ) : null}
 
               <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center", marginTop: "1rem" }}>
+                <Link
+                  href={STRATEGY_CALL_URL}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "1rem 2rem",
+                    borderRadius: "0.75rem",
+                    color: "var(--text-primary)",
+                    fontWeight: 900,
+                    fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.1em",
+                    background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                    textDecoration: "none",
+                    boxShadow: "0 0 30px rgba(14,165,233,0.35)",
+                    minWidth: "160px",
+                  }}
+                >
+                  Book a strategy call
+                </Link>
                 <Link
                   href="/digital-forge/system"
                   style={{
@@ -198,12 +226,12 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                     justifyContent: "center",
                     padding: "1rem 2rem",
                     borderRadius: "0.75rem",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     fontWeight: 900,
                     fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
-                    background: "linear-gradient(135deg, #2563EB, #06B6D4)",
+                    background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
                     textDecoration: "none",
                     boxShadow: "0 0 30px rgba(37,99,235,0.4)",
                     minWidth: "160px",
@@ -219,18 +247,18 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                     justifyContent: "center",
                     padding: "1rem 2rem",
                     borderRadius: "0.75rem",
-                    color: "rgba(255,255,255,0.9)",
+                    color: "#334155",
                     fontWeight: 700,
                     fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
                     textTransform: "uppercase",
                     letterSpacing: "0.1em",
-                    border: "2px solid rgba(255,255,255,0.1)",
-                    background: "rgba(255,255,255,0.05)",
+                    border: "2px solid rgba(15,23,42,0.11)",
+                    background: "#ffffff",
                     textDecoration: "none",
                     minWidth: "160px",
                   }}
                 >
-                  Contact support
+                  Need us to build it?
                 </Link>
               </div>
             </div>

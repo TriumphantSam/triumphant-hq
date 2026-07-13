@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import posthog from 'posthog-js';
 
 export default function SeoSnapshotPage() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function SeoSnapshotPage() {
     setStep('loading');
     setErrorMsg('');
     try {
+      posthog.capture('seo_audit_submitted', { websiteUrl: form.websiteUrl, businessType: form.businessType || 'unspecified' });
       const res = await fetch('/api/seo/quick-audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -80,7 +82,7 @@ export default function SeoSnapshotPage() {
           pointerEvents: 'none',
           overflow: 'hidden',
           background:
-            'radial-gradient(circle at 20% 20%, rgba(0,102,255,0.18), transparent 40%), radial-gradient(circle at 80% 80%, rgba(0,204,255,0.1), transparent 38%), linear-gradient(180deg, rgba(5,5,16,0.98), rgba(2,2,5,1))',
+            'radial-gradient(circle at 20% 20%, rgba(0,102,255,0.18), transparent 40%), radial-gradient(circle at 80% 80%, rgba(0,204,255,0.1), transparent 38%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))',
         }}
       />
 
@@ -110,7 +112,7 @@ export default function SeoSnapshotPage() {
                   }} />
                   <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#00CCFF', display: 'inline-block', position: 'relative' }} />
                 </span>
-                <span style={{ color: '#00CCFF', fontSize: '0.73rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+                <span style={{ color: '#0077b8', fontSize: '0.73rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
                   100% Free — No Credit Card Needed
                 </span>
               </div>
@@ -123,7 +125,7 @@ export default function SeoSnapshotPage() {
                   fontSize: 'clamp(3rem, 7vw, 5.8rem)',
                   fontWeight: 900,
                   lineHeight: 1.02,
-                  color: '#fff',
+                  color: 'var(--text-primary)',
                   letterSpacing: '-0.03em',
                   marginBottom: '1.5rem',
                 }}
@@ -132,7 +134,7 @@ export default function SeoSnapshotPage() {
                 <br />
                 <span
                   style={{
-                    background: 'linear-gradient(90deg, #0066FF, #00CCFF)',
+                    background: 'linear-gradient(90deg, #075ee5, #0088d6)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -144,7 +146,7 @@ export default function SeoSnapshotPage() {
               <p
                 style={{
                   fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
-                  color: 'rgba(255,255,255,0.65)',
+                  color: '#334155',
                   lineHeight: 1.85,
                   maxWidth: 780,
                   margin: '0 auto 0.9rem',
@@ -155,7 +157,7 @@ export default function SeoSnapshotPage() {
               <p
                 style={{
                   fontSize: '1rem',
-                  color: 'rgba(255,255,255,0.42)',
+                  color: '#64748b',
                   lineHeight: 1.8,
                 }}
               >
@@ -173,8 +175,8 @@ export default function SeoSnapshotPage() {
                   alignItems: 'center',
                   gap: '0.7rem',
                   padding: '1.1rem 2.5rem',
-                  background: 'linear-gradient(135deg, #0066FF, #0044CC)',
-                  color: '#fff',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
+                  color: 'var(--text-primary)',
                   fontWeight: 800,
                   fontSize: '0.9rem',
                   letterSpacing: '0.12em',
@@ -201,14 +203,14 @@ export default function SeoSnapshotPage() {
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
                     padding: '0.45rem 0.9rem',
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: '#ffffff',
+                    border: '1px solid rgba(15,23,42,0.11)',
                     borderRadius: '999px',
-                    color: 'rgba(255,255,255,0.6)',
+                    color: '#334155',
                     fontSize: '0.82rem',
                   }}
                 >
-                  <span style={{ color: '#00CCFF', fontWeight: 900 }}>✓</span> {tag}
+                  <span style={{ color: '#0077b8', fontWeight: 900 }}>✓</span> {tag}
                 </span>
               ))}
             </div>
@@ -222,7 +224,7 @@ export default function SeoSnapshotPage() {
                 maxWidth: 860,
                 margin: '0 auto',
                 paddingTop: '2rem',
-                borderTop: '1px solid rgba(255,255,255,0.06)',
+                borderTop: '1px solid rgba(15,23,42,0.11)',
               }}
             >
               {STATS.map(s => (
@@ -236,8 +238,8 @@ export default function SeoSnapshotPage() {
                     textAlign: 'center',
                   }}
                 >
-                  <p style={{ color: '#fff', fontSize: 'clamp(2.2rem, 4vw, 3rem)', fontWeight: 900, lineHeight: 1, marginBottom: '0.5rem' }}>{s.value}</p>
-                  <p style={{ color: 'rgba(255,255,255,0.58)', fontSize: '0.88rem', lineHeight: 1.65 }}>{s.label}</p>
+                  <p style={{ color: 'var(--text-primary)', fontSize: 'clamp(2.2rem, 4vw, 3rem)', fontWeight: 900, lineHeight: 1, marginBottom: '0.5rem' }}>{s.value}</p>
+                  <p style={{ color: '#64748b', fontSize: '0.88rem', lineHeight: 1.65 }}>{s.label}</p>
                 </div>
               ))}
             </div>
@@ -250,16 +252,16 @@ export default function SeoSnapshotPage() {
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
               <div
                 style={{
-                  background: 'linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)',
                   border: '1px solid rgba(0,102,255,0.2)',
                   borderRadius: 24,
                   padding: '2rem',
                 }}
               >
-                <p style={{ color: '#00CCFF', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
+                <p style={{ color: '#0077b8', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
                   Your Free Report Includes
                 </p>
-                <h2 style={{ color: '#fff', fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 900, lineHeight: 1.12, marginBottom: '1.4rem' }}>
+                <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)', fontWeight: 900, lineHeight: 1.12, marginBottom: '1.4rem' }}>
                   A complete visibility scan — delivered in 90 seconds
                 </h2>
                 <div style={{ display: 'grid', gap: '1rem' }}>
@@ -274,9 +276,9 @@ export default function SeoSnapshotPage() {
                           flexShrink: 0, marginTop: 2,
                         }}
                       >
-                        <span style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 900 }}>✓</span>
+                        <span style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 900 }}>✓</span>
                       </span>
-                      <p style={{ color: 'rgba(255,255,255,0.78)', lineHeight: 1.75 }}>{item}</p>
+                      <p style={{ color: '#334155', lineHeight: 1.75 }}>{item}</p>
                     </div>
                   ))}
                 </div>
@@ -291,7 +293,7 @@ export default function SeoSnapshotPage() {
                     padding: '1.5rem',
                   }}
                 >
-                  <p style={{ color: '#00CCFF', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '0.7rem' }}>
+                  <p style={{ color: '#0077b8', fontSize: '0.74rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: '0.7rem' }}>
                     Who This Is For
                   </p>
                   <div style={{ display: 'grid', gap: '0.7rem' }}>
@@ -301,7 +303,7 @@ export default function SeoSnapshotPage() {
                       'Founders who want to rank before competitors in AI-powered search',
                       'Anyone who has never done a real technical SEO check',
                     ].map(item => (
-                      <p key={item} style={{ color: 'rgba(255,255,255,0.7)', lineHeight: 1.7, fontSize: '0.92rem' }}>
+                      <p key={item} style={{ color: '#334155', lineHeight: 1.7, fontSize: '0.92rem' }}>
                         → {item}
                       </p>
                     ))}
@@ -309,22 +311,22 @@ export default function SeoSnapshotPage() {
                 </div>
                 <div
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: '#ffffff',
+                    border: '1px solid rgba(15,23,42,0.11)',
                     borderRadius: 20,
                     padding: '1.5rem',
                     textAlign: 'center',
                   }}
                 >
-                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.84rem', lineHeight: 1.7, marginBottom: '1.2rem' }}>
+                  <p style={{ color: '#64748b', fontSize: '0.84rem', lineHeight: 1.7, marginBottom: '1.2rem' }}>
                     Powered by real SEO operators who have worked on hundreds of international business websites.
                   </p>
                   <button
                     onClick={() => setIsModalOpen(true)}
                     style={{
                       padding: '0.85rem 1.6rem',
-                      background: 'linear-gradient(135deg, #0066FF, #0044CC)',
-                      color: '#fff',
+                      background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
+                      color: 'var(--text-primary)',
                       fontWeight: 800,
                       fontSize: '0.82rem',
                       letterSpacing: '0.1em',
@@ -355,10 +357,10 @@ export default function SeoSnapshotPage() {
                 textAlign: 'center',
               }}
             >
-              <p style={{ color: '#00CCFF', fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
+              <p style={{ color: '#0077b8', fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.9rem' }}>
                 How It Works
               </p>
-              <h2 style={{ color: '#fff', fontSize: 'clamp(1.9rem, 4vw, 3rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: '2.5rem' }}>
+              <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(1.9rem, 4vw, 3rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: '2.5rem' }}>
                 Your snapshot in 3 steps.
               </h2>
               <div
@@ -377,16 +379,16 @@ export default function SeoSnapshotPage() {
                   <div
                     key={item.num}
                     style={{
-                      background: 'rgba(255,255,255,0.04)',
-                      border: '1px solid rgba(255,255,255,0.08)',
+                      background: '#ffffff',
+                      border: '1px solid rgba(15,23,42,0.11)',
                       borderRadius: 20,
                       padding: '1.5rem',
                       textAlign: 'left',
                     }}
                   >
-                    <p style={{ color: '#00CCFF', fontSize: '1.5rem', fontWeight: 900, marginBottom: '0.5rem' }}>{item.num}</p>
-                    <h3 style={{ color: '#fff', fontWeight: 800, marginBottom: '0.5rem' }}>{item.title}</h3>
-                    <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, fontSize: '0.92rem' }}>{item.desc}</p>
+                    <p style={{ color: '#0077b8', fontSize: '1.5rem', fontWeight: 900, marginBottom: '0.5rem' }}>{item.num}</p>
+                    <h3 style={{ color: 'var(--text-primary)', fontWeight: 800, marginBottom: '0.5rem' }}>{item.title}</h3>
+                    <p style={{ color: '#334155', lineHeight: 1.75, fontSize: '0.92rem' }}>{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -398,8 +400,8 @@ export default function SeoSnapshotPage() {
                   alignItems: 'center',
                   gap: '0.6rem',
                   padding: '1rem 2.2rem',
-                  background: 'linear-gradient(135deg, #0066FF, #0044CC)',
-                  color: '#fff',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
+                  color: 'var(--text-primary)',
                   fontWeight: 800,
                   fontSize: '0.86rem',
                   letterSpacing: '0.1em',
@@ -424,7 +426,7 @@ export default function SeoSnapshotPage() {
             position: 'fixed', inset: 0, zIndex: 100,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: '1rem',
-            background: 'rgba(2,2,5,0.92)',
+            background: '#ffffff',
             backdropFilter: 'blur(12px)',
           }}
         >
@@ -433,10 +435,10 @@ export default function SeoSnapshotPage() {
               position: 'relative',
               width: '100%',
               maxWidth: 600,
-              background: 'rgba(5,5,16,0.98)',
+              background: '#ffffff',
               border: '1px solid rgba(0,102,255,0.25)',
               borderRadius: 24,
-              boxShadow: '0 30px 100px rgba(0,0,0,0.6)',
+              boxShadow: '0 30px 100px rgba(15,23,42,0.12)',
               display: 'flex',
               flexDirection: 'column',
               maxHeight: '92vh',
@@ -450,18 +452,18 @@ export default function SeoSnapshotPage() {
                 justifyContent: 'space-between',
                 alignItems: 'flex-start',
                 padding: '1.8rem 2rem 1.2rem',
-                borderBottom: '1px solid rgba(255,255,255,0.06)',
+                borderBottom: '1px solid rgba(15,23,42,0.11)',
                 flexShrink: 0,
               }}
             >
               <div>
-                <p style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
+                <p style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.4rem' }}>
                   Free SEO Snapshot
                 </p>
-                <h2 style={{ color: '#fff', fontSize: 'clamp(1.4rem, 3vw, 1.9rem)', fontWeight: 900, letterSpacing: '-0.02em' }}>
+                <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(1.4rem, 3vw, 1.9rem)', fontWeight: 900, letterSpacing: '-0.02em' }}>
                   Reveal your website&apos;s visibility score
                 </h2>
-                <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: '0.3rem', fontSize: '0.92rem' }}>
+                <p style={{ color: '#64748b', marginTop: '0.3rem', fontSize: '0.92rem' }}>
                   Results in 90 seconds. Zero obligations.
                 </p>
               </div>
@@ -472,9 +474,9 @@ export default function SeoSnapshotPage() {
                   width: 40, height: 40, flexShrink: 0,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  color: 'rgba(255,255,255,0.6)',
+                  background: '#ffffff',
+                  border: '1px solid rgba(15,23,42,0.11)',
+                  color: '#334155',
                   cursor: 'pointer',
                   fontSize: '1.1rem',
                   marginTop: '0.2rem',
@@ -489,7 +491,7 @@ export default function SeoSnapshotPage() {
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+                  <label style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
                     Website URL *
                   </label>
                   <input
@@ -500,49 +502,49 @@ export default function SeoSnapshotPage() {
                     placeholder="yourdomain.com"
                     style={{
                       width: '100%', minHeight: 52,
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(255,255,255,0.12)',
+                      background: '#ffffff',
+                      border: '1px solid rgba(15,23,42,0.11)',
                       borderRadius: 12, padding: '0 1rem',
-                      color: '#fff', fontSize: '1rem', outline: 'none',
+                      color: 'var(--text-primary)', fontSize: '1rem', outline: 'none',
                     }}
                   />
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <label style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+                    <label style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
                       Your Name *
                     </label>
                     <input
                       type="text" required value={form.name} onChange={set('name')} placeholder="John Doe"
                       style={{
                         width: '100%', minHeight: 52,
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.12)',
+                        background: '#ffffff',
+                        border: '1px solid rgba(15,23,42,0.11)',
                         borderRadius: 12, padding: '0 1rem',
-                        color: '#fff', fontSize: '1rem', outline: 'none',
+                        color: 'var(--text-primary)', fontSize: '1rem', outline: 'none',
                       }}
                     />
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <label style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+                    <label style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
                       Email Address *
                     </label>
                     <input
                       type="email" required value={form.email} onChange={set('email')} placeholder="you@company.com"
                       style={{
                         width: '100%', minHeight: 52,
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.12)',
+                        background: '#ffffff',
+                        border: '1px solid rgba(15,23,42,0.11)',
                         borderRadius: 12, padding: '0 1rem',
-                        color: '#fff', fontSize: '1rem', outline: 'none',
+                        color: 'var(--text-primary)', fontSize: '1rem', outline: 'none',
                       }}
                     />
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+                  <label style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
                     Business Type (optional)
                   </label>
                   <div style={{ position: 'relative' }}>
@@ -550,19 +552,19 @@ export default function SeoSnapshotPage() {
                       value={form.businessType} onChange={set('businessType')}
                       style={{
                         width: '100%', minHeight: 52,
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.12)',
+                        background: '#ffffff',
+                        border: '1px solid rgba(15,23,42,0.11)',
                         borderRadius: 12, padding: '0 1rem',
-                        color: form.businessType ? '#fff' : 'rgba(255,255,255,0.35)',
+                        color: form.businessType ? '#fff' : '#64748b',
                         fontSize: '1rem', outline: 'none', appearance: 'none', cursor: 'pointer',
                       }}
                     >
-                      <option value="" style={{ background: '#050510', color: '#888' }}>Select your business type…</option>
-                      <option value="ecommerce" style={{ background: '#050510' }}>E-commerce</option>
-                      <option value="local" style={{ background: '#050510' }}>Local Business</option>
-                      <option value="saas" style={{ background: '#050510' }}>SaaS / B2B</option>
-                      <option value="agency" style={{ background: '#050510' }}>Agency</option>
-                      <option value="other" style={{ background: '#050510' }}>Other</option>
+                      <option value="" style={{ background: '#ffffff', color: '#888' }}>Select your business type…</option>
+                      <option value="ecommerce" style={{ background: '#ffffff' }}>E-commerce</option>
+                      <option value="local" style={{ background: '#ffffff' }}>Local Business</option>
+                      <option value="saas" style={{ background: '#ffffff' }}>SaaS / B2B</option>
+                      <option value="agency" style={{ background: '#ffffff' }}>Agency</option>
+                      <option value="other" style={{ background: '#ffffff' }}>Other</option>
                     </select>
                     <div style={{ position: 'absolute', top: 0, bottom: 0, right: '1rem', display: 'flex', alignItems: 'center', pointerEvents: 'none' }}>
                       <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" viewBox="0 0 24 24">
@@ -585,8 +587,8 @@ export default function SeoSnapshotPage() {
                   disabled={step === 'loading'}
                   style={{
                     width: '100%', minHeight: 56,
-                    background: step === 'loading' ? 'rgba(0,102,255,0.5)' : 'linear-gradient(135deg, #0066FF, #0044CC)',
-                    color: '#fff', fontWeight: 800, fontSize: '0.88rem',
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
+                    color: 'var(--text-primary)', fontWeight: 800, fontSize: '0.88rem',
                     letterSpacing: '0.1em', textTransform: 'uppercase',
                     borderRadius: 12, border: 'none',
                     cursor: step === 'loading' ? 'not-allowed' : 'pointer',
@@ -608,7 +610,7 @@ export default function SeoSnapshotPage() {
                   )}
                 </button>
 
-                <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                <p style={{ textAlign: 'center', color: '#64748b', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                   <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                   Your data is safe. We never share or sell it.
                 </p>

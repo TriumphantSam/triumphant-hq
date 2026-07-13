@@ -70,7 +70,7 @@ export default function DigitalForgeCourseAccessPage() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.22), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.14), transparent 26%), linear-gradient(180deg, rgba(6,11,29,0.97), rgba(5,5,16,1))",
+              "radial-gradient(circle at 15% 20%, rgba(0,102,255,0.22), transparent 32%), radial-gradient(circle at 85% 15%, rgba(0,204,255,0.14), transparent 26%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))",
           }}
         />
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16 relative">
@@ -80,7 +80,7 @@ export default function DigitalForgeCourseAccessPage() {
               display: "inline-flex",
               alignItems: "center",
               gap: "0.45rem",
-              color: "rgba(255,255,255,0.5)",
+              color: "#64748b",
               textDecoration: "none",
               fontSize: "0.84rem",
               fontWeight: 600,
@@ -104,7 +104,7 @@ export default function DigitalForgeCourseAccessPage() {
             }}
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#00CCFF", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+            <span style={{ color: "#0077b8", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
               Course Access — Waitlist Open
             </span>
           </div>
@@ -115,7 +115,7 @@ export default function DigitalForgeCourseAccessPage() {
               fontWeight: 900,
               lineHeight: 1.04,
               letterSpacing: "-0.03em",
-              color: "#fff",
+              color: "var(--text-primary)",
               maxWidth: 920,
               marginBottom: "1.3rem",
             }}
@@ -126,7 +126,7 @@ export default function DigitalForgeCourseAccessPage() {
             <br />
             <span
               style={{
-                background: "linear-gradient(90deg, #0066FF, #00CCFF)",
+                background: "linear-gradient(90deg, #075ee5, #0088d6)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -139,7 +139,7 @@ export default function DigitalForgeCourseAccessPage() {
           <p
             style={{
               fontSize: "1.08rem",
-              color: "rgba(255,255,255,0.72)",
+              color: "#334155",
               lineHeight: 1.9,
               maxWidth: 760,
               marginBottom: "1rem",
@@ -149,7 +149,7 @@ export default function DigitalForgeCourseAccessPage() {
           </p>
           <p
             style={{
-              color: "rgba(255,255,255,0.52)",
+              color: "#64748b",
               lineHeight: 1.85,
               maxWidth: 760,
               fontSize: "0.97rem",
@@ -173,8 +173,8 @@ export default function DigitalForgeCourseAccessPage() {
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 fontSize: "0.86rem",
-                color: "#fff",
-                background: "linear-gradient(135deg, #0066FF, #0044CC)",
+                color: "var(--text-primary)",
+                background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
                 boxShadow: "0 0 36px rgba(0,102,255,0.42)",
               }}
             >
@@ -192,8 +192,8 @@ export default function DigitalForgeCourseAccessPage() {
                 textTransform: "uppercase",
                 letterSpacing: "0.1em",
                 fontSize: "0.86rem",
-                color: "rgba(255,255,255,0.82)",
-                border: "1px solid rgba(255,255,255,0.16)",
+                color: "#334155",
+                border: "1px solid rgba(15,23,42,0.11)",
               }}
             >
               Watch the Free Training First
@@ -206,10 +206,10 @@ export default function DigitalForgeCourseAccessPage() {
       <section style={{ paddingBottom: "4.5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div style={{ marginBottom: "1.8rem" }}>
-            <p style={{ color: "#00CCFF", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
               Your Options Right Now
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.9rem, 4vw, 2.7rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 640 }}>
               There is a right move for wherever you are.
             </h2>
           </div>
@@ -224,18 +224,18 @@ export default function DigitalForgeCourseAccessPage() {
               <div
                 key={item.title}
                 style={{
-                  background: item.featured ? "rgba(0,102,255,0.1)" : "rgba(255,255,255,0.03)",
-                  border: item.featured ? "1px solid rgba(0,102,255,0.32)" : "1px solid rgba(255,255,255,0.08)",
+                  background: item.featured ? "rgba(0,102,255,0.1)" : "#ffffff",
+                  border: item.featured ? "1px solid rgba(0,102,255,0.32)" : "1px solid rgba(15,23,42,0.11)",
                   borderTop: item.featured ? "3px solid #0066FF" : undefined,
                   borderRadius: 22,
                   padding: "1.4rem",
                 }}
               >
-                <p style={{ color: item.featured ? "#00CCFF" : "rgba(255,255,255,0.45)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem", fontWeight: 700 }}>
+                <p style={{ color: item.featured ? "#00CCFF" : "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem", fontWeight: 700 }}>
                   {item.status}
                 </p>
-                <h2 style={{ color: "#fff", fontWeight: 800, fontSize: "1.15rem", marginBottom: "0.75rem" }}>{item.title}</h2>
-                <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.2rem" }}>{item.description}</p>
+                <h2 style={{ color: "var(--text-primary)", fontWeight: 800, fontSize: "1.15rem", marginBottom: "0.75rem" }}>{item.title}</h2>
+                <p style={{ color: "#334155", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.2rem" }}>{item.description}</p>
                 <Link
                   href={item.href}
                   style={{
@@ -248,11 +248,11 @@ export default function DigitalForgeCourseAccessPage() {
                     textTransform: "uppercase",
                     letterSpacing: "0.08em",
                     fontSize: "0.8rem",
-                    color: "#fff",
+                    color: "var(--text-primary)",
                     background: item.featured
                       ? "linear-gradient(135deg, #0066FF, #0044CC)"
                       : "rgba(255,255,255,0.07)",
-                    border: item.featured ? "none" : "1px solid rgba(255,255,255,0.14)",
+                    border: item.featured ? "none" : "1px solid rgba(15,23,42,0.11)",
                   }}
                 >
                   {item.cta}
@@ -268,16 +268,16 @@ export default function DigitalForgeCourseAccessPage() {
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div
             style={{
-              background: "linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))",
+              background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)",
               border: "1px solid rgba(0,102,255,0.2)",
               borderRadius: 24,
               padding: "1.8rem",
             }}
           >
-            <p style={{ color: "#00CCFF", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
+            <p style={{ color: "#0077b8", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em", fontWeight: 700, marginBottom: "0.9rem" }}>
               What You Get When Enrollment Opens
             </p>
-            <h2 style={{ color: "#fff", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
+            <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(1.8rem, 4vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12, marginBottom: "1.4rem" }}>
               Everything you need, delivered cleanly from day one.
             </h2>
             <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))" }}>
@@ -285,14 +285,14 @@ export default function DigitalForgeCourseAccessPage() {
                 <div
                   key={item.label}
                   style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    background: "#ffffff",
+                    border: "1px solid rgba(15,23,42,0.11)",
                     borderRadius: 16,
                     padding: "1.2rem",
                   }}
                 >
-                  <h3 style={{ color: "#fff", fontWeight: 800, marginBottom: "0.55rem", fontSize: "1rem" }}>{item.label}</h3>
-                  <p style={{ color: "rgba(255,255,255,0.64)", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.detail}</p>
+                  <h3 style={{ color: "var(--text-primary)", fontWeight: 800, marginBottom: "0.55rem", fontSize: "1rem" }}>{item.label}</h3>
+                  <p style={{ color: "#334155", lineHeight: 1.8, fontSize: "0.92rem" }}>{item.detail}</p>
                 </div>
               ))}
             </div>

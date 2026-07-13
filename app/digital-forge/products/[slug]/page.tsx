@@ -151,7 +151,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             <Link
               href="/digital-forge/products"
               style={{
-                color: "rgba(255,255,255,0.4)",
+                color: "#64748b",
                 textDecoration: "none",
                 fontSize: "0.8rem",
                 fontWeight: 600,
@@ -159,7 +159,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             >
               ← Product Library
             </Link>
-            <span style={{ color: "rgba(255,255,255,0.2)", fontSize: "0.8rem" }}>/</span>
+            <span style={{ color: "#64748b", fontSize: "0.8rem" }}>/</span>
             <span style={{ color: accent, fontSize: "0.8rem", fontWeight: 600 }}>
               {product.category}
             </span>
@@ -195,13 +195,13 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                 </span>
                 <span
                   style={{
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.12)",
+                    background: "#ffffff",
+                    border: "1px solid rgba(15,23,42,0.11)",
                     borderRadius: "100px",
                     padding: "0.35rem 1rem",
                     fontSize: "0.72rem",
                     fontWeight: 600,
-                    color: "rgba(255,255,255,0.6)",
+                    color: "#334155",
                     letterSpacing: "0.14em",
                     textTransform: "uppercase",
                   }}
@@ -216,7 +216,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   fontSize: "clamp(2rem, 5vw, 3.5rem)",
                   fontWeight: 900,
                   lineHeight: 1.06,
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   marginBottom: "1.35rem",
                   letterSpacing: "-0.02em",
                   maxWidth: 780,
@@ -228,7 +228,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               {/* Subheadline */}
               <p
                 style={{
-                  color: "rgba(255,255,255,0.7)",
+                  color: "#334155",
                   fontSize: "1.1rem",
                   lineHeight: 1.8,
                   maxWidth: 660,
@@ -242,7 +242,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               {product.seo?.websiteIntroKeywordParagraph && (
                 <p
                   style={{
-                    color: "rgba(255,255,255,0.52)",
+                    color: "#64748b",
                     fontSize: "0.92rem",
                     lineHeight: 1.85,
                     maxWidth: 640,
@@ -256,10 +256,10 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               {/* Price + CTA Buttons */}
               <div style={{ marginBottom: "2rem" }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem", marginBottom: "1rem", flexWrap: "wrap" }}>
-                  <span style={{ color: "#fff", fontWeight: 900, fontSize: "2rem", letterSpacing: "-0.02em" }}>
+                  <span style={{ color: "var(--text-primary)", fontWeight: 900, fontSize: "2rem", letterSpacing: "-0.02em" }}>
                     <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
                   </span>
-                  <span style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.85rem" }}>one-time · instant delivery</span>
+                  <span style={{ color: "#64748b", fontSize: "0.85rem" }}>one-time · instant delivery</span>
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.85rem" }}>
                   <Link
@@ -270,7 +270,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       alignItems: "center",
                       padding: "1.05rem 2.4rem",
                       background: `linear-gradient(135deg, ${accent}, ${accent}cc)`,
-                      color: "#fff",
+                      color: "var(--text-primary)",
                       textDecoration: "none",
                       fontWeight: 800,
                       fontSize: "0.9rem",
@@ -290,8 +290,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       display: "inline-flex",
                       alignItems: "center",
                       padding: "1.05rem 2.2rem",
-                      border: "1px solid rgba(255,255,255,0.15)",
-                      color: "rgba(255,255,255,0.75)",
+                      border: "1px solid rgba(15,23,42,0.11)",
+                      color: "#334155",
                       textDecoration: "none",
                       fontWeight: 700,
                       fontSize: "0.9rem",
@@ -320,14 +320,14 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       display: "flex",
                       alignItems: "flex-start",
                       gap: "0.6rem",
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.07)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderRadius: "10px",
                       padding: "0.7rem 0.9rem",
                     }}
                   >
                     <span style={{ color: accent, fontWeight: 900, marginTop: "0.1rem" }}>✓</span>
-                    <span style={{ color: "rgba(255,255,255,0.65)", fontSize: "0.82rem", lineHeight: 1.55 }}>
+                    <span style={{ color: "#334155", fontSize: "0.82rem", lineHeight: 1.55 }}>
                       {item}
                     </span>
                   </div>
@@ -340,12 +340,12 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               <div
                 style={{
                   position: "relative",
-                  background: "linear-gradient(165deg, rgba(7,14,40,0.97), rgba(5,8,20,0.99))",
+                  background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)",
                   border: `1px solid ${accent}40`,
                   borderTop: `4px solid ${accent}`,
                   borderRadius: "20px",
                   padding: "2rem",
-                  boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px ${accent}15`,
+                  boxShadow: `0 30px 80px rgba(15,23,42,0.12), 0 0 0 1px ${accent}15`,
                 }}
               >
                 {/* Glow blob */}
@@ -379,7 +379,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   </p>
                   <h2
                     style={{
-                      color: "#fff",
+                      color: "var(--text-primary)",
                       fontWeight: 900,
                       fontSize: "1.3rem",
                       lineHeight: 1.3,
@@ -392,8 +392,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   {/* What's in the box */}
                   <div
                     style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderRadius: "12px",
                       padding: "1.25rem",
                       marginBottom: "1.5rem",
@@ -401,7 +401,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   >
                     <p
                       style={{
-                        color: "rgba(255,255,255,0.45)",
+                        color: "#64748b",
                         fontSize: "0.7rem",
                         fontWeight: 700,
                         letterSpacing: "0.18em",
@@ -438,7 +438,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                         </span>
                         <span
                           style={{
-                            color: "rgba(255,255,255,0.72)",
+                            color: "#334155",
                             fontSize: "0.84rem",
                             lineHeight: 1.55,
                           }}
@@ -464,8 +464,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       }}
                     >
                       <span style={{ fontSize: "1.1rem" }}>🎁</span>
-                      <span style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.84rem" }}>
-                        <strong style={{ color: "#fff" }}>
+                      <span style={{ color: "#334155", fontSize: "0.84rem" }}>
+                        <strong style={{ color: "var(--text-primary)" }}>
                           {parsedBonuses.length} Bonus
                           {parsedBonuses.length > 1 ? "es" : ""}
                         </strong>{" "}
@@ -476,10 +476,10 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
 
                   {/* Price */}
                   <div style={{ textAlign: "center", marginBottom: "0.75rem" }}>
-                    <span style={{ color: "#fff", fontWeight: 900, fontSize: "1.6rem", letterSpacing: "-0.02em" }}>
+                    <span style={{ color: "var(--text-primary)", fontWeight: 900, fontSize: "1.6rem", letterSpacing: "-0.02em" }}>
                       <CurrencyPrice ngnLabel={priceDisplay} usdLabel={usdDisplay} />
                     </span>
-                    <p style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.72rem", marginTop: "0.2rem" }}>One-time payment · Instant delivery by email</p>
+                    <p style={{ color: "#64748b", fontSize: "0.72rem", marginTop: "0.2rem" }}>One-time payment · Instant delivery by email</p>
                   </div>
 
                   {/* CTA */}
@@ -492,7 +492,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                       textAlign: "center",
                       padding: "1rem",
                       background: `linear-gradient(135deg, ${accent}, ${accent}bb)`,
-                      color: "#fff",
+                      color: "var(--text-primary)",
                       textDecoration: "none",
                       fontWeight: 800,
                       fontSize: "0.88rem",
@@ -507,7 +507,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
 
                   <p
                     style={{
-                      color: "rgba(255,255,255,0.3)",
+                      color: "#64748b",
                       fontSize: "0.7rem",
                       textAlign: "center",
                       marginTop: "0.6rem",
@@ -540,7 +540,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             {idealFor.length > 0 && (
               <div
                 style={{
-                  background: "rgba(5,8,20,0.8)",
+                  background: "#ffffff",
                   border: "1px solid rgba(0,102,255,0.2)",
                   borderRadius: "16px",
                   padding: "2rem",
@@ -566,7 +566,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                         display: "flex",
                         alignItems: "flex-start",
                         gap: "0.6rem",
-                        color: "rgba(255,255,255,0.68)",
+                        color: "#334155",
                         fontSize: "0.92rem",
                         lineHeight: 1.65,
                       }}
@@ -582,7 +582,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             {/* The Outcome */}
             <div
               style={{
-                background: "rgba(5,8,20,0.8)",
+                background: "#ffffff",
                 border: "1px solid rgba(0,102,255,0.2)",
                 borderRadius: "16px",
                 padding: "2rem",
@@ -602,7 +602,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               </p>
               <p
                 style={{
-                  color: "rgba(255,255,255,0.68)",
+                  color: "#334155",
                   lineHeight: 1.8,
                   fontSize: "0.95rem",
                 }}
@@ -615,7 +615,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             {product.audience && !product.audience.includes("Digital Forge readers") && (
               <div
                 style={{
-                  background: "rgba(5,8,20,0.8)",
+                  background: "#ffffff",
                   border: "1px solid rgba(0,102,255,0.2)",
                   borderRadius: "16px",
                   padding: "2rem",
@@ -635,7 +635,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                 </p>
                 <p
                   style={{
-                    color: "rgba(255,255,255,0.68)",
+                    color: "#334155",
                     lineHeight: 1.8,
                     fontSize: "0.95rem",
                   }}
@@ -654,7 +654,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div
               style={{
-                background: `linear-gradient(145deg, ${accent}10, rgba(5,8,20,0.95) 60%)`,
+                background: `linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)`,
                 border: `1px solid ${accent}30`,
                 borderRadius: "20px",
                 padding: "clamp(2rem, 4vw, 3.5rem)",
@@ -684,7 +684,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   </p>
                   <h2
                     style={{
-                      color: "#fff",
+                      color: "var(--text-primary)",
                       fontWeight: 900,
                       fontSize: "1.6rem",
                       lineHeight: 1.2,
@@ -697,7 +697,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
 
               <p
                 style={{
-                  color: "rgba(255,255,255,0.5)",
+                  color: "#64748b",
                   fontSize: "0.9rem",
                   marginBottom: "2rem",
                   marginLeft: "2.75rem",
@@ -717,8 +717,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   <div
                     key={i}
                     style={{
-                      background: "rgba(255,255,255,0.03)",
-                      border: "1px solid rgba(255,255,255,0.08)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderRadius: "14px",
                       padding: "1.5rem",
                     }}
@@ -734,7 +734,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                     >
                       <p
                         style={{
-                          color: "#fff",
+                          color: "var(--text-primary)",
                           fontWeight: 700,
                           fontSize: "0.92rem",
                           lineHeight: 1.4,
@@ -763,7 +763,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                     {bonus.role && (
                       <p
                         style={{
-                          color: "rgba(255,255,255,0.52)",
+                          color: "#64748b",
                           fontSize: "0.83rem",
                           lineHeight: 1.65,
                         }}
@@ -785,7 +785,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div
               style={{
-                background: "rgba(5,8,20,0.8)",
+                background: "#ffffff",
                 border: "1px solid rgba(0,102,255,0.2)",
                 borderRadius: "20px",
                 padding: "clamp(2rem, 4vw, 3.5rem)",
@@ -805,7 +805,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               </p>
               <h2
                 style={{
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   fontWeight: 900,
                   fontSize: "clamp(1.5rem, 3vw, 2.2rem)",
                   marginBottom: "2rem",
@@ -820,8 +820,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   <div
                     key={item.question}
                     style={{
-                      background: "rgba(255,255,255,0.02)",
-                      border: "1px solid rgba(255,255,255,0.07)",
+                      background: "#ffffff",
+                      border: "1px solid rgba(15,23,42,0.11)",
                       borderLeft: `3px solid ${accent}`,
                       borderRadius: "12px",
                       padding: "1.4rem 1.6rem",
@@ -829,7 +829,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   >
                     <h3
                       style={{
-                        color: "#fff",
+                        color: "var(--text-primary)",
                         fontWeight: 700,
                         fontSize: "1rem",
                         marginBottom: "0.65rem",
@@ -839,7 +839,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                     </h3>
                     <p
                       style={{
-                        color: "rgba(255,255,255,0.62)",
+                        color: "#334155",
                         lineHeight: 1.8,
                         fontSize: "0.92rem",
                       }}
@@ -860,7 +860,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
           <div
             style={{
               position: "relative",
-              background: `linear-gradient(135deg, ${accent}28, rgba(7,18,50,0.95) 55%)`,
+              background: `linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)`,
               border: `1px solid ${accent}40`,
               borderRadius: "24px",
               padding: "clamp(3rem, 5vw, 5rem)",
@@ -900,7 +900,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
               style={{
                 fontSize: "clamp(1.75rem, 4vw, 3rem)",
                 fontWeight: 900,
-                color: "#fff",
+                color: "var(--text-primary)",
                 lineHeight: 1.1,
                 maxWidth: 640,
                 margin: "0 auto 1.25rem",
@@ -912,7 +912,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             </h2>
             <p
               style={{
-                color: "rgba(255,255,255,0.58)",
+                color: "#64748b",
                 fontSize: "1rem",
                 lineHeight: 1.8,
                 maxWidth: 520,
@@ -940,7 +940,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   alignItems: "center",
                   padding: "1.1rem 2.8rem",
                   background: `linear-gradient(135deg, ${accent}, ${accent}cc)`,
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   textDecoration: "none",
                   fontWeight: 800,
                   fontSize: "0.92rem",
@@ -959,8 +959,8 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                   display: "inline-flex",
                   alignItems: "center",
                   padding: "1.1rem 2.4rem",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  color: "rgba(255,255,255,0.72)",
+                  border: "1px solid rgba(15,23,42,0.11)",
+                  color: "#334155",
                   textDecoration: "none",
                   fontWeight: 700,
                   fontSize: "0.92rem",
@@ -972,7 +972,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
                 Browse All Products
               </Link>
             </div>
-            <p style={{ color: "rgba(255,255,255,0.28)", fontSize: "0.75rem", marginTop: "1.25rem", position: "relative" }}>
+            <p style={{ color: "#64748b", fontSize: "0.75rem", marginTop: "1.25rem", position: "relative" }}>
               🔐 Secure checkout · Local & International · Instant delivery by email
             </p>
           </div>
@@ -987,7 +987,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
           left: 0,
           right: 0,
           zIndex: 999,
-          background: "rgba(5, 8, 20, 0.97)",
+          background: "#ffffff",
           borderTop: `2px solid ${accent}`,
           padding: "0.85rem 1.25rem",
           display: "flex",
@@ -999,10 +999,10 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
         className="md:hidden"
       >
         <div>
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.72rem", lineHeight: 1.2 }}>Digital Forge</p>
+          <p style={{ color: "#64748b", fontSize: "0.72rem", lineHeight: 1.2 }}>Digital Forge</p>
           <p
             style={{
-              color: "#fff",
+              color: "var(--text-primary)",
               fontWeight: 800,
               fontSize: "0.92rem",
               lineHeight: 1.3,
@@ -1023,7 +1023,7 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
             gap: "0.4rem",
             padding: "0.75rem 1.4rem",
             background: `linear-gradient(135deg, ${accent}, ${accent}bb)`,
-            color: "#fff",
+            color: "var(--text-primary)",
             textDecoration: "none",
             fontWeight: 800,
             fontSize: "0.85rem",

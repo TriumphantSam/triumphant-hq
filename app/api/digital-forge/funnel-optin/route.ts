@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { NextResponse } from 'next/server';
+import { scheduleFollowUpEmail } from '@/lib/follow-up-emails';
 
 const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? '';
 const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? '';
@@ -161,6 +162,32 @@ export async function POST(request: Request) {
         } catch (error) {
             console.error('[Funnel Engine] EmailJS confirmation failed', error);
         }
+
+        const day3 = new Date();
+        day3.setDate(day3.getDate() + 3);
+        const day7 = new Date();
+        day7.setDate(day7.getDate() + 7);
+
+        await scheduleFollowUpEmail({
+            name,
+            email,
+            templateKey: 'funnel_day3',
+            sequence: 'funnel_nurture',
+            source: 'digital_forge_funnel',
+            leadId: slug,
+            scheduledAt: day3,
+            metadata: { training_title: trainingTitle, training_url: trainingUrl, offer_url: offerUrl },
+        });
+        await scheduleFollowUpEmail({
+            name,
+            email,
+            templateKey: 'funnel_day7',
+            sequence: 'funnel_nurture',
+            source: 'digital_forge_funnel',
+            leadId: slug,
+            scheduledAt: day7,
+            metadata: { training_title: trainingTitle, training_url: trainingUrl, offer_url: offerUrl },
+        });
 
         console.log(`[Funnel Engine] New Lead Captured: ${name} (${email}) for funnel: ${slug}`);
 

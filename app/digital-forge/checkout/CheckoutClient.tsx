@@ -1,11 +1,12 @@
 "use client";
 
 import { FormEvent, useState, useEffect } from "react";
+import posthog from "posthog-js";
 import CurrencyPrice, { useVisitorPricing } from "@/components/CurrencyPrice";
 
 type CheckoutClientProps = {
   offerKey: string;
-  offerKind: "product" | "system";
+  offerKind: "product" | "system" | "course" | "subscription";
   slug?: string;
   title: string;
   priceLabel: string;
@@ -37,7 +38,8 @@ export default function CheckoutClient({
   useEffect(() => {
     const pixel = (window as MetaPixelWindow).fbq;
     pixel?.("track", "InitiateCheckout");
-  }, []);
+    posthog.capture("checkout_initiated", { offerKey, offerKind });
+  }, [offerKey, offerKind]);
 
   useEffect(() => {
     if (!hasInternationalCheckout) return;
@@ -91,7 +93,7 @@ export default function CheckoutClient({
   return (
     <form onSubmit={handleSubmit} className="grid gap-5">
       <div className="grid gap-2">
-        <label htmlFor="checkout-name" className="text-white/80 text-sm font-bold tracking-wide">
+        <label htmlFor="checkout-name" className="text-slate-700 text-sm font-bold tracking-wide">
           Full name
         </label>
         <div className="relative group">
@@ -102,13 +104,13 @@ export default function CheckoutClient({
             onChange={(event) => setName(event.target.value)}
             placeholder="Your name"
             autoComplete="name"
-            className="relative w-full rounded-xl border border-white/10 bg-white/5 text-white px-4 py-3.5 outline-none transition-all duration-300 focus:border-blue-400/50 focus:bg-white/[0.08] placeholder:text-white/20 font-medium"
+            className="relative w-full rounded-xl border border-slate-200 bg-white text-slate-900 px-4 py-3.5 outline-none shadow-sm transition-all duration-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400 font-medium"
           />
         </div>
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="checkout-email" className="text-white/80 text-sm font-bold tracking-wide">
+        <label htmlFor="checkout-email" className="text-slate-700 text-sm font-bold tracking-wide">
           Email address
         </label>
         <div className="relative group">
@@ -120,15 +122,15 @@ export default function CheckoutClient({
             onChange={(event) => setEmail(event.target.value)}
             placeholder="you@example.com"
             autoComplete="email"
-            className="relative w-full rounded-xl border border-white/10 bg-white/5 text-white px-4 py-3.5 outline-none transition-all duration-300 focus:border-blue-400/50 focus:bg-white/[0.08] placeholder:text-white/20 font-medium"
+            className="relative w-full rounded-xl border border-slate-200 bg-white text-slate-900 px-4 py-3.5 outline-none shadow-sm transition-all duration-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400 font-medium"
           />
         </div>
       </div>
 
       <div className="grid gap-2">
-        <label htmlFor="checkout-phone" className="text-white/80 text-sm font-bold tracking-wide flex items-center justify-between">
+        <label htmlFor="checkout-phone" className="text-slate-700 text-sm font-bold tracking-wide flex items-center justify-between">
           <span>Phone number</span>
-          <span className="text-white/30 text-xs font-medium uppercase tracking-wider">Optional</span>
+          <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Optional</span>
         </label>
         <div className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-0 group-focus-within:opacity-20 transition duration-500" />
@@ -138,18 +140,18 @@ export default function CheckoutClient({
             onChange={(event) => setPhone(event.target.value)}
             placeholder="+234..."
             autoComplete="tel"
-            className="relative w-full rounded-xl border border-white/10 bg-white/5 text-white px-4 py-3.5 outline-none transition-all duration-300 focus:border-blue-400/50 focus:bg-white/[0.08] placeholder:text-white/20 font-medium"
+            className="relative w-full rounded-xl border border-slate-200 bg-white text-slate-900 px-4 py-3.5 outline-none shadow-sm transition-all duration-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 placeholder:text-slate-400 font-medium"
           />
         </div>
       </div>
 
       <div className="grid gap-4 mt-4">
         <div className="flex items-center gap-4">
-          <div className="h-px bg-white/10 flex-1" />
-          <p className="text-white/40 text-xs font-bold uppercase tracking-[0.2em] m-0">
+          <div className="h-px bg-slate-200 flex-1" />
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] m-0">
             Choose payment method
           </p>
-          <div className="h-px bg-white/10 flex-1" />
+          <div className="h-px bg-slate-200 flex-1" />
         </div>
 
         <div className="grid grid-cols-1 gap-3">
@@ -186,15 +188,15 @@ export default function CheckoutClient({
                 className={`flex items-center gap-4 rounded-xl p-4 cursor-pointer text-left transition-all duration-300 ${
                   isActive 
                     ? `border ${item.activeBorder} ${item.activeColor} ${item.shadow} scale-[1.02]` 
-                    : `border border-white/10 bg-white/5 ${item.hoverBorder} hover:bg-white/10 hover:scale-[1.01]`
+                    : `border border-slate-200 bg-white ${item.hoverBorder} hover:bg-slate-50 hover:scale-[1.01]`
                 }`}
               >
                 <div className="text-3xl filter drop-shadow-md">{item.icon}</div>
                 <div>
-                  <div className={`font-black text-base mb-1 ${isActive ? item.activeText : "text-white/90"}`}>
+                  <div className={`font-black text-base mb-1 ${isActive ? item.activeText : "text-slate-900"}`}>
                     {item.label}
                   </div>
-                  <div className={`text-xs font-medium leading-relaxed ${isActive ? "text-white/80" : "text-white/40"}`}>
+                  <div className={`text-xs font-medium leading-relaxed ${isActive ? "text-slate-700" : "text-slate-500"}`}>
                     {item.desc}
                   </div>
                 </div>
@@ -245,7 +247,7 @@ export default function CheckoutClient({
       </button>
 
       <div className="text-center mt-2">
-        <p className="text-white/40 text-xs font-medium leading-relaxed m-0 inline-flex items-center gap-2">
+        <p className="text-slate-500 text-xs font-medium leading-relaxed m-0 inline-flex items-center gap-2">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-70">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>

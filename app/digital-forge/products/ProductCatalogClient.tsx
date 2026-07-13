@@ -107,7 +107,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
       >
         <span
           style={{
-            color: "#00CCFF",
+            color: "#0077b8",
             fontWeight: 700,
             fontSize: "0.82rem",
             letterSpacing: "0.12em",
@@ -127,7 +127,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
           <span
             key={item}
             style={{
-              color: "rgba(255,255,255,0.7)",
+              color: "#334155",
               fontSize: "0.85rem",
               fontWeight: 500,
             }}
@@ -144,8 +144,8 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
           flexDirection: "column",
           gap: "1.5rem",
           marginBottom: "3rem",
-          background: "rgba(255,255,255,0.02)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          background: "#ffffff",
+          border: "1px solid rgba(15,23,42,0.11)",
           borderRadius: "16px",
           padding: "1.5rem"
         }}
@@ -154,7 +154,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
           
           {/* Search Input */}
           <div style={{ flex: "1 1 300px", position: "relative" }}>
-            <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "rgba(255,255,255,0.4)" }}>🔍</span>
+            <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "#64748b" }}>🔍</span>
             <input 
               type="text" 
               placeholder="Search products by name or promise..." 
@@ -162,17 +162,17 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: "100%",
-                background: "rgba(0,0,0,0.4)",
-                border: "1px solid rgba(255,255,255,0.15)",
+                background: "#ffffff",
+                border: "1px solid rgba(15,23,42,0.11)",
                 borderRadius: "99px",
                 padding: "0.8rem 1.2rem 0.8rem 2.5rem",
-                color: "#fff",
+                color: "var(--text-primary)",
                 outline: "none",
                 fontSize: "0.95rem",
                 transition: "border-color 0.2s"
               }}
               onFocus={(e) => e.target.style.borderColor = "#00CCFF"}
-              onBlur={(e) => e.target.style.borderColor = "rgba(255,255,255,0.15)"}
+              onBlur={(e) => e.target.style.borderColor = "rgba(15,23,42,0.11)"}
             />
           </div>
 
@@ -180,13 +180,13 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
           <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap", zIndex: 20 }}>
             {/* Category Custom Dropdown */}
             <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", position: "relative" }} ref={categoryRef}>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", fontWeight: 600 }}>Category:</span>
+              <span style={{ color: "#334155", fontSize: "0.85rem", fontWeight: 600 }}>Category:</span>
               <button 
                 type="button"
                 onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                 style={{
-                  background: "rgba(0,0,0,0.4)",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,23,42,0.11)",
                   borderRadius: "8px",
                   padding: "0.7rem 2.5rem 0.7rem 1rem",
                   color: activeCategory === "All" ? "#00CCFF" : getCategoryColor(activeCategory),
@@ -202,7 +202,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                 }}
               >
                 <span>{activeCategory.length > 30 ? activeCategory.substring(0, 30) + "..." : activeCategory}</span>
-                <span style={{ position: "absolute", right: "1rem", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", transform: isCategoryOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▼</span>
+                <span style={{ position: "absolute", right: "1rem", color: "#64748b", fontSize: "0.7rem", transform: isCategoryOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▼</span>
               </button>
 
               {isCategoryOpen && (
@@ -212,11 +212,11 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                   right: 0,
                   width: "100%",
                   minWidth: "240px",
-                  background: "#090d19",
+                  background: "#ffffff",
                   border: "1px solid rgba(0,204,255,0.2)",
                   borderRadius: "10px",
                   overflow: "hidden",
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
+                  boxShadow: "0 10px 40px rgba(15,23,42,0.12)",
                   zIndex: 50,
                   maxHeight: "350px",
                   overflowY: "auto"
@@ -234,16 +234,16 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                           textAlign: "left",
                           padding: "0.8rem 1rem",
                           background: isActive ? "rgba(0,204,255,0.1)" : "transparent",
-                          color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
+                          color: isActive ? "#fff" : "#334155",
                           border: "none",
-                          borderBottom: "1px solid rgba(255,255,255,0.05)",
+                          borderBottom: "1px solid rgba(15,23,42,0.11)",
                           cursor: "pointer",
                           fontSize: "0.85rem",
                           fontWeight: isActive ? 700 : 500,
                           transition: "all 0.2s"
                         }}
                         onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(0,204,255,0.1)"; e.currentTarget.style.color = "#fff"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = isActive ? "rgba(0,204,255,0.1)" : "transparent"; e.currentTarget.style.color = isActive ? "#fff" : "rgba(255,255,255,0.7)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = isActive ? "rgba(0,204,255,0.1)" : "transparent"; e.currentTarget.style.color = isActive ? "#fff" : "#334155"; }}
                       >
                         <span style={{ display: "inline-block", width: "8px", height: "8px", borderRadius: "50%", background: catColor, marginRight: "8px" }} />
                         {cat}
@@ -256,16 +256,16 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
 
             {/* Sort Custom Dropdown */}
             <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", position: "relative" }} ref={sortRef}>
-              <span style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.85rem", fontWeight: 600 }}>Sort by:</span>
+              <span style={{ color: "#334155", fontSize: "0.85rem", fontWeight: 600 }}>Sort by:</span>
               <button 
                 type="button"
                 onClick={() => setIsSortOpen(!isSortOpen)}
                 style={{
-                  background: "rgba(0,0,0,0.4)",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,23,42,0.11)",
                   borderRadius: "8px",
                   padding: "0.7rem 2.5rem 0.7rem 1rem",
-                  color: "#fff",
+                  color: "var(--text-primary)",
                   outline: "none",
                   fontSize: "0.9rem",
                   fontWeight: 600,
@@ -282,7 +282,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                    sortBy === "price-desc" ? "Price (High to Low)" : 
                    sortBy === "price-asc" ? "Price (Low to High)" : "Name (A-Z)"}
                 </span>
-                <span style={{ position: "absolute", right: "1rem", color: "rgba(255,255,255,0.5)", fontSize: "0.7rem", transform: isSortOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▼</span>
+                <span style={{ position: "absolute", right: "1rem", color: "#64748b", fontSize: "0.7rem", transform: isSortOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▼</span>
               </button>
 
               {isSortOpen && (
@@ -292,11 +292,11 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                   right: 0,
                   width: "100%",
                   minWidth: "180px",
-                  background: "#090d19",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  background: "#ffffff",
+                  border: "1px solid rgba(15,23,42,0.11)",
                   borderRadius: "10px",
                   overflow: "hidden",
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
+                  boxShadow: "0 10px 40px rgba(15,23,42,0.12)",
                   zIndex: 50
                 }}>
                   {[
@@ -316,17 +316,17 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                           width: "100%",
                           textAlign: "left",
                           padding: "0.8rem 1rem",
-                          background: isActive ? "rgba(255,255,255,0.05)" : "transparent",
-                          color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
+                          background: isActive ? "#ffffff" : "transparent",
+                          color: isActive ? "#fff" : "#334155",
                           border: "none",
-                          borderBottom: "1px solid rgba(255,255,255,0.05)",
+                          borderBottom: "1px solid rgba(15,23,42,0.11)",
                           cursor: "pointer",
                           fontSize: "0.85rem",
                           fontWeight: isActive ? 700 : 500,
                           transition: "all 0.2s"
                         }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = isActive ? "rgba(255,255,255,0.05)" : "transparent"; }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "#ffffff"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = isActive ? "#ffffff" : "transparent"; }}
                       >
                         {opt.label}
                       </button>
@@ -342,12 +342,12 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
       {/* Cards Grid */}
       {filteredAndSortedProducts.length === 0 ? (
         <div style={{ padding: "4rem 0", textAlign: "center" }}>
-          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1.1rem" }}>
+          <p style={{ color: "#64748b", fontSize: "1.1rem" }}>
             No products match your current filters.
           </p>
           <button 
             onClick={() => { setSearchQuery(""); setActiveCategory("All"); }}
-            style={{ marginTop: "1rem", color: "#00CCFF", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
+            style={{ marginTop: "1rem", color: "#0077b8", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
           >
             Clear all filters
           </button>
@@ -374,7 +374,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                 <div
                   style={{
                     position: "relative",
-                    background: "rgba(5, 8, 20, 0.8)",
+                    background: "#ffffff",
                     border: `1px solid ${accentColor}30`,
                     borderTop: `3px solid ${accentColor}`,
                     borderRadius: "16px",
@@ -425,7 +425,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                   {/* Title */}
                   <h2
                     style={{
-                      color: "#fff",
+                      color: "var(--text-primary)",
                       fontWeight: 800,
                       fontSize: "1.1rem",
                       lineHeight: 1.35,
@@ -439,7 +439,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                   {/* Promise */}
                   <p
                     style={{
-                      color: "rgba(255,255,255,0.58)",
+                      color: "#64748b",
                       fontSize: "0.88rem",
                       lineHeight: 1.75,
                       marginBottom: "1.4rem",
@@ -461,12 +461,12 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                       <span
                         key={item}
                         style={{
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid rgba(255,255,255,0.1)",
+                          background: "#ffffff",
+                          border: "1px solid rgba(15,23,42,0.11)",
                           borderRadius: "6px",
                           padding: "0.25rem 0.6rem",
                           fontSize: "0.7rem",
-                          color: "rgba(255,255,255,0.55)",
+                          color: "#64748b",
                           fontWeight: 500,
                         }}
                       >
@@ -483,12 +483,12 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                       justifyContent: "space-between",
                       marginTop: "auto",
                       paddingTop: "1.25rem",
-                      borderTop: "1px solid rgba(255,255,255,0.07)",
+                      borderTop: "1px solid rgba(15,23,42,0.11)",
                     }}
                   >
                     <span
                       style={{
-                        color: "rgba(255,255,255,0.4)",
+                        color: "#64748b",
                         fontSize: "0.75rem",
                         fontWeight: 500,
                       }}

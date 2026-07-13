@@ -1,13 +1,13 @@
 import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { resolveCourseOffer, resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
 
 const FLUTTERWAVE_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY ?? "";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? "https://triumphanthq.com";
 const SUPPORT_EMAIL = process.env.DIGITAL_FORGE_SUPPORT_EMAIL ?? "support@triumphanthq.com";
 
 type CheckoutBody = {
-  offerKind?: "product" | "system";
+  offerKind?: "product" | "system" | "course" | "subscription";
   offerKey?: string;
   slug?: string;
   name?: string;
@@ -24,6 +24,9 @@ function buildTxRef(offerKey: string): string {
 async function resolveOffer(body: CheckoutBody) {
   if (body.offerKind === "system" || body.offerKey === "starter-system") {
     return resolveSystemOffer();
+  }
+  if (body.offerKind === "course" || body.offerKey === "digital-forge-course" || body.offerKey === "course") {
+    return resolveCourseOffer();
   }
 
   const slug = body.slug?.trim() || body.offerKey?.trim();

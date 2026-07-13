@@ -85,7 +85,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                         {row.map((cell, cellIndex) => (
                                             <td
                                                 key={`${i}-c-${rowIndex}-${cellIndex}`}
-                                                style={{ padding: '0.75rem', borderBottom: '1px solid rgba(255,255,255,0.06)', color: 'var(--text-secondary)', verticalAlign: 'top' }}
+                                                style={{ padding: '0.75rem', borderBottom: '1px solid #64748b', color: 'var(--text-secondary)', verticalAlign: 'top' }}
                                                 dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(cell) }}
                                             />
                                         ))}
@@ -230,7 +230,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             style={{
                                 display: 'inline-block', padding: '0.8rem 1.6rem', fontSize: '0.9rem', fontWeight: 700,
                                 textTransform: 'uppercase', letterSpacing: '0.08em', borderRadius: '0.75rem',
-                                background: 'var(--accent-color)', color: '#041018',
+                                background: 'var(--accent-color)', color: '#ffffff',
                                 textDecoration: 'none',
                             }}
                         >

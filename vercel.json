@@ -1,0 +1,13 @@
+{
+  "crons": [
+    {
+      "path": "/api/seo/run-follow-ups",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/digital-forge/follow-ups/run",
+      "schedule": "0 */6 * * *"
+    }
+  ]
+}
+

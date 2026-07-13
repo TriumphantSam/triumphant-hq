@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import posthog from 'posthog-js';
 
 interface SeoResult {
   domain: string;
@@ -46,6 +47,7 @@ export default function SeoResultsPage() {
 
   const handleBookCall = async () => {
     const bookingUrl = result?.cta?.primaryUrl || result?.bookingLinks?.strategy || DEFAULT_BOOKING_URL;
+    posthog.capture('cal_booking_clicked', { leadId: result?.leadId || 'unknown', bookingUrl });
     if (!result?.leadId) { window.location.href = bookingUrl; return; }
     setBooking(true);
     try {
@@ -62,7 +64,7 @@ export default function SeoResultsPage() {
   if (!result) {
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: 'rgba(255,255,255,0.5)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#64748b' }}>
           <svg style={{ animation: 'spin 1s linear infinite', width: 22, height: 22 }} fill="none" viewBox="0 0 24 24">
             <circle style={{ opacity: 0.25 }} cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path style={{ opacity: 0.75 }} fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
@@ -105,7 +107,7 @@ export default function SeoResultsPage() {
         aria-hidden
         style={{
           position: 'fixed', inset: 0, pointerEvents: 'none', overflow: 'hidden',
-          background: 'radial-gradient(circle at 18% 20%, rgba(0,102,255,0.14), transparent 36%), radial-gradient(circle at 82% 78%, rgba(0,204,255,0.08), transparent 32%), linear-gradient(180deg, rgba(5,5,16,0.98), rgba(2,2,5,1))',
+          background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
         }}
       />
 
@@ -128,7 +130,7 @@ export default function SeoResultsPage() {
               }}
             >
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
-              <span style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+              <span style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
                 Analysis Complete
               </span>
             </div>
@@ -137,7 +139,7 @@ export default function SeoResultsPage() {
               style={{
                 fontSize: 'clamp(2.2rem, 5vw, 4rem)',
                 fontWeight: 900,
-                color: '#fff',
+                color: 'var(--text-primary)',
                 letterSpacing: '-0.03em',
                 lineHeight: 1.08,
                 marginBottom: '1rem',
@@ -146,7 +148,7 @@ export default function SeoResultsPage() {
               SEO Snapshot —{' '}
               <span
                 style={{
-                  background: 'linear-gradient(90deg, #0066FF, #00CCFF)',
+                  background: 'linear-gradient(90deg, #075ee5, #0088d6)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -158,7 +160,7 @@ export default function SeoResultsPage() {
             <p
               style={{
                 fontSize: 'clamp(1rem, 2vw, 1.2rem)',
-                color: 'rgba(255,255,255,0.62)',
+                color: '#334155',
                 lineHeight: 1.85,
                 maxWidth: 780,
                 margin: '0 auto',
@@ -184,7 +186,7 @@ export default function SeoResultsPage() {
               {/* SCORE CARD */}
               <div
                 style={{
-                  background: 'linear-gradient(180deg, rgba(7,13,34,0.95), rgba(5,8,20,0.92))',
+                  background: 'linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)',
                   border: '1px solid rgba(0,102,255,0.2)',
                   borderRadius: 24,
                   padding: '2rem',
@@ -195,7 +197,7 @@ export default function SeoResultsPage() {
                   gap: '1rem',
                 }}
               >
-                <p style={{ color: '#00CCFF', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+                <p style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
                   Your Visibility Score
                 </p>
 
@@ -212,8 +214,8 @@ export default function SeoResultsPage() {
                     />
                   </svg>
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '3.2rem', fontWeight: 900, color: '#fff', lineHeight: 1 }}>{score}</span>
-                    <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.4)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 4 }}>/ 100</span>
+                    <span style={{ fontSize: '3.2rem', fontWeight: 900, color: 'var(--text-primary)', lineHeight: 1 }}>{score}</span>
+                    <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 4 }}>/ 100</span>
                   </div>
                 </div>
 
@@ -233,11 +235,11 @@ export default function SeoResultsPage() {
                   {scoreLabel}
                 </span>
 
-                <p style={{ color: 'rgba(255,255,255,0.58)', lineHeight: 1.75, fontSize: '0.9rem', maxWidth: 240 }}>
+                <p style={{ color: '#64748b', lineHeight: 1.75, fontSize: '0.9rem', maxWidth: 240 }}>
                   {scoreMessage}
                 </p>
 
-                <div style={{ width: '100%', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                <div style={{ width: '100%', paddingTop: '1rem', borderTop: '1px solid rgba(15,23,42,0.11)' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
                     {[
                       { label: 'Issues Found', value: result.visibleIssues.length },
@@ -246,15 +248,15 @@ export default function SeoResultsPage() {
                       <div
                         key={item.label}
                         style={{
-                          background: 'rgba(255,255,255,0.03)',
-                          border: '1px solid rgba(255,255,255,0.07)',
+                          background: '#ffffff',
+                          border: '1px solid rgba(15,23,42,0.11)',
                           borderRadius: 14,
                           padding: '0.9rem',
                           textAlign: 'center',
                         }}
                       >
-                        <p style={{ color: '#fff', fontSize: '1.6rem', fontWeight: 900, lineHeight: 1 }}>{item.value}</p>
-                        <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 4 }}>{item.label}</p>
+                        <p style={{ color: 'var(--text-primary)', fontSize: '1.6rem', fontWeight: 900, lineHeight: 1 }}>{item.value}</p>
+                        <p style={{ color: '#64748b', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 4 }}>{item.label}</p>
                       </div>
                     ))}
                   </div>
@@ -267,7 +269,7 @@ export default function SeoResultsPage() {
                 {/* Priority Blockers */}
                 <div
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
+                    background: '#ffffff',
                     border: '1px solid rgba(239,68,68,0.2)',
                     borderTop: '3px solid #ef4444',
                     borderRadius: 24,
@@ -288,8 +290,8 @@ export default function SeoResultsPage() {
                       </svg>
                     </div>
                     <div>
-                      <h2 style={{ color: '#fff', fontWeight: 900, fontSize: '1.2rem' }}>Priority Blockers</h2>
-                      <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.84rem' }}>These are costing you rankings right now</p>
+                      <h2 style={{ color: 'var(--text-primary)', fontWeight: 900, fontSize: '1.2rem' }}>Priority Blockers</h2>
+                      <p style={{ color: '#64748b', fontSize: '0.84rem' }}>These are costing you rankings right now</p>
                     </div>
                   </div>
                   <div style={{ display: 'grid', gap: '1rem' }}>
@@ -319,7 +321,7 @@ export default function SeoResultsPage() {
                         >
                           {i + 1}
                         </div>
-                        <p style={{ color: 'rgba(255,255,255,0.82)', lineHeight: 1.75, fontSize: '0.95rem', paddingTop: 2 }}>{issue}</p>
+                        <p style={{ color: '#334155', lineHeight: 1.75, fontSize: '0.95rem', paddingTop: 2 }}>{issue}</p>
                       </div>
                     ))}
                   </div>
@@ -328,7 +330,7 @@ export default function SeoResultsPage() {
                 {/* Quick Wins */}
                 <div
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
+                    background: '#ffffff',
                     border: '1px solid rgba(0,204,255,0.2)',
                     borderTop: '3px solid #00CCFF',
                     borderRadius: 24,
@@ -349,8 +351,8 @@ export default function SeoResultsPage() {
                       </svg>
                     </div>
                     <div>
-                      <h2 style={{ color: '#fff', fontWeight: 900, fontSize: '1.2rem' }}>Quick Wins Available</h2>
-                      <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.84rem' }}>These can improve your rankings this week</p>
+                      <h2 style={{ color: 'var(--text-primary)', fontWeight: 900, fontSize: '1.2rem' }}>Quick Wins Available</h2>
+                      <p style={{ color: '#64748b', fontSize: '0.84rem' }}>These can improve your rankings this week</p>
                     </div>
                   </div>
                   <div style={{ display: 'grid', gap: '1rem' }}>
@@ -373,14 +375,14 @@ export default function SeoResultsPage() {
                             width: 36, height: 36, borderRadius: 10,
                             background: 'rgba(0,204,255,0.14)',
                             border: '1px solid rgba(0,204,255,0.24)',
-                            color: '#00CCFF', fontWeight: 900,
+                            color: '#0077b8', fontWeight: 900,
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                             fontSize: '0.88rem',
                           }}
                         >
                           {i + 1}
                         </div>
-                        <p style={{ color: 'rgba(255,255,255,0.82)', lineHeight: 1.75, fontSize: '0.95rem', paddingTop: 2 }}>{opp}</p>
+                        <p style={{ color: '#334155', lineHeight: 1.75, fontSize: '0.95rem', paddingTop: 2 }}>{opp}</p>
                       </div>
                     ))}
                   </div>
@@ -406,20 +408,20 @@ export default function SeoResultsPage() {
               }}
             >
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: '#00CCFF', fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>{score}/100</p>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', marginTop: 4 }}>Visibility Score</p>
+                <p style={{ color: '#0077b8', fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>{score}/100</p>
+                <p style={{ color: '#64748b', fontSize: '0.82rem', marginTop: 4 }}>Visibility Score</p>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: '#fff', fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>{result.visibleIssues.length}</p>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', marginTop: 4 }}>Issues blocking your rankings</p>
+                <p style={{ color: 'var(--text-primary)', fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>{result.visibleIssues.length}</p>
+                <p style={{ color: '#64748b', fontSize: '0.82rem', marginTop: 4 }}>Issues blocking your rankings</p>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ color: '#fff', fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>{result.opportunities.length}</p>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', marginTop: 4 }}>Quick wins to implement now</p>
+                <p style={{ color: 'var(--text-primary)', fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>{result.opportunities.length}</p>
+                <p style={{ color: '#64748b', fontSize: '0.82rem', marginTop: 4 }}>Quick wins to implement now</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <p style={{ color: scoreColor, fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>{scoreLabel}</p>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.82rem', marginTop: 4 }}>Current SEO health rating</p>
+                <p style={{ color: '#64748b', fontSize: '0.82rem', marginTop: 4 }}>Current SEO health rating</p>
               </div>
             </div>
           </div>
@@ -446,13 +448,13 @@ export default function SeoResultsPage() {
                 }}
               />
 
-              <p style={{ color: '#00CCFF', fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+              <p style={{ color: '#0077b8', fontSize: '0.76rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '1rem' }}>
                 Roadmap &amp; Fix
               </p>
-              <h2 style={{ color: '#fff', fontSize: 'clamp(2rem, 5vw, 3.4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: '1.1rem' }}>
+              <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(2rem, 5vw, 3.4rem)', fontWeight: 900, lineHeight: 1.08, marginBottom: '1.1rem' }}>
                 {cta.headline}
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.65)', maxWidth: 720, margin: '0 auto 2.2rem', lineHeight: 1.9, fontSize: '1.01rem' }}>
+              <p style={{ color: '#334155', maxWidth: 720, margin: '0 auto 2.2rem', lineHeight: 1.9, fontSize: '1.01rem' }}>
                 {cta.description}
               </p>
 
@@ -467,8 +469,8 @@ export default function SeoResultsPage() {
                     gap: '0.5rem',
                     padding: '1rem 2rem',
                     borderRadius: 10,
-                    background: 'linear-gradient(135deg, #0066FF, #0044CC)',
-                    color: '#fff',
+                    background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
+                    color: 'var(--text-primary)',
                     fontWeight: 800,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
@@ -491,8 +493,8 @@ export default function SeoResultsPage() {
                     gap: '0.5rem',
                     padding: '1rem 2rem',
                     borderRadius: 10,
-                    border: '1px solid rgba(255,255,255,0.16)',
-                    color: 'rgba(255,255,255,0.82)',
+                    border: '1px solid rgba(15,23,42,0.11)',
+                    color: '#334155',
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
@@ -504,9 +506,30 @@ export default function SeoResultsPage() {
                 >
                   {requesting ? 'Sending…' : cta.secondaryLabel}
                 </button>
+                <a
+                  href="/contact"
+                  id="results-build-for-you-cta"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '1rem 2rem',
+                    borderRadius: 10,
+                    border: '1px solid rgba(0,204,255,0.3)',
+                    color: '#0077b8',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    fontSize: '0.86rem',
+                    textDecoration: 'none',
+                    background: 'rgba(0,204,255,0.08)',
+                  }}
+                >
+                  Need us to implement this?
+                </a>
               </div>
 
-              <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.82rem' }}>
+              <p style={{ color: '#64748b', fontSize: '0.82rem' }}>
                 Free 30-minute call · Real implementation advice · No hard sell
               </p>
             </div>
@@ -517,10 +540,10 @@ export default function SeoResultsPage() {
         <section style={{ paddingBottom: '4rem' }}>
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div style={{ marginBottom: '1.6rem', textAlign: 'center' }}>
-              <h2 style={{ color: '#fff', fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '0.7rem' }}>
+              <h2 style={{ color: 'var(--text-primary)', fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: 900, lineHeight: 1.1, marginBottom: '0.7rem' }}>
                 Beyond the snapshot — what a full SEO fix looks like
               </h2>
-              <p style={{ color: 'rgba(255,255,255,0.55)', maxWidth: 680, margin: '0 auto', lineHeight: 1.85 }}>
+              <p style={{ color: '#64748b', maxWidth: 680, margin: '0 auto', lineHeight: 1.85 }}>
                 The snapshot surfaces the issues. The real work is fixing them systematically. Here is what Triumphant HQ clients typically experience when they go beyond the free report.
               </p>
             </div>
@@ -534,15 +557,15 @@ export default function SeoResultsPage() {
                 <div
                   key={item.title}
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
+                    background: '#ffffff',
                     border: `1px solid ${item.accent}22`,
                     borderTop: `3px solid ${item.accent}`,
                     borderRadius: 20,
                     padding: '1.4rem',
                   }}
                 >
-                  <h3 style={{ color: '#fff', fontWeight: 800, fontSize: '1rem', marginBottom: '0.6rem' }}>{item.title}</h3>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, fontSize: '0.9rem' }}>{item.desc}</p>
+                  <h3 style={{ color: 'var(--text-primary)', fontWeight: 800, fontSize: '1rem', marginBottom: '0.6rem' }}>{item.title}</h3>
+                  <p style={{ color: '#334155', lineHeight: 1.75, fontSize: '0.9rem' }}>{item.desc}</p>
                 </div>
               ))}
             </div>

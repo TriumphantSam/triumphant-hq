@@ -1,275 +1,87 @@
-'use client';
+import type { Metadata } from "next";
+import CTABand from "@/components/marketing/CTABand";
+import ProcessSteps from "@/components/marketing/ProcessSteps";
+import SectionHeader from "@/components/marketing/SectionHeader";
+import ServiceCard from "@/components/marketing/ServiceCard";
+import Testimonials from "@/components/Testimonials";
+import { agencyServices } from "@/lib/services";
 
-import { useState } from 'react';
-
-/* ──────────────── DATA ──────────────── */
-
-type ServiceCategory = 'tech_services' | 'digital_forge' | 'local';
-
-const categories: { key: ServiceCategory; label: string; description: string }[] = [
-    { key: 'tech_services', label: '💻 Tech & Development Services', description: 'Premium website design, custom software development, mobile apps, and search engine optimization.' },
-    { key: 'digital_forge', label: '🛠️ Digital Forge Ecosystem', description: 'Explore our showcase of ready-to-use digital templates, training courses, and automation systems.' },
-    { key: 'local', label: '🏪 Local Tech Support', description: 'In-person tech support and essential technical assistance for local businesses and individuals.' },
-];
-
-const services: Record<ServiceCategory, { icon: string; title: string; color: string; badge?: string; description: string; features: string[] }[]> = {
-    tech_services: [
-        {
-            icon: '💻', title: 'Website Design & UI/UX', color: '#0066FF',
-            description: 'Custom React & Next.js websites built with premium layouts, responsive pages, and clean interactive elements.',
-            features: ['Custom design and development', 'Figma design to responsive code', 'High-performance loading speed', 'SEO-friendly architecture'],
-        },
-        {
-            icon: '📱', title: 'Custom App Development', color: '#3385FF',
-            description: 'Tailored web applications, iOS/Android mobile apps, custom backend APIs, and cloud database integrations.',
-            features: ['Web application dashboards', 'Hybrid mobile app development', 'REST & GraphQL API design', 'Secure database architecture'],
-        },
-        {
-            icon: '📈', title: 'Elite SEO Services', color: '#00CCFF',
-            description: 'Semantic SEO strategies, SGE / AI-citation optimization, and monthly done-for-you keyword growth plans.',
-            features: ['Comprehensive site auditing', 'Semantic content mapping', 'Google Search Console tuning', 'AI search visibility optimization'],
-        },
-        {
-            icon: '🤖', title: 'Workflows & AI Automations', color: '#a855f7',
-            description: 'Streamline business operations by automating manual data transfer and linking software systems with AI.',
-            features: ['Webhook and API integrations', 'Zapier & Make automations', 'Custom AI agent processing', 'Airtable operational mapping'],
-        },
-    ],
-    digital_forge: [
-        {
-            icon: '⚡', title: 'Funnel Engineering', color: '#0066FF',
-            badge: 'Digital Forge Engine',
-            description: 'Deploy high-converting flagship funnels and optimized checkout systems designed to scale digital asset sales.',
-            features: ['Flagship funnel deployment', 'Offer and copy rewrite systems', 'Dynamic digital forge architecture', 'A/B tested conversion flows'],
-        },
-        {
-            icon: '🤖', title: 'Autonomous AI Pipelines', color: '#3385FF',
-            badge: 'AgentPrinter',
-            description: 'Custom implementation of our AgentPrinter architecture to scale your digital product generation unconditionally.',
-            features: ['Ebook & Notion template factories', 'Shorts video content pipelines', 'Autonomous revenue generation', 'Fully free distribution logic'],
-        },
-        {
-            icon: '🛒', title: 'Digital Products Store', color: '#f59e0b',
-            badge: 'Digital Forge Products',
-            description: 'Browse and buy AI playbooks, workflow systems, prompt packs, and creator toolkits. Instant delivery — no waiting.',
-            features: ['AI automation playbooks', 'Prompt & template packs', 'Workflow operating systems', 'Creator business toolkits', 'Instant download bundles'],
-        },
-    ],
-    local: [
-        {
-            icon: '🆔', title: 'NIMC Registration', color: '#0066FF',
-            description: 'Fast and accurate National Identity Number (NIN) registration and enrollment services.',
-            features: ['New NIN enrollment', 'NIN modification & updates', 'NIN slip printing', 'Expert guidance through the process'],
-        },
-        {
-            icon: '🎓', title: 'School Registrations', color: '#00CCFF',
-            description: 'Hassle-free registration for JAMB, WAEC, NECO, and other educational portals.',
-            features: ['JAMB registration & profile creation', 'WAEC/NECO registration', 'Result checking & verification', 'Portal troubleshooting'],
-        },
-        {
-            icon: '💻', title: 'Internet Services', color: '#3385FF',
-            description: 'Document typing, printing, scanning, and general internet assistance.',
-            features: ['Document typing & formatting', 'Printing & scanning', 'Email setup & support', 'Online form filling'],
-        },
-    ],
+export const metadata: Metadata = {
+  title: "Technology and Growth Services | Triumphant HQ",
+  description: "Website design, custom application development, SEO growth and AI automation for ambitious businesses.",
 };
 
-/* ──────────────── COMPONENT ──────────────── */
-
 export default function ServicesPage() {
-    const [activeCategory, setActiveCategory] = useState<ServiceCategory>('tech_services');
+  return (
+    <div>
+      <header className="page-hero">
+        <p className="eyebrow">Agency services</p>
+        <h1>Focused digital expertise, connected around your business.</h1>
+        <p>
+          Bring us the growth challenge, the operational friction or the idea that needs to become real. We combine
+          strategy and hands-on delivery across four core disciplines.
+        </p>
+      </header>
 
-    return (
-        <div className="min-h-screen">
-            {/* ===================== HERO ===================== */}
-            <section
-                className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingTop: '8rem', paddingBottom: '3rem', textAlign: 'center' }}
-            >
-                <p
-                    className="uppercase tracking-widest text-sm font-semibold mb-4"
-                    style={{ color: 'var(--accent-color)', letterSpacing: '0.25em' }}
-                >
-                    Our Services
-                </p>
-                <h1
-                    className="gradient-text"
-                    style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800, lineHeight: 1.15, marginBottom: '1.25rem' }}
-                >
-                    Comprehensive Tech Solutions
-                </h1>
-                <p
-                    style={{ fontSize: 'clamp(1rem, 1.8vw, 1.15rem)', color: 'var(--text-secondary)', maxWidth: 600, margin: '0 auto', lineHeight: 1.7 }}
-                >
-                    From essential local tech support to advanced digital growth strategies, we provide end-to-end solutions for individuals and businesses.
-                </p>
-            </section>
-
-            {/* ===================== CATEGORY TABS ===================== */}
-            <section
-                className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingBottom: '1rem' }}
-            >
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2.5rem' }}>
-                    {categories.map((cat) => (
-                        <button
-                            key={cat.key}
-                            onClick={() => setActiveCategory(cat.key)}
-                            style={{
-                                padding: '0.75rem 1.5rem',
-                                borderRadius: '2px',
-                                border: `1px solid ${activeCategory === cat.key ? 'var(--accent-color)' : 'var(--glass-border)'}`,
-                                background: activeCategory === cat.key ? 'rgba(0, 102, 255, 0.15)' : 'var(--glass-bg)',
-                                color: activeCategory === cat.key ? 'var(--accent-color)' : 'var(--text-secondary)',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                fontSize: '0.8rem',
-                                fontWeight: 700,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.05em',
-                            }}
-                        >
-                            {cat.label}
-                        </button>
-                    ))}
-                </div>
-
-                <p style={{ textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2.5rem', fontSize: '0.95rem' }}>
-                    {categories.find(c => c.key === activeCategory)?.description}
-                </p>
-            </section>
-
-            {/* ===================== SERVICE CARDS ===================== */}
-            <section
-                className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingBottom: '5rem' }}
-            >
-                <div
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                        gap: '1.5rem',
-                    }}
-                >
-                    {services[activeCategory].map((service, i) => (
-                        <div
-                            key={`${activeCategory}-${i}`}
-                            className="glass glass-hover rounded-sm"
-                            style={{
-                                padding: 'clamp(1.5rem, 3vw, 2rem)',
-                                borderLeft: `4px solid ${service.color}`,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '1rem',
-                                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                            }}
-                        >
-                            {/* Header */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <span style={{ fontSize: '2rem' }}>{service.icon}</span>
-                                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: service.color }}>
-                                    {service.title}
-                                </h3>
-                            </div>
-
-                            {/* Badge */}
-                            {service.badge && (
-                                <div
-                                    style={{
-                                        padding: '0.5rem 0.75rem',
-                                        borderRadius: '2px',
-                                        background: `${service.color}15`,
-                                        border: `1px solid ${service.color}40`,
-                                        fontSize: '0.75rem',
-                                        fontWeight: 700,
-                                        textTransform: 'uppercase',
-                                        color: service.color,
-                                    }}
-                                >
-                                    ✨ {service.badge}
-                                </div>
-                            )}
-
-                            {/* Description */}
-                            <p style={{ fontSize: '0.9rem', lineHeight: 1.7, color: 'var(--text-secondary)' }}>
-                                {service.description}
-                            </p>
-
-                            {/* Features */}
-                            <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', marginTop: 'auto' }}>
-                                {service.features.map((f, j) => (
-                                    <li
-                                        key={j}
-                                        style={{
-                                            fontSize: '0.85rem',
-                                            color: 'var(--text-secondary)',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                        }}
-                                    >
-                                        <span style={{ color: service.color, fontSize: '0.75rem' }}>✓</span> {f}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* ===================== CTA ===================== */}
-            <section
-                className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16"
-                style={{ paddingBottom: '6rem', textAlign: 'center' }}
-            >
-                <div
-                    className="glass rounded-lg border border-[#0066FF]/30"
-                    style={{ padding: 'clamp(2rem, 5vw, 3.5rem)', position: 'relative', overflow: 'hidden' }}
-                >
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: 'linear-gradient(90deg, var(--accent-color), var(--secondary-color))' }} />
-                    <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', fontWeight: 800, marginBottom: '0.75rem', color: '#fff' }}>
-                        Ready to Get Started?
-                    </h2>
-                    <p style={{ color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto 2rem', lineHeight: 1.7 }}>
-                        Whether you need local tech support or professional digital services, we are here to help you succeed.
-                    </p>
-                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <a
-                            href="/contact"
-                            style={{
-                                display: 'inline-block', padding: '0.9rem 2.5rem', fontSize: '0.9rem', fontWeight: 700,
-                                textTransform: 'uppercase', letterSpacing: '0.1em', borderRadius: '2px',
-                                background: 'var(--accent-color)', color: '#fff', textDecoration: 'none',
-                                transition: 'transform 0.2s, box-shadow 0.2s',
-                            }}
-                            onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = 'translateY(-2px)'; (e.target as HTMLElement).style.boxShadow = '0 0 20px rgba(0, 102, 255, 0.4)'; }}
-                            onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = 'translateY(0)'; (e.target as HTMLElement).style.boxShadow = 'none'; }}
-                        >
-                            Contact Us
-                        </a>
-                        <a
-                            href="https://wa.me/2348107711190"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                                display: 'inline-block', padding: '0.9rem 2.5rem', fontSize: '0.9rem', fontWeight: 700,
-                                textTransform: 'uppercase', letterSpacing: '0.1em', borderRadius: '2px',
-                                background: 'transparent', border: '1px solid var(--glass-border)', color: 'var(--text-primary)',
-                                textDecoration: 'none', transition: 'all 0.2s',
-                            }}
-                            onMouseEnter={(e) => { (e.target as HTMLElement).style.borderColor = 'var(--secondary-color)'; (e.target as HTMLElement).style.color = 'var(--secondary-color)'; }}
-                            onMouseLeave={(e) => { (e.target as HTMLElement).style.borderColor = 'var(--glass-border)'; (e.target as HTMLElement).style.color = 'var(--text-primary)'; }}
-                        >
-                            WhatsApp Us
-                        </a>
-                    </div>
-                </div>
-
-                {/* Location */}
-                <p style={{ marginTop: '2rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-                    📍 Global Digital Operations
-                </p>
-            </section>
+      <section className="section-muted">
+        <div className="section-shell">
+          <SectionHeader
+            eyebrow="Core capabilities"
+            title="Choose a focused engagement or build a connected programme."
+            description="Every service has a clear starting point, while our multidisciplinary model keeps design, engineering, search and operations aligned."
+          />
+          <div className="agency-grid">
+            {agencyServices.map((service) => <ServiceCard detailed key={service.slug} service={service} />)}
+          </div>
         </div>
-    );
+      </section>
+
+      <section className="section-shell">
+        <SectionHeader
+          eyebrow="Engagement process"
+          title="Senior thinking, practical communication and visible progress."
+          description="We keep the process clear so you always know what is being solved, what comes next and where decisions are needed."
+        />
+        <ProcessSteps />
+      </section>
+
+      <section className="section-muted">
+        <div className="section-shell">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
+            <div>
+              <p className="eyebrow">Pricing guidance</p>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-slate-950">Scope before certainty.</h2>
+              <p className="mt-4 max-w-md leading-7 text-slate-600">
+                The figures shown are practical starting points, not generic packages. We confirm the right scope after a
+                short discovery conversation and provide a written proposal before work begins.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {agencyServices.map((service) => (
+                <div className="rounded-2xl border border-slate-200 bg-white p-5" key={service.slug}>
+                  <p className="text-sm font-bold text-slate-950">{service.shortTitle}</p>
+                  <p className="mt-2 text-sm font-semibold text-blue-700">{service.startingPrice}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-12 rounded-2xl border border-blue-200 bg-blue-50 p-6 sm:p-8">
+            <p className="eyebrow">Ongoing SEO execution</p>
+            <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto_auto] lg:items-center">
+              <p className="max-w-2xl leading-7 text-slate-600">
+                For businesses ready to compound organic growth, monthly retainers cover technical improvements, content
+                execution and accountable reporting.
+              </p>
+              <a className="button button-secondary" href="/api/services/retainer-subscription/checkout?plan=starter">Starter · ₦50k/mo</a>
+              <a className="button button-primary" href="/api/services/retainer-subscription/checkout?plan=growth">Growth · ₦150k/mo</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Testimonials />
+      <CTABand />
+    </div>
+  );
 }

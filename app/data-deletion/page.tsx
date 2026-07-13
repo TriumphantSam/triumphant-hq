@@ -43,7 +43,7 @@ export default function DataDeletionPage() {
 
                     <h1
                         className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-5"
-                        style={{ color: '#fff', lineHeight: 1.1, letterSpacing: '-0.02em' }}
+                        style={{ color: 'var(--text-primary)', lineHeight: 1.1, letterSpacing: '-0.02em' }}
                     >
                         Digital Forge / ForgeGrid Data Deletion Instructions
                     </h1>
