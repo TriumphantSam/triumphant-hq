@@ -67,21 +67,23 @@ export default function Home() {
       </div>
 
       <section className="section-shell">
-        <div className="grid overflow-hidden rounded-[2rem] border border-blue-100 bg-[linear-gradient(135deg,#f7faff,#eef5ff)] shadow-[0_24px_70px_rgba(7,94,229,0.1)] lg:grid-cols-[1fr_0.72fr]">
-          <div className="p-8 sm:p-12 lg:p-14">
+        <div className="grid overflow-hidden rounded-[2.2rem] border border-slate-200/80 bg-[linear-gradient(135deg,#f8faff,#f1f6ff)] shadow-[0_24px_70px_rgba(7,94,229,0.08)] lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="px-8 py-12 sm:px-12 sm:py-16 lg:px-16 lg:py-20 flex flex-col justify-center">
             <p className="eyebrow">Free SEO visibility snapshot</p>
-            <h2 className="mt-4 max-w-xl text-[clamp(2rem,4vw,3.2rem)] font-extrabold leading-[1.05] tracking-[-0.045em] text-slate-950">
+            <h2 className="mt-5 max-w-xl text-[clamp(2.1rem,4.5vw,3.2rem)] font-extrabold leading-[1.08] tracking-[-0.05em] text-slate-950">
               Find the gaps limiting your search visibility.
             </h2>
-            <p className="mt-5 max-w-xl leading-7 text-slate-600">
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 font-medium">
               Get a practical first view of your technical health, search signals and priority opportunities—without committing to a retainer.
             </p>
-            <Link className="button button-primary mt-7" href="/seo-snapshot">Run my free snapshot</Link>
+            <div className="mt-8">
+              <Link className="button button-primary" href="/seo-snapshot">Run my free snapshot</Link>
+            </div>
           </div>
-          <div className="grid content-center gap-3 border-t border-blue-100 bg-white/55 p-8 backdrop-blur-sm lg:border-l lg:border-t-0 sm:p-12">
+          <div className="grid content-center gap-4 border-t border-slate-200/60 bg-white/70 px-8 py-12 backdrop-blur-md lg:border-l lg:border-t-0 sm:px-12 sm:py-16">
             {["Technical health overview", "On-page visibility signals", "Priority action recommendations"].map((item) => (
-              <div className="flex items-center gap-3 rounded-2xl border border-white bg-white/80 p-4 text-sm font-semibold text-slate-700 shadow-sm" key={item}>
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-blue-600 text-xs text-white">✓</span>
+              <div className="flex items-center gap-4 rounded-2xl border border-slate-100 bg-white p-4.5 text-[0.92rem] font-bold text-slate-800 shadow-[0_4px_20px_rgba(15,23,42,0.02)]" key={item}>
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-blue-600 text-xs text-white shadow-[0_4px_12px_rgba(7,94,229,0.22)] font-bold">✓</span>
                 {item}
               </div>
             ))}

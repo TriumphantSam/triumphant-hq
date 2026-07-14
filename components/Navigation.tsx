@@ -42,10 +42,10 @@ export default function Navigation() {
                                 <path d="m3 4.5 3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </Link>
-                        <div className="absolute left-1/2 top-full w-[700px] -translate-x-1/2 translate-y-2 pt-5 opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto">
-                            <div className="grid grid-cols-2 gap-2 rounded-[1.4rem] border border-slate-200/80 bg-white/95 p-3.5 shadow-[0_28px_80px_rgba(15,23,42,0.16)] ring-1 ring-white backdrop-blur-xl">
+                        <div className="absolute left-1/2 top-full w-[700px] -translate-x-1/2 translate-y-2 pt-5 opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto z-[250]">
+                            <div className="grid grid-cols-2 gap-3.5 rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-[0_30px_90px_rgba(15,23,42,0.22)] ring-1 ring-slate-100">
                                 {agencyServices.map((service) => (
-                                    <Link key={service.slug} href={`/services/${service.slug}`} className="group/item flex gap-3.5 rounded-2xl border border-transparent p-4 transition-all hover:border-blue-100 hover:bg-blue-50/70">
+                                    <Link key={service.slug} href={`/services/${service.slug}`} className="group/item flex gap-3.5 rounded-2xl border border-transparent p-4 transition-all hover:border-blue-100 hover:bg-blue-50">
                                         <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-blue-100 bg-white text-blue-600 shadow-sm">
                                             <ServiceIcon name={service.icon} className="h-5 w-5" />
                                         </span>
@@ -70,10 +70,10 @@ export default function Navigation() {
                                 <path d="m3 4.5 3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </Link>
-                        <div className="absolute right-0 top-full w-[370px] translate-y-2 pt-5 opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto">
-                            <div className="rounded-[1.4rem] border border-slate-200/80 bg-white/95 p-3.5 shadow-[0_28px_80px_rgba(15,23,42,0.16)] ring-1 ring-white backdrop-blur-xl">
+                        <div className="absolute right-0 top-full w-[370px] translate-y-2 pt-5 opacity-0 pointer-events-none transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto z-[250]">
+                            <div className="rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-[0_30px_90px_rgba(15,23,42,0.22)] ring-1 ring-slate-100">
                                 {resources.map((item, index) => (
-                                    <Link key={item.href} href={item.href} className="group/item flex gap-3 rounded-2xl border border-transparent p-3.5 transition-all hover:border-blue-100 hover:bg-blue-50/70">
+                                    <Link key={item.href} href={item.href} className="group/item flex gap-3 rounded-2xl border border-transparent p-3.5 transition-all hover:border-blue-100 hover:bg-blue-50">
                                         <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-slate-100 text-xs font-black text-blue-700 transition-colors group-hover/item:bg-blue-600 group-hover/item:text-white">
                                             {String(index + 1).padStart(2, '0')}
                                         </span>
