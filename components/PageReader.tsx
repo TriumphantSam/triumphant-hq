@@ -42,9 +42,6 @@ function chunkForSpeech(text: string, maxLen = 320): string[] {
 
 export default function PageReader() {
     const pathname = usePathname();
-    if (pathname.startsWith('/parent-home-routine') || pathname.startsWith('/digital-forge/funnel/')) {
-        return null;
-    }
     const [mounted, setMounted] = useState(false);
     const [state, setState] = useState<ReaderState>('idle');
     const [expanded, setExpanded] = useState(false);
@@ -56,10 +53,9 @@ export default function PageReader() {
     const rateRef = useRef(rate);
     const voiceURIRef = useRef(voiceURI);
     const voicesRef = useRef(voices);
-    rateRef.current = rate;
-    voiceURIRef.current = voiceURI;
-    voicesRef.current = voices;
+    const speakNextRef = useRef<() => void>(() => {});
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     useEffect(() => setMounted(true), []);
 
     const speakNext = useCallback(() => {
@@ -85,13 +81,20 @@ export default function PageReader() {
         }
         u.onend = () => {
             indexRef.current += 1;
-            speakNext();
+            speakNextRef.current();
         };
         u.onerror = () => {
             setState('idle');
         };
         synth.speak(u);
     }, []);
+
+    useEffect(() => {
+        rateRef.current = rate;
+        voiceURIRef.current = voiceURI;
+        voicesRef.current = voices;
+        speakNextRef.current = speakNext;
+    }, [rate, voiceURI, voices, speakNext]);
 
     const stopAll = useCallback(() => {
         window.speechSynthesis.cancel();
@@ -145,6 +148,7 @@ export default function PageReader() {
     }, [mounted]);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         stopAll();
     }, [pathname, stopAll]);
 
@@ -155,6 +159,10 @@ export default function PageReader() {
     }, []);
 
     if (!mounted || typeof window === 'undefined' || !('speechSynthesis' in window)) {
+        return null;
+    }
+
+    if (pathname.startsWith('/parent-home-routine') || pathname.startsWith('/digital-forge/funnel/')) {
         return null;
     }
 

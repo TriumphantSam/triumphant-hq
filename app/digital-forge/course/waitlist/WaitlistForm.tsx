@@ -90,10 +90,10 @@ export default function WaitlistForm() {
       >
         <div style={{ fontSize: "2.6rem", marginBottom: "0.8rem" }}>✅</div>
         <h3 style={{ color: "var(--text-primary)", fontSize: "1.2rem", fontWeight: 800, marginBottom: "0.55rem" }}>
-          You're on the waitlist!
+          {"You're on the waitlist!"}
         </h3>
         <p style={{ color: "#334155", lineHeight: 1.8, marginBottom: "1.2rem" }}>
-          You'll be among the first to know when hosted enrollment opens and the course is ready to access. Check your email and WhatsApp for updates.
+          {"You'll be among the first to know when hosted enrollment opens and the course is ready to access. Check your email and WhatsApp for updates."}
         </p>
         <button
           onClick={() => {

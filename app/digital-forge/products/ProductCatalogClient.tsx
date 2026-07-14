@@ -299,18 +299,18 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                   boxShadow: "0 10px 40px rgba(15,23,42,0.12)",
                   zIndex: 50
                 }}>
-                  {[
+                  {([
                     { val: "newest", label: "Latest Published" },
                     { val: "oldest", label: "Oldest First" },
                     { val: "price-desc", label: "Price (High to Low)" },
                     { val: "price-asc", label: "Price (Low to High)" },
                     { val: "a-z", label: "Name (A-Z)" }
-                  ].map(opt => {
+                  ] as const).map(opt => {
                     const isActive = sortBy === opt.val;
                     return (
                       <button
                         key={opt.val}
-                        onClick={() => { setSortBy(opt.val as any); setIsSortOpen(false); }}
+                        onClick={() => { setSortBy(opt.val); setIsSortOpen(false); }}
                         style={{
                           display: "block",
                           width: "100%",

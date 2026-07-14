@@ -66,7 +66,7 @@ export default function ReviewPage() {
           </h1>
 
           <p style={{ color: "#334155", maxWidth: 640, margin: "0 auto 1rem", lineHeight: 1.85, fontSize: "clamp(1.05rem,2.5vw,1.18rem)" }}>
-            Send it in and I'll help you see if it is clear enough to package, sell, and launch.
+            {"Send it in and I'll help you see if it is clear enough to package, sell, and launch."}
           </p>
           <p style={{ color: "#64748b", maxWidth: 520, margin: "0 auto 2.6rem", lineHeight: 1.7, fontSize: "0.92rem" }}>
             No hype. No income guarantee. Just a practical offer clarity review.
@@ -172,7 +172,7 @@ export default function ReviewPage() {
               Buy during this launch and send me your completed worksheet.
             </h2>
             <p style={{ color: "#334155", maxWidth: 560, margin: "0 auto", lineHeight: 1.85, fontSize: "1.05rem" }}>
-              I'll review your first offer direction personally. That bonus is the bridge between unknown brand and first sales.
+              {"I'll review your first offer direction personally. That bonus is the bridge between unknown brand and first sales."}
             </p>
           </div>
         </div>

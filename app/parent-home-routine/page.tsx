@@ -96,12 +96,12 @@ export default function ParentHomeRoutinePage() {
   const monthlySaved = Math.round(((dailyFriction * 30.5) / 60) * 0.8);
 
   /* ── Reveal refs ── */
-  const heroR = useReveal();
-  const painR = useReveal();
-  const calcR = useReveal();
-  const insideR = useReveal();
-  const timeR = useReveal();
-  const priceR = useReveal();
+  const { ref: heroRef, show: heroShow } = useReveal();
+  const { ref: painRef, show: painShow } = useReveal();
+  const { ref: calcRef, show: calcShow } = useReveal();
+  const { ref: insideRef, show: insideShow } = useReveal();
+  const { ref: timeRef, show: timeShow } = useReveal();
+  const { ref: priceRef, show: priceShow } = useReveal();
 
   /* ── Color constants ── */
   const TEAL = '#1A5C47';
@@ -135,14 +135,14 @@ export default function ParentHomeRoutinePage() {
       </nav>
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroR.ref} className="relative min-h-screen flex items-center pt-16 overflow-hidden" style={{ background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)" }}>
+      <section ref={heroRef} className="relative min-h-screen flex items-center pt-16 overflow-hidden" style={{ background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)" }}>
         {/* Ambient orbs */}
         <div className="absolute top-20 left-1/4 w-[500px] h-[500px] rounded-full blur-[160px] pointer-events-none" style={{ background: `${TEAL}15` }} />
         <div className="absolute bottom-10 right-1/3 w-[400px] h-[400px] rounded-full blur-[140px] pointer-events-none" style={{ background: `${GOLD}10` }} />
 
         <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           {/* Copy */}
-          <div className={`flex flex-col gap-8 transition-all duration-1000 ${heroR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`flex flex-col gap-8 transition-all duration-1000 ${heroShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="inline-flex items-center gap-2 w-fit px-4 py-1.5 rounded-full border" style={{ borderColor: `${GOLD}30`, background: `${GOLD}08` }}>
               <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: GOLD }} />
               <span className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Instant Digital Download</span>
@@ -184,7 +184,7 @@ export default function ParentHomeRoutinePage() {
           </div>
 
           {/* Product Hero Image */}
-          <div className={`relative transition-all duration-1000 delay-300 ${heroR.show ? 'opacity-100 translate-y-0 rotate-0' : 'opacity-0 translate-y-12 rotate-1'}`}>
+          <div className={`relative transition-all duration-1000 delay-300 ${heroShow ? 'opacity-100 translate-y-0 rotate-0' : 'opacity-0 translate-y-12 rotate-1'}`}>
             <div className="relative rounded-3xl overflow-hidden border shadow-2xl" style={{ borderColor: `${GOLD}15`, boxShadow: `0 25px 80px ${TEAL}30` }}>
               <Image src="/images/parent-routine/cover-hero.png" alt="Parent Home Routine Mega Bundle — complete system with workbook, printables, screen-time agreement, chore chart, and homework tracker" width={700} height={950} className="w-full h-auto object-cover" priority />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(28,17,8,0.18) 0%, transparent 40%)' }} />
@@ -196,9 +196,9 @@ export default function ParentHomeRoutinePage() {
       </section>
 
       {/* ═══ PAIN POINTS ═══ */}
-      <section ref={painR.ref} className="relative px-6" style={{ background: CREAM, paddingTop: '112px', paddingBottom: '144px' }}>
+      <section ref={painRef} className="relative px-6" style={{ background: CREAM, paddingTop: '112px', paddingBottom: '144px' }}>
         <div className="max-w-5xl mx-auto">
-          <div className={`text-center mb-16 transition-all duration-700 ${painR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <div className={`text-center mb-16 transition-all duration-700 ${painShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: TEAL }}>Sound familiar?</span>
             <h2 style={{ fontFamily: "'Playfair Display', serif", color: TEAL_DEEP }} className="text-3xl sm:text-5xl font-bold mt-3 mb-5">Does your evening look like this?</h2>
             <p className="font-light max-w-lg mx-auto" style={{ color: '#7A6F60' }}>Most homes are stuck in these four friction zones — burning energy that should be spent on connection.</p>
@@ -211,7 +211,7 @@ export default function ParentHomeRoutinePage() {
               { icon: icons.broom, title: 'The Chore Battle', desc: 'Asking five times, getting ignored, then doing it yourself because arguing drains more energy than the chore itself.', bg: '#EDFAF4', border: '#B3E6D0' },
               { icon: icons.moon, title: 'The Bedtime Marathon', desc: 'One more story, one more cup of water. Reclaiming your evening at 10 PM instead of 8 PM, every single night.', bg: '#F3EDFA', border: '#D0B3F5' },
             ].map((p, i) => (
-              <div key={i} className={`group relative p-8 rounded-2xl border-2 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg ${painR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ background: p.bg, borderColor: p.border, transitionDelay: `${i * 100}ms` }}>
+              <div key={i} className={`group relative p-8 rounded-2xl border-2 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg ${painShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ background: p.bg, borderColor: p.border, transitionDelay: `${i * 100}ms` }}>
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: 'white', color: TEAL, boxShadow: '0 2px 8px rgba(15,23,42,0.1)' }}>
                   {p.icon}
                 </div>
@@ -246,15 +246,15 @@ export default function ParentHomeRoutinePage() {
       </section>
 
       {/* ═══ CALCULATOR ═══ */}
-      <section ref={calcR.ref} id="calculator" className="relative py-28 px-6" style={{ background: CREAM }}>
+      <section ref={calcRef} id="calculator" className="relative py-28 px-6" style={{ background: CREAM }}>
         <div className="max-w-5xl mx-auto">
-          <div className={`text-center mb-16 transition-all duration-700 ${calcR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <div className={`text-center mb-16 transition-all duration-700 ${calcShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: TEAL }}>Interactive tool</span>
             <h2 style={{ fontFamily: "'Playfair Display', serif", color: TEAL_DEEP }} className="text-3xl sm:text-5xl font-bold mt-3 mb-5">Your Parental Stress Calculator</h2>
             <p className="font-light max-w-lg mx-auto" style={{ color: '#7A6F60' }}>Adjust the sliders to estimate how much emotional energy daily friction is costing you.</p>
           </div>
 
-          <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 transition-all duration-700 delay-200 ${calcR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 transition-all duration-700 delay-200 ${calcShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             {/* Sliders */}
             <div className="lg:col-span-7 p-8 rounded-3xl bg-white border-2 flex flex-col gap-10" style={{ borderColor: CREAM_DARK }}>
               {[
@@ -304,16 +304,16 @@ export default function ParentHomeRoutinePage() {
       </section>
 
       {/* ═══ WHAT&apos;S INSIDE ═══ */}
-      <section ref={insideR.ref} id="inside" className="relative py-28 px-6" style={{ background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)" }}>
+      <section ref={insideRef} id="inside" className="relative py-28 px-6" style={{ background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)" }}>
         <div className="max-w-5xl mx-auto">
-          <div className={`text-center mb-16 transition-all duration-700 ${insideR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <div className={`text-center mb-16 transition-all duration-700 ${insideShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: GOLD }}>Everything Included</span>
             <h2 style={{ fontFamily: "'Playfair Display', serif", color: CREAM }} className="text-3xl sm:text-5xl font-bold mt-3 mb-5">Inside the Bundle</h2>
             <p className="font-light max-w-lg mx-auto" style={{ color: 'rgba(253,248,239,0.4)' }}>Not a 300-page theory book. A practical, printable toolbox you start using today.</p>
           </div>
 
           {/* Product spread */}
-          <div className={`mb-16 transition-all duration-700 delay-200 ${insideR.show ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+          <div className={`mb-16 transition-all duration-700 delay-200 ${insideShow ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <div className="relative rounded-3xl overflow-hidden border max-w-3xl mx-auto" style={{ borderColor: `${GOLD}15` }}>
               <Image src="/images/parent-routine/cover-screentime.png" alt="Stop the daily screen-time fight — full bundle spread showing all included materials" width={800} height={1100} className="w-full h-auto object-cover" />
               <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${WARM_BG}80 0%, transparent 30%)` }} />
@@ -329,7 +329,7 @@ export default function ParentHomeRoutinePage() {
               { icon: icons.chart, title: 'Chore & Homework Trackers', desc: 'Visual check-off sheets that put children in charge of their duties and build intrinsic motivation.' },
               { icon: icons.calendar, title: 'Weekly Family Review', desc: 'A 5-minute Sunday ritual to evaluate what worked, what caused friction, and what to adjust next week.' },
             ].map((item, i) => (
-              <div key={i} className={`group p-7 rounded-2xl border transition-all duration-500 hover:-translate-y-1 hover:shadow-xl ${insideR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ background: 'rgba(253,248,239,0.03)', borderColor: 'rgba(253,248,239,0.06)', transitionDelay: `${300 + i * 100}ms` }}>
+              <div key={i} className={`group p-7 rounded-2xl border transition-all duration-500 hover:-translate-y-1 hover:shadow-xl ${insideShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ background: 'rgba(253,248,239,0.03)', borderColor: 'rgba(253,248,239,0.06)', transitionDelay: `${300 + i * 100}ms` }}>
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: `${GOLD}15`, color: GOLD }}>
                   {item.icon}
                 </div>
@@ -342,9 +342,9 @@ export default function ParentHomeRoutinePage() {
       </section>
 
       {/* ═══ 7-DAY TIMELINE ═══ */}
-      <section ref={timeR.ref} className="relative py-28 px-6" style={{ background: CREAM }}>
+      <section ref={timeRef} className="relative py-28 px-6" style={{ background: CREAM }}>
         <div className="max-w-4xl mx-auto">
-          <div className={`text-center mb-16 transition-all duration-700 ${timeR.show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <div className={`text-center mb-16 transition-all duration-700 ${timeShow ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: TEAL }}>Quick Results</span>
             <h2 style={{ fontFamily: "'Playfair Display', serif", color: TEAL_DEEP }} className="text-3xl sm:text-5xl font-bold mt-3 mb-5">Your 7-Day Home Reset</h2>
             <p className="font-light max-w-lg mx-auto" style={{ color: '#7A6F60' }}>You do not need to overhaul everything at once. Roll it out step by step.</p>
@@ -359,7 +359,7 @@ export default function ParentHomeRoutinePage() {
                 { day: 'Day 5', title: 'Sign the Screen-Time Agreement', desc: 'Fill out the contract together. Agree on allowed apps, hours, device parking, and the consequence ladder.' },
                 { day: 'Day 7', title: 'Run the Sunday Family Review', desc: 'Five minutes: what worked, what caused friction, who earned rewards, and what to adjust next week.' },
               ].map((step, idx) => (
-                <div key={idx} className={`relative transition-all duration-700 ${timeR.show ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`} style={{ paddingLeft: '56px', transitionDelay: `${idx * 150}ms` }}>
+                <div key={idx} className={`relative transition-all duration-700 ${timeShow ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`} style={{ paddingLeft: '56px', transitionDelay: `${idx * 150}ms` }}>
                   <div className="absolute left-0 top-[22px] w-[23px] h-[23px] rounded-full border-2 flex items-center justify-center" style={{ borderColor: `${TEAL}40`, background: CREAM }}>
                     <div className="w-2 h-2 rounded-full" style={{ background: TEAL }} />
                   </div>
@@ -376,10 +376,10 @@ export default function ParentHomeRoutinePage() {
       </section>
 
       {/* ═══ PRICING CTA ═══ */}
-      <section ref={priceR.ref} className="relative py-28 px-6 overflow-hidden" style={{ background: `linear-gradient(180deg, ${TEAL_DEEP}, ${WARM_BG})` }}>
+      <section ref={priceRef} className="relative py-28 px-6 overflow-hidden" style={{ background: `linear-gradient(180deg, ${TEAL_DEEP}, ${WARM_BG})` }}>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[180px] pointer-events-none" style={{ background: `${GOLD}08` }} />
 
-        <div className={`max-w-2xl mx-auto relative z-10 text-center transition-all duration-700 ${priceR.show ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+        <div className={`max-w-2xl mx-auto relative z-10 text-center transition-all duration-700 ${priceShow ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
           <div className="p-10 sm:p-14 rounded-[2rem] border" style={{ background: 'rgba(253,248,239,0.03)', borderColor: `${GOLD}15`, backdropFilter: 'blur(20px)' }}>
             <span className="text-[10px] font-bold uppercase tracking-[0.25em]" style={{ color: GOLD }}>Limited Launch Price</span>
             <h2 style={{ fontFamily: "'Playfair Display', serif", color: CREAM }} className="text-4xl sm:text-6xl font-bold mt-4 mb-2">₦3,000</h2>

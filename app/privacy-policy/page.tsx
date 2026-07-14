@@ -403,7 +403,7 @@ export default function PrivacyPolicyPage() {
 
                         <PolicySection id="data-sharing" icon="🔗" title="Data Sharing and Third Parties">
                             <p>
-                                Triumphant Technological Services does not sell or trade users' personal information. However, we may share limited data with trusted partners who assist in operating our services — such as payment processors, analytics providers, or regulatory bodies — under strict confidentiality agreements.
+                                Triumphant Technological Services does not sell or trade users&apos; personal information. However, we may share limited data with trusted partners who assist in operating our services — such as payment processors, analytics providers, or regulatory bodies — under strict confidentiality agreements.
                             </p>
                         </PolicySection>
 
