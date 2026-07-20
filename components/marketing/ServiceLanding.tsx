@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { AgencyService } from "@/lib/services";
 import { discoveryCallUrl } from "@/lib/services";
@@ -16,10 +17,32 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
         <h1>{service.title}</h1>
         <p>{service.description}</p>
         <div className="button-row mt-8">
-          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">Discuss your project</a>
-          <Link className="button button-secondary" href="/contact">Send a project brief</Link>
+          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
+            Discuss your project
+          </a>
+          <Link className="button button-secondary" href="/contact">
+            Send a project brief
+          </Link>
         </div>
       </header>
+
+      <div className="relative h-[42vw] min-h-[240px] max-h-[480px] w-full overflow-hidden">
+        <Image
+          src={service.image}
+          alt={service.imageAlt}
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+          priority
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(247,248,251,0.55) 0%, transparent 28%, transparent 72%, rgba(247,248,251,0.7) 100%)",
+          }}
+        />
+      </div>
 
       <section className="section-muted">
         <div className="section-shell">
@@ -28,14 +51,18 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
               <p className="card-eyebrow">Business outcomes</p>
               <h2 className="mt-3 text-2xl font-bold text-slate-950">What this engagement is designed to improve</h2>
               <ul className="check-list">
-                {service.outcomes.map((item) => <li key={item}>{item}</li>)}
+                {service.outcomes.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </article>
             <article className="agency-card">
               <p className="card-eyebrow">Core deliverables</p>
               <h2 className="mt-3 text-2xl font-bold text-slate-950">What the work can include</h2>
               <ul className="check-list">
-                {service.deliverables.map((item) => <li key={item}>{item}</li>)}
+                {service.deliverables.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
               </ul>
             </article>
           </div>
@@ -63,13 +90,17 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
           <div className="grid gap-8 lg:grid-cols-2">
             <div>
               <p className="eyebrow">Best fit</p>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-slate-950">Is this right for your business?</h2>
+              <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-slate-950">
+                Is this right for your business?
+              </h2>
               <p className="mt-4 leading-7 text-slate-600">{service.idealFor}</p>
             </div>
             <div className="rounded-2xl border border-blue-200 bg-white p-7">
               <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Typical starting investment</p>
               <p className="mt-3 text-2xl font-extrabold text-blue-700">{service.startingPrice}</p>
-              <p className="mt-3 text-sm leading-6 text-slate-600">Final scope, timeline and investment are confirmed in a written proposal after discovery.</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Final scope, timeline and investment are confirmed in a written proposal after discovery.
+              </p>
             </div>
           </div>
         </div>

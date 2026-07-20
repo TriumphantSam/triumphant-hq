@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import CTABand from "@/components/marketing/CTABand";
 import ProcessSteps from "@/components/marketing/ProcessSteps";
 import SectionHeader from "@/components/marketing/SectionHeader";
@@ -22,6 +23,24 @@ export default function ServicesPage() {
           strategy and hands-on delivery across four core disciplines.
         </p>
       </header>
+
+      <div className="relative h-[42vw] min-h-[240px] max-h-[480px] w-full overflow-hidden">
+        <Image
+          src="/images/services-studio.png"
+          alt="Contemporary agency studio with monitors and soft architectural light"
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+          priority
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(247,248,251,0.55) 0%, transparent 28%, transparent 72%, rgba(247,248,251,0.7) 100%)",
+          }}
+        />
+      </div>
 
       <section className="section-muted">
         <div className="section-shell">

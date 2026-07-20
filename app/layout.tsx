@@ -1,48 +1,67 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import AntigravityBackground from "@/components/AntigravityBackground";
 import Footer from "@/components/Footer";
 import PageReader from "@/components/PageReader";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import { PostHogProvider } from "./providers";
+import Script from "next/script";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dmSans = DM_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const jetbrains = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["500", "700"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://triumphantech.com'),
+  metadataBase: new URL("https://triumphantech.com"),
   title: "Triumphant HQ | Technology and Growth Agency",
-  description: "Triumphant HQ designs high-performing websites, custom applications, SEO growth systems and practical business automation.",
-  keywords: ["Technology Agency", "Web Design Agency", "Custom Application Development", "SEO Agency", "AI Automation", "Triumphant HQ", "Web Development", "Digital Growth"],
+  description:
+    "Triumphant HQ designs high-performing websites, custom applications, SEO growth systems and practical business automation.",
+  keywords: [
+    "Technology Agency",
+    "Web Design Agency",
+    "Custom Application Development",
+    "SEO Agency",
+    "AI Automation",
+    "Triumphant HQ",
+    "Web Development",
+    "Digital Growth",
+  ],
   authors: [{ name: "Triumphant HQ Team" }],
   openGraph: {
     title: "Triumphant HQ | Technology and Growth Agency",
-    description: "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
+    description:
+      "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
     url: "https://triumphantech.com",
     siteName: "Triumphant HQ",
     locale: "en_US",
     type: "website",
   },
   alternates: {
-    canonical: '/',
+    canonical: "/",
   },
   twitter: {
     card: "summary_large_image",
     title: "Triumphant HQ | Technology and Growth Agency",
-    description: "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
+    description:
+      "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
   },
 };
-
-import { PostHogProvider } from "./providers";
-import Script from 'next/script';
 
 export default function RootLayout({
   children,
@@ -67,20 +86,20 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}>
         <noscript>
-          <img height="1" width="1" style={{ display: 'none' }} src="https://www.facebook.com/tr?id=951975760918976&ev=PageView&noscript=1" />
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            alt=""
+            src="https://www.facebook.com/tr?id=951975760918976&ev=PageView&noscript=1"
+          />
         </noscript>
         <PostHogProvider>
           <AntigravityBackground />
           <Navigation />
-          <main
-            id="site-main-content"
-            className="flex-grow w-full"
-            data-page-reader-root
-          >
+          <main id="site-main-content" className="flex-grow w-full" data-page-reader-root>
             {children}
           </main>
           <Footer />

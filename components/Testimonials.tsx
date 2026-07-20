@@ -32,16 +32,18 @@ export default function Testimonials() {
         <p className="eyebrow">Client perspective</p>
         <h2>Professional execution, with a partner who stays close to the problem.</h2>
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
-        {TESTIMONIALS.map((item) => (
-          <blockquote key={item.name} className="agency-card">
-            <svg className="h-7 w-7 text-blue-600" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M7.2 6C4.3 7.8 3 10 3 13.2 3 16 4.5 18 7 18c2.1 0 3.7-1.5 3.7-3.7 0-2.1-1.5-3.6-3.5-3.6-.5 0-1 .1-1.4.3.5-1.5 1.5-2.8 3.1-4L7.2 6Zm10 0C14.3 7.8 13 10 13 13.2c0 2.8 1.5 4.8 4 4.8 2.1 0 3.7-1.5 3.7-3.7 0-2.1-1.5-3.6-3.5-3.6-.5 0-1 .1-1.4.3.5-1.5 1.5-2.8 3.1-4L17.2 6Z" />
-            </svg>
-            <p className="mt-5 flex-1 text-[0.96rem] leading-7 text-slate-600">{item.quote}</p>
-            <footer className="mt-7 border-t border-slate-200 pt-5">
-              <p className="font-bold text-slate-950">{item.name}</p>
-              <p className="mt-1 text-xs text-slate-500">{item.role}</p>
+      <div className="grid gap-0 border-t border-slate-200 md:grid-cols-3">
+        {TESTIMONIALS.map((item, index) => (
+          <blockquote
+            key={item.name}
+            className={`px-0 py-8 md:px-6 md:py-10 ${index > 0 ? "border-t border-slate-200 md:border-t-0 md:border-l" : ""}`}
+          >
+            <p className="font-display text-[1.15rem] leading-8 tracking-[-0.02em] text-slate-800">
+              “{item.quote}”
+            </p>
+            <footer className="mt-8">
+              <p className="text-sm font-bold text-slate-950">{item.name}</p>
+              <p className="mt-1 text-xs tracking-wide text-slate-500">{item.role}</p>
             </footer>
           </blockquote>
         ))}
@@ -49,4 +51,3 @@ export default function Testimonials() {
     </section>
   );
 }
-
