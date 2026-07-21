@@ -37,6 +37,20 @@ const resources = [
     href: "/blog",
     cta: "Read insights",
   },
+  {
+    eyebrow: "Decision guides",
+    title: "Agency vs freelancer",
+    description: "Frameworks for choosing a delivery model without competitor attacks—just clearer trade-offs.",
+    href: "/compare",
+    cta: "Compare models",
+  },
+  {
+    eyebrow: "By sector",
+    title: "Industry pages",
+    description: "How we approach professional firms, SaaS teams and local service businesses.",
+    href: "/industries",
+    cta: "Browse industries",
+  },
 ];
 
 export default function ResourcesPage() {

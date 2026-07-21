@@ -6,8 +6,17 @@ import AntigravityBackground from "@/components/AntigravityBackground";
 import Footer from "@/components/Footer";
 import PageReader from "@/components/PageReader";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import JsonLd from "@/components/seo/JsonLd";
 import { PostHogProvider } from "./providers";
 import Script from "next/script";
+import {
+  defaultKeywords,
+  localBusinessJsonLd,
+  organizationJsonLd,
+  SITE_URL,
+  siteIdentity,
+  websiteJsonLd,
+} from "@/lib/seo";
 
 const syne = Syne({
   variable: "--font-display",
@@ -28,39 +37,52 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://triumphantech.com"),
-  title: "Triumphant HQ | Technology and Growth Agency",
-  description:
-    "Triumphant HQ designs high-performing websites, custom applications, SEO growth systems and practical business automation.",
-  keywords: [
-    "Technology Agency",
-    "Web Design Agency",
-    "Custom Application Development",
-    "SEO Agency",
-    "AI Automation",
-    "Triumphant HQ",
-    "Web Development",
-    "Digital Growth",
-  ],
-  authors: [{ name: "Triumphant HQ Team" }],
-  openGraph: {
-    title: "Triumphant HQ | Technology and Growth Agency",
-    description:
-      "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
-    url: "https://triumphantech.com",
-    siteName: "Triumphant HQ",
-    locale: "en_US",
-    type: "website",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Triumphant HQ | Technology Agency in Ibadan, Nigeria",
+    template: "%s | Triumphant HQ",
   },
-  alternates: {
-    canonical: "/",
+  description:
+    "Ibadan-based technology and growth agency for website design, SEO, custom applications and automation—plus certified NIN and BVN support across Oyo State and Nigeria.",
+  keywords: defaultKeywords,
+  authors: [{ name: siteIdentity.brandName }],
+  creator: siteIdentity.brandName,
+  publisher: siteIdentity.legalName,
+  openGraph: {
+    title: "Triumphant HQ | Technology Agency in Ibadan, Nigeria",
+    description:
+      "Websites, SEO, apps and automation from Ibadan—serving Oyo State, Osun State and clients across Nigeria.",
+    url: SITE_URL,
+    siteName: siteIdentity.brandName,
+    locale: "en_NG",
+    type: "website",
+    images: [
+      {
+        url: "/images/agency-hero-cinematic.png",
+        width: 1920,
+        height: 1080,
+        alt: "Triumphant HQ — technology and growth agency in Ibadan",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Triumphant HQ | Technology and Growth Agency",
+    title: "Triumphant HQ | Technology Agency in Ibadan, Nigeria",
     description:
-      "Websites, custom applications, SEO and automation connected around ambitious business outcomes.",
+      "Websites, SEO, apps and automation from Ibadan—plus local NIN and BVN support.",
+    images: ["/images/agency-hero-cinematic.png"],
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  category: "technology",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#075ee5",
 };
 
 export default function RootLayout({
@@ -69,7 +91,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-NG">
       <head>
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
@@ -87,6 +109,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}>
+        <JsonLd data={[organizationJsonLd(), localBusinessJsonLd(), websiteJsonLd()]} />
         <noscript>
           <img
             height="1"

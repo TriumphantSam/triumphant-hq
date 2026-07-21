@@ -75,7 +75,7 @@ export default function DataDeletionPage() {
                     </ol>
 
                     <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.8 }}>
-                        If you wish to request a manual deletion of any specific data stored on our servers, please email us at <a href="mailto:admin@triumphantetech.com" style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>admin@triumphantetech.com</a> with your request.
+                        If you wish to request a manual deletion of any specific data stored on our servers, please email us at <a href="mailto:admin@triumphantech.com" style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>admin@triumphantech.com</a> with your request.
                     </p>
                 </div>
 

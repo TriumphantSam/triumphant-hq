@@ -76,4 +76,4 @@ To add a new blog post manually:
 
 - **Email**: admin@triumphantech.com
 - **WhatsApp**: +234 810 771 1190
-- **Address**: No 4, Kolawole Close, Ibadan, Nigeria
+- **Address**: Basorun Rd, Ibadan 211107, Oyo

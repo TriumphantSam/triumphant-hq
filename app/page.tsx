@@ -1,18 +1,43 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import Hero from "@/components/Hero";
 import Testimonials from "@/components/Testimonials";
+import CaseStudies from "@/components/marketing/CaseStudies";
+import ClientLogos from "@/components/marketing/ClientLogos";
 import CTABand from "@/components/marketing/CTABand";
 import ProcessSteps from "@/components/marketing/ProcessSteps";
 import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
-import { agencyServices } from "@/lib/services";
+import { agencyServices, whatsappNumber } from "@/lib/services";
+import { buildPageMetadata, locationPages } from "@/lib/seo";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Technology Agency in Ibadan, Nigeria | Triumphant HQ",
+  description:
+    "Ibadan-based technology and growth agency for website design, SEO, custom applications and automation—plus certified NIN and BVN support across Oyo State and Nigeria.",
+  path: "/",
+  keywords: [
+    "Triumphant HQ Ibadan",
+    "technology agency Ibadan",
+    "website design Oyo State",
+    "SEO Nigeria",
+    "NIN enrolment Ibadan",
+  ],
+});
 
 const outcomes = [
   ["Credibility", "A sharper digital presence that reflects the quality of your work."],
   ["Efficiency", "Purpose-built systems that reduce friction for customers and teams."],
   ["Visibility", "Technical and content foundations that make demand easier to capture."],
 ];
+
+const featuredLocations = locationPages.filter((page) =>
+  ["ibadan", "akobo", "bashorun", "oyo", "osogbo", "nigeria"].includes(page.slug)
+);
+
+const localWa = (text: string) =>
+  `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 
 export default function Home() {
   return (
@@ -44,6 +69,72 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/local-bvn-atmosphere.png"
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(105deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.93) 40%, rgba(255,255,255,0.58) 72%, rgba(255,255,255,0.32) 100%)",
+            }}
+          />
+        </div>
+        <div className="section-shell relative">
+          <div className="grid gap-12 py-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
+            <div>
+              <p className="eyebrow">Local support desk</p>
+              <h2 className="font-display mt-6 max-w-xl text-[clamp(2rem,3.8vw,3.1rem)] font-bold leading-[1.08] tracking-[-0.045em] text-slate-950">
+                Need NIN or BVN help today?
+              </h2>
+              <p className="mt-5 max-w-lg text-[1.05rem] leading-8 text-slate-600">
+                Our local desk supports NIN enrolment and modifications, BVN services, school portals and documents—
+                separate from agency projects, WhatsApp-first, and backed by certified NIMC training.
+              </p>
+              <div className="button-row mt-9">
+                <a
+                  className="button button-primary"
+                  href={localWa("Hello Triumphant HQ — I need NIN or BVN support.")}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Message on WhatsApp
+                </a>
+                <Link className="button button-secondary" href="/local-support">
+                  Explore Local Support
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid gap-7 border-l border-blue-200/80 pl-6 sm:pl-8">
+              {[
+                ["3,000+", "People enrolled for NIN to date"],
+                ["NIN + BVN", "Enrolment, modifications, recovery and card printing"],
+                ["Certified", "NIMC ID Ecosystem Enrolment Process Training"],
+              ].map(([title, copy]) => (
+                <div key={title}>
+                  <p className="font-display text-[1.35rem] font-bold tracking-[-0.03em] text-slate-950">{title}</p>
+                  <p className="mt-1.5 text-[0.95rem] leading-7 text-slate-500">{copy}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-muted">
+        <ClientLogos />
+      </div>
+
+      <CaseStudies limit={2} teaser />
 
       <section className="section-muted">
         <div className="section-shell">
@@ -158,6 +249,35 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <div className="flex flex-col gap-8 border-y border-slate-200 py-12 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-xl">
+            <p className="eyebrow">Where we serve</p>
+            <h2 className="font-display mt-4 text-[clamp(1.6rem,2.8vw,2.2rem)] font-bold tracking-[-0.035em] text-slate-950">
+              Ibadan first. Southwestern Nigeria covered.
+            </h2>
+            <p className="mt-3 text-[1.02rem] leading-8 text-slate-600">
+              Local support and agency delivery for neighbourhoods across the city, Oyo State, Osun State and remote
+              clients nationwide.
+            </p>
+          </div>
+          <Link className="text-link !mt-0 !pt-0 shrink-0" href="/locations">
+            All service areas <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+        <div className="flex flex-wrap gap-x-6 gap-y-3 pt-8">
+          {featuredLocations.map((location) => (
+            <Link
+              key={location.slug}
+              href={`/locations/${location.slug}`}
+              className="text-[0.95rem] font-medium text-slate-600 transition hover:text-blue-700"
+            >
+              {location.name}
+            </Link>
+          ))}
         </div>
       </section>
 

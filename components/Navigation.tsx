@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { agencyServices, discoveryCallUrl } from "@/lib/services";
-import ServiceIcon from "@/components/marketing/ServiceIcon";
 
 const resources = [
   { href: "/digital-forge", label: "Digital Forge", description: "Our practical product-building lab" },
@@ -66,23 +65,39 @@ export default function Navigation() {
           <div className="group relative">
             <Link
               href="/services"
-              className={`nav-link inline-flex items-center gap-1.5 ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname.startsWith("/services") ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
+              className={`nav-link inline-flex items-center gap-1.5 ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname.startsWith("/services") || pathname.startsWith("/local-support") || pathname.startsWith("/ongoing-support") ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
             >
               Services
               <svg className="h-3 w-3 transition-transform duration-200 group-hover:rotate-180" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                 <path d="m3 4.5 3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </Link>
-            <div className="pointer-events-none absolute left-1/2 top-full z-[250] w-[340px] -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
+            <div className="pointer-events-none absolute left-1/2 top-full z-[250] w-[380px] -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100">
               <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
+                <Link
+                  href="/local-support"
+                  className="group/item flex gap-3.5 border-b border-slate-100 bg-blue-50/50 px-4 py-3.5 transition-colors hover:bg-blue-50"
+                >
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-blue-600 font-mono text-[10px] font-bold text-white">
+                    01
+                  </span>
+                  <span>
+                    <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
+                      Local Support
+                    </span>
+                    <span className="mt-0.5 block text-xs leading-5 text-slate-500">
+                      NIN, BVN, school portals and document help
+                    </span>
+                  </span>
+                </Link>
                 {agencyServices.map((service, i) => (
                   <Link
                     key={service.slug}
                     href={`/services/${service.slug}`}
-                    className={`group/item flex gap-3.5 px-4 py-3.5 transition-colors hover:bg-slate-50 ${i < agencyServices.length - 1 ? "border-b border-slate-100" : ""}`}
+                    className="group/item flex gap-3.5 border-b border-slate-100 px-4 py-3.5 transition-colors hover:bg-slate-50"
                   >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-blue-50 text-blue-600">
-                      <ServiceIcon name={service.icon} className="h-[18px] w-[18px]" />
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-blue-700">
+                      {String(i + 2).padStart(2, "0")}
                     </span>
                     <span>
                       <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
@@ -92,6 +107,22 @@ export default function Navigation() {
                     </span>
                   </Link>
                 ))}
+                <Link
+                  href="/ongoing-support"
+                  className="group/item flex gap-3.5 px-4 py-3.5 transition-colors hover:bg-slate-50"
+                >
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-blue-700">
+                    06
+                  </span>
+                  <span>
+                    <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
+                      Ongoing Support
+                    </span>
+                    <span className="mt-0.5 block text-xs leading-5 text-slate-500">
+                      Monthly website care, SEO and automation retainers
+                    </span>
+                  </span>
+                </Link>
               </div>
             </div>
           </div>
@@ -100,6 +131,18 @@ export default function Navigation() {
             className={`nav-link ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname === "/about" ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
           >
             About
+          </Link>
+          <Link
+            href="/locations"
+            className={`nav-link ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname.startsWith("/locations") ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
+          >
+            Locations
+          </Link>
+          <Link
+            href="/work"
+            className={`nav-link ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname.startsWith("/work") ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
+          >
+            Work
           </Link>
           <Link
             href="/contact"
@@ -178,18 +221,30 @@ export default function Navigation() {
               Home
             </Link>
             <p className="mobile-nav-label">Services</p>
-            {agencyServices.map((service) => (
+            <Link href="/local-support" className="mobile-nav-sublink font-semibold text-blue-700" onClick={() => setMobileOpen(false)}>
+              01 · Local Support
+            </Link>
+            {agencyServices.map((service, index) => (
               <Link
                 key={service.slug}
                 href={`/services/${service.slug}`}
                 className="mobile-nav-sublink"
                 onClick={() => setMobileOpen(false)}
               >
-                {service.shortTitle}
+                {String(index + 2).padStart(2, "0")} · {service.shortTitle}
               </Link>
             ))}
+            <Link href="/ongoing-support" className="mobile-nav-sublink" onClick={() => setMobileOpen(false)}>
+              06 · Ongoing Support
+            </Link>
             <Link href="/about" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
               About
+            </Link>
+            <Link href="/locations" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
+              Locations
+            </Link>
+            <Link href="/work" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
+              Work
             </Link>
             <Link href="/contact" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
               Work With Us

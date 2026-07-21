@@ -1,5 +1,20 @@
+import type { Metadata } from "next";
 import { getAllPosts } from '@/lib/blog';
 import Link from 'next/link';
+import { buildPageMetadata } from '@/lib/seo';
+
+export const metadata: Metadata = buildPageMetadata({
+  title: "Insights & Guides | Triumphant HQ Blog",
+  description:
+    "Practical articles on websites, SEO, automation and digital growth from Triumphant HQ in Ibadan—built for founders and operators across Nigeria.",
+  path: "/blog",
+  keywords: [
+    "Triumphant HQ blog",
+    "SEO guides Nigeria",
+    "digital growth Ibadan",
+    "automation insights",
+  ],
+});
 
 const categoryColors: Record<string, string> = {
     'AI & Automation': '#00ff88',

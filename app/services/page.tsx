@@ -1,26 +1,43 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import CTABand from "@/components/marketing/CTABand";
+import NextStepPanel from "@/components/marketing/NextStepPanel";
 import ProcessSteps from "@/components/marketing/ProcessSteps";
 import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
 import Testimonials from "@/components/Testimonials";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { agencyServices } from "@/lib/services";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Technology and Growth Services | Triumphant HQ",
-  description: "Website design, custom application development, SEO growth and AI automation for ambitious businesses.",
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Technology & Growth Services in Ibadan | Triumphant HQ",
+  description:
+    "Website design, custom apps, SEO and AI automation from Triumphant HQ in Ibadan—serving Oyo State, Osun and businesses across Nigeria.",
+  path: "/services",
+  keywords: [
+    "technology services Ibadan",
+    "digital agency Oyo State",
+    "web SEO automation Nigeria",
+  ],
+});
 
 export default function ServicesPage() {
   return (
     <div>
-      <header className="page-hero">
+      <Breadcrumbs
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+        ]}
+      />
+      <header className="page-hero !pt-8">
         <p className="eyebrow">Agency services</p>
         <h1>Focused digital expertise, connected around your business.</h1>
         <p>
-          Bring us the growth challenge, the operational friction or the idea that needs to become real. We combine
-          strategy and hands-on delivery across four core disciplines.
+          Bring us the growth challenge, the operational friction or the idea that needs to become real. Based in
+          Ibadan, we combine strategy and hands-on delivery across four core disciplines.
         </p>
       </header>
 
@@ -66,35 +83,22 @@ export default function ServicesPage() {
 
       <section className="section-muted">
         <div className="section-shell">
-          <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
+          <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-end lg:gap-16">
             <div>
-              <p className="eyebrow">Pricing guidance</p>
+              <p className="eyebrow">How we engage</p>
               <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-slate-950">Scope before certainty.</h2>
               <p className="mt-4 max-w-md leading-7 text-slate-600">
-                The figures shown are practical starting points, not generic packages. We confirm the right scope after a
-                short discovery conversation and provide a written proposal before work begins.
+                Every engagement starts with a short discovery conversation. We clarify goals, constraints and priorities,
+                then share a written proposal with timeline and deliverables before work begins.
               </p>
+              <Link className="text-link mt-6 inline-flex" href="/ongoing-support">
+                Looking for monthly ongoing support? <span aria-hidden="true">→</span>
+              </Link>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {agencyServices.map((service) => (
-                <div className="rounded-2xl border border-slate-200 bg-white p-5" key={service.slug}>
-                  <p className="text-sm font-bold text-slate-950">{service.shortTitle}</p>
-                  <p className="mt-2 text-sm font-semibold text-blue-700">{service.startingPrice}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-12 rounded-2xl border border-blue-200 bg-blue-50 p-6 sm:p-8">
-            <p className="eyebrow">Ongoing SEO execution</p>
-            <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_auto_auto] lg:items-center">
-              <p className="max-w-2xl leading-7 text-slate-600">
-                For businesses ready to compound organic growth, monthly retainers cover technical improvements, content
-                execution and accountable reporting.
-              </p>
-              <a className="button button-secondary" href="/api/services/retainer-subscription/checkout?plan=starter">Starter · ₦50k/mo</a>
-              <a className="button button-primary" href="/api/services/retainer-subscription/checkout?plan=growth">Growth · ₦150k/mo</a>
-            </div>
+            <NextStepPanel
+              title="Ready to talk through a project?"
+              description="Bring the growth challenge, the operational friction or the idea that needs to become real. We will help you identify the clearest next move."
+            />
           </div>
         </div>
       </section>

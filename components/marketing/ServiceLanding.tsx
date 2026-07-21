@@ -2,27 +2,64 @@ import Image from "next/image";
 import Link from "next/link";
 import type { AgencyService } from "@/lib/services";
 import { discoveryCallUrl } from "@/lib/services";
+import { serviceFaqs, serviceLeadMagnets } from "@/lib/faqs";
+import { serviceJsonLd } from "@/lib/seo";
+import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLd from "@/components/seo/JsonLd";
 import CTABand from "./CTABand";
+import DeliveryProcess from "./DeliveryProcess";
+import FaqSection from "./FaqSection";
+import LeadMagnetBand from "./LeadMagnetBand";
+import NextStepPanel from "./NextStepPanel";
 import SectionHeader from "./SectionHeader";
 import ServiceIcon from "./ServiceIcon";
 
 export default function ServiceLanding({ service }: { service: AgencyService }) {
+  const faqs = serviceFaqs[service.slug] ?? [];
+  const magnet = serviceLeadMagnets[service.slug];
+  const path = `/services/${service.slug}`;
+
   return (
     <div>
-      <header className="page-hero">
+      <JsonLd
+        data={serviceJsonLd({
+          name: service.shortTitle,
+          description: service.description,
+          path,
+          serviceType: service.shortTitle,
+        })}
+      />
+      <Breadcrumbs
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Services", path: "/services" },
+          { name: service.shortTitle, path },
+        ]}
+      />
+
+      <header className="page-hero !pt-8">
         <div className="service-icon">
           <ServiceIcon name={service.icon} />
         </div>
         <p className="eyebrow">{service.eyebrow}</p>
         <h1>{service.title}</h1>
         <p>{service.description}</p>
+        <p className="mt-4 max-w-2xl text-[1.02rem] leading-8 text-slate-600">
+          Based in Ibadan, Oyo State, we deliver this work for organisations across Southwestern Nigeria and nationwide.
+        </p>
         <div className="button-row mt-8">
           <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
             Discuss your project
           </a>
-          <Link className="button button-secondary" href="/contact">
-            Send a project brief
-          </Link>
+          {magnet ? (
+            <Link className="button button-secondary" href={magnet.href}>
+              {magnet.cta}
+            </Link>
+          ) : (
+            <Link className="button button-secondary" href="/contact">
+              Send a project brief
+            </Link>
+          )}
         </div>
       </header>
 
@@ -75,15 +112,24 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
           title="A focused route from problem to measurable progress."
           description="The exact scope adapts to your needs, but every engagement follows a disciplined sequence."
         />
-        <div className="grid gap-3 md:grid-cols-5">
-          {service.process.map((step, index) => (
-            <div className="rounded-2xl border border-slate-200 bg-white p-5" key={step}>
-              <span className="font-mono text-xs font-bold text-blue-600">0{index + 1}</span>
-              <h3 className="mt-4 font-bold text-slate-950">{step}</h3>
-            </div>
-          ))}
-        </div>
+        <DeliveryProcess steps={service.process} />
       </section>
+
+      {magnet ? (
+        <div className="section-muted">
+          <LeadMagnetBand magnet={magnet} />
+        </div>
+      ) : null}
+
+      {faqs.length > 0 ? (
+        <div className={magnet ? undefined : "section-muted"}>
+          <FaqSection
+            title="Questions teams usually ask before we start."
+            description="Timeline, process, access and fit—answered plainly so you can decide with confidence."
+            items={faqs}
+          />
+        </div>
+      ) : null}
 
       <section className="section-muted">
         <div className="section-shell">
@@ -94,14 +140,24 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
                 Is this right for your business?
               </h2>
               <p className="mt-4 leading-7 text-slate-600">{service.idealFor}</p>
-            </div>
-            <div className="rounded-2xl border border-blue-200 bg-white p-7">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Typical starting investment</p>
-              <p className="mt-3 text-2xl font-extrabold text-blue-700">{service.startingPrice}</p>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Final scope, timeline and investment are confirmed in a written proposal after discovery.
+              <p className="mt-4 text-sm leading-7 text-slate-500">
+                Serving Ibadan, Oyo State, Osun State and remote clients across Nigeria.{" "}
+                <Link href="/locations" className="font-medium text-blue-600 hover:text-blue-800">
+                  See service areas
+                </Link>
+                .
               </p>
             </div>
+            <NextStepPanel
+              actions={
+                magnet
+                  ? [
+                      { href: magnet.href, label: magnet.cta, variant: "primary" },
+                      { href: "/contact", label: "Send a project brief", variant: "secondary" },
+                    ]
+                  : undefined
+              }
+            />
           </div>
         </div>
       </section>

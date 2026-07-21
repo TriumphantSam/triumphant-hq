@@ -1,131 +1,209 @@
-import { MetadataRoute } from 'next';
-import { getForgeProducts } from '@/lib/digital-forge';
-import { getAllPosts } from '@/lib/blog';
-
-const SITE_URL = 'https://triumphantech.com';
+import { MetadataRoute } from "next";
+import { getForgeProducts } from "@/lib/digital-forge";
+import { getAllPosts } from "@/lib/blog";
+import { locationPages, SITE_URL } from "@/lib/seo";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const forgeProducts = await getForgeProducts();
   const blogPosts = getAllPosts();
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: `${SITE_URL}/services`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
+      changeFrequency: "monthly",
       priority: 0.95,
     },
-    ...['websites', 'app-development', 'seo', 'automation'].map((slug) => ({
+    ...["websites", "app-development", "seo", "automation"].map((slug) => ({
       url: `${SITE_URL}/services/${slug}`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
+      changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
     {
       url: `${SITE_URL}/about`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: "yearly",
       priority: 0.7,
     },
     {
+      url: `${SITE_URL}/work`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    ...["integrated-aerial-precision", "dr-seyi-absolute-wellness"].map((slug) => ({
+      url: `${SITE_URL}/work/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    })),
+    {
       url: `${SITE_URL}/contact`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: "yearly",
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/ongoing-support`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.82,
+    },
+    {
+      url: `${SITE_URL}/website-scorecard`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      url: `${SITE_URL}/automation-checklist`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      url: `${SITE_URL}/app-readiness`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      url: `${SITE_URL}/seo-snapshot`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${SITE_URL}/resources`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.65,
     },
     {
       url: `${SITE_URL}/local-support`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
+    {
+      url: `${SITE_URL}/locations`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    ...locationPages.map((location) => ({
+      url: `${SITE_URL}/locations/${location.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: location.slug === "ibadan" ? 0.92 : 0.85,
+    })),
+    {
+      url: `${SITE_URL}/industries`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    ...["professional-firms", "saas", "local-service-businesses"].map((slug) => ({
+      url: `${SITE_URL}/industries/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.78,
+    })),
+    {
+      url: `${SITE_URL}/compare`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    ...["agency-vs-freelancer", "in-house-vs-partner"].map((slug) => ({
+      url: `${SITE_URL}/compare/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.72,
+    })),
     {
       url: `${SITE_URL}/digital-forge`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.6,
     },
     {
       url: `${SITE_URL}/digital-forge/products`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: "daily",
       priority: 0.6,
     },
     {
       url: `${SITE_URL}/digital-forge/resources`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.75,
     },
     {
       url: `${SITE_URL}/digital-forge/training`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.6,
     },
     {
       url: `${SITE_URL}/digital-forge/system`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.55,
     },
     {
       url: `${SITE_URL}/digital-forge/course`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.85,
     },
     {
       url: `${SITE_URL}/digital-forge/course/access`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.75,
     },
     {
       url: `${SITE_URL}/digital-forge/course/waitlist`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.75,
     },
     {
       url: `${SITE_URL}/blog`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
+      changeFrequency: "weekly",
       priority: 0.8,
     },
     {
       url: `${SITE_URL}/privacy-policy`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: "yearly",
       priority: 0.4,
     },
     {
       url: `${SITE_URL}/data-deletion`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: "yearly",
       priority: 0.4,
     },
     {
       url: `${SITE_URL}/terms`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: "yearly",
       priority: 0.4,
     },
     {
       url: `${SITE_URL}/refund-policy`,
       lastModified: new Date(),
-      changeFrequency: 'yearly',
+      changeFrequency: "yearly",
       priority: 0.4,
     },
   ];
@@ -133,14 +211,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const productRoutes: MetadataRoute.Sitemap = forgeProducts.map((product) => ({
     url: `${SITE_URL}/digital-forge/products/${product.slug}`,
     lastModified: new Date(),
-    changeFrequency: 'weekly',
+    changeFrequency: "weekly",
     priority: product.featured ? 0.9 : 0.8,
   }));
 
   const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) => ({
     url: `${SITE_URL}/blog/${post.slug}`,
     lastModified: new Date(post.date || Date.now()),
-    changeFrequency: 'monthly',
+    changeFrequency: "monthly",
     priority: 0.75,
   }));
 

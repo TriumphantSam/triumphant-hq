@@ -13,6 +13,10 @@ export interface BlogPost {
     published: boolean;
     productHref?: string;
     ctaLabel?: string;
+    serviceHref?: string;
+    serviceCtaLabel?: string;
+    serviceCtaTitle?: string;
+    serviceCtaDescription?: string;
     faqSchema: Array<{ question: string; answer: string }>;
     relatedLinks: Array<{ label: string; href: string }>;
 }
@@ -35,6 +39,10 @@ function parsePost(filename: string): BlogPost {
         published: data.published !== false,
         productHref: data.productHref ?? '',
         ctaLabel: data.ctaLabel ?? '',
+        serviceHref: data.serviceHref ?? '',
+        serviceCtaLabel: data.serviceCtaLabel ?? '',
+        serviceCtaTitle: data.serviceCtaTitle ?? '',
+        serviceCtaDescription: data.serviceCtaDescription ?? '',
         faqSchema: Array.isArray(data.faqSchema) ? data.faqSchema : [],
         relatedLinks: Array.isArray(data.relatedLinks) ? data.relatedLinks : [],
     };

@@ -1,10 +1,31 @@
+import type { Metadata } from 'next';
 import { getAllPosts, getPostBySlug } from '@/lib/blog';
+import { resolveBlogCta } from '@/lib/blog-cta';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import NextStepPanel from '@/components/marketing/NextStepPanel';
+import JsonLd from '@/components/seo/JsonLd';
+import { articleJsonLd, buildPageMetadata } from '@/lib/seo';
 
 export async function generateStaticParams() {
     const posts = getAllPosts();
     return posts.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+    const { slug } = await params;
+    const post = getPostBySlug(slug);
+    if (!post) return {};
+    return buildPageMetadata({
+        title: post.title,
+        description: post.excerpt || `${post.title} — insights from Triumphant HQ.`,
+        path: `/blog/${post.slug}`,
+        keywords: [post.category, 'Triumphant HQ blog', 'digital growth Nigeria'],
+    });
 }
 
 const categoryColors: Record<string, string> = {
@@ -28,6 +49,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     if (!post) notFound();
 
     const catColor = categoryColors[post.category] || '#f59e0b';
+    const cta = resolveBlogCta(post);
 
     const renderContent = (md: string) => {
         const lines = md.split('\n');
@@ -146,6 +168,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
     return (
         <div className="min-h-screen">
+            <JsonLd
+                data={articleJsonLd({
+                    title: post.title,
+                    description: post.excerpt || post.title,
+                    path: `/blog/${post.slug}`,
+                    datePublished: post.date,
+                })}
+            />
             {faqSchema ? (
                 <script
                     type="application/ld+json"
@@ -200,13 +230,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 </div>
 
                 {post.relatedLinks.length > 0 ? (
-                    <div className="glass rounded-2xl" style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--glass-border)' }}>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.78rem' }}>
-                            Related links
-                        </p>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                    <div className="next-step-panel mt-10">
+                        <p className="eyebrow">Related links</p>
+                        <div className="mt-5 flex flex-col gap-3">
                             {post.relatedLinks.map((link) => (
-                                <Link key={link.href} href={link.href} style={{ color: 'var(--accent-color)', textDecoration: 'underline' }}>
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="text-[1.02rem] font-medium text-blue-600 transition hover:text-blue-800"
+                                >
                                     {link.label}
                                 </Link>
                             ))}
@@ -214,40 +246,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     </div>
                 ) : null}
 
-                <div className="glass rounded-2xl" style={{ marginTop: '3rem', padding: '2rem', border: '1px solid var(--glass-border)' }}>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.12em', fontSize: '0.8rem' }}>
-                        Next step
-                    </p>
-                    <h2 style={{ fontSize: '1.35rem', fontWeight: 700, marginBottom: '0.75rem' }}>
-                        Want the full system instead of just the summary?
-                    </h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', lineHeight: 1.7 }}>
-                        This article is designed to help you understand the idea fast. The product gives you the full playbook, assets, and execution path.
-                    </p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', alignItems: 'center' }}>
-                        <Link
-                            href={post.productHref || `/digital-forge/products/${post.slug}`}
-                            style={{
-                                display: 'inline-block', padding: '0.8rem 1.6rem', fontSize: '0.9rem', fontWeight: 700,
-                                textTransform: 'uppercase', letterSpacing: '0.08em', borderRadius: '0.75rem',
-                                background: 'var(--accent-color)', color: '#ffffff',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            {post.ctaLabel || 'View the product'}
-                        </Link>
-                        <Link
-                            href="/blog"
-                            style={{
-                                display: 'inline-block', padding: '0.8rem 1.4rem', fontSize: '0.9rem', fontWeight: 700,
-                                textTransform: 'uppercase', letterSpacing: '0.08em', borderRadius: '0.75rem',
-                                border: '1px solid var(--accent-color)', color: 'var(--accent-color)',
-                                textDecoration: 'none',
-                            }}
-                        >
-                            Read more articles
-                        </Link>
-                    </div>
+                <div className="mt-12">
+                    <NextStepPanel
+                        eyebrow={cta.eyebrow}
+                        title={cta.title}
+                        description={cta.description}
+                        actions={[
+                            {
+                                href: cta.primary.href,
+                                label: cta.primary.label,
+                                variant: "primary",
+                            },
+                            {
+                                href: cta.secondary.href,
+                                label: cta.secondary.label,
+                                variant: "secondary",
+                            },
+                        ]}
+                    />
                 </div>
             </article>
         </div>
