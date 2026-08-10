@@ -1,0 +1,253 @@
+.invoice-app {
+  color: #0a1220;
+}
+
+.invoice-btn-primary,
+.invoice-btn-secondary,
+.invoice-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.55rem 1rem;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.invoice-btn-primary {
+  background: linear-gradient(135deg, #075ee5, #1a8fd4);
+  color: #fff;
+}
+
+.invoice-btn-primary:hover {
+  opacity: 0.92;
+}
+
+.invoice-btn-primary:disabled,
+.invoice-btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.invoice-btn-secondary {
+  background: #fff;
+  border-color: #d8e2f0;
+  color: #0a1220;
+}
+
+.invoice-btn-secondary:hover {
+  border-color: #075ee5;
+  color: #075ee5;
+}
+
+.invoice-btn-ghost {
+  background: transparent;
+  color: #4a5568;
+  padding-inline: 0.65rem;
+}
+
+.invoice-btn-ghost:hover {
+  color: #075ee5;
+  background: rgba(7, 94, 229, 0.06);
+}
+
+.invoice-input {
+  width: 100%;
+  border: 1px solid #d8e2f0;
+  border-radius: 0.75rem;
+  background: #fff;
+  padding: 0.65rem 0.8rem;
+  font-size: 0.92rem;
+  color: #0a1220;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.invoice-input:focus {
+  border-color: #075ee5;
+  box-shadow: 0 0 0 3px rgba(7, 94, 229, 0.12);
+}
+
+.invoice-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.15rem 1.2rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.invoice-card h2 {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display), var(--font-sans), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.invoice-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(7, 94, 229, 0.08);
+  color: #075ee5;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.7rem;
+}
+
+.invoice-editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding: 0.85rem 1rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  position: sticky;
+  top: 4.25rem;
+  z-index: 30;
+}
+
+.invoice-editor-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 1100px) {
+  .invoice-editor-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: start;
+  }
+
+  .invoice-preview-sticky {
+    position: sticky;
+    top: 8.5rem;
+  }
+}
+
+.invoice-preview-panel {
+  min-width: 0;
+}
+
+.invoice-preview-scale {
+  overflow: auto;
+  max-height: calc(100vh - 10rem);
+  padding-bottom: 1rem;
+}
+
+.invoice-preview-scale .invoice-document {
+  transform-origin: top center;
+}
+
+.invoice-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(10, 18, 32, 0.45);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.invoice-modal {
+  width: min(100%, 440px);
+  background: #fff;
+  border-radius: 1.1rem;
+  padding: 1.35rem;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.invoice-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  padding: 0.75rem 0.85rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.invoice-table td {
+  padding: 0.9rem 0.85rem;
+  border-bottom: 1px solid #eef2f7;
+  vertical-align: middle;
+}
+
+.invoice-status {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.invoice-status-draft {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.invoice-status-sent {
+  background: #e0efff;
+  color: #075ee5;
+}
+
+.invoice-status-accepted {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.invoice-status-expired {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Print / PDF */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  .invoice-print-chrome,
+  .invoice-app header,
+  .invoice-editor-toolbar,
+  .invoice-form-panel,
+  .no-print {
+    display: none !important;
+  }
+
+  .invoice-document {
+    box-shadow: none !important;
+    border: none !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 12mm !important;
+  }
+
+  .invoice-print-page {
+    background: #fff !important;
+    min-height: auto !important;
+    padding: 0 !important;
+  }
+}

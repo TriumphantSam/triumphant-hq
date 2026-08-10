@@ -25,7 +25,11 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (pathname.startsWith("/digital-forge/funnel/") || pathname.startsWith("/parent-home-routine")) {
+  if (
+    pathname.startsWith("/digital-forge/funnel/") ||
+    pathname.startsWith("/parent-home-routine") ||
+    pathname.startsWith("/invoices")
+  ) {
     return null;
   }
 

@@ -1,23 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
+import { INVOICE_SESSION_COOKIE, verifySessionToken } from "@/lib/invoices/auth";
 
-const PROTECTED_PREFIXES = ["/digital-forge/builder", "/api/digital-forge/builder"];
+const BUILDER_PREFIXES = ["/digital-forge/builder", "/api/digital-forge/builder"];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Only protect the builder UI and its internal action routes
-  if (!PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
+  // Invoice studio auth
+  if (pathname.startsWith("/invoices") || pathname.startsWith("/api/invoices")) {
+    if (pathname.match(/^\/invoices\/[^/]+\/print$/) && request.nextUrl.searchParams.get("token")) {
+      return NextResponse.next();
+    }
+
+    if (pathname === "/api/invoices/auth") {
+      return NextResponse.next();
+    }
+
+    if (pathname === "/invoices/login") {
+      const session = await verifySessionToken(request.cookies.get(INVOICE_SESSION_COOKIE)?.value);
+      if (session) {
+        return NextResponse.redirect(new URL("/invoices", request.url));
+      }
+      return NextResponse.next();
+    }
+
+    const session = await verifySessionToken(request.cookies.get(INVOICE_SESSION_COOKIE)?.value);
+    if (!session) {
+      if (pathname.startsWith("/api/invoices")) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+      const login = new URL("/invoices/login", request.url);
+      login.searchParams.set("next", pathname);
+      return NextResponse.redirect(login);
+    }
+
+    return NextResponse.next();
+  }
+
+  // Digital Forge builder basic auth
+  if (!BUILDER_PREFIXES.some((prefix) => pathname.startsWith(prefix))) {
     return NextResponse.next();
   }
 
   const authHeader = request.headers.get("authorization");
 
   if (authHeader) {
-    // Authorization: Basic <base64(user:pass)>
     const encoded = authHeader.replace(/^Basic\s+/i, "");
     const decoded = atob(encoded);
     const [user, ...rest] = decoded.split(":");
-    const pass = rest.join(":"); // allow colons in password
+    const pass = rest.join(":");
 
     const validUser = process.env.BUILDER_USER ?? "admin";
     const validPass = process.env.BUILDER_PASS ?? "";
@@ -27,7 +58,6 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  // Prompt for credentials
   return new NextResponse("Unauthorized", {
     status: 401,
     headers: {
@@ -37,5 +67,11 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/digital-forge/builder/:path*", "/api/digital-forge/builder/:path*"],
+  matcher: [
+    "/invoices",
+    "/invoices/:path*",
+    "/api/invoices/:path*",
+    "/digital-forge/builder/:path*",
+    "/api/digital-forge/builder/:path*",
+  ],
 };

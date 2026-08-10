@@ -42,7 +42,11 @@ const columns = [
 export default function Footer() {
   const pathname = usePathname();
 
-  if (pathname.startsWith('/digital-forge/funnel/') || pathname.startsWith('/parent-home-routine')) {
+  if (
+    pathname.startsWith('/digital-forge/funnel/') ||
+    pathname.startsWith('/parent-home-routine') ||
+    pathname.startsWith('/invoices')
+  ) {
     return null;
   }
 

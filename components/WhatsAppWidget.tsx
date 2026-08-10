@@ -14,7 +14,11 @@ export default function WhatsAppWidget() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState(false);
 
-  if (pathname.startsWith('/parent-home-routine') || pathname.startsWith('/digital-forge/funnel/')) {
+  if (
+    pathname.startsWith('/parent-home-routine') ||
+    pathname.startsWith('/digital-forge/funnel/') ||
+    pathname.startsWith('/invoices')
+  ) {
     return null;
   }
 

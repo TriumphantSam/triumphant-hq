@@ -1,0 +1,36 @@
+[
+  {
+    "id": "f565a670-61ce-453e-971f-95f1cdd8be8d",
+    "number": "THQ-PF-2026-08-001",
+    "issueDate": "2026-08-10",
+    "validUntil": "2026-08-17",
+    "currency": "NGN",
+    "status": "sent",
+    "clientId": null,
+    "client": {
+      "name": "",
+      "email": "",
+      "phone": "",
+      "company": "",
+      "address": ""
+    },
+    "lineItems": [
+      {
+        "id": "2cfe8ca5-5628-4f9a-9048-6e620dd37452",
+        "title": "",
+        "quantity": 1,
+        "unitPrice": 0,
+        "details": [
+          ""
+        ]
+      }
+    ],
+    "notes": "",
+    "paymentTerms": "Eighty percent (80%) of the total amount is due before work begins. The remaining twenty percent (20%) is due within twenty-five (25) hours of project completion.",
+    "taxPercent": 0,
+    "createdBy": "user-1",
+    "createdAt": "2026-08-10T16:35:45.019Z",
+    "updatedAt": "2026-08-10T16:36:24.824Z",
+    "lastEmailedAt": "2026-08-10T16:36:24.822Z"
+  }
+]

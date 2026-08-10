@@ -162,7 +162,11 @@ export default function PageReader() {
         return null;
     }
 
-    if (pathname.startsWith('/parent-home-routine') || pathname.startsWith('/digital-forge/funnel/')) {
+    if (
+        pathname.startsWith('/parent-home-routine') ||
+        pathname.startsWith('/digital-forge/funnel/') ||
+        pathname.startsWith('/invoices')
+    ) {
         return null;
     }
 
