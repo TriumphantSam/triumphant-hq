@@ -17,7 +17,7 @@ export const COMPANY = {
 } as const;
 
 export const DEFAULT_PAYMENT_TERMS =
-  "Eighty percent (80%) of the total amount is due before work begins. The remaining twenty percent (20%) is due within twenty-five (25) hours of project completion.";
+  "Eighty percent (80%) of the total amount is due before work begins. The remaining twenty percent (20%) is due within twenty-four (24) hours of project completion.";
 
 export const DEFAULT_VALIDITY_DAYS = 7;
 

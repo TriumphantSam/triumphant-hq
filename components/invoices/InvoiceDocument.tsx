@@ -82,6 +82,11 @@ export default function InvoiceDocument({ invoice, className = "" }: Props) {
           <p style={{ margin: "0.15rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.82rem" }}>
             {COMPANY.email} · {COMPANY.website}
           </p>
+          <p style={{ margin: "0.45rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.82rem" }}>
+            TIN / Tax ID: <strong style={{ color: INVOICE_COLORS.navy }}>{COMPANY.taxId}</strong>
+            <span style={{ margin: "0 0.45rem", color: "#cbd5e1" }}>·</span>
+            RC No: <strong style={{ color: INVOICE_COLORS.navy }}>{COMPANY.registrationNumber}</strong>
+          </p>
         </div>
 
         <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -125,15 +130,17 @@ export default function InvoiceDocument({ invoice, className = "" }: Props) {
               <br />
               <strong style={{ color: INVOICE_COLORS.navy }}>{invoice.currency}</strong>
             </div>
+            <div style={{ marginTop: "0.55rem" }}>
+              <span style={{ color: "#94a3b8" }}>Status</span>
+              <br />
+              <strong style={{ color: INVOICE_COLORS.navy, textTransform: "capitalize" }}>{invoice.status}</strong>
+            </div>
           </div>
         </div>
       </header>
 
       <section
         style={{
-          display: "grid",
-          gridTemplateColumns: "1.2fr 0.8fr",
-          gap: "1rem",
           marginBottom: "1.5rem",
           padding: "1rem 1.1rem",
           background: INVOICE_COLORS.surface,
@@ -141,59 +148,34 @@ export default function InvoiceDocument({ invoice, className = "" }: Props) {
           border: `1px solid ${INVOICE_COLORS.line}`,
         }}
       >
-        <div>
-          <p
-            style={{
-              margin: 0,
-              fontSize: "0.68rem",
-              fontWeight: 700,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: INVOICE_COLORS.accent,
-            }}
-          >
-            Bill to
+        <p
+          style={{
+            margin: 0,
+            fontSize: "0.68rem",
+            fontWeight: 700,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            color: INVOICE_COLORS.accent,
+          }}
+        >
+          Bill to
+        </p>
+        <p style={{ margin: "0.4rem 0 0", fontWeight: 700, fontSize: "1rem" }}>{clientName}</p>
+        {invoice.client.name && invoice.client.company ? (
+          <p style={{ margin: "0.2rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.85rem" }}>
+            Attn: {invoice.client.name}
           </p>
-          <p style={{ margin: "0.4rem 0 0", fontWeight: 700, fontSize: "1rem" }}>{clientName}</p>
-          {invoice.client.name && invoice.client.company ? (
-            <p style={{ margin: "0.2rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.85rem" }}>
-              Attn: {invoice.client.name}
-            </p>
-          ) : null}
-          {invoice.client.address ? (
-            <p style={{ margin: "0.35rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.85rem", whiteSpace: "pre-line" }}>
-              {invoice.client.address}
-            </p>
-          ) : null}
-          {(invoice.client.email || invoice.client.phone) && (
-            <p style={{ margin: "0.45rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.82rem" }}>
-              {[invoice.client.email, invoice.client.phone].filter(Boolean).join(" · ")}
-            </p>
-          )}
-        </div>
-        <div>
-          <p
-            style={{
-              margin: 0,
-              fontSize: "0.68rem",
-              fontWeight: 700,
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: INVOICE_COLORS.accent,
-            }}
-          >
-            Registration
+        ) : null}
+        {invoice.client.address ? (
+          <p style={{ margin: "0.35rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.85rem", whiteSpace: "pre-line" }}>
+            {invoice.client.address}
           </p>
-          <p style={{ margin: "0.45rem 0 0", fontSize: "0.84rem", color: INVOICE_COLORS.muted }}>
-            TIN / Tax ID: <strong style={{ color: INVOICE_COLORS.navy }}>{COMPANY.taxId}</strong>
+        ) : null}
+        {(invoice.client.email || invoice.client.phone) && (
+          <p style={{ margin: "0.45rem 0 0", color: INVOICE_COLORS.muted, fontSize: "0.82rem" }}>
+            {[invoice.client.email, invoice.client.phone].filter(Boolean).join(" · ")}
           </p>
-          <p style={{ margin: "0.25rem 0 0", fontSize: "0.84rem", color: INVOICE_COLORS.muted }}>
-            RC No: <strong style={{ color: INVOICE_COLORS.navy }}>{COMPANY.registrationNumber}</strong>
-          </p>
-          <p style={{ margin: "0.25rem 0 0", fontSize: "0.84rem", color: INVOICE_COLORS.muted }}>
-            Status: <strong style={{ color: INVOICE_COLORS.navy, textTransform: "capitalize" }}>{invoice.status}</strong>
-          </p>
-        </div>
+        )}
       </section>
 
       <table
