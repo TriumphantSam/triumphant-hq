@@ -23,7 +23,7 @@ export async function POST(request: NextRequest, { params }: Params) {
   if (!auth.ok) return auth.response;
 
   const { id } = await params;
-  const invoice = getInvoice(id);
+  const invoice = await getInvoice(id);
   if (!invoice) return jsonError("Invoice not found", 404);
 
   let body: { to?: string; message?: string } = {};
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest, { params }: Params) {
     return jsonError(`Failed to send email${text ? `: ${text.slice(0, 200)}` : ""}`, 502);
   }
 
-  const updated = updateInvoice(invoice.id, {
+  const updated = await updateInvoice(invoice.id, {
     status: invoice.status === "draft" ? "sent" : invoice.status,
     lastEmailedAt: new Date().toISOString(),
   });

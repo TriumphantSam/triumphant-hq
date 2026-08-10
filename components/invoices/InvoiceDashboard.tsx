@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { readApiJson } from "@/lib/invoices/client-api";
 import { formatMoney } from "@/lib/invoices/currency";
 import { formatDisplayDate } from "@/lib/invoices/numbering";
 import type { InvoiceCurrency, InvoiceStatus, ProformaInvoice } from "@/lib/invoices/types";
@@ -25,8 +26,9 @@ export default function InvoiceDashboard({ invoices }: { invoices: Row[] }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currency: "NGN" }),
       });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string; invoice?: ProformaInvoice }>(res);
       if (!res.ok) throw new Error(data.error || "Could not create invoice");
+      if (!data.invoice?.id) throw new Error("Could not create invoice");
       router.push(`/invoices/${data.invoice.id}`);
       router.refresh();
     } catch (err) {
@@ -44,8 +46,9 @@ export default function InvoiceDashboard({ invoices }: { invoices: Row[] }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "duplicate" }),
       });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string; invoice?: ProformaInvoice }>(res);
       if (!res.ok) throw new Error(data.error || "Duplicate failed");
+      if (!data.invoice?.id) throw new Error("Duplicate failed");
       router.push(`/invoices/${data.invoice.id}`);
       router.refresh();
     } catch (err) {
@@ -60,7 +63,7 @@ export default function InvoiceDashboard({ invoices }: { invoices: Row[] }) {
     setBusyId(id);
     try {
       const res = await fetch(`/api/invoices/${id}`, { method: "DELETE" });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string; ok?: boolean }>(res);
       if (!res.ok) throw new Error(data.error || "Delete failed");
       router.refresh();
     } catch (err) {

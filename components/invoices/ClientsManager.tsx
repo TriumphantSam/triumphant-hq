@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { readApiJson } from "@/lib/invoices/client-api";
 import type { InvoiceClient } from "@/lib/invoices/types";
 
 const emptyForm = {
@@ -37,12 +38,13 @@ export default function ClientsManager({ initialClients }: { initialClients: Inv
           address: form.address,
         }),
       });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string; client?: InvoiceClient }>(res);
       if (!res.ok) throw new Error(data.error || "Save failed");
+      if (!data.client) throw new Error("Save failed");
       setForm(emptyForm);
       setClients((prev) => {
-        const others = prev.filter((c) => c.id !== data.client.id);
-        return [...others, data.client].sort((a, b) => a.name.localeCompare(b.name));
+        const others = prev.filter((c) => c.id !== data.client!.id);
+        return [...others, data.client!].sort((a, b) => a.name.localeCompare(b.name));
       });
       router.refresh();
     } catch (err) {
@@ -57,8 +59,8 @@ export default function ClientsManager({ initialClients }: { initialClients: Inv
     const res = await fetch(`/api/invoices/clients?id=${encodeURIComponent(id)}`, {
       method: "DELETE",
     });
+    const data = await readApiJson<{ error?: string }>(res).catch(() => ({ error: "Delete failed" }));
     if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
       setError(data.error || "Delete failed");
       return;
     }

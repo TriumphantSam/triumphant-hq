@@ -20,7 +20,7 @@ export default async function InvoicePrintPage({ params, searchParams }: Props) 
     if (!verified || verified.invoiceId !== id) notFound();
   }
 
-  const invoice = getInvoice(id);
+  const invoice = await getInvoice(id);
   if (!invoice) notFound();
 
   return (

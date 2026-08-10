@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { readApiJson } from "@/lib/invoices/client-api";
 import { CURRENCIES, formatMoney } from "@/lib/invoices/currency";
 import type { InvoiceCurrency, LineItemTemplate } from "@/lib/invoices/types";
 
@@ -48,12 +49,13 @@ export default function TemplatesManager({
           details,
         }),
       });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string; template?: LineItemTemplate }>(res);
       if (!res.ok) throw new Error(data.error || "Save failed");
+      if (!data.template) throw new Error("Save failed");
       setForm(emptyForm);
       setTemplates((prev) => {
-        const others = prev.filter((t) => t.id !== data.template.id);
-        return [...others, data.template].sort((a, b) => a.name.localeCompare(b.name));
+        const others = prev.filter((t) => t.id !== data.template!.id);
+        return [...others, data.template!].sort((a, b) => a.name.localeCompare(b.name));
       });
       router.refresh();
     } catch (err) {
@@ -68,8 +70,8 @@ export default function TemplatesManager({
     const res = await fetch(`/api/invoices/templates?id=${encodeURIComponent(id)}`, {
       method: "DELETE",
     });
+    const data = await readApiJson<{ error?: string }>(res).catch(() => ({ error: "Delete failed" }));
     if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
       setError(data.error || "Delete failed");
       return;
     }

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { readApiJson } from "@/lib/invoices/client-api";
 
 export default function InvoiceLoginForm() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function InvoiceLoginForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string }>(res);
       if (!res.ok) throw new Error(data.error || "Login failed");
       const next = searchParams.get("next") || "/invoices";
       router.push(next.startsWith("/invoices") ? next : "/invoices");

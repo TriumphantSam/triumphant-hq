@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { readApiJson } from "@/lib/invoices/client-api";
 import { randomUUID } from "@/lib/invoices/client-id";
 import { CURRENCIES, computeInvoiceTotals, formatMoney } from "@/lib/invoices/currency";
 import type {
@@ -131,9 +132,9 @@ export default function InvoiceEditor({ initialInvoice, clients, templates }: Pr
           taxPercent: invoice.taxPercent,
         }),
       });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string; invoice?: ProformaInvoice }>(res);
       if (!res.ok) throw new Error(data.error || "Save failed");
-      setInvoice(data.invoice);
+      setInvoice(data.invoice as ProformaInvoice);
       setSaveMsg("Saved");
       startTransition(() => router.refresh());
     } catch (err) {
@@ -154,7 +155,7 @@ export default function InvoiceEditor({ initialInvoice, clients, templates }: Pr
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ to: emailTo, message: emailMessage }),
       });
-      const data = await res.json();
+      const data = await readApiJson<{ error?: string; invoice?: ProformaInvoice }>(res);
       if (!res.ok) throw new Error(data.error || "Email failed");
       if (data.invoice) setInvoice(data.invoice);
       setEmailOpen(false);
