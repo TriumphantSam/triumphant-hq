@@ -20,6 +20,11 @@
   --line-strong: rgba(15, 23, 42, 0.14);
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.03), 0 10px 28px rgba(15, 23, 42, 0.04);
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.04), 0 24px 56px rgba(15, 23, 42, 0.08);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-fast: 180ms;
+  --motion: 280ms;
+  --motion-slow: 500ms;
 }
 
 @theme inline {
@@ -52,6 +57,21 @@
 @keyframes line-draw {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
+}
+
+@keyframes scroll-cue {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+@keyframes testimonial-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
 }
 
 * {
@@ -224,6 +244,7 @@ main {
   min-height: 54px;
   align-items: center;
   justify-content: center;
+  gap: 0.55rem;
   padding: 1rem 1.7rem;
   border: 1px solid transparent;
   border-radius: 12px;
@@ -232,22 +253,36 @@ main {
   letter-spacing: 0.06em;
   text-decoration: none;
   text-transform: uppercase;
-  transition: transform 200ms ease, border-color 200ms ease, background 200ms ease, box-shadow 200ms ease, color 200ms ease;
+  transition:
+    transform var(--motion) var(--ease-standard),
+    border-color var(--motion) var(--ease-standard),
+    background var(--motion) var(--ease-standard),
+    box-shadow var(--motion) var(--ease-standard),
+    color var(--motion) var(--ease-standard);
 }
 
 .button:hover {
   transform: translateY(-2px);
 }
 
+.button .button-arrow {
+  display: inline-block;
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.button:hover .button-arrow {
+  transform: translateX(3px);
+}
+
 .button-primary {
   color: #fff;
   background: var(--accent-color);
-  box-shadow: 0 14px 32px rgba(7, 94, 229, 0.28);
+  box-shadow: 0 10px 28px rgba(7, 94, 229, 0.22);
 }
 
 .button-primary:hover {
   background: var(--accent-hover);
-  box-shadow: 0 18px 40px rgba(7, 94, 229, 0.34);
+  box-shadow: 0 14px 34px rgba(7, 94, 229, 0.28);
 }
 
 .button-secondary {
@@ -275,18 +310,75 @@ main {
 }
 
 .nav-link {
+  position: relative;
   color: var(--text-secondary);
   font-size: 0.74rem;
   font-weight: 650;
   letter-spacing: 0.07em;
   text-decoration: none;
   text-transform: uppercase;
-  transition: color 180ms ease;
+  transition: color var(--motion-fast) var(--ease-standard);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width var(--motion) var(--ease-standard);
+}
+
+.nav-link:hover::after,
+.nav-link-active::after {
+  width: 100%;
 }
 
 .nav-link:hover,
 .nav-link-active {
   color: var(--accent-color);
+}
+
+.accent-word {
+  color: var(--accent-color);
+}
+
+.scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.scroll-cue-label {
+  font-size: 0.65rem;
+  font-weight: 650;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.scroll-cue-mouse {
+  position: relative;
+  width: 22px;
+  height: 34px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+}
+
+.scroll-cue-mouse::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 3px;
+  height: 7px;
+  margin-left: -1.5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  animation: scroll-cue 1.6s var(--ease-standard) infinite;
 }
 
 .mobile-nav-link {
@@ -363,6 +455,12 @@ main {
   background: rgba(7, 94, 229, 0.07);
   border: 0;
   border-radius: 12px;
+  transition: transform var(--motion) var(--ease-standard), background var(--motion) var(--ease-standard);
+}
+
+.service-card:hover .service-icon {
+  transform: scale(1.06);
+  background: rgba(7, 94, 229, 0.12);
 }
 
 .service-card h3 {
@@ -373,6 +471,42 @@ main {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.15;
+  transition: color var(--motion) var(--ease-standard);
+}
+
+.service-card:hover h3 {
+  color: var(--accent-color);
+}
+
+.testimonial-stage {
+  position: relative;
+  min-height: 280px;
+}
+
+.testimonial-slide {
+  animation: testimonial-in 0.45s var(--ease-out-soft);
+}
+
+.testimonial-dot {
+  width: 1.75rem;
+  height: 0.2rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.12);
+  transition: background var(--motion) var(--ease-standard), width var(--motion) var(--ease-standard);
+}
+
+.testimonial-dot[aria-current="true"] {
+  width: 2.5rem;
+  background: var(--accent-color);
+}
+
+.live-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--accent-color);
+  animation: pulse-soft 1.8s var(--ease-standard) infinite;
 }
 
 .card-copy {
@@ -647,6 +781,91 @@ main {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* Scroll reveal — armed only after JS mount so no-JS content stays visible */
+.reveal {
+  --reveal-delay: 0ms;
+}
+
+.reveal.reveal-armed:not(.is-visible) {
+  opacity: 0;
+  transition:
+    opacity 0.7s var(--ease-out-soft) var(--reveal-delay),
+    transform 0.7s var(--ease-out-soft) var(--reveal-delay);
+}
+
+.reveal.reveal-armed.reveal-up:not(.is-visible) {
+  transform: translateY(28px);
+}
+
+.reveal.reveal-armed.reveal-left:not(.is-visible) {
+  transform: translateX(-24px);
+}
+
+.reveal.reveal-armed.reveal-right:not(.is-visible) {
+  transform: translateX(24px);
+}
+
+.reveal.reveal-armed.reveal-fade:not(.is-visible) {
+  transform: none;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out-soft) var(--reveal-delay),
+    transform 0.7s var(--ease-out-soft) var(--reveal-delay);
+}
+
+/* Stagger containers stay in place; children carry the motion */
+.reveal.reveal-armed.reveal-stagger:not(.is-visible) {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal.reveal-stagger.reveal-armed:not(.is-visible) > *,
+.reveal.reveal-stagger.reveal-armed:not(.is-visible) .reveal-item {
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.reveal.reveal-stagger.is-visible > *,
+.reveal.reveal-stagger.is-visible .reveal-item {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.65s var(--ease-out-soft),
+    transform 0.65s var(--ease-out-soft);
+}
+
+.reveal.reveal-stagger.is-visible > *:nth-child(1),
+.reveal.reveal-stagger.is-visible .reveal-item:nth-child(1) { transition-delay: 0ms; }
+.reveal.reveal-stagger.is-visible > *:nth-child(2),
+.reveal.reveal-stagger.is-visible .reveal-item:nth-child(2) { transition-delay: 80ms; }
+.reveal.reveal-stagger.is-visible > *:nth-child(3),
+.reveal.reveal-stagger.is-visible .reveal-item:nth-child(3) { transition-delay: 160ms; }
+.reveal.reveal-stagger.is-visible > *:nth-child(4),
+.reveal.reveal-stagger.is-visible .reveal-item:nth-child(4) { transition-delay: 240ms; }
+.reveal.reveal-stagger.is-visible > *:nth-child(5),
+.reveal.reveal-stagger.is-visible .reveal-item:nth-child(5) { transition-delay: 320ms; }
+.reveal.reveal-stagger.is-visible > *:nth-child(6),
+.reveal.reveal-stagger.is-visible .reveal-item:nth-child(6) { transition-delay: 400ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.reveal-armed,
+  .reveal.reveal-armed:not(.is-visible),
+  .reveal.is-visible,
+  .reveal.reveal-stagger.reveal-armed:not(.is-visible) > *,
+  .reveal.reveal-stagger.reveal-armed:not(.is-visible) .reveal-item,
+  .reveal.reveal-stagger.is-visible > *,
+  .reveal.reveal-stagger.is-visible .reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 

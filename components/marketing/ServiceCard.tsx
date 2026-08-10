@@ -35,7 +35,7 @@ export default function ServiceCard({
             ))}
           </ul>
         ) : null}
-        <Link className="text-link" href={`/services/${service.slug}`}>
+        <Link className="text-link group/link" href={`/services/${service.slug}`}>
           Explore {service.shortTitle}
           <span aria-hidden="true">→</span>
         </Link>

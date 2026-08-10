@@ -11,6 +11,7 @@ import DeliveryProcess from "./DeliveryProcess";
 import FaqSection from "./FaqSection";
 import LeadMagnetBand from "./LeadMagnetBand";
 import NextStepPanel from "./NextStepPanel";
+import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 import ServiceIcon from "./ServiceIcon";
 
@@ -83,7 +84,7 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
 
       <section className="section-muted">
         <div className="section-shell">
-          <div className="grid gap-6 lg:grid-cols-2">
+          <Reveal className="grid gap-6 lg:grid-cols-2" stagger>
             <article className="agency-card">
               <p className="card-eyebrow">Business outcomes</p>
               <h2 className="mt-3 text-2xl font-bold text-slate-950">What this engagement is designed to improve</h2>
@@ -102,38 +103,46 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
                 ))}
               </ul>
             </article>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       <section className="section-shell">
-        <SectionHeader
-          eyebrow="Delivery process"
-          title="A focused route from problem to measurable progress."
-          description="The exact scope adapts to your needs, but every engagement follows a disciplined sequence."
-        />
-        <DeliveryProcess steps={service.process} />
+        <Reveal>
+          <SectionHeader
+            eyebrow="Delivery process"
+            title="A focused route from problem to measurable progress."
+            description="The exact scope adapts to your needs, but every engagement follows a disciplined sequence."
+          />
+        </Reveal>
+        <Reveal delayMs={60}>
+          <DeliveryProcess steps={service.process} />
+        </Reveal>
       </section>
 
       {magnet ? (
         <div className="section-muted">
-          <LeadMagnetBand magnet={magnet} />
+          <Reveal>
+            <LeadMagnetBand magnet={magnet} />
+          </Reveal>
         </div>
       ) : null}
 
       {faqs.length > 0 ? (
         <div className={magnet ? undefined : "section-muted"}>
-          <FaqSection
-            title="Questions teams usually ask before we start."
-            description="Timeline, process, access and fit—answered plainly so you can decide with confidence."
-            items={faqs}
-          />
+          <Reveal>
+            <FaqSection
+              title="Questions teams usually ask before we start."
+              description="Timeline, process, access and fit—answered plainly so you can decide with confidence."
+              items={faqs}
+            />
+          </Reveal>
         </div>
       ) : null}
 
       <section className="section-muted">
         <div className="section-shell">
-          <div className="grid gap-8 lg:grid-cols-2">
+          <Reveal className="grid gap-8 lg:grid-cols-2" stagger>
             <div>
               <p className="eyebrow">Best fit</p>
               <h2 className="mt-4 text-3xl font-extrabold tracking-[-0.04em] text-slate-950">
@@ -158,14 +167,16 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
                   : undefined
               }
             />
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      <CTABand
-        eyebrow={service.shortTitle}
-        title={`Let's turn your ${service.shortTitle.toLowerCase()} priority into a clear delivery plan.`}
-      />
+      <Reveal>
+        <CTABand
+          eyebrow={service.shortTitle}
+          title={`Let's turn your ${service.shortTitle.toLowerCase()} priority into a clear delivery plan.`}
+        />
+      </Reveal>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import CaseStudies from "@/components/marketing/CaseStudies";
 import ClientLogos from "@/components/marketing/ClientLogos";
 import CTABand from "@/components/marketing/CTABand";
 import ProcessSteps from "@/components/marketing/ProcessSteps";
+import Reveal from "@/components/marketing/Reveal";
 import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
 import { agencyServices, whatsappNumber } from "@/lib/services";
@@ -45,7 +46,7 @@ export default function Home() {
       <Hero />
 
       <section className="section-shell">
-        <div className="proof-strip mb-16">
+        <Reveal className="proof-strip mb-16" stagger>
           {[
             ["Since 2017", "Continuous digital delivery"],
             ["Four disciplines", "One accountable partner"],
@@ -56,18 +57,20 @@ export default function Home() {
               <span>{copy}</span>
             </div>
           ))}
-        </div>
+        </Reveal>
 
-        <SectionHeader
-          eyebrow="What we do"
-          title="One partner across the systems that power modern growth."
-          description="Strategy only matters when customers can feel it and teams can run it. We connect design, engineering, visibility and automation into focused delivery."
-        />
-        <div className="agency-grid">
+        <Reveal>
+          <SectionHeader
+            eyebrow="What we do"
+            title="One partner across the systems that power modern growth."
+            description="Strategy only matters when customers can feel it and teams can run it. We connect design, engineering, visibility and automation into focused delivery."
+          />
+        </Reveal>
+        <Reveal className="agency-grid" stagger>
           {agencyServices.map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <section className="relative overflow-hidden">
@@ -89,11 +92,14 @@ export default function Home() {
           />
         </div>
         <div className="section-shell relative">
-          <div className="grid gap-12 py-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
-            <div>
-              <p className="eyebrow">Local support desk</p>
+          <div className="grid gap-12 py-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-16">
+            <Reveal className="lg:sticky lg:top-28" variant="left">
+              <p className="eyebrow inline-flex items-center gap-2">
+                <span className="live-dot" aria-hidden="true" />
+                Local support desk
+              </p>
               <h2 className="font-display mt-6 max-w-xl text-[clamp(2rem,3.8vw,3.1rem)] font-bold leading-[1.08] tracking-[-0.045em] text-slate-950">
-                Need NIN or BVN help today?
+                Need NIN or BVN help <span className="accent-word">today</span>?
               </h2>
               <p className="mt-5 max-w-lg text-[1.05rem] leading-8 text-slate-600">
                 Our local desk supports NIN enrolment and modifications, BVN services, school portals and documents—
@@ -107,39 +113,46 @@ export default function Home() {
                   rel="noreferrer"
                 >
                   Message on WhatsApp
+                  <span className="button-arrow" aria-hidden="true">
+                    →
+                  </span>
                 </a>
                 <Link className="button button-secondary" href="/local-support">
                   Explore Local Support
                 </Link>
               </div>
-            </div>
+            </Reveal>
 
-            <div className="grid gap-7 border-l border-blue-200/80 pl-6 sm:pl-8">
+            <Reveal className="grid gap-7 border-l border-blue-200/80 pl-6 sm:pl-8" variant="right" stagger delayMs={80}>
               {[
                 ["3,000+", "People enrolled for NIN to date"],
                 ["NIN + BVN", "Enrolment, modifications, recovery and card printing"],
                 ["Certified", "NIMC ID Ecosystem Enrolment Process Training"],
               ].map(([title, copy]) => (
-                <div key={title}>
+                <div key={title} className="reveal-item">
                   <p className="font-display text-[1.35rem] font-bold tracking-[-0.03em] text-slate-950">{title}</p>
                   <p className="mt-1.5 text-[0.95rem] leading-7 text-slate-500">{copy}</p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       <div className="section-muted">
-        <ClientLogos />
+        <Reveal variant="fade">
+          <ClientLogos />
+        </Reveal>
       </div>
 
-      <CaseStudies limit={2} teaser />
+      <Reveal>
+        <CaseStudies limit={2} teaser />
+      </Reveal>
 
       <section className="section-muted">
         <div className="section-shell">
-          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
-            <div>
+          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
+            <Reveal className="lg:sticky lg:top-28" variant="left">
               <SectionHeader
                 align="left"
                 eyebrow="Built around outcomes"
@@ -157,31 +170,39 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[520px]">
-              <Image
-                src="/images/home-outcomes.png"
-                alt="Modern workspace with a laptop open to a clean digital dashboard"
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 48vw"
-              />
-            </div>
+            </Reveal>
+            <Reveal variant="right" delayMs={100}>
+              <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[520px]">
+                <Image
+                  src="/images/home-outcomes.png"
+                  alt="Modern workspace with a laptop open to a clean digital dashboard"
+                  fill
+                  className="object-cover object-center transition duration-700 hover:scale-[1.02]"
+                  sizes="(max-width: 1024px) 100vw, 48vw"
+                />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       <section className="section-shell">
-        <SectionHeader
-          eyebrow="How we work"
-          title="A clear path from challenge to working solution."
-          description="You stay close to the decisions that matter, without managing every technical detail."
-        />
-        <ProcessSteps />
+        <Reveal>
+          <SectionHeader
+            eyebrow="How we work"
+            title="A clear path from challenge to working solution."
+            description="You stay close to the decisions that matter, without managing every technical detail."
+          />
+        </Reveal>
+        <Reveal delayMs={60}>
+          <ProcessSteps />
+        </Reveal>
       </section>
 
       <div className="section-muted">
-        <Testimonials />
+        <Reveal>
+          <Testimonials />
+        </Reveal>
       </div>
 
       <section className="relative overflow-hidden">
@@ -203,10 +224,10 @@ export default function Home() {
         </div>
         <div className="section-shell relative">
           <div className="grid gap-12 py-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
-            <div>
+            <Reveal variant="left">
               <p className="eyebrow">Free SEO visibility snapshot</p>
               <h2 className="font-display mt-7 max-w-xl text-[clamp(2.1rem,4vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.045em] text-slate-950">
-                Find the gaps limiting your search visibility.
+                Find the gaps limiting your <span className="accent-word">search visibility</span>.
               </h2>
               <p className="mt-6 max-w-lg text-[1.05rem] leading-8 text-slate-600">
                 A practical first view of technical health, search signals and priority opportunities—without a retainer
@@ -215,11 +236,14 @@ export default function Home() {
               <div className="mt-10">
                 <Link className="button button-primary" href="/seo-snapshot">
                   Run my free snapshot
+                  <span className="button-arrow" aria-hidden="true">
+                    →
+                  </span>
                 </Link>
               </div>
-            </div>
+            </Reveal>
 
-            <div className="grid gap-8 border-l border-blue-200/80 pl-6 sm:pl-8">
+            <Reveal className="grid gap-8 border-l border-blue-200/80 pl-6 sm:pl-8" variant="right" stagger delayMs={80}>
               {[
                 {
                   number: "01",
@@ -237,7 +261,7 @@ export default function Home() {
                   copy: "The few moves that matter first—not a wall of recommendations.",
                 },
               ].map((item) => (
-                <div key={item.number} className="relative">
+                <div key={item.number} className="reveal-item relative">
                   <span className="font-mono text-[0.7rem] font-bold tracking-[0.14em] text-blue-600">
                     {item.number}
                   </span>
@@ -247,54 +271,60 @@ export default function Home() {
                   <p className="mt-2 max-w-sm text-[0.95rem] leading-7 text-slate-500">{item.copy}</p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
 
       <section className="section-shell">
-        <div className="flex flex-col gap-8 border-y border-slate-200 py-12 sm:flex-row sm:items-end sm:justify-between">
-          <div className="max-w-xl">
-            <p className="eyebrow">Where we serve</p>
-            <h2 className="font-display mt-4 text-[clamp(1.6rem,2.8vw,2.2rem)] font-bold tracking-[-0.035em] text-slate-950">
-              Ibadan first. Southwestern Nigeria covered.
-            </h2>
-            <p className="mt-3 text-[1.02rem] leading-8 text-slate-600">
-              Local support and agency delivery for neighbourhoods across the city, Oyo State, Osun State and remote
-              clients nationwide.
-            </p>
+        <Reveal>
+          <div className="flex flex-col gap-8 border-y border-slate-200 py-12 sm:flex-row sm:items-end sm:justify-between">
+            <div className="max-w-xl">
+              <p className="eyebrow">Where we serve</p>
+              <h2 className="font-display mt-4 text-[clamp(1.6rem,2.8vw,2.2rem)] font-bold tracking-[-0.035em] text-slate-950">
+                Ibadan first. Southwestern Nigeria covered.
+              </h2>
+              <p className="mt-3 text-[1.02rem] leading-8 text-slate-600">
+                Local support and agency delivery for neighbourhoods across the city, Oyo State, Osun State and remote
+                clients nationwide.
+              </p>
+            </div>
+            <Link className="text-link !mt-0 !pt-0 shrink-0" href="/locations">
+              All service areas <span aria-hidden="true">→</span>
+            </Link>
           </div>
-          <Link className="text-link !mt-0 !pt-0 shrink-0" href="/locations">
-            All service areas <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-        <div className="flex flex-wrap gap-x-6 gap-y-3 pt-8">
+        </Reveal>
+        <Reveal className="flex flex-wrap gap-x-6 gap-y-3 pt-8" stagger delayMs={40}>
           {featuredLocations.map((location) => (
             <Link
               key={location.slug}
               href={`/locations/${location.slug}`}
-              className="text-[0.95rem] font-medium text-slate-600 transition hover:text-blue-700"
+              className="reveal-item text-[0.95rem] font-medium text-slate-600 transition hover:text-blue-700"
             >
               {location.name}
             </Link>
           ))}
-        </div>
+        </Reveal>
       </section>
 
-      <CTABand />
+      <Reveal>
+        <CTABand />
+      </Reveal>
 
       <section className="section-shell !pt-0">
-        <div className="flex flex-col items-start justify-between gap-5 border-t border-slate-200 pt-10 sm:flex-row sm:items-center">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Learning and products</p>
-            <p className="mt-2 text-[0.95rem] text-slate-600">
-              Looking for Digital Forge, practical training or ready-to-use systems?
-            </p>
+        <Reveal>
+          <div className="flex flex-col items-start justify-between gap-5 border-t border-slate-200 pt-10 sm:flex-row sm:items-center">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Learning and products</p>
+              <p className="mt-2 text-[0.95rem] text-slate-600">
+                Looking for Digital Forge, practical training or ready-to-use systems?
+              </p>
+            </div>
+            <Link className="text-link !mt-0 !pt-0" href="/resources">
+              Visit Resources <span aria-hidden="true">→</span>
+            </Link>
           </div>
-          <Link className="text-link !mt-0 !pt-0" href="/resources">
-            Visit Resources <span aria-hidden="true">→</span>
-          </Link>
-        </div>
+        </Reveal>
       </section>
     </div>
   );
