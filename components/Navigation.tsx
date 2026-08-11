@@ -137,6 +137,12 @@ export default function Navigation() {
             About
           </Link>
           <Link
+            href="/ibadan-tech-agency"
+            className={`nav-link ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname === "/ibadan-tech-agency" ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
+          >
+            Ibadan
+          </Link>
+          <Link
             href="/locations"
             className={`nav-link ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname.startsWith("/locations") ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
           >
@@ -243,6 +249,9 @@ export default function Navigation() {
             </Link>
             <Link href="/about" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
               About
+            </Link>
+            <Link href="/ibadan-tech-agency" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
+              Ibadan Tech Partner
             </Link>
             <Link href="/locations" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
               Locations

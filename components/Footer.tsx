@@ -28,7 +28,13 @@ const columns = [
     links: [
       { label: 'About', href: '/about' },
       { label: 'Work', href: '/work' },
+      { label: 'Ibadan Tech Partner', href: '/ibadan-tech-agency' },
       { label: 'Locations', href: '/locations' },
+      { label: 'Ibadan', href: '/locations/ibadan' },
+      { label: 'Akobo', href: '/locations/akobo' },
+      { label: 'Bashorun', href: '/locations/bashorun' },
+      { label: 'Oyo', href: '/locations/oyo' },
+      { label: 'Osogbo', href: '/locations/osogbo' },
       { label: 'Industries', href: '/industries' },
       { label: 'Compare', href: '/compare' },
       { label: 'Work With Us', href: '/contact' },
@@ -95,6 +101,10 @@ export default function Footer() {
               <p className="pt-2">
                 <Link href="/locations" className="font-medium text-blue-600 transition-colors hover:text-blue-800">
                   Service areas →
+                </Link>
+                <span className="text-slate-300"> · </span>
+                <Link href="/ibadan-tech-agency" className="font-medium text-blue-600 transition-colors hover:text-blue-800">
+                  Ibadan tech guide
                 </Link>
               </p>
             </address>

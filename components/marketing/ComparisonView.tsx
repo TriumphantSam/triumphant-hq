@@ -16,6 +16,14 @@ export default function ComparisonView({ page }: { page: ComparisonPage }) {
           {page.intro.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
+          <p>
+            Based in Ibadan, Oyo State, Triumphant HQ helps Southwestern Nigeria teams choose the right delivery model—
+            then execute with clear scope. See our{" "}
+            <Link href="/ibadan-tech-agency" className="font-semibold text-blue-600 hover:text-blue-800">
+              Ibadan technology partner guide
+            </Link>{" "}
+            for local hiring context.
+          </p>
         </div>
 
         <div className="mt-14 overflow-x-auto border-y border-slate-200">

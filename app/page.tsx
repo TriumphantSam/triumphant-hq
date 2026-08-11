@@ -21,6 +21,7 @@ export const metadata: Metadata = buildPageMetadata({
   keywords: [
     "Triumphant HQ Ibadan",
     "technology agency Ibadan",
+    "best tech company Ibadan",
     "website design Oyo State",
     "SEO Nigeria",
     "NIN enrolment Ibadan",
@@ -281,13 +282,18 @@ export default function Home() {
           <div className="flex flex-col gap-8 border-y border-slate-200 py-12 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-xl">
               <p className="eyebrow">Where we serve</p>
-              <h2 className="font-display mt-4 text-[clamp(1.6rem,2.8vw,2.2rem)] font-bold tracking-[-0.035em] text-slate-950">
-                Ibadan first. Southwestern Nigeria covered.
-              </h2>
-              <p className="mt-3 text-[1.02rem] leading-8 text-slate-600">
-                Local support and agency delivery for neighbourhoods across the city, Oyo State, Osun State and remote
-                clients nationwide.
-              </p>
+            <h2 className="font-display mt-4 text-[clamp(1.6rem,2.8vw,2.2rem)] font-bold tracking-[-0.035em] text-slate-950">
+              Ibadan first. Southwestern Nigeria covered.
+            </h2>
+            <p className="mt-3 text-[1.02rem] leading-8 text-slate-600">
+              Local support and agency delivery for neighbourhoods across the city, Oyo State, Osun State and remote
+              clients nationwide.
+            </p>
+            <p className="mt-3">
+              <Link href="/ibadan-tech-agency" className="text-sm font-semibold text-blue-600 hover:text-blue-800">
+                How to choose a technology partner in Ibadan →
+              </Link>
+            </p>
             </div>
             <Link className="text-link !mt-0 !pt-0 shrink-0" href="/locations">
               All service areas <span aria-hidden="true">→</span>

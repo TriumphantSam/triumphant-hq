@@ -1,11 +1,11 @@
 export const COMPANY = {
   legalName: "Triumphant Technological Services",
   tradingAs: "Triumphant HQ",
-  addressLines: ["Winners Way, Bashorun", "Ibadan, Oyo State, Nigeria"],
+  addressLines: ["Basorun Rd, Ibadan 211107, Oyo", "Nigeria"],
   phones: ["08107711190", "09090090910"],
   email: "admin@triumphantech.com",
-  website: "triumphanthq.com",
-  websiteUrl: "https://triumphanthq.com",
+  website: "triumphantech.com",
+  websiteUrl: "https://triumphantech.com",
   bank: {
     name: "Moniepoint",
     accountName: "triumphanttech services",

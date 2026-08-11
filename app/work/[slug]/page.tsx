@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import CTABand from "@/components/marketing/CTABand";
 import NextStepPanel from "@/components/marketing/NextStepPanel";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
+import { buildPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return caseStudies.map((study) => ({ slug: study.slug }));
@@ -18,10 +19,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const study = getCaseStudy(slug);
   if (!study) return {};
-  return {
+  return buildPageMetadata({
     title: `${study.client} Case Study | Triumphant HQ`,
     description: study.summary,
-  };
+    path: `/work/${study.slug}`,
+    keywords: [study.client, study.sector, study.service, "case study Ibadan", "Triumphant HQ work"],
+  });
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string }> }) {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ComparisonView from "@/components/marketing/ComparisonView";
 import { comparisons, getComparison } from "@/lib/compare-industries";
+import { buildPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return comparisons.map((page) => ({ slug: page.slug }));
@@ -15,10 +16,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const page = getComparison(slug);
   if (!page) return {};
-  return {
+  return buildPageMetadata({
     title: `${page.title} | Triumphant HQ`,
     description: page.description,
-  };
+    path: `/compare/${page.slug}`,
+    keywords: [page.title, "hire agency Ibadan", "technology partner Nigeria"],
+  });
 }
 
 export default async function ComparisonSlugPage({ params }: { params: Promise<{ slug: string }> }) {

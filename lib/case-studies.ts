@@ -74,11 +74,11 @@ export const caseStudies: CaseStudy[] = [
     service: "Website redesign & technical SEO foundations",
     title: "Moving from legacy hosting to a modern Jamstack architecture",
     summary:
-      "A full rebuild that replaced a rigid cPanel setup with a fast, crawlable edge-hosted site built for search and performance.",
+      "A full rebuild—delivered by our Ibadan-based team—that replaced a rigid cPanel setup with a fast, crawlable edge-hosted site built for search and performance.",
     problem:
       "The legacy IAPrecision website sat on a rigid Namecheap cPanel setup. Heavy server-side rendering, single-page limitations and plugin bloat made the site virtually un-optimizable for search engines, slow to load and weak on Core Web Vitals.",
     solution:
-      "We rebuilt the site from the ground up, decoupled the architecture and migrated deployment from cPanel to Vercel for edge delivery, cleaner execution and proper search-engine crawlability.",
+      "From our Ibadan base, we rebuilt the site from the ground up, decoupled the architecture and migrated deployment from cPanel to Vercel for edge delivery, cleaner execution and proper search-engine crawlability.",
     outcome:
       "Rendering bottlenecks were resolved, site speed improved, full mobile responsiveness was delivered, and proper SEO indexing was unlocked to support sustainable organic traffic for an agricultural drone company.",
     logo: "/images/clients/integrated-aerial-precision.png",
@@ -90,11 +90,11 @@ export const caseStudies: CaseStudy[] = [
     service: "Technical SEO & local visibility",
     title: "Fixing local search visibility and technical SEO",
     summary:
-      "A focused technical SEO programme that helped high-intent local searchers find the right wellness pages—and move toward enquiry.",
+      "A focused technical SEO programme from Triumphant HQ (Ibadan) that helped high-intent local searchers find the right wellness pages—and move toward enquiry.",
     problem:
       "Despite high-value wellness services, the brand had low digital visibility. High-intent local searchers could not reliably find landing pages when looking for wellness solutions.",
     solution:
-      "We ran a deep technical SEO audit, restructured the site hierarchy, optimized metadata, fixed indexing errors and aligned page content with the language wellness clients were actually searching.",
+      "We ran a deep technical SEO audit, restructured the site hierarchy, optimized metadata, fixed indexing errors and aligned page content with the language wellness clients were actually searching—the same local-visibility discipline we apply for Oyo State businesses.",
     outcome:
       "A more consistent digital presence, stronger organic visibility and a clearer path from search results to bookings and enquiries.",
     logo: "/images/clients/dr-seyi-absolute-wellness.png",

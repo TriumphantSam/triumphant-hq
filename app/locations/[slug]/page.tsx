@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CTABand from "@/components/marketing/CTABand";
+import FaqSection from "@/components/marketing/FaqSection";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import JsonLd from "@/components/seo/JsonLd";
 import {
@@ -48,16 +49,16 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     .map((nearSlug) => locationPages.find((item) => item.slug === nearSlug))
     .filter(Boolean);
 
+  const schema = serviceJsonLd({
+    name: `Digital services in ${page.name}`,
+    description: page.description,
+    path: `/locations/${page.slug}`,
+    serviceType: "Technology and local digital support",
+  });
+
   return (
     <div>
-      <JsonLd
-        data={serviceJsonLd({
-          name: `Digital services in ${page.name}`,
-          description: page.description,
-          path: `/locations/${page.slug}`,
-          serviceType: "Technology and local digital support",
-        })}
-      />
+      <JsonLd data={schema} />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },
@@ -123,10 +124,11 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
               ))}
             </ul>
             <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold text-blue-600">
-              <Link href="/services/websites">Websites</Link>
-              <Link href="/services/seo">SEO</Link>
+              <Link href="/services/websites/ibadan">Websites in Ibadan</Link>
+              <Link href="/services/seo/ibadan">SEO in Ibadan</Link>
               <Link href="/services/app-development">Apps</Link>
               <Link href="/services/automation">Automation</Link>
+              <Link href="/ibadan-tech-agency">Ibadan tech partner guide</Link>
             </div>
           </div>
         </div>
@@ -152,6 +154,14 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
         </section>
+      ) : null}
+
+      {page.faqs.length > 0 ? (
+        <FaqSection
+          title={`Questions about ${page.name}`}
+          description="Local support and agency delivery—answered plainly."
+          items={page.faqs}
+        />
       ) : null}
 
       <CTABand

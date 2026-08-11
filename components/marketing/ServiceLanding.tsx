@@ -48,6 +48,17 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
         <p className="mt-4 max-w-2xl text-[1.02rem] leading-8 text-slate-600">
           Based in Ibadan, Oyo State, we deliver this work for organisations across Southwestern Nigeria and nationwide.
         </p>
+        {(service.slug === "websites" || service.slug === "seo") && (
+          <p className="mt-3 max-w-2xl text-[0.98rem] leading-7 text-slate-600">
+            Looking specifically for Ibadan coverage?{" "}
+            <Link
+              href={`/services/${service.slug}/ibadan`}
+              className="font-semibold text-blue-600 hover:text-blue-800"
+            >
+              {service.slug === "seo" ? "SEO in Ibadan" : "Website design in Ibadan"} →
+            </Link>
+          </p>
+        )}
         <div className="button-row mt-8">
           <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
             Discuss your project
