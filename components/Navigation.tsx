@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { agencyServices, discoveryCallUrl } from "@/lib/services";
 
 const resources = [
+  { href: "/blog", label: "Insights", hoverLabel: "Blogs", description: "Practical guides from our team" },
   { href: "/digital-forge", label: "Digital Forge", description: "Our practical product-building lab" },
   { href: "/digital-forge/products", label: "Products", description: "Playbooks, systems and templates" },
   { href: "/digital-forge/training", label: "Free Training", description: "Learn before you invest" },
-  { href: "/blog", label: "Insights", description: "Practical guides from our team" },
 ];
 
 export default function Navigation() {
@@ -154,12 +154,6 @@ export default function Navigation() {
           >
             Work
           </Link>
-          <Link
-            href="/contact"
-            className={`nav-link ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname === "/contact" ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
-          >
-            Work With Us
-          </Link>
           <div className="group relative">
             <Link
               href="/resources"
@@ -182,8 +176,15 @@ export default function Navigation() {
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <span>
-                      <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
-                        {item.label}
+                      <span className="relative grid text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
+                        <span className={`col-start-1 row-start-1 transition-opacity duration-200 ${item.hoverLabel ? "group-hover/item:opacity-0" : ""}`}>
+                          {item.label}
+                        </span>
+                        {item.hoverLabel ? (
+                          <span className="col-start-1 row-start-1 opacity-0 transition-opacity duration-200 group-hover/item:opacity-100" aria-hidden="true">
+                            {item.hoverLabel}
+                          </span>
+                        ) : null}
                       </span>
                       <span className="mt-0.5 block text-xs leading-5 text-slate-500">{item.description}</span>
                     </span>
@@ -197,6 +198,17 @@ export default function Navigation() {
             className={`nav-link ${overHero ? "!text-[#9ec2ff] hover:!text-white" : "text-[var(--accent-color)]"}`}
           >
             Free SEO Audit
+          </Link>
+          <Link
+            href="/contact"
+            className={`nav-link group/contact relative inline-grid ${overHero ? "!text-white/75 hover:!text-white" : ""} ${pathname === "/contact" ? (overHero ? "!text-white" : "nav-link-active") : ""}`}
+          >
+            <span className="col-start-1 row-start-1 transition-opacity duration-200 group-hover/contact:opacity-0">
+              Work With Us
+            </span>
+            <span className="col-start-1 row-start-1 opacity-0 transition-opacity duration-200 group-hover/contact:opacity-100" aria-hidden="true">
+              Contact Us
+            </span>
           </Link>
           <Link
             href={discoveryCallUrl}
@@ -259,9 +271,6 @@ export default function Navigation() {
             <Link href="/work" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
               Work
             </Link>
-            <Link href="/contact" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
-              Work With Us
-            </Link>
             <p className="mobile-nav-label">Resources</p>
             {resources.map((item) => (
               <Link key={item.href} href={item.href} className="mobile-nav-sublink" onClick={() => setMobileOpen(false)}>
@@ -274,6 +283,9 @@ export default function Navigation() {
               onClick={() => setMobileOpen(false)}
             >
               Free SEO Audit
+            </Link>
+            <Link href="/contact" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
+              Contact Us
             </Link>
             <a
               href={discoveryCallUrl}
