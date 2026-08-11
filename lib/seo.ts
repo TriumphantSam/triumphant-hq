@@ -21,7 +21,7 @@ export const siteIdentity = {
   foundingYear: 2017,
   /** Public profile URLs — add LinkedIn/Instagram/Facebook when live */
   sameAs: [
-    "https://share.google/oJQ1piDwZ4dL7Z491",
+    "https://share.google/RLZXJGOCCI82sx8tx",
     "https://triumphantech.com",
   ] as string[],
   mapsUrl:
