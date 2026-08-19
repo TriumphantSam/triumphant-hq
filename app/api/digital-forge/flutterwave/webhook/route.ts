@@ -2,8 +2,8 @@ import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { isLaunchBundleOffer, resolveCheckoutOffer } from "@/lib/digital-forge-offers";
 
-const FLUTTERWAVE_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY ?? "";
-const FLUTTERWAVE_WEBHOOK_SECRET = process.env.FLUTTERWAVE_WEBHOOK_SECRET ?? "";
+const FLUTTERWAVE_SECRET_KEY = (process.env.FLUTTERWAVE_SECRET_KEY ?? "").trim();
+const FLUTTERWAVE_WEBHOOK_SECRET = (process.env.FLUTTERWAVE_WEBHOOK_SECRET ?? "").trim();
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? "";
 const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? "";
