@@ -1,16 +1,19 @@
 import Link from "next/link";
 import Script from "next/script";
+import { isLaunchBundleOffer } from "@/lib/digital-forge-offers";
 
 type ConfirmedPageProps = {
   searchParams: Promise<{
     status?: string;
     tx_ref?: string;
+    offer?: string;
+    provider?: string;
   }>;
 };
 
 export const metadata = {
-  title: "Payment Received | Digital Forge",
-  description: "Your Digital Forge payment is being verified for delivery.",
+  title: "Payment Received",
+  description: "Your payment is being verified for delivery.",
 };
 
 const START_STEPS = [
@@ -19,13 +22,28 @@ const START_STEPS = [
   { num: "03", text: "Use the Product Packaging Template to shape a bundle people want to buy." },
   { num: "04", text: "Run the Launch Checklist and Content Planner before publishing." },
 ];
+const LAUNCH_BUNDLE_STEPS = [
+  { num: "01", text: "Download the zip from your email and unzip it. Start with the Start Here file." },
+  { num: "02", text: "Open Pack 1 — WhatsApp Launch Kit. Copy one launch message, put your product in the blanks, and send it." },
+  { num: "03", text: "Save Pack 2 — Price Objection Replies. Use them the next time someone says “too expensive” or “last price?”" },
+  { num: "04", text: "Post one line from Pack 4 today. If people comment from TikTok, use Pack 3 to move them into WhatsApp." },
+];
 const STRATEGY_CALL_URL =
   process.env.NEXT_PUBLIC_SEO_BOOKING_URL || "https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call";
+const SUPPORT_WHATSAPP_URL =
+  "https://wa.me/2348107711190?text=" +
+  encodeURIComponent("Hi, I paid for the Digital Product Seller Launch Bundle. I need help with delivery.");
 
 export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }: ConfirmedPageProps) {
   const params = await searchParams;
   const status = (params.status ?? "").toLowerCase();
   const isSuccess = !status || status === "successful" || status === "completed";
+  const txRef = params.tx_ref ?? "";
+  const isLaunchBundle =
+    isLaunchBundleOffer(params.offer) ||
+    txRef.toLowerCase().includes("digital-product-seller-launch-bundle") ||
+    txRef.toLowerCase().includes("digital-product");
+  const startSteps = isLaunchBundle ? LAUNCH_BUNDLE_STEPS : START_STEPS;
 
   return (
     <div style={{ background: "#ffffff", minHeight: "100vh", color: "var(--text-primary)", fontFamily: "sans-serif", overflow: "hidden" }}>
@@ -124,7 +142,11 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                   letterSpacing: "-0.02em",
                 }}
               >
-                {isSuccess ? "Check your email for your Digital Forge access." : "Your payment status still needs attention."}
+                {isSuccess
+                  ? isLaunchBundle
+                    ? "Check your email for the Digital Product Seller Launch Bundle."
+                    : "Check your email for your Digital Forge access."
+                  : "Your payment status still needs attention."}
               </h1>
 
               <p 
@@ -140,7 +162,9 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                 }}
               >
                 {isSuccess
-                  ? "Once the payment provider confirms the order on our side, we automatically send your delivery email. If you do not see it within a few minutes, check spam or contact support with your payment email."
+                  ? isLaunchBundle
+                    ? "Your files are sent to the email you used at checkout. If you do not see the zip within a few minutes, check spam. Then unzip and open Start Here."
+                    : "Once the payment provider confirms the order on our side, we automatically send your delivery email. If you do not see it within a few minutes, check spam or contact support with your payment email."
                   : "We did not get a clean success signal yet. If the payment provider charged you, keep your transaction reference and contact support so we can verify and deliver manually if needed."}
               </p>
 
@@ -169,10 +193,10 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                       gap: "0.5rem",
                     }}
                   >
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF" }} /> Your first 4 steps after delivery
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF" }} /> {isLaunchBundle ? "Start using the bundle today" : "Your first 4 steps after delivery"}
                   </p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-                    {START_STEPS.map((step) => (
+                    {startSteps.map((step) => (
                       <div key={step.num} style={{ display: "flex", gap: "1rem", alignItems: "flex-start", padding: "0.75rem", background: "#ffffff", borderRadius: "0.75rem" }}>
                         <span style={{ flexShrink: 0, width: "2rem", height: "2rem", borderRadius: "0.5rem", background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)", display: "flex", alignItems: "center", justifyContent: "center", color: "#60A5FA", fontWeight: 900, fontSize: "0.75rem", boxShadow: "0 0 10px rgba(59,130,246,0.15)" }}>{step.num}</span>
                         <p style={{ color: "#334155", lineHeight: 1.6, fontSize: "clamp(0.95rem, 2vw, 1.05rem)", fontWeight: 500, margin: 0 }}>{step.text}</p>
@@ -182,7 +206,9 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                   <div style={{ height: 1, width: "100%", background: "#ffffff", margin: "1.5rem 0" }} />
                   <p style={{ color: "#64748b", lineHeight: 1.6, fontSize: "clamp(0.85rem, 2vw, 0.95rem)", display: "flex", alignItems: "flex-start", gap: "0.75rem", margin: 0 }}>
                     <svg style={{ width: "1.25rem", height: "1.25rem", flexShrink: 0, color: "rgba(0,204,255,0.5)", marginTop: 2 }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                    Reply to the delivery email with the product idea you plan to build first. That reply helps us support you and collect real buyer proof — only with your permission.
+                    {isLaunchBundle
+                      ? "Reply to the delivery email with the product you will launch first. If the zip is missing, message support with the email you paid with."
+                      : "Reply to the delivery email with the product idea you plan to build first. That reply helps us support you and collect real buyer proof — only with your permission."}
                   </p>
                 </div>
               ) : null}
@@ -197,29 +223,53 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
               ) : null}
 
               <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center", marginTop: "1rem" }}>
+                {isLaunchBundle ? (
+                  <Link
+                    href={SUPPORT_WHATSAPP_URL}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "1rem 2rem",
+                      borderRadius: "0.75rem",
+                      color: "var(--text-primary)",
+                      fontWeight: 900,
+                      fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                      textDecoration: "none",
+                      boxShadow: "0 0 30px rgba(14,165,233,0.35)",
+                      minWidth: "160px",
+                    }}
+                  >
+                    WhatsApp support
+                  </Link>
+                ) : (
+                  <Link
+                    href={STRATEGY_CALL_URL}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "1rem 2rem",
+                      borderRadius: "0.75rem",
+                      color: "var(--text-primary)",
+                      fontWeight: 900,
+                      fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
+                      textDecoration: "none",
+                      boxShadow: "0 0 30px rgba(14,165,233,0.35)",
+                      minWidth: "160px",
+                    }}
+                  >
+                    Book a strategy call
+                  </Link>
+                )}
                 <Link
-                  href={STRATEGY_CALL_URL}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "1rem 2rem",
-                    borderRadius: "0.75rem",
-                    color: "var(--text-primary)",
-                    fontWeight: 900,
-                    fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
-                    textDecoration: "none",
-                    boxShadow: "0 0 30px rgba(14,165,233,0.35)",
-                    minWidth: "160px",
-                  }}
-                >
-                  Book a strategy call
-                </Link>
-                <Link
-                  href="/digital-forge/system"
+                  href={isLaunchBundle ? "/digital-product" : "/digital-forge/system"}
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -237,8 +287,9 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                     minWidth: "160px",
                   }}
                 >
-                  Back to Starter System
+                  {isLaunchBundle ? "Back to the bundle" : "Back to Starter System"}
                 </Link>
+                {isLaunchBundle ? null : (
                 <Link
                   href="/contact"
                   style={{
@@ -260,6 +311,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                 >
                   Need us to build it?
                 </Link>
+                )}
               </div>
             </div>
           </div>

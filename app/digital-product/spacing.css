@@ -1,0 +1,88 @@
+/* The site-wide `* { margin: 0; padding: 0 }` reset is unlayered and
+   zeroes Tailwind mt/py/p utilities. These rules are also unlayered
+   so spacing on this page actually renders. */
+
+.dp-landing > section.dp-section {
+  padding-top: clamp(7.5rem, 14vw, 11rem);
+  padding-bottom: clamp(7.5rem, 14vw, 11rem);
+  padding-left: clamp(1.25rem, 4vw, 4rem);
+  padding-right: clamp(1.25rem, 4vw, 4rem);
+}
+
+.dp-landing > header > div {
+  padding-top: 1.05rem;
+  padding-bottom: 1.05rem;
+  padding-left: clamp(1.25rem, 4vw, 4rem);
+  padding-right: clamp(1.25rem, 4vw, 4rem);
+}
+
+.dp-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.dp-cluster-lg {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4rem, 8vw, 6rem);
+}
+
+.dp-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.dp-card {
+  padding: 1.5rem 1.4rem;
+}
+
+.dp-buy {
+  padding: 1.15rem 2rem;
+}
+
+.dp-landing article {
+  padding: 1.75rem;
+}
+
+.dp-banner {
+  padding: 2.5rem 1.75rem;
+}
+
+.dp-faq-item {
+  padding: 1.75rem 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .dp-card {
+    padding: 1.85rem 2rem;
+  }
+
+  .dp-buy {
+    padding: 1.35rem 2.5rem;
+  }
+
+  .dp-landing article {
+    padding: 2.5rem;
+  }
+
+  .dp-banner {
+    padding: 4rem 3.5rem;
+  }
+
+  .dp-faq-item {
+    padding: 2.25rem 2.5rem;
+  }
+}
+
+.dp-footer {
+  padding-top: 4.5rem;
+  padding-bottom: 4.5rem;
+  padding-left: clamp(1.25rem, 4vw, 4rem);
+  padding-right: clamp(1.25rem, 4vw, 4rem);
+}
+
+.dp-sticky-buy {
+  padding: 1rem;
+}

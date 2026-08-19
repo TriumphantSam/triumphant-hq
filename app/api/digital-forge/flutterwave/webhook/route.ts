@@ -1,13 +1,9 @@
 import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { resolveCourseOffer, resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
-import { scheduleFollowUpEmail } from "@/lib/follow-up-emails";
+import { isLaunchBundleOffer, resolveCheckoutOffer } from "@/lib/digital-forge-offers";
 
 const FLUTTERWAVE_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY ?? "";
 const FLUTTERWAVE_WEBHOOK_SECRET = process.env.FLUTTERWAVE_WEBHOOK_SECRET ?? "";
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
-const AIRTABLE_DIGITAL_FORGE_ORDERS_TABLE = process.env.AIRTABLE_DIGITAL_FORGE_ORDERS_TABLE ?? "Digital Forge Orders";
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? "";
 const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? "";
@@ -18,6 +14,8 @@ const ELGCC_FORWARD_URL = process.env.ELGCC_FORWARD_URL ?? "";
 const ELGCC_FORWARD_SECRET = process.env.ELGCC_FORWARD_SECRET ?? "";
 const STARTER_USAGE_INSTRUCTION =
   "Start with 01 Start Here.pdf, then complete the Offer Selection Worksheet before opening the other templates.";
+const LAUNCH_BUNDLE_USAGE_INSTRUCTION =
+  "Start with the Start Here file, then use the WhatsApp Launch Kit first. Copy, edit, and send.";
 const BUYER_REPLY_PROMPT =
   "Reply to this email with the product idea you plan to build first. We use those replies to help improve the system and collect real buyer proof with permission.";
 
@@ -34,10 +32,6 @@ type VerifiedTransaction = {
   };
   meta?: Record<string, unknown> | Array<{ metaname?: string; metavalue?: string }>;
 };
-
-function safeFormulaValue(value: string): string {
-  return value.replace(/'/g, "\\'");
-}
 
 function normalizeMeta(meta: VerifiedTransaction["meta"]): Record<string, string> {
   if (!meta) return {};
@@ -98,80 +92,6 @@ async function verifyTransaction(transactionId: number): Promise<VerifiedTransac
   return payload.data;
 }
 
-async function findExistingOrder(transactionId: number): Promise<{ id: string; deliverySent: boolean } | null> {
-  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) return null;
-
-  const params = new URLSearchParams();
-  params.set("maxRecords", "1");
-  params.set("filterByFormula", `{Transaction ID}='${safeFormulaValue(String(transactionId))}'`);
-  const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_DIGITAL_FORGE_ORDERS_TABLE)}?${params.toString()}`;
-
-  const response = await fetch(endpoint, {
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-    },
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    return null;
-  }
-
-  const payload = (await response.json()) as {
-    records?: Array<{ id: string; fields?: Record<string, unknown> }>;
-  };
-
-  const record = payload.records?.[0];
-  if (!record) return null;
-
-  return {
-    id: record.id,
-    deliverySent: record.fields?.["Delivery Sent"] === true,
-  };
-}
-
-function extractUnknownFieldName(detail: string): string | null {
-  try {
-    const parsed = JSON.parse(detail);
-    const message = parsed.error?.message || "";
-    const match = message.match(/Unknown field name: "([^"]+)"/i) || message.match(/Unknown field name: '([^']+)'/i);
-    return match?.[1] ?? null;
-  } catch {
-    const backupMatch = detail.match(/Unknown field name: \\?['"]([^\\'"]+)\\?['"]/i);
-    return backupMatch?.[1] ?? null;
-  }
-}
-
-async function upsertOrder(fields: Record<string, unknown>, recordId?: string): Promise<void> {
-  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) return;
-
-  const endpoint = recordId
-    ? `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_DIGITAL_FORGE_ORDERS_TABLE)}/${recordId}`
-    : `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_DIGITAL_FORGE_ORDERS_TABLE)}`;
-
-  while (true) {
-    const response = await fetch(endpoint, {
-      method: recordId ? "PATCH" : "POST",
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(recordId ? { fields } : { records: [{ fields }] }),
-    });
-
-    if (response.ok) return;
-
-    const detail = await response.text();
-    const missingField = extractUnknownFieldName(detail);
-    if (response.status === 422 && missingField && missingField in fields) {
-      delete fields[missingField];
-      continue;
-    }
-
-    throw new Error(`Airtable order write failed: ${response.status} ${detail}`);
-  }
-}
-
 async function sendDeliveryEmail(payload: {
   name: string;
   email: string;
@@ -180,6 +100,7 @@ async function sendDeliveryEmail(payload: {
   amount: number;
   currency: string;
   txRef: string;
+  offerKey?: string;
 }) {
   if (!EMAILJS_SERVICE_ID || !EMAILJS_PUBLIC_KEY || !EMAILJS_TEMPLATE_ID_DIGITAL_FORGE_DELIVERY) {
     throw new Error("EmailJS digital product delivery template is not configured.");
@@ -205,7 +126,9 @@ async function sendDeliveryEmail(payload: {
         tx_ref: payload.txRef,
         support_email: SUPPORT_EMAIL,
         from_name: EMAILJS_FROM_NAME,
-        usage_start_instruction: STARTER_USAGE_INSTRUCTION,
+        usage_start_instruction: isLaunchBundleOffer(payload.offerKey)
+          ? LAUNCH_BUNDLE_USAGE_INSTRUCTION
+          : STARTER_USAGE_INSTRUCTION,
         buyer_reply_prompt: BUYER_REPLY_PROMPT,
       },
     }),
@@ -218,16 +141,11 @@ async function sendDeliveryEmail(payload: {
 }
 
 async function resolveDelivery(meta: Record<string, string>) {
-  if (meta.offer_kind === "system" || meta.offer_key === "starter-system") {
-    return resolveSystemOffer();
-  }
-  if (meta.offer_kind === "course" || meta.offer_key === "digital-forge-course" || meta.offer_key === "course") {
-    return resolveCourseOffer();
-  }
-
-  const slug = meta.product_slug || meta.offer_key;
-  if (!slug) return null;
-  return resolveProductOffer(slug);
+  return resolveCheckoutOffer({
+    offerKind: meta.offer_kind,
+    offerKey: meta.offer_key,
+    slug: meta.product_slug || meta.offer_key,
+  });
 }
 
 function isElgccTosPayment(verified: VerifiedTransaction, meta: Record<string, string>) {
@@ -304,11 +222,6 @@ export async function POST(request: NextRequest) {
       throw new Error("Verified transaction is missing a customer email or delivery URL.");
     }
 
-    const existingOrder = await findExistingOrder(transactionId);
-    if (existingOrder?.deliverySent) {
-      return NextResponse.json({ ok: true, duplicate: true });
-    }
-
     const productTitle = meta.product_title || offer?.title || "Digital Forge purchase";
     const amount = Number(verified.charged_amount ?? verified.amount ?? 0);
 
@@ -320,52 +233,7 @@ export async function POST(request: NextRequest) {
       amount,
       currency: verified.currency,
       txRef: verified.tx_ref,
-    });
-
-    await upsertOrder(
-      {
-        "Transaction ID": String(transactionId),
-        "Tx Ref": verified.tx_ref,
-        "Offer Key": meta.offer_key || offer?.key || "",
-        "Offer Kind": meta.offer_kind || offer?.kind || "",
-        "Product Slug": meta.product_slug || offer?.slug || "",
-        "Product Title": productTitle,
-        "Customer Name": customerName,
-        "Customer Email": customerEmail,
-        Amount: amount,
-        Currency: verified.currency,
-        Status: verified.status,
-        "Delivery URL": deliveryUrl,
-        "Delivery Sent": true,
-        "Delivery Sent At": new Date().toISOString(),
-        Source: "flutterwave_webhook",
-      },
-      existingOrder?.id,
-    );
-
-    const day3 = new Date();
-    day3.setDate(day3.getDate() + 3);
-    const day7 = new Date();
-    day7.setDate(day7.getDate() + 7);
-    await scheduleFollowUpEmail({
-      name: customerName,
-      email: customerEmail,
-      templateKey: "purchase_day3",
-      sequence: "post_purchase",
-      source: "flutterwave_webhook",
-      leadId: meta.offer_key || offer?.key || verified.tx_ref,
-      scheduledAt: day3,
-      metadata: { product_title: productTitle, support_email: SUPPORT_EMAIL },
-    });
-    await scheduleFollowUpEmail({
-      name: customerName,
-      email: customerEmail,
-      templateKey: "purchase_day7",
-      sequence: "post_purchase",
-      source: "flutterwave_webhook",
-      leadId: meta.offer_key || offer?.key || verified.tx_ref,
-      scheduledAt: day7,
-      metadata: { product_title: productTitle, support_email: SUPPORT_EMAIL },
+      offerKey: meta.offer_key || offer?.key,
     });
 
     return NextResponse.json({ ok: true });

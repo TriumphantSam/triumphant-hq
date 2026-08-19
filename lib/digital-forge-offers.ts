@@ -12,6 +12,17 @@ export type CheckoutOffer = {
   deliveryUrl?: string;
 };
 
+export const LAUNCH_BUNDLE_OFFER_KEY = "digital-product-seller-launch-bundle";
+const LAUNCH_BUNDLE_ALIASES = new Set([
+  LAUNCH_BUNDLE_OFFER_KEY,
+  "digital-product",
+  "digital_product",
+  "digital-product-seller",
+]);
+const DEFAULT_LAUNCH_BUNDLE_DELIVERY_URL =
+  "https://drive.google.com/file/d/1iY2KhOxKFvyTVZwdRrB1WrJJwNPJcY0K/view?usp=sharing";
+const FIXED_LAUNCH_BUNDLE_PRICE_NGN = 3000;
+
 const DEFAULT_PRODUCT_PRICE_NGN = Number(process.env.DIGITAL_FORGE_PRODUCT_PRICE_NGN ?? "3000");
 const FIXED_SYSTEM_PRICE_NGN = 15000;
 const FIXED_COURSE_PRICE_NGN = 35000;
@@ -162,10 +173,55 @@ export function resolveCourseOffer(): CheckoutOffer {
   };
 }
 
+export function isLaunchBundleOffer(key?: string | null): boolean {
+  const normalized = String(key ?? "").trim().toLowerCase();
+  return LAUNCH_BUNDLE_ALIASES.has(normalized);
+}
+
+export function resolveLaunchBundleOffer(): CheckoutOffer {
+  const amount = PRICE_OVERRIDES[LAUNCH_BUNDLE_OFFER_KEY] ?? FIXED_LAUNCH_BUNDLE_PRICE_NGN;
+  const deliveryUrl =
+    DELIVERY_URL_OVERRIDES[LAUNCH_BUNDLE_OFFER_KEY] ??
+    process.env.DIGITAL_PRODUCT_LAUNCH_BUNDLE_DELIVERY_URL ??
+    DEFAULT_LAUNCH_BUNDLE_DELIVERY_URL;
+
+  return {
+    kind: "product",
+    key: LAUNCH_BUNDLE_OFFER_KEY,
+    slug: LAUNCH_BUNDLE_OFFER_KEY,
+    title: "Digital Product Seller Launch Bundle",
+    description:
+      "Copy-paste WhatsApp launch scripts, price objection replies, TikTok-to-WhatsApp messages, and daily sales posts. Instant download.",
+    amount,
+    currency: DEFAULT_CURRENCY,
+    deliveryUrl,
+  };
+}
+
+export async function resolveCheckoutOffer(params: {
+  offerKind?: string | null;
+  offerKey?: string | null;
+  slug?: string | null;
+}): Promise<CheckoutOffer | null> {
+  const key = String(params.offerKey ?? params.slug ?? "").trim();
+  if (params.offerKind === "system" || key === "starter-system" || key === "system") {
+    return resolveSystemOffer();
+  }
+  if (params.offerKind === "course" || key === "digital-forge-course" || key === "course") {
+    return resolveCourseOffer();
+  }
+  if (isLaunchBundleOffer(key) || params.offerKind === "launch-bundle") {
+    return resolveLaunchBundleOffer();
+  }
+  if (!key) return null;
+  return resolveProductOffer(key);
+}
+
 const USD_PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_USD_PRICE_OVERRIDES_JSON ?? "");
 const DEFAULT_USD_PRICE_OVERRIDES: Record<string, number> = {
   "starter-system": 20,
   "digital-forge-course": 23.33,
+  [LAUNCH_BUNDLE_OFFER_KEY]: 9,
 };
 
 export function resolveUsdAmount(amountNgn: number): number {

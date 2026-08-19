@@ -91,7 +91,7 @@ export default function CheckoutClient({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5">
+    <form onSubmit={handleSubmit} style={{ display: "grid", gap: "1.25rem" }}>
       <div className="grid gap-2">
         <label htmlFor="checkout-name" className="text-slate-700 text-sm font-bold tracking-wide">
           Full name
@@ -145,16 +145,16 @@ export default function CheckoutClient({
         </div>
       </div>
 
-      <div className="grid gap-4 mt-4">
-        <div className="flex items-center gap-4">
+      <div style={{ display: "grid", gap: "1.1rem", marginTop: "1.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <div className="h-px bg-slate-200 flex-1" />
-          <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em] m-0">
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-[0.2em]" style={{ margin: 0 }}>
             Choose payment method
           </p>
           <div className="h-px bg-slate-200 flex-1" />
         </div>
 
-        <div className="grid grid-cols-1 gap-3">
+        <div style={{ display: "grid", gap: "0.9rem" }}>
           {[
             ...(hasInternationalCheckout ? [{
               id: "lemonsqueezy",
@@ -185,18 +185,23 @@ export default function CheckoutClient({
                 key={item.id}
                 type="button"
                 onClick={() => setProvider(item.id as "flutterwave" | "lemonsqueezy")}
-                className={`flex items-center gap-4 rounded-xl p-4 cursor-pointer text-left transition-all duration-300 ${
+                className={`flex items-center cursor-pointer text-left transition-all duration-300 ${
                   isActive 
-                    ? `border ${item.activeBorder} ${item.activeColor} ${item.shadow} scale-[1.02]` 
-                    : `border border-slate-200 bg-white ${item.hoverBorder} hover:bg-slate-50 hover:scale-[1.01]`
+                    ? `border ${item.activeBorder} ${item.activeColor} ${item.shadow}` 
+                    : `border border-slate-200 bg-white ${item.hoverBorder} hover:bg-slate-50`
                 }`}
+                style={{
+                  gap: "1rem",
+                  borderRadius: "0.9rem",
+                  padding: "1.15rem 1.2rem",
+                }}
               >
-                <div className="text-3xl filter drop-shadow-md">{item.icon}</div>
-                <div>
-                  <div className={`font-black text-base mb-1 ${isActive ? item.activeText : "text-slate-900"}`}>
+                <div className="text-3xl filter drop-shadow-md" style={{ lineHeight: 1 }}>{item.icon}</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+                  <div className={`font-black text-base ${isActive ? item.activeText : "text-slate-900"}`} style={{ margin: 0 }}>
                     {item.label}
                   </div>
-                  <div className={`text-xs font-medium leading-relaxed ${isActive ? "text-slate-700" : "text-slate-500"}`}>
+                  <div className={`text-xs font-medium leading-relaxed ${isActive ? "text-slate-700" : "text-slate-500"}`} style={{ margin: 0 }}>
                     {item.desc}
                   </div>
                 </div>
@@ -216,9 +221,10 @@ export default function CheckoutClient({
       <button
         type="submit"
         disabled={submitting}
-        className={`relative mt-2 w-full rounded-xl p-4 font-black text-sm uppercase tracking-widest transition-all duration-300 overflow-hidden ${
+        className={`relative w-full rounded-xl font-black text-sm uppercase tracking-widest transition-all duration-300 overflow-hidden ${
           submitting ? "cursor-wait opacity-80" : "hover:scale-[1.02] active:scale-[0.98] shadow-lg"
         }`}
+        style={{ padding: "1.15rem 1.25rem", marginTop: "0.35rem" }}
       >
         <span className={`absolute inset-0 w-full h-full transition-all duration-300 ${
           provider === "lemonsqueezy" 
@@ -235,7 +241,7 @@ export default function CheckoutClient({
             <>
               {provider === "lemonsqueezy" ? (
                 <>
-                  Pay <CurrencyPrice ngnLabel={priceLabel} usdLabel={usdPriceLabel || "$20.00"} /> via international checkout
+                  Pay {priceLabel} / <CurrencyPrice ngnLabel={usdPriceLabel || "$9.00"} usdLabel={usdPriceLabel || "$9.00"} /> via international checkout
                 </>
               ) : (
                 `Pay ${priceLabel} via secure local checkout`

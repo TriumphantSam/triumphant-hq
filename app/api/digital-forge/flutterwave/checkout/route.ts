@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
-import { resolveCourseOffer, resolveProductOffer, resolveSystemOffer } from "@/lib/digital-forge-offers";
+import { resolveCheckoutOffer } from "@/lib/digital-forge-offers";
 
 const FLUTTERWAVE_SECRET_KEY = process.env.FLUTTERWAVE_SECRET_KEY ?? "";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? "https://triumphanthq.com";
@@ -22,16 +22,11 @@ function buildTxRef(offerKey: string): string {
 }
 
 async function resolveOffer(body: CheckoutBody) {
-  if (body.offerKind === "system" || body.offerKey === "starter-system") {
-    return resolveSystemOffer();
-  }
-  if (body.offerKind === "course" || body.offerKey === "digital-forge-course" || body.offerKey === "course") {
-    return resolveCourseOffer();
-  }
-
-  const slug = body.slug?.trim() || body.offerKey?.trim();
-  if (!slug) return null;
-  return resolveProductOffer(slug);
+  return resolveCheckoutOffer({
+    offerKind: body.offerKind,
+    offerKey: body.offerKey,
+    slug: body.slug,
+  });
 }
 
 export async function POST(request: NextRequest) {

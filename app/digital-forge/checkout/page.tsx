@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CheckoutClient from "./CheckoutClient";
 import CurrencyPrice from "@/components/CurrencyPrice";
-import { formatOfferPrice, resolveCourseOffer, resolveProductOffer, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
+import { formatOfferPrice, isLaunchBundleOffer, resolveCheckoutOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 
 function parseLsVariantMap(raw: string): Record<string, number> {
   if (!raw.trim()) return {};
@@ -32,15 +32,10 @@ export const metadata = {
 
 export default async function DigitalForgeCheckoutPage({ searchParams }: CheckoutPageProps) {
   const params = await searchParams;
-  const offer = params.offer === "system"
-    ? resolveSystemOffer()
-    : params.offer === "course"
-      ? resolveCourseOffer()
-    : params.offer
-      ? await resolveProductOffer(params.offer)
-      : params.slug
-        ? await resolveProductOffer(params.slug)
-        : null;
+  const offer = await resolveCheckoutOffer({
+    offerKey: params.offer,
+    slug: params.slug,
+  });
 
   if (!offer) notFound();
 
@@ -48,8 +43,11 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
   const usdPriceLabel = resolveUsdPriceLabel(offer.key, offer.kind, offer.amount);
   const lsVariantMap = parseLsVariantMap(process.env.DIGITAL_FORGE_LS_VARIANT_MAP_JSON ?? "");
   const defaultLsVariantId = Number(process.env.DIGITAL_FORGE_LS_DEFAULT_VARIANT_ID ?? "");
+  const launchBundleVariantId = Number(process.env.DIGITAL_PRODUCT_LAUNCH_BUNDLE_LS_VARIANT_ID ?? "");
   const hasInternationalCheckout = Boolean(
-    lsVariantMap[offer.key] || (Number.isFinite(defaultLsVariantId) && defaultLsVariantId > 0),
+    lsVariantMap[offer.key] ||
+    (isLaunchBundleOffer(offer.key) && Number.isFinite(launchBundleVariantId) && launchBundleVariantId > 0) ||
+    (Number.isFinite(defaultLsVariantId) && defaultLsVariantId > 0),
   );
 
   return (
@@ -73,7 +71,9 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 ? "/digital-forge/system"
                 : offer.kind === "course"
                   ? "/digital-forge/course"
-                  : `/digital-forge/products/${offer.slug}`
+                  : isLaunchBundleOffer(offer.key)
+                    ? "/digital-product"
+                    : `/digital-forge/products/${offer.slug}`
             }
             style={{
               display: "inline-block",
@@ -200,18 +200,20 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                 {offer.title}
               </h2>
               <div style={{ marginBottom: "2rem" }}>
-                <p style={{ color: "#075ee5", fontSize: "2.5rem", fontWeight: 900, margin: "0 0 0.5rem 0" }}>
-                  <CurrencyPrice
-                    ngnLabel={localPriceLabel}
-                    usdLabel={usdPriceLabel}
-                  />
+                <p style={{ color: "#075ee5", fontSize: "2.5rem", fontWeight: 900, margin: "0 0 0.5rem 0", lineHeight: 1.15 }}>
+                  {hasInternationalCheckout && usdPriceLabel ? (
+                    <>
+                      {localPriceLabel}
+                      <span style={{ color: "#64748b", fontWeight: 800 }}> / </span>
+                      <CurrencyPrice ngnLabel={usdPriceLabel} usdLabel={usdPriceLabel} />
+                    </>
+                  ) : (
+                    <CurrencyPrice ngnLabel={localPriceLabel} usdLabel={usdPriceLabel} />
+                  )}
                 </p>
                 {hasInternationalCheckout ? (
-                  <p style={{ color: "#64748b", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0 }}>
-                    <CurrencyPrice
-                      ngnLabel={`International checkout is also available at ${usdPriceLabel}.`}
-                      usdLabel={`Local Nigerian checkout is also available at ${localPriceLabel}.`}
-                    />
+                  <p style={{ color: "#64748b", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", margin: 0, lineHeight: 1.5 }}>
+                    Pay in Naira locally, or use international cards at the converted amount.
                   </p>
                 ) : null}
               </div>

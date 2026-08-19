@@ -51,6 +51,7 @@ export default function Footer() {
   if (
     pathname.startsWith('/digital-forge/funnel/') ||
     pathname.startsWith('/parent-home-routine') ||
+    pathname.startsWith('/digital-product') ||
     pathname.startsWith('/invoices')
   ) {
     return null;

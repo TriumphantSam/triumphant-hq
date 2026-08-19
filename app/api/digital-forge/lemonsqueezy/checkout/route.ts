@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { resolveCourseOffer, resolveProductOffer, resolveSystemOffer, resolveUsdPriceCents } from "@/lib/digital-forge-offers";
+import { resolveCheckoutOffer, resolveUsdPriceCents } from "@/lib/digital-forge-offers";
 import { normalizeCountryCode } from "@/lib/currency-pricing";
 
 const LEMON_SQUEEZY_API_KEY = process.env.LEMON_SQUEEZY_API_KEY ?? "";
@@ -33,15 +33,11 @@ function parseVariantMap(raw: string): Record<string, number> {
 }
 
 async function resolveOffer(body: CheckoutBody) {
-  if (body.offerKind === "system" || body.offerKey === "starter-system") {
-    return resolveSystemOffer();
-  }
-  if (body.offerKind === "course" || body.offerKey === "digital-forge-course" || body.offerKey === "course") {
-    return resolveCourseOffer();
-  }
-  const slug = body.slug?.trim() || body.offerKey?.trim();
-  if (!slug) return null;
-  return resolveProductOffer(slug);
+  return resolveCheckoutOffer({
+    offerKind: body.offerKind,
+    offerKey: body.offerKey,
+    slug: body.slug,
+  });
 }
 
 export async function POST(request: NextRequest) {
@@ -62,7 +58,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Offer not found." }, { status: 404 });
     }
 
-    const variantId = LS_VARIANT_MAP[offer.key] || (Number.isFinite(DEFAULT_LS_VARIANT_ID) && DEFAULT_LS_VARIANT_ID > 0 ? DEFAULT_LS_VARIANT_ID : 0);
+    const launchBundleVariantId = Number(process.env.DIGITAL_PRODUCT_LAUNCH_BUNDLE_LS_VARIANT_ID ?? "");
+    const variantId =
+      LS_VARIANT_MAP[offer.key] ||
+      (offer.key === "digital-product-seller-launch-bundle" && Number.isFinite(launchBundleVariantId) && launchBundleVariantId > 0
+        ? launchBundleVariantId
+        : 0) ||
+      (Number.isFinite(DEFAULT_LS_VARIANT_ID) && DEFAULT_LS_VARIANT_ID > 0 ? DEFAULT_LS_VARIANT_ID : 0);
     if (!variantId) {
       return NextResponse.json(
         { error: `No Lemon Squeezy variant mapped for offer key: ${offer.key}` },
