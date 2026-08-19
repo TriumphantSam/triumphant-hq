@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { isLaunchBundleOffer } from "@/lib/digital-forge-offers";
+import { fulfillFlutterwavePurchase } from "@/lib/digital-forge-fulfill";
 
 type ConfirmedPageProps = {
   searchParams: Promise<{
@@ -8,8 +9,12 @@ type ConfirmedPageProps = {
     tx_ref?: string;
     offer?: string;
     provider?: string;
+    transaction_id?: string;
+    transactionId?: string;
   }>;
 };
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Payment Received",
@@ -39,11 +44,20 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
   const status = (params.status ?? "").toLowerCase();
   const isSuccess = !status || status === "successful" || status === "completed";
   const txRef = params.tx_ref ?? "";
+  const provider = (params.provider ?? "").toLowerCase();
   const isLaunchBundle =
     isLaunchBundleOffer(params.offer) ||
     txRef.toLowerCase().includes("digital-product-seller-launch-bundle") ||
     txRef.toLowerCase().includes("digital-product");
   const startSteps = isLaunchBundle ? LAUNCH_BUNDLE_STEPS : START_STEPS;
+  const fulfillment =
+    isSuccess && provider !== "lemonsqueezy" && (txRef || params.transaction_id || params.transactionId)
+      ? await fulfillFlutterwavePurchase({
+          txRef,
+          transactionId: params.transaction_id || params.transactionId,
+        })
+      : null;
+  const downloadUrl = fulfillment?.verified ? fulfillment.deliveryUrl : "";
 
   return (
     <div style={{ background: "#ffffff", minHeight: "100vh", color: "var(--text-primary)", fontFamily: "sans-serif", overflow: "hidden" }}>
@@ -144,7 +158,9 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
               >
                 {isSuccess
                   ? isLaunchBundle
-                    ? "Check your email for the Digital Product Seller Launch Bundle."
+                    ? downloadUrl
+                      ? "Your Digital Product Seller Launch Bundle is ready."
+                      : "Check your email for the Digital Product Seller Launch Bundle."
                     : "Check your email for your Digital Forge access."
                   : "Your payment status still needs attention."}
               </h1>
@@ -163,10 +179,42 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
               >
                 {isSuccess
                   ? isLaunchBundle
-                    ? "Your files are sent to the email you used at checkout. If you do not see the zip within a few minutes, check spam. Then unzip and open Start Here."
+                    ? downloadUrl
+                      ? fulfillment?.emailSent
+                        ? "Download the zip below. A copy was also sent to the email you used at checkout. Unzip and open Start Here."
+                        : "Download the zip below. Check spam if you also want the email copy. Unzip and open Start Here."
+                      : "Your files are sent to the email you used at checkout. If you do not see the zip within a few minutes, check spam. Then unzip and open Start Here."
                     : "Once the payment provider confirms the order on our side, we automatically send your delivery email. If you do not see it within a few minutes, check spam or contact support with your payment email."
                   : "We did not get a clean success signal yet. If the payment provider charged you, keep your transaction reference and contact support so we can verify and deliver manually if needed."}
               </p>
+
+              {downloadUrl ? (
+                <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+                  <a
+                    href={downloadUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "1rem 2rem",
+                      borderRadius: "0.75rem",
+                      color: "#ffffff",
+                      fontWeight: 900,
+                      fontSize: "clamp(0.8rem, 2vw, 0.95rem)",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.08em",
+                      background: "linear-gradient(135deg, #059669 0%, #0ea5e9 100%)",
+                      textDecoration: "none",
+                      boxShadow: "0 0 30px rgba(16,185,129,0.35)",
+                      minWidth: "220px",
+                    }}
+                  >
+                    Download your files
+                  </a>
+                </div>
+              ) : null}
 
               {isSuccess ? (
                 <div 
