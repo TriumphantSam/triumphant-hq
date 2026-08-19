@@ -5,12 +5,12 @@ import { fulfillFlutterwavePurchase } from "@/lib/digital-forge-fulfill";
 
 type ConfirmedPageProps = {
   searchParams: Promise<{
-    status?: string;
-    tx_ref?: string;
-    offer?: string;
-    provider?: string;
-    transaction_id?: string;
-    transactionId?: string;
+    status?: string | string[];
+    tx_ref?: string | string[];
+    offer?: string | string[];
+    provider?: string | string[];
+    transaction_id?: string | string[];
+    transactionId?: string | string[];
   }>;
 };
 
@@ -39,14 +39,36 @@ const SUPPORT_WHATSAPP_URL =
   "https://wa.me/2348107711190?text=" +
   encodeURIComponent("Hi, I paid for the Digital Product Seller Launch Bundle. I need help with delivery.");
 
+function firstQueryValue(value?: string | string[]): string {
+  if (Array.isArray(value)) return value[0] ?? "";
+  return value ?? "";
+}
+
+const PRIMARY_BUTTON_STYLE = {
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "1rem 2rem",
+  borderRadius: "0.75rem",
+  color: "#ffffff",
+  fontWeight: 900,
+  fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
+  textTransform: "uppercase",
+  letterSpacing: "0.1em",
+  textDecoration: "none",
+  minWidth: "160px",
+} as const;
+
 export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }: ConfirmedPageProps) {
   const params = await searchParams;
-  const status = (params.status ?? "").toLowerCase();
+  const status = firstQueryValue(params.status).toLowerCase();
   const isSuccess = !status || status === "successful" || status === "completed";
-  const txRef = params.tx_ref ?? "";
-  const provider = (params.provider ?? "").toLowerCase();
+  const txRef = firstQueryValue(params.tx_ref);
+  const provider = firstQueryValue(params.provider).toLowerCase();
+  const offer = firstQueryValue(params.offer);
+  const transactionId = firstQueryValue(params.transaction_id) || firstQueryValue(params.transactionId);
   const isLaunchBundle =
-    isLaunchBundleOffer(params.offer) ||
+    isLaunchBundleOffer(offer) ||
     txRef.toLowerCase().includes("digital-product-seller-launch-bundle") ||
     txRef.toLowerCase().includes("digital-product");
   const startSteps = isLaunchBundle ? LAUNCH_BUNDLE_STEPS : START_STEPS;
@@ -54,7 +76,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
     isSuccess && provider !== "lemonsqueezy" && (txRef || params.transaction_id || params.transactionId)
       ? await fulfillFlutterwavePurchase({
           txRef,
-          transactionId: params.transaction_id || params.transactionId,
+          transactionId,
         })
       : null;
   const downloadUrl = fulfillment?.verified ? fulfillment.deliveryUrl : "";
@@ -261,11 +283,11 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                 </div>
               ) : null}
 
-              {params.tx_ref ? (
-                <div style={{ textAlign: "center", marginBottom: "2.5rem", padding: "1rem", borderRadius: "0.75rem", background: "#ffffff", border: "1px solid #ffffff" }}>
+              {txRef ? (
+                <div style={{ textAlign: "center", marginBottom: "2.5rem", padding: "1rem", borderRadius: "0.75rem", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
                   <p style={{ color: "#64748b", fontSize: "clamp(0.85rem, 2vw, 0.95rem)", fontWeight: 500, margin: 0 }}>
                     Transaction reference:<br/>
-                    <strong style={{ color: "#334155", fontSize: "1.125rem", marginTop: "0.25rem", display: "block", letterSpacing: "0.05em", fontFamily: "monospace" }}>{params.tx_ref}</strong>
+                    <strong style={{ color: "#0f172a", fontSize: "0.95rem", marginTop: "0.25rem", display: "block", letterSpacing: "0.02em", fontFamily: "monospace", wordBreak: "break-all" }}>{txRef}</strong>
                   </p>
                 </div>
               ) : null}
@@ -275,20 +297,8 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                   <Link
                     href={SUPPORT_WHATSAPP_URL}
                     style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "1rem 2rem",
-                      borderRadius: "0.75rem",
-                      color: "var(--text-primary)",
-                      fontWeight: 900,
-                      fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
-                      textDecoration: "none",
-                      boxShadow: "0 0 30px rgba(14,165,233,0.35)",
-                      minWidth: "160px",
+                      ...PRIMARY_BUTTON_STYLE,
+                      background: "#128C7E",
                     }}
                   >
                     WhatsApp support
@@ -297,20 +307,8 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                   <Link
                     href={STRATEGY_CALL_URL}
                     style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      padding: "1rem 2rem",
-                      borderRadius: "0.75rem",
-                      color: "var(--text-primary)",
-                      fontWeight: 900,
-                      fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
-                      textDecoration: "none",
-                      boxShadow: "0 0 30px rgba(14,165,233,0.35)",
-                      minWidth: "160px",
+                      ...PRIMARY_BUTTON_STYLE,
+                      background: "#0f172a",
                     }}
                   >
                     Book a strategy call
@@ -319,20 +317,8 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                 <Link
                   href={isLaunchBundle ? "/digital-product" : "/digital-forge/system"}
                   style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "1rem 2rem",
-                    borderRadius: "0.75rem",
-                    color: "var(--text-primary)",
-                    fontWeight: 900,
-                    fontSize: "clamp(0.75rem, 2vw, 0.85rem)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    background: "linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)",
-                    textDecoration: "none",
-                    boxShadow: "0 0 30px rgba(37,99,235,0.4)",
-                    minWidth: "160px",
+                    ...PRIMARY_BUTTON_STYLE,
+                    background: "#0f172a",
                   }}
                 >
                   {isLaunchBundle ? "Back to the bundle" : "Back to Starter System"}
