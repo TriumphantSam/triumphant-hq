@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
   try {
     const rawBody = await request.text();
     if (!hasValidSignature(rawBody, request)) {
+      await notifyWebhookProblem("WhatsApp webhook got a request, but META_APP_SECRET did not match. Check Vercel META_APP_SECRET.");
       return NextResponse.json({ error: "invalid_signature" }, { status: 403 });
     }
 
@@ -37,9 +38,20 @@ export async function POST(request: NextRequest) {
     await handleWhatsAppIncoming(payload);
     return NextResponse.json({ ok: true });
   } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unknown WhatsApp webhook error" },
-      { status: 500 },
-    );
+    const message = error instanceof Error ? error.message : "Unknown WhatsApp webhook error";
+    await notifyWebhookProblem(`WhatsApp webhook error: ${message}`);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
+}
+
+async function notifyWebhookProblem(text: string) {
+  const token = (process.env.TELEGRAM_BOT_TOKEN ?? "").trim();
+  const chatId = (process.env.TELEGRAM_CHAT_ID ?? "").trim();
+  if (!token || !chatId) return;
+  await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
+    cache: "no-store",
+  }).catch(() => undefined);
 }
