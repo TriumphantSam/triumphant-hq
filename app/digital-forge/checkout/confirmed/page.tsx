@@ -36,7 +36,7 @@ const LAUNCH_BUNDLE_STEPS = [
 const STRATEGY_CALL_URL =
   process.env.NEXT_PUBLIC_SEO_BOOKING_URL || "https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call";
 const SUPPORT_WHATSAPP_URL =
-  "https://wa.me/2348107711190?text=" +
+  "https://wa.me/447478036301?text=" +
   encodeURIComponent("Hi, I paid for the Digital Product Seller Launch Bundle. I need help with delivery.");
 
 function firstQueryValue(value?: string | string[]): string {

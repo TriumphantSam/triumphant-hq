@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const CHECKOUT_URL = '/digital-forge/checkout?offer=digital-product-seller-launch-bundle';
+const WHATSAPP_CHAT_URL = 'https://wa.me/447478036301?text=HI';
 const PRICE_NOW = '₦3,000';
 const PRICE_LATER = '₦10,000';
 
@@ -816,7 +817,10 @@ export default function DigitalProductPage() {
             <BuyButton label={`Get instant access — ${PRICE_NOW}`} />
           </div>
           <p className="text-xs sm:text-sm font-semibold text-white/50 tracking-wider">
-            Secure checkout · Instant download · WhatsApp direct support
+            Secure checkout · Instant download ·{" "}
+            <a href={WHATSAPP_CHAT_URL} className="underline hover:text-white transition">
+              WhatsApp chat
+            </a>
           </p>
         </div>
       </section>

@@ -3,22 +3,25 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
-import { whatsappNumber } from "@/lib/services";
+import { launchBundleWhatsappNumber, whatsappNumber } from "@/lib/services";
 
-const WA_MESSAGE = encodeURIComponent(
+const AGENCY_MESSAGE = encodeURIComponent(
   "Hi Triumphant HQ, I'd like to discuss a project with your agency."
 );
-const WA_URL = `https://wa.me/${whatsappNumber}?text=${WA_MESSAGE}`;
+const LAUNCH_BUNDLE_MESSAGE = encodeURIComponent("HI");
 
 export default function WhatsAppWidget() {
   const pathname = usePathname();
   const [hovered, setHovered] = useState(false);
+  const waUrl =
+    pathname.startsWith("/digital-product") || pathname.startsWith("/digital-forge/checkout")
+      ? `https://wa.me/${launchBundleWhatsappNumber}?text=${LAUNCH_BUNDLE_MESSAGE}`
+      : `https://wa.me/${whatsappNumber}?text=${AGENCY_MESSAGE}`;
 
   if (
-    pathname.startsWith('/parent-home-routine') ||
-    pathname.startsWith('/digital-product') ||
-    pathname.startsWith('/digital-forge/funnel/') ||
-    pathname.startsWith('/invoices')
+    pathname.startsWith("/parent-home-routine") ||
+    pathname.startsWith("/digital-forge/funnel/") ||
+    pathname.startsWith("/invoices")
   ) {
     return null;
   }
@@ -65,7 +68,7 @@ export default function WhatsAppWidget() {
 
       {/* Floating Button */}
       <a
-        href={WA_URL}
+        href={waUrl}
         target="_blank"
         rel="noopener noreferrer"
         id="whatsapp-chat-widget"

@@ -85,6 +85,7 @@ export const agencyServices: AgencyService[] = [
 
 export const discoveryCallUrl = "https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call";
 export const whatsappNumber = "2348107711190";
+export const launchBundleWhatsappNumber = "447478036301";
 
 export function getAgencyService(slug: string) {
   return agencyServices.find((service) => service.slug === slug);
