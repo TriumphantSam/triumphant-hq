@@ -6,11 +6,18 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, Suspense } from 'react';
 
 if (typeof window !== 'undefined') {
-  posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY as string, {
-    api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
-    person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
-    capture_pageview: false // Disable automatic pageview capture, as we capture manually
-  });
+  const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+  if (posthogKey) {
+    try {
+      posthog.init(posthogKey, {
+        api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://app.posthog.com',
+        person_profiles: 'identified_only',
+        capture_pageview: false,
+      });
+    } catch {
+      // Ignore initialization errors in restricted WebViews
+    }
+  }
 }
 
 function PostHogPageViews() {
@@ -18,14 +25,22 @@ function PostHogPageViews() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (pathname) {
-      let url = window.origin + pathname;
-      if (searchParams && searchParams.toString()) {
-        url = url + `?${searchParams.toString()}`;
+    if (pathname && typeof window !== 'undefined') {
+      try {
+        const origin = window.location?.origin || window.origin || '';
+        let url = origin ? `${origin}${pathname}` : pathname;
+        const query = searchParams?.toString();
+        if (query) {
+          url = `${url}?${query}`;
+        }
+        if (process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+          posthog.capture('$pageview', {
+            $current_url: url,
+          });
+        }
+      } catch {
+        // Ignore telemetry errors
       }
-      posthog.capture('$pageview', {
-        $current_url: url,
-      });
     }
   }, [pathname, searchParams]);
 

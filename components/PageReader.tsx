@@ -97,14 +97,25 @@ export default function PageReader() {
     }, [rate, voiceURI, voices, speakNext]);
 
     const stopAll = useCallback(() => {
-        window.speechSynthesis.cancel();
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis) {
+            try {
+                window.speechSynthesis.cancel();
+            } catch {
+                // Ignore errors from WebView
+            }
+        }
         queueRef.current = [];
         indexRef.current = 0;
         setState('idle');
     }, []);
 
     const startReading = useCallback(() => {
-        window.speechSynthesis.cancel();
+        if (typeof window === 'undefined' || !('speechSynthesis' in window) || !window.speechSynthesis) return;
+        try {
+            window.speechSynthesis.cancel();
+        } catch {
+            // Ignore errors
+        }
         const root = getReadingRoot();
         if (!root) return;
         const text = getReadableText(root);
@@ -116,14 +127,15 @@ export default function PageReader() {
     }, [speakNext]);
 
     const togglePause = useCallback(() => {
+        if (typeof window === 'undefined' || !('speechSynthesis' in window) || !window.speechSynthesis) return;
         const synth = window.speechSynthesis;
         setState((s) => {
             if (s === 'playing') {
-                synth.pause();
+                try { synth.pause(); } catch {}
                 return 'paused';
             }
             if (s === 'paused') {
-                synth.resume();
+                try { synth.resume(); } catch {}
                 return 'playing';
             }
             return s;
@@ -131,20 +143,24 @@ export default function PageReader() {
     }, []);
 
     useEffect(() => {
-        if (!mounted || !('speechSynthesis' in window)) return;
+        if (!mounted || typeof window === 'undefined' || !('speechSynthesis' in window) || !window.speechSynthesis) return;
         const synth = window.speechSynthesis;
         const loadVoices = () => {
-            const list = synth.getVoices();
-            setVoices(list);
-            setVoiceURI((prev) => {
-                if (prev) return prev;
-                const en = list.find((v) => v.lang.startsWith('en') && v.default) || list.find((v) => v.lang.startsWith('en'));
-                return en?.voiceURI ?? '';
-            });
+            try {
+                const list = synth.getVoices() || [];
+                setVoices(list);
+                setVoiceURI((prev) => {
+                    if (prev) return prev;
+                    const en = list.find((v) => v.lang.startsWith('en') && v.default) || list.find((v) => v.lang.startsWith('en'));
+                    return en?.voiceURI ?? '';
+                });
+            } catch {
+                // Ignore WebView voice loading errors
+            }
         };
         loadVoices();
-        synth.addEventListener('voiceschanged', loadVoices);
-        return () => synth.removeEventListener('voiceschanged', loadVoices);
+        synth.addEventListener?.('voiceschanged', loadVoices);
+        return () => synth.removeEventListener?.('voiceschanged', loadVoices);
     }, [mounted]);
 
     useEffect(() => {
@@ -154,11 +170,15 @@ export default function PageReader() {
 
     useEffect(() => {
         return () => {
-            window.speechSynthesis?.cancel();
+            if (typeof window !== 'undefined' && 'speechSynthesis' in window && window.speechSynthesis) {
+                try {
+                    window.speechSynthesis.cancel();
+                } catch {}
+            }
         };
     }, []);
 
-    if (!mounted || typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    if (!mounted || typeof window === 'undefined' || !('speechSynthesis' in window) || !window.speechSynthesis) {
         return null;
     }
 

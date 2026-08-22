@@ -24,22 +24,42 @@ function useLagosCountdown() {
 
   useEffect(() => {
     const tick = () => {
-      const parts = new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Africa/Lagos',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hourCycle: 'h23',
-      }).formatToParts(new Date());
-      const h = Number(parts.find((p) => p.type === 'hour')?.value ?? 0);
-      const m = Number(parts.find((p) => p.type === 'minute')?.value ?? 0);
-      const s = Number(parts.find((p) => p.type === 'second')?.value ?? 0);
-      const remaining = (23 - h) * 3600 + (59 - m) * 60 + (59 - s);
-      setLeft({
-        h: Math.max(0, Math.floor(remaining / 3600)),
-        m: Math.max(0, Math.floor((remaining % 3600) / 60)),
-        s: Math.max(0, remaining % 60),
-      });
+      try {
+        const now = new Date();
+        let h = 0;
+        let m = 0;
+        let s = 0;
+
+        try {
+          const parts = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Africa/Lagos',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hourCycle: 'h23',
+          }).formatToParts(now);
+          h = Number(parts.find((p) => p.type === 'hour')?.value ?? 0);
+          m = Number(parts.find((p) => p.type === 'minute')?.value ?? 0);
+          s = Number(parts.find((p) => p.type === 'second')?.value ?? 0);
+        } catch {
+          // Fallback: Lagos is UTC+1 year-round without Daylight Saving Time
+          const lagosMs = now.getTime() + (1 * 3600 * 1000) + (now.getTimezoneOffset() * 60 * 1000);
+          const lagosDate = new Date(lagosMs);
+          h = lagosDate.getHours();
+          m = lagosDate.getMinutes();
+          s = lagosDate.getSeconds();
+        }
+
+        const remaining = (23 - h) * 3600 + (59 - m) * 60 + (59 - s);
+        setLeft({
+          h: Math.max(0, Math.floor(remaining / 3600)),
+          m: Math.max(0, Math.floor((remaining % 3600) / 60)),
+          s: Math.max(0, remaining % 60),
+        });
+      } catch {
+        // Fallback default
+        setLeft({ h: 12, m: 0, s: 0 });
+      }
     };
     tick();
     const id = setInterval(tick, 1000);
@@ -152,21 +172,31 @@ export default function DigitalProductPage() {
 
   // Video preloader and scroll-scrub loop
   useEffect(() => {
+    let unmounted = false;
+    let blobUrl: string | null = null;
+
     fetch('/assets/hero.mp4')
       .then((res) => {
         if (!res.ok) throw new Error('Video response was not ok');
         return res.blob();
       })
       .then((blob) => {
+        if (unmounted) return;
         if (videoRef.current) {
-          videoRef.current.src = URL.createObjectURL(blob);
-          videoRef.current.load();
+          try {
+            blobUrl = URL.createObjectURL(blob);
+            videoRef.current.src = blobUrl;
+            videoRef.current.load();
+          } catch {}
         }
       })
       .catch(() => {
+        if (unmounted) return;
         if (videoRef.current) {
-          videoRef.current.src = '/assets/hero.mp4';
-          videoRef.current.load();
+          try {
+            videoRef.current.src = '/assets/hero.mp4';
+            videoRef.current.load();
+          } catch {}
         }
       });
 
@@ -176,11 +206,13 @@ export default function DigitalProductPage() {
 
     const updateScroll = () => {
       if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const max = rect.height - window.innerHeight;
-      if (max > 0) {
-        targetProgress = Math.max(0, Math.min(1, -rect.top / max));
-      }
+      try {
+        const rect = containerRef.current.getBoundingClientRect();
+        const max = rect.height - window.innerHeight;
+        if (max > 0) {
+          targetProgress = Math.max(0, Math.min(1, -rect.top / max));
+        }
+      } catch {}
     };
 
     window.addEventListener('scroll', updateScroll, { passive: true });
@@ -195,32 +227,36 @@ export default function DigitalProductPage() {
     };
 
     const scrubLoop = () => {
-      currentProgress += (targetProgress - currentProgress) * 0.15;
+      try {
+        currentProgress += (targetProgress - currentProgress) * 0.15;
 
-      const video = videoRef.current;
-      if (video && video.duration && !video.seeking) {
-        const targetTime = currentProgress * video.duration;
-        if (Math.abs(video.currentTime - targetTime) > 0.01) {
-          video.currentTime = targetTime;
+        const video = videoRef.current;
+        if (video && typeof video.duration === 'number' && !isNaN(video.duration) && video.duration > 0 && !video.seeking) {
+          const targetTime = currentProgress * video.duration;
+          if (Math.abs(video.currentTime - targetTime) > 0.01) {
+            try {
+              video.currentTime = targetTime;
+            } catch {}
+          }
         }
-      }
 
-      const op0 = calcOpacity(targetProgress, 0.0, 0.05, 0.20, 0.28);
-      const op1 = calcOpacity(targetProgress, 0.28, 0.38, 0.55, 0.65);
-      const op2 = calcOpacity(targetProgress, 0.65, 0.75, 0.90, 0.98);
+        const op0 = calcOpacity(targetProgress, 0.0, 0.05, 0.20, 0.28);
+        const op1 = calcOpacity(targetProgress, 0.28, 0.38, 0.55, 0.65);
+        const op2 = calcOpacity(targetProgress, 0.65, 0.75, 0.90, 0.98);
 
-      if (phase0Ref.current) {
-        phase0Ref.current.style.opacity = op0.toFixed(3);
-        phase0Ref.current.style.transform = `translateY(${-targetProgress * 45}px)`;
-      }
-      if (phase1Ref.current) {
-        phase1Ref.current.style.opacity = op1.toFixed(3);
-        phase1Ref.current.style.transform = `translateY(${(0.45 - targetProgress) * 35}px)`;
-      }
-      if (phase2Ref.current) {
-        phase2Ref.current.style.opacity = op2.toFixed(3);
-        phase2Ref.current.style.transform = `translateY(${(0.80 - targetProgress) * 35}px)`;
-      }
+        if (phase0Ref.current) {
+          phase0Ref.current.style.opacity = op0.toFixed(3);
+          phase0Ref.current.style.transform = `translateY(${-targetProgress * 45}px)`;
+        }
+        if (phase1Ref.current) {
+          phase1Ref.current.style.opacity = op1.toFixed(3);
+          phase1Ref.current.style.transform = `translateY(${(0.45 - targetProgress) * 35}px)`;
+        }
+        if (phase2Ref.current) {
+          phase2Ref.current.style.opacity = op2.toFixed(3);
+          phase2Ref.current.style.transform = `translateY(${(0.80 - targetProgress) * 35}px)`;
+        }
+      } catch {}
 
       frameId = requestAnimationFrame(scrubLoop);
     };
@@ -228,9 +264,13 @@ export default function DigitalProductPage() {
     frameId = requestAnimationFrame(scrubLoop);
 
     return () => {
+      unmounted = true;
       window.removeEventListener('scroll', updateScroll);
       window.removeEventListener('resize', updateScroll);
       cancelAnimationFrame(frameId);
+      if (blobUrl) {
+        try { URL.revokeObjectURL(blobUrl); } catch {}
+      }
     };
   }, []);
 
