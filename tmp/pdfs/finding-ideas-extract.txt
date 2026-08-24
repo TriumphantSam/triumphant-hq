@@ -1,0 +1,278 @@
+\n\n===== PAGE 1 =====\nFinding Profitable Digital Product Ideas
+https://gemini.google.com/app/4888bda44ab8b6d7
+User prompt: I’ve made $22,192 (Over 31 million Naira) from one of my digital products I
+created 4 months ago. It’s what people call “FACELESS PDF AUTOMATION BUSINESS”
+because you don’t have to show your face to market the product. AI does all the job. But if you
+asked me what made the money… I wouldn’t say AI. I wouldn’t say the product. I wouldn’t even
+say marketing. The money was made before I created the product. Because I found something
+people already wanted badly enough to pay for. Then I built it. That sounds ridiculously obvious.
+Yet this is where almost everyone gets it backwards. They start with ChatGPT. “What digital
+product should I create?” Then AI gives them 50 ideas. They pick one. Then: “Write the ebook.”
+Then Canva. Then a sales page on SELAR or NESTUGE. Then they launch. And 0 sales. Now
+they think: “Digital products don’t work.” No. You just built something before checking if anybody
+wanted it. You skipped the most important step. You created first. You looked for buyers later.
+And AI has made this mistake even easier to make. Because today, you can create almost
+anything in minutes. AI can help you build the entire thing before you’ve even asked whether
+anyone wants it. So the bottleneck isn’t creation anymore. It’s knowing what deserves to be
+created. That’s the game. AI can help you create a product. It cannot make people want it. And
+that’s where a lot of people are about to waste a LOT of time. They’re going to become
+incredibly good at creating things nobody asked for. So if you want to make money selling digital
+products, don’t start with: “What should I create?” Start with: “What are people already willing to
+pay for?” Find the market. Find the painful problem. Find the existing demand. Find what people
+are already spending money to solve. Then build. That’s the approach I used for the product
+that crossed $22,192 in 4 months. I didn’t ask: “What can I make?” I asked: “What are people
+already trying to buy?” That one question changed everything. And I’m going to break down
+exactly how I found the answer. Brick by brick. 😌 This is from someone from nestuge and I
+even saw their dashboard personally, the sales were true. From the start with is the issue I
+know!!! Back then during early days of kdp, we have a huge lot of research tools, that will show
+people's search intent on Amazon, keyword searches and the highest with less competition is
+taken and I make sales, Now with my vast knowledge and TOS like gemini, perplexity, I even
+have cursor, How do I get this issue resolved, I acted o this earlier, had a lot of topic
+suggestions, parent guide, fashion stuffs, etc, I ran ads, nothing moved. In this same markert,
+people do like affiliate marketing, they get what people need, asking for, urgently need and run
+advert on it and rake in millions a day, I'm a ad specialist, very vast I it, I can use ai to create
+things, landing page and so on, the issue is to get what sells, once I get this surely at the
+highest level, I have won! So, how? Ready to even pay to get those things
+Response: It is frustrating to have the high-level technical skills—ad management, AI creation,
+landing page architecture—but feel like you are shooting in the dark because the "offer" isn't
+landing.
+You are currently suffering from a disconnect between Technical Execution (which you have
+mastered) and Market Signal Detection (which is the bottleneck).
+To find what people are already willing to pay for—rather than guessing—we need to stop
+looking at "ideas" and start looking at Behavioral Evidence.
+Here is the framework to find the "Hidden Demand" using your existing tech stack:
+1. The "Verified Intent" Audit (Where people are already spending)
+Instead of searching for topics, search for buying friction. Use these sources to see what people
+are complaining about or actively searching for:\n\n\n===== PAGE 2 =====\nReddit & Niche Forums: Use Google Search operators like site:reddit.com "I'm
+willing to pay" "recommendation" or site:reddit.com "anyone know where to
+find". Look for people asking for solutions to problems that aren't being met by
+mainstream software.
+Competitor Negative Reviews (The Gold Mine): Go to Amazon (for books/courses) or
+Udemy (for courses) in your target niche. Look for 3-star reviews.
+The pattern: "This was good, but it didn't cover [Specific Pain Point]." That missing
+piece is your product.
+TikTok/Reels "Link in Bio" Analysis: Use a tool like TikTok Creative Center or search
+TikTok for hashtags like #digitalproduct, #sidehustle, or #problemname. If you see
+someone with high engagement but a "meh" landing page, they have the traffic but not the
+conversion. That is a market waiting for a better-packaged solution.
+2. Validation Before Creation (The "Smoke Test")
+Before you build a single PDF or landing page, run a "Smoke Test" ad.
+The Ad: Create a $5/day Meta/Google ad that promises a specific result (a "How-to" or a
+specific "Fix").
+The Landing Page: A simple, one-page Google Form or Carrd page that says: "I'm
+currently building a guide on [Specific Problem]. If you want early access/discount when it
+drops, drop your email here."
+The Metric: If you get 50 clicks and 0 email signups, the angle is wrong or the problem
+isn't painful enough. You just saved yourself a month of work for the price of a cup of
+coffee.
+3. Leveraging Your AI Stack for "Market Intelligence"
+Stop using Gemini/Perplexity to "Generate Ideas." Start using them to Aggregate Pain.
+Prompt Strategy: Take a list of 50 common customer complaints from a niche
+(copy/paste them) and feed them to an LLM:
+"Analyze these customer complaints. Identify the top 3 recurring 'pain points' where
+customers are actively frustrated by existing solutions. For each, describe the
+'Dream Outcome' they are seeking."
+4. The "Affiliate-to-Own" Bridge
+Since you mentioned you are an ad specialist and see affiliate marketers winning, use their data
+as your research tool:
+Find the top-selling affiliate offers in a specific niche (e.g., ClickBank, Digistore24, or
+private affiliate networks).
+Don't copy them. Instead, Buy them.
+Study why they sell. Is it the sales copy? Is it a specific bonus? Is it the promise of "Done-
+for-you" speed?\n\n\n===== PAGE 3 =====\nYour Strategy: Build a "Counter-Offer." If they sell a 10-hour course on XYZ, build a 15-
+minute "Implementation Checklist" that fixes the one part of that process everyone hates.
+How to move forward
+You don't need a new tool. You need a Validation Process. If you are willing to invest, stop
+paying for "ideas" and start paying for Ad Data.
+I recommend we focus on one niche where you have professional or personal interest and
+perform a Deep Market Friction Audit using the tactics above.
+Which of these sectors feels the most "pain-heavy" to you right now, where you’ve seen
+people desperately searching for answers?
+1. Professional/Tech services (like your IAPrecision/CAC work)
+2. Personal Wellness/Lifestyle (your work with Dr Seyi)
+3. Skill/Agro-Tech (your agricultural background)
+Once you pick the sandbox, we can apply the audit to see where the money is actually flowing.
+User prompt: Definitely 1 first, people wants to make money, and digitally so. Next later could he
+health related!/wellness
+Response: This is a high-demand, high-friction market. Everyone wants to make money online,
+which means the "interest" is massive—but it also means the "noise" is deafening. To win here,
+you cannot sell "making money." You must sell "a specific way to bypass the struggle."
+Since you are an Ad Specialist and already understand the tech-stack, we are going to use
+"Reverse Engineered Demand."
+Here is your workflow to find exactly what people in the "Make Money Online" (MMO) niche are
+already opening their wallets for.
+1. The "Platform-Specific" Signal Hunt
+People in the MMO space are always looking for the "new" way or the "faster" way. You need to
+find where the most frustrated beginners are.
+The "Support Ticket" Search: Go to platforms like Upwork, Fiverr, or even specialized
+communities like niche Discord servers.
+The Strategy: Don't look at the "services offered." Look at the "jobs posted."
+The Insight: If you see 50 people looking for someone to "fix my Facebook Ads" or
+"write my email sequence" or "setup my automated workflow," you have found a
+massive pain point. People are literally begging to pay someone to do it. Your PDF
+isn't a "How to Make Money" course; it's a "Step-by-Step Technical Blueprint for
+Fixing X" that empowers them to stop paying others.
+The "Affiliate Winner" Audit: Go to ClickBank or Digistore24 and sort by "Gravity" (top-
+selling).\n\n\n===== PAGE 4 =====\nThe Strategy: Find an offer that is selling well. Do not look at the sales page. Look at
+the Affiliate Tools page.
+The Insight: The affiliate tools page tells you exactly what angles the vendor uses to
+convert people. If they are focusing on "AI automation for real estate agents," that is
+a validated market. You can then build a better, faster, more specific version of that
+process.
+2. The "Bridge" Product (Low-hanging fruit)
+The reason most people fail when they enter the "Make Money" niche is they try to sell a full
+business course. That’s too big. Sell the "Missing Piece."
+If they are struggling with Facebook Ads (your specialty), don't sell "How to run ads." Sell:
+"The 3-Template Ad Copy Framework for High-Ticket Services in Nigeria."
+It is small, it is specific, it is actionable, and it solves a specific pain (lack of ideas/writer's
+block).
+3. Your "Validation" Sprint (Actionable Steps)
+Since you are ready to act, do this over the next 48 hours:
+1. Define the "Who": Don't target "Everyone." Target a group you understand. (e.g., "Small
+business owners in Nigeria who want to sell services globally" or "Young professionals
+wanting to learn AI automation").
+2. Run a "Micro-Survey" Ad: Create an ad that says: "I'm building a system to [solve a very
+specific problem, e.g., automate lead collection for your business]. Want to see how it
+works?"
+3. The Goal: Send them to a simple Google Form. The form asks: "What is the #1 thing
+stopping you from achieving [Result] right now?"
+4. The Proof: If 20 people answer that question and describe the exact same pain, you
+have your product.
+Your Next Concrete Move
+To make this real, we need to pick your "Specific Solution" segment. Given your background in
+technical SEO, ad management, and AI—you have a unique advantage to create "Technical
+Guides" that are much more valuable than generic "Make Money" eBooks.
+User prompt: For the affiliate marketing, they use Selar. How can I apply yoor method there?
+Response: This is a perfect pivot. Selar is the heartbeat of the Nigerian digital creator economy.
+Because it’s a closed ecosystem (unlike Amazon KDP), the demand signals aren't "search
+volume," they are "Social Proof & Velocity."
+Here is how you use your ad-specialist brain to extract winning product ideas directly from
+Selar:
+1. The "Trending" Reverse-Engineering Method\n\n\n===== PAGE 5 =====\nSelar doesn't have a public "Best Seller" list, but you can find the winners by looking at who is
+consistently running ads to Selar links.
+The Hunt: Go to the Meta Ad Library.
+The Filter: Set location to "Nigeria." Search for keywords like "Selar.co" or "bit.ly" (many
+creators hide their links).
+The Filter Strategy: Look for ads that have been running for more than 14 days.
+Why? If an ad has been running for 2 weeks, it is profitable. Nobody keeps a losing
+ad running for that long.
+The Reveal: Click the ad. Go to the landing page. See exactly what they are selling.
+Is it an eBook? A video course? A template? That is a proven offer.
+The "Product-Market" Pivot: Don't copy their product. Identify what they didn't do.
+Maybe their sales copy is great but the technical implementation is weak. Build the
+"technical fix" for their audience.
+2. The "Comment Section" Harvest
+Go to the Instagram or Twitter (X) pages of the biggest Nigerian digital creators (the ones you
+know are selling on Selar).
+The Strategy: Don't look at their posts. Look at their pinned posts and comments.
+The Insight: Look for people asking: "How do I do this?" or "Can you explain [technical
+step]?" or "I bought this, but it didn't help with [specific technical barrier]."
+The Win: The "Make Money" niche is crowded. The "Technical How-To" niche is empty. If
+they are selling "How to make money with Affiliate Marketing," you create "The Technical
+Setup Guide: 15-Minute Automation Setup for Affiliate Marketers." You aren't
+competing with them; you are becoming the essential tool their customers need to
+succeed.
+3. The "Product Velocity" Test (The "Micro-Offer" Approach)
+Since you are an ad specialist, use the "Velocity" metric to test demand without building a full
+course.
+Step 1: Create a "Cheat Sheet" or "Template Pack" (e.g., "50 High-Converting Ad Copy
+Templates for Selar Products"). This takes you 2 hours to make with AI.
+Step 2: Price it low (e.g., ₦2,000 - ₦5,000).
+Step 3: Run a "Test Traffic" ad spend of ₦5,000/day.
+The Logic: If you spend ₦10,000 on ads and make 0 sales, the demand isn't there. If you
+make 3 sales, you have verified demand.
+The Scale: Once you have verified demand for the small product, you use the money from
+those sales to build the big product.
+4. Your Competitive Advantage: The "Ad-Ops" Angle\n\n\n===== PAGE 6 =====\nYou are an Ad Specialist. This is your product. Most people on Selar selling "Make Money
+Online" guides have terrible ad setups. They are losing money because they don't understand
+pixels, events, or conversion APIs.
+Your Winning Product: A "Done-For-You" or "Plug-and-Play" technical setup guide for
+Selar creators.
+The Promise: "Stop wasting your ad budget. Here is the exact technical blueprint for
+setting up Facebook Pixel tracking for Selar sales."
+This is high-value. It is technical. It solves a massive pain point. It directly results in them
+making more money.
+Are you ready to map out a "Technical Blueprint" product that solves a specific ad-
+tracking or sales-funnel problem for these Selar sellers?
+User prompt: reaserching with the meta ads, whatd od yo tbhink about this?
+Response: This is a gold-mine find for your research, and here is exactly why this is a perfect
+example of what works:
+1. The Longevity Signal
+Look at the dates: "Started running on Dec 29, 2025".
+It is now August 2026. This advertiser has been running these specific ads for over 7
+months.
+The Lesson: Nobody keeps an ad running for 7 months unless it is printing money. This
+confirms that "Parenting/Child Development" is a massive, evergreen demand in Nigeria.
+2. Why this works (The "Mechanism")
+They aren't selling a "course." They are selling a "Transformation".
+The Hook: "Your child isn't falling behind, they just need the right daily habits". This
+removes the parent's guilt and blames the "system" (schedules/tutors), which is a brilliant
+psychological trigger.
+The Promise: "Small, powerful habits that take just 10-15 minutes a day". This is the "Low
+Friction" promise. Busy Nigerian parents love this because it fits into their hectic lives.
+The Asset: They are using a mix of static book covers and video testimonials/demos. This
+tells you that the market responds to both logical presentation (the book) and social proof
+(the video).
+3. How to use this for your "Make Money" or "Wellness" pivot
+You are an ad specialist. You can take this exact funnel structure and apply it to a new
+product:
+Don't reinvent the wheel: Copy the structure of their ad copy.\n\n\n===== PAGE 7 =====\nHeadline/Hook: "Your [Audience] isn't [Problem], they just need [Simple
+Mechanism]."
+Body: "Forget [The Hard/Expensive Way]. The secret to [Dream Outcome] isn't
+[More Work]—it's [Small, Actionable Step]."
+The Technical Edge: If you build a product for "How to setup your digital store on Selar"
+(the technical niche we discussed), you can use this same winning formula:
+Ad Copy: "Your digital product isn't failing to sell because it's bad. It's failing because
+your funnel setup is leaking traffic. Forget expensive tech experts. The secret to 10x
+conversions isn't more traffic—it's this 10-minute automated setup."
+Your Next Step
+This "Family Growth & Wellness Hub" has validated the market for you.
+If you choose to enter the "Wellness" niche later, you know the copy works.
+But since you want to focus on MMO/Digital Products first, you now have a "Master
+Template" for how to write ads that stay profitable for months.
+Are you ready to draft your own "Hook and Promise" using this proven structural
+template for your first technical product? (If so, tell me the specific technical problem you
+want to solve, and we will write the ad copy right now.)
+User prompt: We can do this now, I have a book in this way But I can use their own stuff, do you
+want me to buy it so we can check?
+Response: You have just provided a perfect "bridge" product. Looking at the assets you shared
+—the "Parent Routine and Screen-Time Planner"—I can tell you exactly why this is a high-
+potential asset, and why you do not need to buy their product.
+1. Why you don't need to buy their product
+You already have the "formula" in your hands. This PDF is a "Utility Product." It doesn't
+promise a massive, life-changing revolution (like "How to become a millionaire"); it promises
+immediate relief from a daily, annoying pain (arguments over screens, chores, and
+homework).
+The reason the "Family Growth & Wellness Hub" is succeeding is that they are solving a high-
+frequency problem. Parents deal with these arguments every single day.
+2. The Gap in the Market
+Your product is excellent, but it is currently positioned as a "Planner". To make it sell like the
+ones running ads for 7 months, you need to shift the positioning from "A Planner" to "A System
+to Fix [Specific Pain]."
+If you want to beat the competition, don't just sell the "what" (a planner); sell the "social
+peace."
+3. Your "Ad-Specialist" Strategy\n\n\n===== PAGE 8 =====\nSince you have the product and you have the technical ad skills, here is your immediate move:
+The Ad Copy Strategy (Reverse-Engineered from the "Family Growth" ad):
+The Hook: "Stop the daily war over screen time. You don't need a stricter hand; you need
+a better routine."
+The Problem: "Homework, chores, and endless bickering about tablets... it's exhausting
+to be the 'bad guy' every evening."
+The Solution (Your Product): "I’ve turned the chaos into a simple, 10-minute family plan.
+It’s not just a chart; it’s a script for calmer evenings and actually helpful, independent kids."
+The CTA: "Download the Phone-Friendly Parent Routine System."
+4. Why this wins
+Most people selling "Make Money Online" products are selling hope. That is a very hard sell
+because people are skeptical. You are selling relief. Parents are not skeptical about needing
+relief—they are actively looking for it.
+Your Immediate Task:
+You have the product. You have the ad expertise. Don't waste time buying their book; they are
+doing the exact same thing you are, just with a different "theme."
+If you want to test this today, let’s set up your first "Validation" ad campaign:
+1. Audience: Parents in Nigeria, ages 28–45, interest in "Parenting," "Education," or "Work-
+Life Balance."
+2. Budget: ₦5,000/day for 3 days.
+3. Creative: Use a video of you (or a clean, simple graphic) holding your phone and showing
+the "Screen-Time Agreement" page from your PDF.
+4. Landing Page: Your Selar link.
+Do you want me to write the final 3 versions of the Ad Copy based on these scripts so
+you can test them immediately?

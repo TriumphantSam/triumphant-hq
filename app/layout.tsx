@@ -89,6 +89,9 @@ export const metadata: Metadata = {
     shortcut: ["/favicon-48x48.png"],
   },
   manifest: "/site.webmanifest",
+  other: {
+    "facebook-domain-verification": "tzruqlr2vdzldqybooi5n4t2100mxq",
+  },
 };
 
 export const viewport = {
@@ -105,6 +108,7 @@ export default function RootLayout({
   return (
     <html lang="en-NG">
       <head>
+        <meta name="facebook-domain-verification" content="tzruqlr2vdzldqybooi5n4t2100mxq" />
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)

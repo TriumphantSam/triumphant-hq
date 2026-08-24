@@ -4,7 +4,7 @@
 Do not say PDF. Do not say planner.
 Say: Calm Evening System.
 Outcome: calm evenings, cooperative children.
-Price if needed: ₦3,000.
+Price if needed: ₦1,500.
 CTA: Shop now / Get Instant Access / Learn more
 Destination: your Selar link.
 
@@ -33,7 +33,7 @@ The Calm Evening System gives you a 15-minute order for the house:
 land, homework window, one house job, then screens.
 
 Calm evenings. Cooperative children.
-₦3,000 today.
+₦1,500 today.
 ```
 
 **Headline:** Stop the nightly war  
@@ -62,7 +62,7 @@ You have to out-plan it.
 The Calm Evening System puts a written deal on the fridge.
 You point. You do not give a sermon.
 
-₦3,000. Use it tonight.
+₦1,500. Use it tonight.
 ```
 
 **Headline:** Stop chasing the tablet  
@@ -91,7 +91,7 @@ You are failing because 4pm to 9pm has no plan.
 The Calm Evening System is the missing piece between the child you love and the night you actually live.
 
 15 minutes to install the first lever.
-₦3,000.
+₦1,500.
 ```
 
 **Headline:** You are not a failed parent  
@@ -119,7 +119,7 @@ Screens in the kitchen.
 You still love them.
 You are still in charge.
 
-₦3,000. Built for real Nigerian evenings.
+₦1,500. Built for real Nigerian evenings.
 ```
 
 **Headline:** For the nights traffic steals  
@@ -146,15 +146,15 @@ Then collect.
 
 That is the Calm Evening System.
 15-minute tools. Instant access.
-₦3,000.
+₦1,500.
 
 If you are waiting until "things settle" —
 things settle because you started.
 ```
 
 **Headline:** Tonight can end differently  
-**Description:** ₦3,000. Instant access. Start tonight.  
-**Image text:** ₦3,000 · Calm evenings · Start tonight  
+**Description:** ₦1,500. Instant access. Start tonight.  
+**Image text:** ₦1,500 · Calm evenings · Start tonight  
 **CTA:** Shop now
 
 ---
@@ -168,7 +168,7 @@ things settle because you started.
 5. Love is not the same as yes
 6. 15 minutes. Calmer house.
 7. Tonight can end differently
-8. ₦3,000. Start tonight.
+8. ₦1,500. Start tonight.
 9. Homework without the war
 10. Aunty is not their staff
 
@@ -189,7 +189,7 @@ things settle because you started.
 - Bring it to the kitchen.
 - Love is not the same thing as yes.
 - 15 minutes. One deal.
-- ₦3,000 today
+- ₦1,500 today
 - Calm evenings. Cooperative children.
 
 ---
@@ -210,7 +210,7 @@ One page on the fridge.
 One script in your mouth.
 15 minutes tonight.
 
-₦3,000. Instant access.
+₦1,500. Instant access.
 The war does not take a week off.
 ```
 
@@ -232,7 +232,7 @@ That is an evening with no rails.
 
 The Calm Evening System gives you the order, the screen deal, and the words — for a real Nigerian house.
 
-₦3,000. Instant access after payment.
+₦1,500. Instant access after payment.
 
 Reply YES for the link.
 Reply SAMPLE for 3 lines you can use tonight.
@@ -249,14 +249,14 @@ Reply SAMPLE for 3 lines you can use tonight.
 
 The full system has the agreement, the 7-day install, the short evening for traffic nights, and the printable fridge pages.
 
-₦3,000.
+₦1,500.
 Reply YES for checkout.
 ```
 
 ### YES / BUY
 
 ```text
-The Calm Evening System is ₦3,000.
+The Calm Evening System is ₦1,500.
 
 Pay here:
 [checkout link]
@@ -271,7 +271,7 @@ Then use one script tonight.
 ```text
 Just checking.
 
-Were you able to finish the ₦3,000 checkout for the Calm Evening System?
+Were you able to finish the ₦1,500 checkout for the Calm Evening System?
 
 If payment gave any issue, tell me. I will help.
 

@@ -3,7 +3,7 @@
 
 Keyword: CALM or PARENT or HI
 
-Price: ₦3,000
+Price: ₦1,500
 Never say PDF. Say Calm Evening System.
 
 ---
@@ -19,7 +19,7 @@ That is an evening with no rails.
 The Calm Evening System gives you the order, the screen deal, and the words — for a real Nigerian house.
 
 Calm evenings. Cooperative children.
-₦3,000. Instant access after payment.
+₦1,500. Instant access after payment.
 
 Reply SAMPLE for 3 lines you can use tonight.
 Reply YES for the checkout link.
@@ -38,7 +38,7 @@ Reply YES for the checkout link.
 
 The full system has the agreement, the 7-day install, the short evening for traffic nights, and the printable fridge pages.
 
-₦3,000.
+₦1,500.
 Reply YES for checkout.
 ```
 
@@ -47,7 +47,7 @@ Reply YES for checkout.
 ## YES / BUY
 
 ```text
-The Calm Evening System is ₦3,000.
+The Calm Evening System is ₦1,500.
 
 Pay here:
 [checkout link]
@@ -64,7 +64,7 @@ Then use one script tonight.
 ```text
 Just checking.
 
-Were you able to finish the ₦3,000 checkout for the Calm Evening System?
+Were you able to finish the ₦1,500 checkout for the Calm Evening System?
 
 If payment gave any issue, tell me. I will help.
 

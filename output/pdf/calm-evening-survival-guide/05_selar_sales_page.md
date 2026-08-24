@@ -222,7 +222,7 @@ Rails are what a house needs.
 
 ### Launch price
 
-**₦3,000**
+**₦1,500**
 
 That is less than one extra lesson.
 Less than the data they will argue for tonight.
@@ -268,7 +268,7 @@ Instant access to the Calm Evening System: the guide, the signed screen-time agr
 Get Instant Access
 
 **Price:**
-₦3,000
+₦1,500
 
 **Category tags (optional):**
 Parenting, Family, Education, Home, Self-help
