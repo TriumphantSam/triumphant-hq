@@ -43,17 +43,16 @@ const faqs = [
 ];
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Technology Company in Ibadan | How to Choose a Partner | Triumphant HQ",
+  title: "Tech Company in Ibadan | Technology Agency · Triumphant HQ",
   description:
-    "Looking for a technology company or digital agency in Ibadan? Learn how to choose well—and how Triumphant HQ delivers websites, SEO, apps and automation from Oyo State.",
+    "Looking for a tech company or technology agency in Ibadan? Triumphant HQ (Triumphant Technological Services) delivers websites, SEO, apps and automation from Basorun Rd, Oyo State.",
   path: "/ibadan-tech-agency",
   keywords: [
+    "tech company Ibadan",
     "technology company in Ibadan",
-    "best tech company in Ibadan",
+    "technology agency Ibadan",
     "digital agency Ibadan",
     "tech company Oyo State",
-    "website design company Ibadan",
-    "hire tech partner Ibadan",
   ],
 });
 
@@ -77,7 +76,7 @@ export default function IbadanTechAgencyPage() {
 
       <header className="page-hero !pt-8">
         <p className="eyebrow">Ibadan · Oyo State</p>
-        <h1>How to choose a technology partner in Ibadan—and when Triumphant HQ is the right fit</h1>
+        <h1>A technology agency and tech company in Ibadan—built for delivery, not slogans</h1>
         <p className="mt-5 max-w-3xl text-[1.08rem] leading-8 text-slate-600">
           {entityDefinition}
         </p>

@@ -33,12 +33,12 @@ export const clientLogos: ClientLogo[] = [
   },
   {
     name: "Metropolitan Family Hospital",
-    sector: "Healthcare",
+    sector: "Hospital",
     logo: "/images/clients/metropolitan-family-hospital.png",
   },
   {
     name: "Mercy Medical Clinic",
-    sector: "Healthcare",
+    sector: "Clinic",
     logo: "/images/clients/mercy-medical-clinic.png",
   },
   {

@@ -15,7 +15,17 @@ import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 import ServiceIcon from "./ServiceIcon";
 
-export default function ServiceLanding({ service }: { service: AgencyService }) {
+export default function ServiceLanding({
+  service,
+  h1,
+  intro,
+  localLinks,
+}: {
+  service: AgencyService;
+  h1?: string;
+  intro?: string;
+  localLinks?: Array<{ href: string; label: string }>;
+}) {
   const faqs = serviceFaqs[service.slug] ?? [];
   const magnet = serviceLeadMagnets[service.slug];
   const path = `/services/${service.slug}`;
@@ -25,7 +35,7 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
       <JsonLd
         data={serviceJsonLd({
           name: service.shortTitle,
-          description: service.description,
+          description: intro || service.description,
           path,
           serviceType: service.shortTitle,
         })}
@@ -43,8 +53,8 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
           <ServiceIcon name={service.icon} />
         </div>
         <p className="eyebrow">{service.eyebrow}</p>
-        <h1>{service.title}</h1>
-        <p>{service.description}</p>
+        <h1>{h1 ?? service.title}</h1>
+        <p>{intro ?? service.description}</p>
         <p className="mt-4 max-w-2xl text-[1.02rem] leading-8 text-slate-600">
           Based in Ibadan, Oyo State, we deliver this work for organisations across Southwestern Nigeria and nationwide.
         </p>
@@ -55,7 +65,7 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
               href={`/services/${service.slug}/ibadan`}
               className="font-semibold text-blue-600 hover:text-blue-800"
             >
-              {service.slug === "seo" ? "SEO in Ibadan" : "Website design in Ibadan"} →
+              {service.slug === "seo" ? "SEO agency in Ibadan" : "Website design in Ibadan"} →
             </Link>
           </p>
         )}
@@ -92,6 +102,25 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
           }}
         />
       </div>
+
+      {localLinks && localLinks.length > 0 ? (
+        <section className="section-shell !pb-0">
+          <Reveal className="max-w-3xl space-y-4 text-[1.05rem] leading-8 text-slate-600">
+            <p>
+              Triumphant HQ has operated from Ibadan since 2017. We work from Basorun Rd—not a city name added to a
+              remote listing. Neighbourhoods across Oyo State are in reach, and we keep a separate Local Support desk
+              for NIN and BVN so agency projects stay focused.
+            </p>
+            <p className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-blue-600">
+              {localLinks.map((link) => (
+                <Link key={link.href} href={link.href}>
+                  {link.label}
+                </Link>
+              ))}
+            </p>
+          </Reveal>
+        </section>
+      ) : null}
 
       <section className="section-muted">
         <div className="section-shell">
@@ -167,6 +196,15 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
                 </Link>
                 .
               </p>
+              {localLinks && localLinks.length > 0 ? (
+                <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-blue-600">
+                  {localLinks.map((link) => (
+                    <Link key={link.href} href={link.href}>
+                      {link.label}
+                    </Link>
+                  ))}
+                </p>
+              ) : null}
             </div>
             <NextStepPanel
               actions={

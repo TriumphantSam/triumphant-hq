@@ -7,9 +7,9 @@ import { localSupportFaqs } from "@/lib/faqs";
 import { buildPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "NIN & BVN Support in Ibadan | Local Digital Desk",
+  title: "NIN Enrolment in Ibadan | BVN Support · Triumphant HQ",
   description:
-    "Certified NIN enrolment and BVN support in Ibadan—serving Akobo, Bashorun, Bodija and Oyo State. WhatsApp-first local digital help from Triumphant HQ.",
+    "NIN enrolment in Ibadan plus BVN support from Triumphant HQ. WhatsApp-first local desk on Basorun Rd serving Akobo, Bashorun, Bodija and Oyo State.",
   path: "/local-support",
   keywords: [
     "NIN enrolment Ibadan",
@@ -17,7 +17,6 @@ export const metadata: Metadata = buildPageMetadata({
     "NIN Akobo",
     "NIN Bashorun",
     "NIMC support Oyo State",
-    "local digital services Ibadan",
   ],
 });
 

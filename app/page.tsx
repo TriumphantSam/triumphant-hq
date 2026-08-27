@@ -14,17 +14,16 @@ import { agencyServices, whatsappNumber } from "@/lib/services";
 import { buildPageMetadata, locationPages } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Technology Agency in Ibadan, Nigeria | Triumphant HQ",
+  title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
   description:
-    "Ibadan-based technology and growth agency for website design, SEO, custom applications and automation—plus certified NIN and BVN support across Oyo State and Nigeria.",
+    "Triumphant HQ is a technology agency and tech company in Ibadan, Oyo State—website design, SEO, custom applications and automation, plus NIN enrolment and BVN support.",
   path: "/",
   keywords: [
     "Triumphant HQ Ibadan",
+    "Triumphant Technological Services",
     "technology agency Ibadan",
-    "best tech company Ibadan",
-    "website design Oyo State",
-    "SEO Nigeria",
-    "NIN enrolment Ibadan",
+    "tech company Ibadan",
+    "technology company Ibadan",
   ],
 });
 

@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { absoluteCanonicalUrl } from "@/lib/canonical-host";
 
 export const SITE_URL = "https://triumphantech.com";
+
+export function publicSiteUrl() {
+  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL;
+  if (fromEnv && fromEnv.trim()) return fromEnv.replace(/\/+$/, "");
+  return SITE_URL;
+}
 
 export const siteIdentity = {
   brandName: "Triumphant HQ",
@@ -19,10 +26,11 @@ export const siteIdentity = {
     longitude: 3.947,
   },
   foundingYear: 2017,
-  /** Public profile URLs — add LinkedIn/Instagram/Facebook when live */
+  /** Public profile URLs — add LinkedIn/Facebook when live */
   sameAs: [
     "https://share.google/RLZXJGOCCI82sx8tx",
-    "https://triumphantech.com",
+    "https://www.instagram.com/triumphant_tech/",
+    SITE_URL,
   ] as string[],
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Basorun+Rd,+Ibadan+211107,+Oyo",
@@ -84,10 +92,10 @@ export const locationPages: LocationPage[] = [
     slug: "ibadan",
     name: "Ibadan",
     region: "Oyo State, Nigeria",
-    title: "Technology Agency & NIN/BVN Support in Ibadan | Triumphant HQ",
+    title: "Technology Agency in Ibadan | NIN & BVN Support · Triumphant HQ",
     description:
       "Triumphant HQ in Ibadan offers website design, SEO, custom apps, automation, plus certified NIN enrolment and BVN support across Oyo State.",
-    h1: "Digital systems and local identity support in Ibadan",
+    h1: "Technology agency in Ibadan—plus NIN and BVN support on Basorun Rd",
     intro: [
       "Triumphant HQ is an Ibadan-based technology and growth agency. We help businesses grow with websites, SEO, applications and automation—and we run a dedicated local desk for NIN, BVN and essential digital services.",
       "Whether you are in Bodija, Akobo, Bashorun, Challenge, Ojoo or elsewhere in the city, you can reach us for practical support and professional delivery.",
@@ -389,6 +397,11 @@ export const serviceLocationPages: ServiceLocationPage[] = [
         answer:
           "Yes. Many engagements start with an audit of structure, speed and conversion gaps, then a focused rebuild or redesign.",
       },
+      {
+        question: "Where is your website design studio?",
+        answer:
+          "Triumphant HQ works from Basorun Rd, Ibadan 211107, Oyo. Discovery can be a call or WhatsApp; delivery is remote-friendly across Oyo State and Nigeria.",
+      },
     ],
     keywords: [
       "website design Ibadan",
@@ -425,6 +438,11 @@ export const serviceLocationPages: ServiceLocationPage[] = [
         question: "Is SEO different from running ads?",
         answer:
           "Yes. SEO builds durable organic visibility. Ads can complement it, but our SEO work focuses on technical health, content and local relevance.",
+      },
+      {
+        question: "Who is your SEO agency for?",
+        answer:
+          "Ibadan and Oyo State businesses with a real offer that need to be findable—professional firms, clinics, schools and service operators. We start with a free snapshot rather than a retainer pitch.",
       },
     ],
     keywords: [
@@ -476,14 +494,16 @@ export function buildPageMetadata({
   noIndex = false,
   ogImage = "/images/agency-hero-cinematic.png",
 }: BuildMetadataInput): Metadata {
-  const url = path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
-  const mergedKeywords = [...new Set([...keywords, ...defaultKeywords])];
+  const url = absoluteCanonicalUrl(path);
+  const mergedKeywords = [
+    ...new Set([...keywords, siteIdentity.brandName, siteIdentity.legalName]),
+  ];
 
   return {
     title: { absolute: title },
     description,
     keywords: mergedKeywords,
-    alternates: { canonical: path.startsWith("/") ? path : `/${path}` },
+    alternates: { canonical: url },
     openGraph: {
       title,
       description,
@@ -512,6 +532,7 @@ export function organizationJsonLd() {
     "@id": `${SITE_URL}/#organization`,
     name: siteIdentity.brandName,
     legalName: siteIdentity.legalName,
+    alternateName: [siteIdentity.legalName, "Triumphant Tech"],
     url: SITE_URL,
     email: siteIdentity.email,
     telephone: siteIdentity.phoneE164,
@@ -545,6 +566,8 @@ export function localBusinessJsonLd() {
     "@type": ["LocalBusiness", "ProfessionalService"],
     "@id": `${SITE_URL}/#localbusiness`,
     name: siteIdentity.brandName,
+    legalName: siteIdentity.legalName,
+    alternateName: [siteIdentity.legalName, "Triumphant Tech"],
     image: `${SITE_URL}/images/agency-hero-cinematic.png`,
     url: SITE_URL,
     telephone: siteIdentity.phoneE164,
@@ -602,6 +625,7 @@ export function websiteJsonLd() {
     "@id": `${SITE_URL}/#website`,
     url: SITE_URL,
     name: siteIdentity.brandName,
+    alternateName: siteIdentity.legalName,
     publisher: { "@id": `${SITE_URL}/#organization` },
     inLanguage: "en-NG",
   };
@@ -615,7 +639,7 @@ export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `${SITE_URL}${item.path}`,
+      item: absoluteCanonicalUrl(item.path),
     })),
   };
 }
@@ -634,7 +658,7 @@ export function serviceJsonLd(input: {
     serviceType: input.serviceType,
     provider: { "@id": `${SITE_URL}/#localbusiness` },
     areaServed: serviceAreas.map((area) => area.name),
-    url: `${SITE_URL}${input.path}`,
+    url: absoluteCanonicalUrl(input.path),
   };
 }
 
@@ -682,7 +706,7 @@ export function articleJsonLd(input: {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}${input.path}`,
+      "@id": absoluteCanonicalUrl(input.path),
     },
     inLanguage: "en-NG",
   };

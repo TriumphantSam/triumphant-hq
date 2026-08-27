@@ -9,7 +9,11 @@ Use this weekly. On-site work underperforms without these off-site steps.
 - **Address:** Basorun Rd, Ibadan 211107, Oyo
 - **Phone / WhatsApp:** +234 810 771 1190 (`2348107711190`)
 - **Email:** admin@triumphantech.com
-- **Website:** https://triumphantech.com
+## Canonical host (lock this)
+
+- **Website:** https://triumphantech.com (apex, no `www`, no `triumphanthq.com`)
+- Redirects and dashboard steps: [`docs/canonical-hosts.md`](./canonical-hosts.md)
+- After any domain change, verify with `curl -sI` that `www` and `triumphanthq.com` **301** to the matching apex path.
 
 Update GBP, WhatsApp Business, social bios, email signatures, invoices, and directories to match exactly.
 

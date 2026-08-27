@@ -1,10 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import { canonicalRedirectUrl } from "@/lib/canonical-host";
 import { INVOICE_SESSION_COOKIE, verifySessionToken } from "@/lib/invoices/auth";
 
 const BUILDER_PREFIXES = ["/digital-forge/builder", "/api/digital-forge/builder"];
 
+function requestHost(request: NextRequest): string | null {
+  return request.headers.get("x-forwarded-host") ?? request.headers.get("host");
+}
+
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
+  const canonical = canonicalRedirectUrl(requestHost(request), pathname, search);
+  if (canonical) {
+    return NextResponse.redirect(canonical, 301);
+  }
 
   // Invoice studio auth
   if (pathname.startsWith("/invoices") || pathname.startsWith("/api/invoices")) {
@@ -68,10 +77,6 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/invoices",
-    "/invoices/:path*",
-    "/api/invoices/:path*",
-    "/digital-forge/builder/:path*",
-    "/api/digital-forge/builder/:path*",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|txt|xml|webmanifest)$).*)",
   ],
 };

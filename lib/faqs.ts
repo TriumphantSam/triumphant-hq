@@ -39,6 +39,16 @@ export const contactFaqs: FaqItem[] = [
 export const serviceFaqs: Record<string, FaqItem[]> = {
   websites: [
     {
+      question: "Do you offer website design in Ibadan?",
+      answer:
+        "Yes. Triumphant HQ is based on Basorun Rd, Ibadan, and website design is a core service. We build conversion-focused Next.js sites for Oyo State businesses—not template packs with a city name swapped in.",
+    },
+    {
+      question: "How is this different from other Ibadan web design agencies?",
+      answer:
+        "You get one accountable partner for structure, design and production-grade development, plus optional SEO and ongoing care. We will not invent client counts or rankings. Review live work, then book discovery if the fit is real.",
+    },
+    {
       question: "How long does a website project usually take?",
       answer:
         "Most focused marketing sites move from discovery to launch in roughly four to eight weeks, depending on content readiness, design complexity and feedback speed. Larger or content-heavy builds are scoped with a clear phased timeline after discovery.",
@@ -102,6 +112,11 @@ export const serviceFaqs: Record<string, FaqItem[]> = {
     },
   ],
   seo: [
+    {
+      question: "Are you an SEO agency in Ibadan?",
+      answer:
+        "Yes. We run SEO from Ibadan for Oyo State and Nigerian businesses: technical health, local and service pages, and content tied to commercial intent. We do not guarantee number-one rankings.",
+    },
     {
       question: "How soon can we expect SEO results?",
       answer:
@@ -176,6 +191,16 @@ export type LeadMagnetMeta = {
 };
 
 export const localSupportFaqs: FaqItem[] = [
+  {
+    question: "Can I get NIN enrolment in Ibadan at Triumphant HQ?",
+    answer:
+      "Yes. Our Local Support desk on Basorun Rd, Ibadan 211107, Oyo assists with NIN enrolment, modifications and slip printing. WhatsApp first so we confirm documents and timing before you visit.",
+  },
+  {
+    question: "Do you also help with BVN in Ibadan?",
+    answer:
+        "Yes. We support BVN enrolment, consultation, recovery and card printing guidance. This desk is separate from website and SEO projects so identity visits stay focused.",
+  },
   {
     question: "Where is Triumphant HQ for NIN and BVN support in Ibadan?",
     answer:
