@@ -10,15 +10,15 @@ import { discoveryCallUrl, agencyServices } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "About Triumphant HQ | Technology Agency in Ibadan",
+  title: "About Triumphant HQ | Triumphant Technological Services",
   description:
-    "Meet Adeyemi Olayemi and Triumphant HQ—an Ibadan-based technology and growth agency for websites, SEO, custom apps and automation across Nigeria.",
+    "Meet Adeyemi Olayemi and Triumphant HQ (Triumphant Technological Services)—an Ibadan technology agency for websites, SEO, custom apps and automation.",
   path: "/about",
   keywords: [
     "about Triumphant HQ",
+    "Triumphant Technological Services",
     "technology agency Ibadan",
     "Adeyemi Olayemi",
-    "web agency Nigeria",
   ],
 });
 

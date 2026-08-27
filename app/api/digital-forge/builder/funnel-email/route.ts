@@ -13,7 +13,7 @@ const EMAILJS_TEMPLATE_ID_REPLAY = process.env.EMAILJS_TEMPLATE_ID_REPLAY ?? '';
 const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? '';
 const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? '';
 const EMAILJS_FROM_NAME = process.env.EMAILJS_FROM_NAME ?? 'TriumphantHQ';
-const EMAILJS_TRAINING_BASE_URL = process.env.EMAILJS_TRAINING_BASE_URL ?? 'https://triumphanthq.com/digital-forge/funnel';
+const EMAILJS_TRAINING_BASE_URL = process.env.EMAILJS_TRAINING_BASE_URL ?? 'https://triumphantech.com/digital-forge/funnel';
 const GENERATED_FUNNELS_DIR = path.join(process.cwd(), 'content', 'digital-forge', 'funnels');
 
 type FunnelEmailTemplate = 'confirmation' | 'starting_soon' | 'replay';

@@ -38,12 +38,13 @@ export default function Hero() {
           </p>
 
           <h1 className="font-display animate-fade-in-up-delay-1 mt-5 text-[clamp(2.35rem,5vw,4.4rem)] font-extrabold leading-[1.05] tracking-[-0.045em] text-white">
-            Digital systems built to{" "}
-            <span className="text-[#8bb6ff]">move business forward</span>.
+            Technology agency in Ibadan,{" "}
+            <span className="text-[#8bb6ff]">built to move business forward</span>.
           </h1>
 
           <p className="hero-lede animate-fade-in-up-delay-2 mx-auto mt-6 leading-8 text-white/80">
-            Websites, custom applications, SEO and automation—designed and delivered as one coherent growth system.
+            Websites, custom applications, SEO and automation from a tech company on Basorun Rd—designed and delivered as
+            one coherent growth system.
           </p>
 
           <div className="button-row animate-fade-in-up-delay-3 mt-9 justify-center">

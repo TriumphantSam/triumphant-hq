@@ -1,11 +1,13 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-    title: 'Refund Policy | Triumphant Technological Services',
-    description:
-        'Refund Policy for digital products sold by Triumphant Technological Services. Understand your rights and how to request support for failed delivery, broken files, or technical issues.',
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Refund Policy | Triumphant HQ",
+  description:
+    "Refund Policy for digital products sold by Triumphant HQ (Triumphant Technological Services).",
+  path: "/refund-policy",
+});
 
 export default function RefundPolicyLayout({ children }: { children: React.ReactNode }) {
-    return <>{children}</>;
+  return children;
 }

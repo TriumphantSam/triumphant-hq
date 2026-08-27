@@ -39,19 +39,19 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Triumphant HQ | Technology Agency in Ibadan, Nigeria",
+    default: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
     template: "%s | Triumphant HQ",
   },
   description:
-    "Ibadan-based technology and growth agency for website design, SEO, custom applications and automation—plus certified NIN and BVN support across Oyo State and Nigeria.",
+    "Triumphant HQ is a technology agency and tech company in Ibadan, Oyo State—website design, SEO, custom applications and automation, plus NIN enrolment and BVN support.",
   keywords: defaultKeywords,
   authors: [{ name: siteIdentity.brandName }],
   creator: siteIdentity.brandName,
   publisher: siteIdentity.legalName,
   openGraph: {
-    title: "Triumphant HQ | Technology Agency in Ibadan, Nigeria",
+    title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
     description:
-      "Websites, SEO, apps and automation from Ibadan—serving Oyo State, Osun State and clients across Nigeria.",
+      "Websites, SEO, apps and automation from a tech company in Ibadan—serving Oyo State, Osun State and clients across Nigeria.",
     url: SITE_URL,
     siteName: siteIdentity.brandName,
     locale: "en_NG",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Triumphant HQ | Technology Agency in Ibadan, Nigeria",
+    title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
     description:
       "Websites, SEO, apps and automation from Ibadan—plus local NIN and BVN support.",
     images: ["/images/agency-hero-cinematic.png"],
