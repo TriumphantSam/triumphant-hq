@@ -69,15 +69,15 @@ export default function SeoSnapshotThankYouPage() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.55rem',
-                background: 'rgba(0,102,255,0.1)',
-                border: '1px solid rgba(0,102,255,0.3)',
+                background: 'rgba(7, 94, 229, 0.08)',
+                border: '1px solid rgba(7, 94, 229, 0.2)',
                 borderRadius: '999px',
                 padding: '0.4rem 1.1rem',
                 marginBottom: '1.5rem',
               }}
             >
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#00CCFF', display: 'inline-block' }} />
-              <span style={{ color: '#0077b8', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--accent-color)', display: 'inline-block' }} />
+              <span style={{ color: 'var(--accent-color)', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
                 Request Received
               </span>
             </div>

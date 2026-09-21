@@ -72,7 +72,6 @@ export default function SeoSnapshotPage() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-dark)' }}>
-
       {/* ── BACKGROUND GLOW ── */}
       <div
         aria-hidden
@@ -82,14 +81,14 @@ export default function SeoSnapshotPage() {
           pointerEvents: 'none',
           overflow: 'hidden',
           background:
-            'radial-gradient(circle at 20% 20%, rgba(0,102,255,0.18), transparent 40%), radial-gradient(circle at 80% 80%, rgba(0,204,255,0.1), transparent 38%), linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,1))',
+            'radial-gradient(circle at 20% 15%, rgba(7,94,229,0.06), transparent 45%), radial-gradient(circle at 80% 80%, rgba(26,143,212,0.04), transparent 40%), linear-gradient(180deg, #fafbfd 0%, #ffffff 100%)',
         }}
       />
 
       <div className="relative" style={{ zIndex: 10 }}>
 
         {/* ── HERO ── */}
-        <section style={{ paddingTop: '10rem', paddingBottom: '5rem' }}>
+        <section style={{ paddingTop: '8rem', paddingBottom: '4rem' }}>
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
 
             {/* Badge */}
@@ -99,20 +98,14 @@ export default function SeoSnapshotPage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.55rem',
-                  background: 'rgba(0,102,255,0.1)',
-                  border: '1px solid rgba(0,102,255,0.35)',
+                  background: 'rgba(7,94,229,0.06)',
+                  border: '1px solid rgba(7,94,229,0.18)',
                   borderRadius: '999px',
                   padding: '0.45rem 1.1rem',
                 }}
               >
-                <span style={{ position: 'relative', display: 'inline-flex' }}>
-                  <span style={{
-                    position: 'absolute', inset: 0, borderRadius: '50%', background: '#00CCFF', opacity: 0.75,
-                    animation: 'ping 1.5s cubic-bezier(0,0,0.2,1) infinite',
-                  }} />
-                  <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#00CCFF', display: 'inline-block', position: 'relative' }} />
-                </span>
-                <span style={{ color: '#0077b8', fontSize: '0.73rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+                <span className="live-dot" aria-hidden="true" />
+                <span style={{ color: 'var(--accent-color)', fontSize: '0.73rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
                   100% Free — No Credit Card Needed
                 </span>
               </div>
@@ -170,28 +163,14 @@ export default function SeoSnapshotPage() {
               <button
                 id="seo-snapshot-run-cta"
                 onClick={() => setIsModalOpen(true)}
+                className="button button-primary"
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.7rem',
-                  padding: '1.1rem 2.5rem',
-                  background: 'linear-gradient(135deg, #ffffff 0%, #f5f8ff 100%)',
-                  color: 'var(--text-primary)',
-                  fontWeight: 800,
-                  fontSize: '0.9rem',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  borderRadius: '10px',
-                  border: 'none',
-                  cursor: 'pointer',
-                  boxShadow: '0 0 40px rgba(0,102,255,0.42)',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  fontSize: '0.86rem',
+                  padding: '1rem 2.2rem',
                 }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-3px)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 60px rgba(0,102,255,0.55)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(0)'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 40px rgba(0,102,255,0.42)'; }}
               >
                 Run My Free Snapshot
-                <span style={{ fontSize: '1.2rem', transition: 'transform 0.2s', display: 'inline-block' }}>→</span>
+                <span className="button-arrow" aria-hidden="true">→</span>
               </button>
             </div>
 

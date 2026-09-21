@@ -129,13 +129,13 @@ export default function DigitalForgeCoursePage() {
               gap: "0.55rem",
               padding: "0.42rem 1rem",
               borderRadius: 999,
-              border: "1px solid rgba(0,102,255,0.35)",
-              background: "rgba(0,102,255,0.1)",
+              border: "1px solid rgba(7,94,229,0.25)",
+              background: "rgba(7,94,229,0.08)",
               marginBottom: "1.5rem",
             }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#0077b8", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
+            <span style={{ color: "#075ee5", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
               Guided Course — Full Curriculum
             </span>
           </div>
@@ -495,17 +495,17 @@ export default function DigitalForgeCoursePage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
             {[
-              { step: "01", label: "Blog", detail: "Discover the opportunity. Find your direction.", current: false, accent: "rgba(255,255,255,0.5)" },
-              { step: "02", label: "Free Training", detail: "See the framework. Build conviction. Decide your next step.", current: false, accent: "#00CCFF" },
-              { step: "03", label: "Starter System", detail: "Get the complete toolkit. Build your first product.", current: false, accent: "#0066FF" },
-              { step: "04", label: "Course", detail: "Follow the full guided curriculum. Own a reusable business system.", current: true, accent: "#00CCFF" },
+              { step: "01", label: "Blog", detail: "Discover the opportunity. Find your direction.", current: false, accent: "rgba(15,23,42,0.5)" },
+              { step: "02", label: "Free Training", detail: "See the framework. Build conviction. Decide your next step.", current: false, accent: "#1a8fd4" },
+              { step: "03", label: "Starter System", detail: "Get the complete toolkit. Build your first product.", current: false, accent: "#075ee5" },
+              { step: "04", label: "Course", detail: "Follow the full guided curriculum. Own a reusable business system.", current: true, accent: "#075ee5" },
             ].map((item) => (
               <div
                 key={item.step}
                 style={{
-                  background: item.current ? "rgba(0,102,255,0.1)" : "#ffffff",
-                  border: item.current ? "1px solid rgba(0,102,255,0.32)" : "1px solid rgba(15,23,42,0.11)",
-                  borderTop: item.current ? "3px solid #0066FF" : undefined,
+                  background: item.current ? "rgba(7,94,229,0.06)" : "#ffffff",
+                  border: item.current ? "1px solid rgba(7,94,229,0.3)" : "1px solid rgba(15,23,42,0.11)",
+                  borderTop: item.current ? "3px solid #075ee5" : undefined,
                   borderRadius: 18,
                   padding: "1.1rem",
                 }}
@@ -513,7 +513,7 @@ export default function DigitalForgeCoursePage() {
                 <p style={{ color: "#64748b", fontSize: "0.68rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.35rem" }}>
                   Step {item.step}
                 </p>
-                <h3 style={{ color: item.current ? "#00CCFF" : "#fff", fontWeight: 800, marginBottom: "0.4rem" }}>{item.label}</h3>
+                <h3 style={{ color: item.current ? "#075ee5" : "inherit", fontWeight: 800, marginBottom: "0.4rem" }}>{item.label}</h3>
                 <p style={{ color: "#64748b", lineHeight: 1.7, fontSize: "0.88rem" }}>{item.detail}</p>
               </div>
             ))}

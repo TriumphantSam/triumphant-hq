@@ -55,9 +55,9 @@ export default function ReviewPage() {
         <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, #ffffff 0%, #f4f8ff 100%)" }} />
         <div className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16 relative" style={{ textAlign: "center" }}>
 
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.55rem", background: "rgba(0,102,255,0.1)", border: "1px solid rgba(0,102,255,0.35)", borderRadius: 999, padding: "0.42rem 1rem", marginBottom: "1.8rem" }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block", boxShadow: "0 0 10px rgba(0,204,255,0.8)" }} />
-            <span style={{ color: "#0077b8", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Free — No Obligation</span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "0.55rem", background: "rgba(7,94,229,0.08)", border: "1px solid rgba(7,94,229,0.22)", borderRadius: 999, padding: "0.42rem 1rem", marginBottom: "1.8rem" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
+            <span style={{ color: "#075ee5", fontSize: "0.78rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Free — No Obligation</span>
           </div>
 
           <h1 style={{ fontSize: "clamp(2.4rem,5.5vw,4.4rem)", fontWeight: 900, lineHeight: 1.06, letterSpacing: "-0.03em", maxWidth: 820, margin: "0 auto 1.6rem" }}>
@@ -156,8 +156,8 @@ export default function ReviewPage() {
                 </div>
               ))}
             </div>
-            <a href="/digital-forge/checkout?offer=system" style={{ display: "inline-flex", alignItems: "center", padding: "1rem 2rem", background: "linear-gradient(135deg,#0066FF,#0044CC)", color: "#fff", textDecoration: "none", fontWeight: 800, borderRadius: 12 }}>
-              Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$20.00" />
+            <a href="/digital-forge/checkout?offer=system" className="button button-primary" style={{ display: "inline-flex", alignItems: "center", padding: "0.95rem 1.75rem", borderRadius: 12, textDecoration: "none" }}>
+              Get the Starter System — <CurrencyPrice ngnLabel="₦15,000" usdLabel="$20.00" /><span className="button-arrow" aria-hidden="true" style={{ marginLeft: "0.4rem" }}>→</span>
             </a>
           </div>
         </div>

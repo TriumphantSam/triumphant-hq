@@ -99,15 +99,15 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "0.55rem",
-                  background: "rgba(0,102,255,0.1)",
-                  border: "1px solid rgba(0,102,255,0.35)",
+                  background: "rgba(7,94,229,0.08)",
+                  border: "1px solid rgba(7,94,229,0.22)",
                   borderRadius: "999px",
                   padding: "0.42rem 1rem",
                   marginBottom: "1.6rem",
                 }}
               >
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block", boxShadow: "0 0 10px rgba(0,204,255,0.8)" }} />
-                <span style={{ color: "#0077b8", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
+                <span style={{ color: "#075ee5", fontSize: "clamp(0.75rem, 2vw, 0.85rem)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
                   Secure Checkout
                 </span>
               </div>

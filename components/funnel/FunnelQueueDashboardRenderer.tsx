@@ -158,14 +158,14 @@ function FunnelDetailDrawer({
 
         <div className="mb-6 pb-6 border-b border-slate-200">
           <p className="text-[10px] uppercase tracking-widest text-slate-600 mb-3">Commercial Offer</p>
-          <div className="bg-[#00CCFF]/5 border border-[#00CCFF]/20 rounded-lg p-4 mb-4">
-            <h3 className="text-lg font-bold text-slate-900 mb-1">{funnel.offer.name} <span className="text-[#0077b8] ml-2">{funnel.offer.price}</span></h3>
+          <div className="bg-[var(--accent-color)]/5 border border-[var(--accent-color)]/20 rounded-lg p-4 mb-4">
+            <h3 className="text-lg font-bold text-slate-900 mb-1">{funnel.offer.name} <span className="text-[var(--accent-color)] ml-2">{funnel.offer.price}</span></h3>
             <p className="text-xs text-slate-600 mb-3">{funnel.offer.summary}</p>
             <div className="flex flex-wrap gap-2">
               {funnel.offer.deliverables.slice(0, 3).map((d, i) => <span key={i} className="text-[10px] font-bold uppercase tracking-wider text-slate-700 bg-slate-100 px-2 py-1 rounded">{d}</span>)}
               {funnel.offer.deliverables.length > 3 && <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 bg-white/5 px-2 py-1 rounded">+{funnel.offer.deliverables.length - 3} more</span>}
             </div>
-            <p className="text-xs font-mono text-[#00CCFF] mt-3">CTA: {funnel.offer.cta}</p>
+            <p className="text-xs font-mono text-[var(--accent-color)] mt-3">CTA: {funnel.offer.cta}</p>
             {funnel.offer.checkoutUrl && <p className="text-[11px] text-slate-500 mt-2 font-mono truncate">Checkout: {funnel.offer.checkoutUrl}</p>}
           </div>
         </div>

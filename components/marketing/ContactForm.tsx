@@ -275,6 +275,7 @@ export default function ContactForm() {
               <div className="pt-1">
                 <button className="button button-primary w-full sm:w-auto" disabled={sending} type="submit">
                   {sending ? "Sending enquiry…" : "Send project enquiry"}
+                  <span className="button-arrow" aria-hidden="true">→</span>
                 </button>
               </div>
             </form>

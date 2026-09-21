@@ -63,12 +63,12 @@ export default function Footer() {
         <div className="grid gap-12 border-b border-slate-200/90 pt-16 pb-14 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-16 lg:pt-20 lg:pb-14">
           {/* Brand / NAP / CTAs — single left edge, even vertical rhythm */}
           <div className="site-footer-brand flex w-full max-w-[22rem] flex-col items-start gap-6">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-600">
+            <Link href="/" className="inline-flex items-center gap-3" aria-label="Triumphant HQ">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--accent-color)]">
                 <span className="font-display text-lg font-bold text-white">T</span>
               </div>
               <span className="font-display text-xl font-bold tracking-[-0.03em] text-slate-950">
-                Triumphant<span className="text-blue-600">HQ</span>
+                Triumphant<span className="text-[var(--accent-color)]">HQ</span>
               </span>
             </Link>
 
@@ -100,11 +100,11 @@ export default function Footer() {
                 </a>
               </p>
               <p className="pt-2">
-                <Link href="/locations" className="font-medium text-blue-600 transition-colors hover:text-blue-800">
+                <Link href="/locations" className="font-medium text-[var(--accent-color)] transition-colors hover:text-[var(--accent-hover)]">
                   Service areas →
                 </Link>
                 <span className="text-slate-300"> · </span>
-                <Link href="/ibadan-tech-agency" className="font-medium text-blue-600 transition-colors hover:text-blue-800">
+                <Link href="/ibadan-tech-agency" className="font-medium text-[var(--accent-color)] transition-colors hover:text-[var(--accent-hover)]">
                   Ibadan tech guide
                 </Link>
               </p>
@@ -113,6 +113,7 @@ export default function Footer() {
             <div className="site-footer-ctas flex w-full flex-wrap items-start gap-3">
               <a href={discoveryCallUrl} target="_blank" rel="noreferrer" className="button button-primary">
                 Book a call
+                <span className="button-arrow" aria-hidden="true">→</span>
               </a>
               <Link href="/contact" className="button button-secondary">
                 Project enquiry
@@ -123,7 +124,7 @@ export default function Footer() {
           <div className="grid gap-10 sm:grid-cols-3 sm:gap-8">
             {columns.map((column) => (
               <div key={column.title}>
-                <h3 className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">{column.title}</h3>
+                <h3 className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">{column.title}</h3>
                 <ul className="mt-5 flex flex-col gap-3.5">
                   {column.links.map((link) => (
                     <li key={link.href}>

@@ -113,14 +113,14 @@ export default function LocalSupportExperience() {
       <section className="section-shell !pt-0 !pb-0">
         <div className="grid gap-8 border-y border-slate-200 py-10 sm:grid-cols-3">
           <div>
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">Visit us</p>
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Visit us</p>
             <p className="mt-3 text-[1.02rem] leading-7 text-slate-700">{formattedNapAddress}</p>
-            <Link href="/locations" className="mt-3 inline-block text-sm font-medium text-blue-600 hover:text-blue-800">
+            <Link href="/locations" className="mt-3 inline-block text-sm font-medium text-[var(--accent-color)] hover:text-[var(--accent-hover)]">
               Service areas →
             </Link>
           </div>
           <div>
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">WhatsApp first</p>
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">WhatsApp first</p>
             <p className="mt-3 text-[1.02rem] leading-7 text-slate-700">
               Message before you visit so we confirm documents, timing and the right service path.
             </p>
@@ -128,16 +128,16 @@ export default function LocalSupportExperience() {
               href={wa("Hello Triumphant HQ — I need local support in Ibadan.")}
               target="_blank"
               rel="noreferrer"
-              className="mt-3 inline-block text-sm font-medium text-blue-600 hover:text-blue-800"
+              className="mt-3 inline-block text-sm font-medium text-[var(--accent-color)] hover:text-[var(--accent-hover)]"
             >
               {siteIdentity.phoneDisplay} →
             </a>
           </div>
           <div>
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">Email</p>
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Email</p>
             <a
               href={`mailto:${siteIdentity.email}`}
-              className="mt-3 block text-[1.02rem] font-medium text-slate-950 transition hover:text-blue-700"
+              className="mt-3 block text-[1.02rem] font-medium text-slate-950 transition hover:text-[var(--accent-color)]"
             >
               {siteIdentity.email}
             </a>
@@ -250,20 +250,23 @@ export default function LocalSupportExperience() {
                 Tell us what you need. We will confirm requirements and walk you through the next step without the
                 usual confusion.
               </p>
-              <a
-                className="button button-primary mt-10"
-                href={wa("Hello Triumphant HQ — I need BVN enrolment, recovery or card printing support.")}
-                target="_blank"
-                rel="noreferrer"
-              >
-                WhatsApp for BVN support
-              </a>
+              <div className="button-row mt-10">
+                <a
+                  className="button button-primary"
+                  href={wa("Hello Triumphant HQ — I need BVN enrolment, recovery or card printing support.")}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  WhatsApp for BVN support
+                  <span className="button-arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
             </div>
 
-            <div className="grid gap-8 border-l border-blue-300/70 pl-6 sm:pl-8">
+            <div className="grid gap-8 border-l border-blue-200/80 pl-6 sm:pl-8">
               {bvnServices.map((item, index) => (
                 <div key={item.title}>
-                  <span className="font-mono text-[0.7rem] font-bold tracking-[0.14em] text-blue-600">
+                  <span className="font-mono text-[0.7rem] font-bold tracking-[0.14em] text-[var(--accent-color)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3 className="font-display mt-2 text-[1.2rem] font-bold tracking-[-0.025em] text-slate-950">
@@ -352,12 +355,13 @@ export default function LocalSupportExperience() {
             <h2>Tell us if you need NIN or BVN help.</h2>
             <p>Send a short WhatsApp message. We will confirm the next step, documents and timing.</p>
           </div>
-          <div className="button-row">
+          <div className="button-row lg:justify-end">
             <a className="button button-primary" href={wa("Hello Triumphant HQ — I need NIN support.")} target="_blank" rel="noreferrer">
               WhatsApp NIN
+              <span className="button-arrow" aria-hidden="true">→</span>
             </a>
             <a
-              className="button button-secondary"
+              className="button button-ghost"
               href={wa("Hello Triumphant HQ — I need BVN support.")}
               target="_blank"
               rel="noreferrer"

@@ -41,23 +41,23 @@ export default function ContactPage() {
       <section className="section-shell !pt-0">
         <div className="grid gap-8 border-y border-slate-200 py-10 sm:grid-cols-3">
           <div>
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">Visit</p>
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Visit</p>
             <p className="mt-3 text-[1.02rem] leading-7 text-slate-700">{formattedNapAddress}</p>
           </div>
           <div>
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">Email</p>
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Email</p>
             <a
               href={`mailto:${siteIdentity.email}`}
-              className="mt-3 block text-[1.02rem] font-medium text-slate-950 transition hover:text-blue-700"
+              className="mt-3 block text-[1.02rem] font-medium text-slate-950 transition hover:text-[var(--accent-color)]"
             >
               {siteIdentity.email}
             </a>
           </div>
           <div>
-            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">Phone / WhatsApp</p>
+            <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Phone / WhatsApp</p>
             <a
               href={`tel:${siteIdentity.phoneE164}`}
-              className="mt-3 block text-[1.02rem] font-medium text-slate-950 transition hover:text-blue-700"
+              className="mt-3 block text-[1.02rem] font-medium text-slate-950 transition hover:text-[var(--accent-color)]"
             >
               {siteIdentity.phoneDisplay}
             </a>
@@ -65,7 +65,7 @@ export default function ContactPage() {
               href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello Triumphant HQ — I have a project enquiry.")}`}
               target="_blank"
               rel="noreferrer"
-              className="mt-1 block text-[0.95rem] font-medium text-blue-600 transition hover:text-blue-800"
+              className="mt-1 block text-[0.95rem] font-medium text-[var(--accent-color)] transition hover:text-[var(--accent-hover)]"
             >
               Message on WhatsApp →
             </a>

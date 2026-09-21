@@ -1179,3 +1179,29 @@ main {
 ::-webkit-scrollbar-track { background: var(--bg-darker); }
 ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-hero-ken,
+  .animate-fade-in-up,
+  .animate-fade-in-up-delay-1,
+  .animate-fade-in-up-delay-2,
+  .animate-fade-in-up-delay-3,
+  .animate-fade-in-up-delay-4,
+  .animate-shimmer,
+  .animate-glow-pulse,
+  .animate-gradient-x {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+

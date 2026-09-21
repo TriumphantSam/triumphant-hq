@@ -481,7 +481,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
   const quickActions = getAvailableActions(product).filter((item) =>
     item.action === "approve_for_publish" || item.action === "request_revision"
   );
-  const priorityColor = priority === "urgent" ? "#ef4444" : priority === "high" ? "#00CCFF" : "rgba(255,255,255,0.28)";
+  const priorityColor = priority === "urgent" ? "#ef4444" : priority === "high" ? "#1a8fd4" : "rgba(15,23,42,0.28)";
 
   return (
     <div style={{
@@ -575,7 +575,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
               key={a.action}
               onClick={() => onQuickAction(a.action, product)}
               disabled={actionPending !== null}
-              style={{ padding: "0.38rem 0.7rem", background: "#64748b", border: "1px solid #64748b", borderRadius: "6px", color: actionPending === a.action ? "#00CCFF" : "#64748b", fontSize: "0.65rem", fontWeight: 600, cursor: actionPending ? "wait" : "pointer" }}>
+              style={{ padding: "0.38rem 0.7rem", background: "rgba(15,23,42,0.05)", border: "1px solid rgba(15,23,42,0.12)", borderRadius: "6px", color: actionPending === a.action ? "#075ee5" : "var(--text-primary)", fontSize: "0.65rem", fontWeight: 600, cursor: actionPending ? "wait" : "pointer" }}>
               {actionPending === a.action ? "Working…" : a.label}
             </button>
           ))}
@@ -749,9 +749,9 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
           <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: "1.75rem" }}>
               <div>
-                <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(0,102,255,0.08)", border: "1px solid rgba(0,102,255,0.25)", borderRadius: "100px", padding: "0.3rem 0.9rem", marginBottom: "0.85rem" }}>
-                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#00CCFF", boxShadow: "0 0 6px #00CCFF", display: "inline-block" }} />
-                  <span style={{ color: "#0077b8", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Internal — Digital Forge Command Center</span>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "rgba(7,94,229,0.08)", border: "1px solid rgba(7,94,229,0.22)", borderRadius: "100px", padding: "0.3rem 0.9rem", marginBottom: "0.85rem" }}>
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
+                  <span style={{ color: "#075ee5", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>Internal — Digital Forge Command Center</span>
                 </div>
                 <h1 style={{ fontSize: "clamp(1.7rem, 4vw, 2.6rem)", fontWeight: 900, color: "var(--text-primary)", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "0.4rem" }}>
                   Approval Queue &amp; Launch Dashboard
@@ -780,7 +780,7 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
             {/* Summary cards */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "0.75rem", marginBottom: "1.25rem" }}>
               {[
-                { label: "Total",             value: counts.total,    color: "#0066FF" },
+                { label: "Total",             value: counts.total,    color: "#075ee5" },
                 { label: "Queued for Review", value: counts.review,   color: "#f59e0b" },
                 { label: "Needs Revision",    value: counts.revision, color: "#f97316" },
                 { label: "Approved",          value: counts.approved, color: "#0077b8" },
@@ -808,9 +808,9 @@ export default function ApprovalQueueDashboard({ products, funnels }: { products
                     style={{
                       padding: "0.4rem 0.85rem", borderRadius: "7px", fontSize: "0.75rem", fontWeight: 700,
                       cursor: "pointer", letterSpacing: "0.06em", border: "none",
-                      background: activeView === v.id ? "rgba(0,102,255,0.2)" : "transparent",
-                      color: activeView === v.id ? "#00CCFF" : "#64748b",
-                      outline: activeView === v.id ? "1px solid rgba(0,102,255,0.3)" : "none",
+                      background: activeView === v.id ? "rgba(7,94,229,0.1)" : "transparent",
+                      color: activeView === v.id ? "#075ee5" : "#64748b",
+                      outline: activeView === v.id ? "1px solid rgba(7,94,229,0.3)" : "none",
                     }}>
                     {v.label}
                   </button>

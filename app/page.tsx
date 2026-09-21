@@ -173,7 +173,7 @@ export default function Home() {
               </div>
             </Reveal>
             <Reveal variant="right" delayMs={100}>
-              <div className="relative aspect-[4/5] overflow-hidden sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[520px]">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-slate-200/80 shadow-sm sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[520px]">
                 <Image
                   src="/images/home-outcomes.png"
                   alt="Modern workspace with a laptop open to a clean digital dashboard"
@@ -234,12 +234,15 @@ export default function Home() {
                 A practical first view of technical health, search signals and priority opportunities—without a retainer
                 commitment.
               </p>
-              <div className="mt-10">
+              <div className="button-row mt-10">
                 <Link className="button button-primary" href="/seo-snapshot">
                   Run my free snapshot
                   <span className="button-arrow" aria-hidden="true">
                     →
                   </span>
+                </Link>
+                <Link className="button button-secondary" href="/services/seo">
+                  Explore SEO service
                 </Link>
               </div>
             </Reveal>

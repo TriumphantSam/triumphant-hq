@@ -10,18 +10,18 @@ export const metadata = {
 const PRICE_NGN = 5000;
 
 const CATEGORY_COLOR: Record<string, string> = {
-  "AI Systems": "#0066FF",
+  "AI Systems": "#075ee5",
   "Workflow Design": "#7c3aed",
-  "Digital Products": "#00CCFF",
+  "Digital Products": "#1a8fd4",
   "Social Media Growth & Monetization": "#f59e0b",
   "agentic AI solutions": "#10b981",
   "audiobooks and audio products": "#ec4899",
   "Creator Content Systems": "#f97316",
-  "AI skills courses for non-technical professionals": "#0066FF",
+  "AI skills courses for non-technical professionals": "#075ee5",
   "creator content systems": "#f97316",
   "Notion templates": "#7c3aed",
-  "AI workflow playbooks": "#0066FF",
-  "AI skills courses": "#0066FF",
+  "AI workflow playbooks": "#075ee5",
+  "AI skills courses": "#075ee5",
   "AI productivity tools": "#10b981",
   "workflow automations": "#7c3aed",
   "AI Tools and Prompts": "#10b981",
@@ -30,7 +30,7 @@ const CATEGORY_COLOR: Record<string, string> = {
 };
 
 function getColor(category: string): string {
-  return CATEGORY_COLOR[category] ?? "#0066FF";
+  return CATEGORY_COLOR[category] ?? "#075ee5";
 }
 
 /** Returns first 3 meaningful words of a title for the cover tile */
@@ -163,8 +163,8 @@ export default async function DigitalForgeProductsPage() {
                 alignItems: "center",
                 gap: "0.6rem",
                 padding: "0.5rem 1rem",
-                background: "rgba(0,204,255,0.08)",
-                border: "1px solid rgba(0,204,255,0.2)",
+                background: "rgba(7,94,229,0.08)",
+                border: "1px solid rgba(7,94,229,0.2)",
                 borderRadius: "999px",
                 whiteSpace: "nowrap",
               }}
@@ -174,14 +174,14 @@ export default async function DigitalForgeProductsPage() {
                   width: 8,
                   height: 8,
                   borderRadius: "50%",
-                  background: "#00CCFF",
+                  background: "#075ee5",
                   display: "inline-block",
                   flexShrink: 0,
                 }}
               />
               <span
                 style={{
-                  color: "#0077b8",
+                  color: "#075ee5",
                   fontSize: "0.78rem",
                   fontWeight: 700,
                   letterSpacing: "0.1em",

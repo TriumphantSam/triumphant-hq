@@ -99,15 +99,15 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
 
   // Try to determine a "category color"
   const CATEGORY_ACCENT: Record<string, string> = {
-    "AI Systems": "#0066FF",
+    "AI Systems": "#075ee5",
     "Workflow Design": "#7c3aed",
-    "Digital Products": "#00CCFF",
+    "Digital Products": "#1a8fd4",
     "Social Media Growth & Monetization": "#f59e0b",
     "agentic AI solutions": "#10b981",
     "audiobooks and audio products": "#ec4899",
     "Creator Content Systems": "#f97316",
   };
-  const accent = CATEGORY_ACCENT[product.category] ?? "#0066FF";
+  const accent = CATEGORY_ACCENT[product.category] ?? "#075ee5";
 
   return (
     <div className="min-h-screen pb-24">

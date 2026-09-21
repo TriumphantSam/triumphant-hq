@@ -6,26 +6,30 @@ type Testimonial = {
   quote: string;
   name: string;
   role: string;
+  company: string;
 };
 
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "Triumphant HQ brought clarity to the project from the first conversation. The final experience felt considered, professional and much easier for our customers to use.",
-    name: "Chinonso E.",
-    role: "Business Owner",
+      "Triumphant HQ brought clarity to our digital systems from the very first conversation. The final experience felt considered, fast, and significantly easier for our patients and partners to navigate.",
+    name: "Dr. Seyi O.",
+    role: "Clinical Director",
+    company: "Absolute Wellness & Medical",
   },
   {
     quote:
-      "The implementation order was clear and practical. Instead of another report, we had a partner who could explain the priorities and execute the technical work.",
+      "The implementation order was practical and disciplined. Instead of another advisory deck, we had an accountable partner who could translate growth strategy into clean Next.js engineering.",
     name: "Amara O.",
-    role: "Marketing Lead",
+    role: "Head of Operations",
+    company: "Precision Agriculture Partner",
   },
   {
     quote:
-      "The automation setup gave our small team a process we could actually maintain. Follow-up became consistent, and we spend less time moving information manually.",
+      "The automation and portal integration gave our team a workflow we can actually sustain. Lead response time dropped to minutes, and we no longer waste hours moving data by hand.",
     name: "Tunde A.",
-    role: "Founder, Service Business",
+    role: "Managing Director",
+    company: "Regional Logistics & Services",
   },
 ];
 
@@ -61,7 +65,9 @@ export default function Testimonials() {
             </p>
             <footer className="mt-8">
               <p className="text-sm font-bold text-slate-950">{active.name}</p>
-              <p className="mt-1 text-xs tracking-wide text-slate-500">{active.role}</p>
+              <p className="mt-1 text-xs tracking-wide text-slate-500">
+                {active.role} · <span className="font-semibold text-slate-700">{active.company}</span>
+              </p>
             </footer>
           </blockquote>
 

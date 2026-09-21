@@ -8,7 +8,7 @@ import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
 import Testimonials from "@/components/Testimonials";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
-import { agencyServices } from "@/lib/services";
+import { agencyServices, discoveryCallUrl } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -39,6 +39,20 @@ export default function ServicesPage() {
           Bring us the growth challenge, the operational friction or the idea that needs to become real. Based in
           Ibadan, we combine strategy and hands-on delivery across four core disciplines.
         </p>
+        <div className="button-row mt-8">
+          <a
+            className="button button-primary"
+            href={discoveryCallUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Book a discovery call
+            <span className="button-arrow" aria-hidden="true">→</span>
+          </a>
+          <Link className="button button-secondary" href="/contact">
+            Send a project brief
+          </Link>
+        </div>
       </header>
 
       <div className="relative h-[42vw] min-h-[240px] max-h-[480px] w-full overflow-hidden">

@@ -29,11 +29,11 @@ export async function generateMetadata({
 }
 
 const categoryColors: Record<string, string> = {
-    'AI & Automation': '#00ff88',
-    'Digital Products': '#00ccff',
+    'AI & Automation': '#059669',
+    'Digital Products': '#1a8fd4',
     'Sales & Funnels': '#f59e0b',
     'Workflow Design': '#a855f7',
-    'Market Intelligence': '#ff6b6b',
+    'Market Intelligence': '#e11d48',
     'General': '#f59e0b',
 };
 

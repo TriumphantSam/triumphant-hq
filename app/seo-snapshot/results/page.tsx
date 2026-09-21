@@ -331,8 +331,8 @@ export default function SeoResultsPage() {
                 <div
                   style={{
                     background: '#ffffff',
-                    border: '1px solid rgba(0,204,255,0.2)',
-                    borderTop: '3px solid #00CCFF',
+                    border: '1px solid rgba(7,94,229,0.18)',
+                    borderTop: '3px solid #075ee5',
                     borderRadius: 24,
                     padding: '1.8rem',
                   }}
@@ -341,12 +341,12 @@ export default function SeoResultsPage() {
                     <div
                       style={{
                         width: 36, height: 36, borderRadius: 10,
-                        background: 'rgba(0,204,255,0.12)',
-                        border: '1px solid rgba(0,204,255,0.25)',
+                        background: 'rgba(7,94,229,0.08)',
+                        border: '1px solid rgba(7,94,229,0.2)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                       }}
                     >
-                      <svg width="18" height="18" fill="none" stroke="#00CCFF" strokeWidth="2" viewBox="0 0 24 24">
+                      <svg width="18" height="18" fill="none" stroke="#075ee5" strokeWidth="2" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
@@ -549,8 +549,8 @@ export default function SeoResultsPage() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
               {[
-                { title: 'Technical SEO Foundation', desc: 'Schema markup, crawlability, Core Web Vitals, and all the technical signals Google and AI tools use to evaluate your site.', accent: '#0066FF' },
-                { title: 'AI Search Optimisation', desc: 'Structured content formats, E-E-A-T signals, and the specific attributes that determine whether your site gets cited in AI Overviews and Perplexity.', accent: '#00CCFF' },
+                { title: 'Technical SEO Foundation', desc: 'Schema markup, crawlability, Core Web Vitals, and all the technical signals Google and AI tools use to evaluate your site.', accent: '#075ee5' },
+                { title: 'AI Search Optimisation', desc: 'Structured content formats, E-E-A-T signals, and the specific attributes that determine whether your site gets cited in AI Overviews and Perplexity.', accent: '#1a8fd4' },
                 { title: 'Content and Authority Building', desc: 'Strategic content that earns clicks, builds topical authority, and positions your business as the expert answer in your niche.', accent: '#8B5CF6' },
                 { title: 'Ongoing Monitoring', desc: 'Regular health checks, rank tracking, and implementation support so your improvements stick and compound over time.', accent: '#22c55e' },
               ].map(item => (

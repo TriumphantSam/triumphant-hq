@@ -38,11 +38,11 @@ export default async function FunnelOptInPage(props: { params: Promise<{ slug: s
                     {/* Eyebrow pill */}
                     <div style={{
                         display: 'inline-flex', alignItems: 'center', gap: '8px',
-                        background: 'rgba(0,204,255,0.08)', border: '1px solid rgba(0,204,255,0.25)',
+                        background: 'rgba(7, 94, 229, 0.08)', border: '1px solid rgba(7, 94, 229, 0.22)',
                         borderRadius: '100px', padding: '6px 18px', marginBottom: '32px',
                     }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#00CCFF', boxShadow: '0 0 8px #00CCFF', display: 'inline-block' }} />
-                        <span style={{ color: '#0077b8', fontSize: '11px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#075ee5', display: 'inline-block' }} />
+                        <span style={{ color: '#075ee5', fontSize: '11px', fontWeight: 800, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
                             {pages.optIn.heroEyebrow}
                         </span>
                     </div>
@@ -169,12 +169,12 @@ export default async function FunnelOptInPage(props: { params: Promise<{ slug: s
 
                     {/* Why now */}
                     <div style={{
-                        background: 'linear-gradient(135deg, rgba(0,204,255,0.06) 0%, rgba(0,102,255,0.04) 100%)',
-                        border: '1px solid rgba(0,204,255,0.15)', borderRadius: '16px', padding: '36px',
-                        borderLeft: '4px solid #00CCFF',
+                        background: 'rgba(7, 94, 229, 0.04)',
+                        border: '1px solid rgba(7, 94, 229, 0.15)', borderRadius: '16px', padding: '36px',
+                        borderLeft: '4px solid #075ee5',
                         textAlign: 'left',
                     }}>
-                        <p style={{ color: '#0077b8', fontSize: '11px', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '12px' }}>Why Right Now</p>
+                        <p style={{ color: '#075ee5', fontSize: '11px', fontWeight: 800, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '12px' }}>Why Right Now</p>
                         <p style={{ color: '#334155', fontSize: '1.1rem', lineHeight: 1.7, margin: 0 }}>{pages.optIn.whyNow}</p>
                     </div>
                 </div>

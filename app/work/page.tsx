@@ -6,6 +6,7 @@ import ClientLogos from "@/components/marketing/ClientLogos";
 import CTABand from "@/components/marketing/CTABand";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { caseStudies } from "@/lib/case-studies";
+import { discoveryCallUrl } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -76,9 +77,15 @@ export default function WorkPage() {
               Tell us what is limiting speed, visibility or conversions.
             </h2>
           </div>
-          <Link className="button button-primary" href="/contact">
-            Start a project enquiry
-          </Link>
+          <div className="button-row">
+            <Link className="button button-primary" href="/contact">
+              Start a project enquiry
+              <span className="button-arrow" aria-hidden="true">→</span>
+            </Link>
+            <a className="button button-secondary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
+              Book a call
+            </a>
+          </div>
         </div>
       </section>
 

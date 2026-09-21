@@ -9,9 +9,9 @@ type ProductCatalogClientProps = {
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  "AI Systems": "#0066FF",
+  "AI Systems": "#075ee5",
   "Workflow Design": "#7c3aed",
-  "Digital Products": "#00CCFF",
+  "Digital Products": "#1a8fd4",
   "Social Media Growth & Monetization": "#f59e0b",
   "agentic AI solutions": "#10b981",
   "audiobooks and audio products": "#ec4899",
@@ -19,7 +19,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 function getCategoryColor(category: string): string {
-  return CATEGORY_COLORS[category] ?? "#0066FF";
+  return CATEGORY_COLORS[category] ?? "#075ee5";
 }
 
 export default function ProductCatalogClient({ products }: ProductCatalogClientProps) {
@@ -171,7 +171,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                 fontSize: "0.95rem",
                 transition: "border-color 0.2s"
               }}
-              onFocus={(e) => e.target.style.borderColor = "#00CCFF"}
+              onFocus={(e) => e.target.style.borderColor = "var(--accent-color)"}
               onBlur={(e) => e.target.style.borderColor = "rgba(15,23,42,0.11)"}
             />
           </div>
@@ -189,7 +189,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                   border: "1px solid rgba(15,23,42,0.11)",
                   borderRadius: "8px",
                   padding: "0.7rem 2.5rem 0.7rem 1rem",
-                  color: activeCategory === "All" ? "#00CCFF" : getCategoryColor(activeCategory),
+                  color: activeCategory === "All" ? "var(--accent-color)" : getCategoryColor(activeCategory),
                   outline: "none",
                   fontSize: "0.9rem",
                   fontWeight: 600,
@@ -213,7 +213,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                   width: "100%",
                   minWidth: "240px",
                   background: "#ffffff",
-                  border: "1px solid rgba(0,204,255,0.2)",
+                  border: "1px solid rgba(7,94,229,0.2)",
                   borderRadius: "10px",
                   overflow: "hidden",
                   boxShadow: "0 10px 40px rgba(15,23,42,0.12)",
@@ -223,7 +223,7 @@ export default function ProductCatalogClient({ products }: ProductCatalogClientP
                 }}>
                   {categories.map(cat => {
                     const isActive = activeCategory === cat;
-                    const catColor = cat === "All" ? "#00CCFF" : getCategoryColor(cat);
+                    const catColor = cat === "All" ? "var(--accent-color)" : getCategoryColor(cat);
                     return (
                       <button
                         key={cat}

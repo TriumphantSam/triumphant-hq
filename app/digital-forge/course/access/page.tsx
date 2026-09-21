@@ -98,13 +98,13 @@ export default function DigitalForgeCourseAccessPage() {
               gap: "0.55rem",
               padding: "0.42rem 1rem",
               borderRadius: 999,
-              border: "1px solid rgba(0,102,255,0.35)",
-              background: "rgba(0,102,255,0.1)",
+              border: "1px solid rgba(7,94,229,0.25)",
+              background: "rgba(7,94,229,0.08)",
               marginBottom: "1.5rem",
             }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#0077b8", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
+            <span style={{ color: "#075ee5", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
               Course Access — Waitlist Open
             </span>
           </div>
@@ -224,38 +224,32 @@ export default function DigitalForgeCourseAccessPage() {
               <div
                 key={item.title}
                 style={{
-                  background: item.featured ? "rgba(0,102,255,0.1)" : "#ffffff",
-                  border: item.featured ? "1px solid rgba(0,102,255,0.32)" : "1px solid rgba(15,23,42,0.11)",
-                  borderTop: item.featured ? "3px solid #0066FF" : undefined,
+                  background: item.featured ? "rgba(7,94,229,0.06)" : "#ffffff",
+                  border: item.featured ? "1px solid rgba(7,94,229,0.25)" : "1px solid rgba(15,23,42,0.11)",
+                  borderTop: item.featured ? "3px solid #075ee5" : undefined,
                   borderRadius: 22,
                   padding: "1.4rem",
                 }}
               >
-                <p style={{ color: item.featured ? "#00CCFF" : "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem", fontWeight: 700 }}>
+                <p style={{ color: item.featured ? "#075ee5" : "#64748b", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.4rem", fontWeight: 700 }}>
                   {item.status}
                 </p>
                 <h2 style={{ color: "var(--text-primary)", fontWeight: 800, fontSize: "1.15rem", marginBottom: "0.75rem" }}>{item.title}</h2>
                 <p style={{ color: "#334155", lineHeight: 1.8, fontSize: "0.92rem", marginBottom: "1.2rem" }}>{item.description}</p>
                 <Link
                   href={item.href}
+                  className={item.featured ? "button button-primary" : "button button-secondary"}
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
-                    padding: "0.9rem 1.2rem",
+                    padding: "0.85rem 1.3rem",
                     borderRadius: 10,
                     textDecoration: "none",
-                    fontWeight: 800,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.08em",
-                    fontSize: "0.8rem",
-                    color: "var(--text-primary)",
-                    background: item.featured
-                      ? "linear-gradient(135deg, #0066FF, #0044CC)"
-                      : "rgba(255,255,255,0.07)",
-                    border: item.featured ? "none" : "1px solid rgba(15,23,42,0.11)",
+                    fontWeight: 700,
+                    fontSize: "0.82rem",
                   }}
                 >
-                  {item.cta}
+                  {item.cta}<span className="button-arrow" aria-hidden="true" style={{ marginLeft: "0.4rem" }}>→</span>
                 </Link>
               </div>
             ))}

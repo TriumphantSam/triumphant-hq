@@ -18,11 +18,14 @@ export default function CTABand({
           <h2>{title}</h2>
           <p>{description}</p>
         </div>
-        <div className="button-row">
+        <div className="button-row lg:justify-end">
           <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
             Book a discovery call
+            <span className="button-arrow" aria-hidden="true">
+              →
+            </span>
           </a>
-          <Link className="button button-secondary" href="/contact">
+          <Link className="button button-ghost" href="/contact">
             Send a project brief
           </Link>
         </div>

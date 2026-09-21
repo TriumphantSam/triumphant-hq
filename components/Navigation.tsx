@@ -47,8 +47,8 @@ export default function Navigation() {
       }`}
     >
       <div className="mx-auto flex h-[72px] max-w-[1240px] items-center justify-between px-5 lg:px-8">
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--accent-color)] transition-colors group-hover:bg-[var(--accent-hover)]">
+        <Link href="/" className="group flex items-center gap-3" aria-label="Triumphant HQ">
+          <div className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--accent-color)] transition-transform duration-200 group-hover:scale-105 group-hover:bg-[var(--accent-hover)] shadow-sm">
             <span className="font-display text-base font-bold text-white">T</span>
           </div>
           <span
@@ -56,7 +56,7 @@ export default function Navigation() {
               overHero ? "text-white" : "text-[var(--text-primary)]"
             }`}
           >
-            Triumphant<span className={overHero ? "text-[#8bb6ff]" : "text-[var(--accent-color)]"}>HQ</span>
+            Triumphant<span className={overHero ? "text-[#7eb0ff]" : "text-[var(--accent-color)]"}>HQ</span>
           </span>
         </Link>
 
@@ -81,13 +81,13 @@ export default function Navigation() {
               <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
                 <Link
                   href="/local-support"
-                  className="group/item flex gap-3.5 border-b border-slate-100 bg-blue-50/50 px-4 py-3.5 transition-colors hover:bg-blue-50"
+                  className="group/item flex gap-3.5 border-b border-slate-100 bg-blue-50/40 px-4 py-3.5 transition-colors hover:bg-blue-50/80"
                 >
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-blue-600 font-mono text-[10px] font-bold text-white">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-[var(--accent-color)] font-mono text-[10px] font-bold text-white">
                     01
                   </span>
                   <span>
-                    <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
+                    <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-[var(--accent-color)]">
                       Local Support
                     </span>
                     <span className="mt-0.5 block text-xs leading-5 text-slate-500">
@@ -101,11 +101,11 @@ export default function Navigation() {
                     href={`/services/${service.slug}`}
                     className="group/item flex gap-3.5 border-b border-slate-100 px-4 py-3.5 transition-colors hover:bg-slate-50"
                   >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-blue-700">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-[var(--accent-color)] transition-colors group-hover/item:bg-[var(--accent-color)] group-hover/item:text-white">
                       {String(i + 2).padStart(2, "0")}
                     </span>
                     <span>
-                      <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
+                      <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-[var(--accent-color)]">
                         {service.shortTitle}
                       </span>
                       <span className="mt-0.5 block text-xs leading-5 text-slate-500">{service.promise}</span>
@@ -116,11 +116,11 @@ export default function Navigation() {
                   href="/ongoing-support"
                   className="group/item flex gap-3.5 px-4 py-3.5 transition-colors hover:bg-slate-50"
                 >
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-blue-700">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-[var(--accent-color)] transition-colors group-hover/item:bg-[var(--accent-color)] group-hover/item:text-white">
                     06
                   </span>
                   <span>
-                    <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
+                    <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-[var(--accent-color)]">
                       Ongoing Support
                     </span>
                     <span className="mt-0.5 block text-xs leading-5 text-slate-500">
@@ -173,11 +173,11 @@ export default function Navigation() {
                     href={item.href}
                     className={`group/item flex gap-3.5 px-4 py-3.5 transition-colors hover:bg-slate-50 ${index < resources.length - 1 ? "border-b border-slate-100" : ""}`}
                   >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-blue-700 transition-colors group-hover/item:bg-blue-600 group-hover/item:text-white">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-[var(--accent-color)] transition-colors group-hover/item:bg-[var(--accent-color)] group-hover/item:text-white">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <span>
-                      <span className="relative grid text-sm font-semibold text-slate-950 group-hover/item:text-blue-600">
+                      <span className="relative grid text-sm font-semibold text-slate-950 group-hover/item:text-[var(--accent-color)]">
                         <span className={`col-start-1 row-start-1 transition-opacity duration-200 ${item.hoverLabel ? "group-hover/item:opacity-0" : ""}`}>
                           {item.label}
                         </span>
@@ -214,9 +214,12 @@ export default function Navigation() {
           <Link
             href={discoveryCallUrl}
             target="_blank"
-            className="button button-primary !min-h-10 !px-4 !py-2 !text-[0.7rem]"
+            className="button button-primary !min-h-10 !px-4 !py-2 !text-[0.72rem]"
           >
             Book a call
+            <span className="button-arrow" aria-hidden="true">
+              →
+            </span>
           </Link>
         </div>
 
@@ -244,7 +247,7 @@ export default function Navigation() {
               Home
             </Link>
             <p className="mobile-nav-label">Services</p>
-            <Link href="/local-support" className="mobile-nav-sublink font-semibold text-blue-700" onClick={() => setMobileOpen(false)}>
+            <Link href="/local-support" className="mobile-nav-sublink font-semibold text-[var(--accent-color)]" onClick={() => setMobileOpen(false)}>
               01 · Local Support
             </Link>
             {agencyServices.map((service, index) => (
@@ -296,6 +299,9 @@ export default function Navigation() {
               onClick={() => setMobileOpen(false)}
             >
               Book a discovery call
+              <span className="button-arrow" aria-hidden="true">
+                →
+              </span>
             </a>
           </div>
         </div>

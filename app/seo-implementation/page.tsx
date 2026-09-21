@@ -92,9 +92,9 @@ export default function SeoResultsPage() {
     <div className="bg-[var(--bg-dark)] min-h-screen pb-32">
       <div className="bg-[var(--bg-darker)] border-b border-slate-200/60 px-6 py-12">
         <div className="max-w-screen-lg mx-auto">
-          <p className="text-xs text-[#0066FF] font-bold uppercase tracking-widest mb-2">Analysis complete</p>
+          <p className="text-xs text-[var(--accent-color)] font-bold uppercase tracking-widest mb-2">Analysis complete</p>
           <h1 className="text-3xl sm:text-4xl font-black text-[var(--text-primary)] mb-1">
-            SEO Snapshot — <span className="text-[#0066FF]">{result.domain}</span>
+            SEO Snapshot — <span className="text-[var(--accent-color)]">{result.domain}</span>
           </h1>
           <p className="text-[var(--text-secondary)] leading-relaxed max-w-2xl mt-2">{result.summary}</p>
         </div>

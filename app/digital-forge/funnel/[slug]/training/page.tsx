@@ -24,7 +24,7 @@ export default async function FunnelTrainingPage(props: { params: Promise<{ slug
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#00CCFF', boxShadow: '0 0 8px #00CCFF' }} />
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#075ee5' }} />
                     <span style={{ color: '#64748b', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                         Training Room
                     </span>

@@ -6,7 +6,7 @@ function CaseStudyTeaser({ study }: { study: CaseStudy }) {
   return (
     <Link
       href={`/work/${study.slug}`}
-      className="group grid gap-5 border-t border-slate-200 py-8 transition first:border-t-0 first:pt-0 hover:opacity-95 sm:grid-cols-[140px_1fr] sm:items-center sm:gap-8"
+      className="group grid gap-5 border-t border-slate-200/80 py-8 transition first:border-t-0 first:pt-0 sm:grid-cols-[160px_1fr] sm:items-center sm:gap-10"
     >
       <div className="relative flex h-16 items-center sm:h-20">
         <Image
@@ -14,17 +14,17 @@ function CaseStudyTeaser({ study }: { study: CaseStudy }) {
           alt={`${study.client} logo`}
           width={160}
           height={56}
-          className="max-h-12 w-auto object-contain object-left sm:max-h-14"
+          className="max-h-12 w-auto object-contain object-left grayscale opacity-65 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 sm:max-h-14"
         />
       </div>
       <div>
-        <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-blue-600">{study.service}</p>
-        <h3 className="font-display mt-2 text-[clamp(1.2rem,2vw,1.55rem)] font-bold tracking-[-0.03em] text-slate-950 group-hover:text-blue-700">
+        <p className="card-eyebrow">{study.service}</p>
+        <h3 className="font-display mt-2 text-[clamp(1.25rem,2vw,1.6rem)] font-bold tracking-[-0.03em] text-slate-950 transition-colors group-hover:text-[var(--accent-color)]">
           {study.client}
         </h3>
         <p className="mt-2 max-w-2xl text-[0.98rem] leading-7 text-slate-600">{study.summary}</p>
-        <span className="mt-4 inline-flex text-sm font-semibold text-blue-600">
-          View case study <span aria-hidden="true">→</span>
+        <span className="text-link group/link !mt-0 !pt-3.5 inline-flex">
+          View case study <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">→</span>
         </span>
       </div>
     </Link>

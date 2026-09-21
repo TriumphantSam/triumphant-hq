@@ -263,7 +263,7 @@ export default async function DigitalForgeCheckoutConfirmedPage({ searchParams }
                       gap: "0.5rem",
                     }}
                   >
-                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF" }} /> {isLaunchBundle ? "Start using the bundle today" : "Your first 4 steps after delivery"}
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5" }} /> {isLaunchBundle ? "Start using the bundle today" : "Your first 4 steps after delivery"}
                   </p>
                   <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
                     {startSteps.map((step) => (

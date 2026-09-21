@@ -50,9 +50,9 @@ const OFFER_STEPS = [
     title: "Watch the Free Training",
     description: "A focused class that shows you the exact framework, the mistakes to avoid, and why this opportunity is still wide open for you.",
     price: "Free",
-    accent: "#00CCFF",
-    accentBg: "rgba(0,204,255,0.05)",
-    accentBorder: "rgba(0,204,255,0.2)",
+    accent: "#1a8fd4",
+    accentBg: "rgba(26,143,212,0.06)",
+    accentBorder: "rgba(26,143,212,0.22)",
   },
   {
     step: "03",
@@ -62,9 +62,9 @@ const OFFER_STEPS = [
     description: "The complete business toolkit: guide, prompts, templates, launch assets, and operating documents to turn your idea into an offer.",
     price: "From ₦15,000",
     priceUsd: "From $20",
-    accent: "#0066FF",
-    accentBg: "rgba(0,102,255,0.08)",
-    accentBorder: "rgba(0,102,255,0.3)",
+    accent: "#075ee5",
+    accentBg: "rgba(7,94,229,0.08)",
+    accentBorder: "rgba(7,94,229,0.25)",
   },
   {
     step: "04",
@@ -120,8 +120,8 @@ export default async function DigitalForgePage() {
               marginBottom: "1.6rem",
             }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#0077b8", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
+            <span style={{ color: "#075ee5", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
               Digital Forge by Triumphant HQ
             </span>
           </div>
@@ -486,7 +486,7 @@ export default async function DigitalForgePage() {
                     <p style={{ color: "#334155", lineHeight: 1.75, marginBottom: "1rem" }}>
                       {product.promise}
                     </p>
-                    <span style={{ color: "#0066FF", fontWeight: 800, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                    <span style={{ color: "var(--accent-color)", fontWeight: 800, fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>
                       View Product →
                     </span>
                   </div>
@@ -501,7 +501,7 @@ export default async function DigitalForgePage() {
       <section style={{ paddingBottom: "5rem" }}>
         <div className="max-w-screen-xl px-6 sm:px-10 lg:px-16">
           <div style={{ marginBottom: "2rem" }}>
-            <p style={{ color: "#0077b8", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
+            <p style={{ color: "var(--accent-color)", fontSize: "0.76rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.8rem" }}>
               Everything Available
             </p>
             <h2 style={{ color: "var(--text-primary)", fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 900, lineHeight: 1.1, maxWidth: 600 }}>
@@ -521,7 +521,7 @@ export default async function DigitalForgePage() {
                 eyebrow: "Free Training",
                 title: "How To Build and Sell Your First AI Product Online",
                 description: "Learn the framework, see the mistakes to avoid, and walk away with a concrete next step — free, no strings.",
-                accent: "#00CCFF",
+                accent: "#1a8fd4",
                 cta: "Watch the Training →",
               },
               {
@@ -537,7 +537,7 @@ export default async function DigitalForgePage() {
                 eyebrow: "Flagship System",
                 title: "Digital Forge Side Hustle Starter System",
                 description: "The complete implementation toolkit: guide, prompts, templates, launch assets, and the operating logic to sell your first digital product.",
-                accent: "#0066FF",
+                accent: "#075ee5",
                 cta: "Explore the System →",
               },
               {

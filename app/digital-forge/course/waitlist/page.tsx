@@ -71,13 +71,13 @@ export default function DigitalForgeCourseWaitlistPage() {
               gap: "0.55rem",
               padding: "0.42rem 1rem",
               borderRadius: 999,
-              border: "1px solid rgba(0,102,255,0.35)",
-              background: "rgba(0,102,255,0.1)",
+              border: "1px solid rgba(7,94,229,0.25)",
+              background: "rgba(7,94,229,0.08)",
               marginBottom: "1.5rem",
             }}
           >
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#00CCFF", display: "inline-block" }} />
-            <span style={{ color: "#0077b8", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
+            <span style={{ color: "#075ee5", fontWeight: 700, fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.18em" }}>
               Course Waitlist — Priority Access
             </span>
           </div>

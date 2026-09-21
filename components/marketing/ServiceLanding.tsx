@@ -53,7 +53,7 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
             Looking specifically for Ibadan coverage?{" "}
             <Link
               href={`/services/${service.slug}/ibadan`}
-              className="font-semibold text-blue-600 hover:text-blue-800"
+              className="font-semibold text-[var(--accent-color)] hover:text-[var(--accent-hover)]"
             >
               {service.slug === "seo" ? "SEO in Ibadan" : "Website design in Ibadan"} →
             </Link>
@@ -62,6 +62,7 @@ export default function ServiceLanding({ service }: { service: AgencyService }) 
         <div className="button-row mt-8">
           <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
             Discuss your project
+            <span className="button-arrow" aria-hidden="true">→</span>
           </a>
           {magnet ? (
             <Link className="button button-secondary" href={magnet.href}>

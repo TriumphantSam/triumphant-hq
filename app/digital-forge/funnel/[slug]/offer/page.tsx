@@ -131,10 +131,10 @@ export default async function FunnelOfferPage(props: { params: Promise<{ slug: s
                         }}>
                             <div style={{
                                 width: 36, height: 36, borderRadius: '10px', flexShrink: 0,
-                                background: 'rgba(0,204,255,0.1)', border: '1px solid rgba(0,204,255,0.2)',
+                                background: 'rgba(7,94,229,0.08)', border: '1px solid rgba(7,94,229,0.2)',
                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                             }}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00CCFF" strokeWidth="2.5">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#075ee5" strokeWidth="2.5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                 </svg>
                             </div>
