@@ -49,7 +49,7 @@ export default function Hero() {
           </h1>
 
           <p className="hero-lede animate-fade-in-up-delay-2 mx-auto mt-6 text-[clamp(1.05rem,1.6vw,1.2rem)] leading-relaxed text-white/85">
-            Websites, custom applications, SEO and automation—designed and delivered as one coherent growth system.
+            Websites, custom applications, SEO, automation and much more, designed and delivered as one coherent growth system.
           </p>
 
           <div className="button-row animate-fade-in-up-delay-3 mt-9 justify-center">
