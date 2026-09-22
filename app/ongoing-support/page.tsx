@@ -5,7 +5,7 @@ import CTABand from "@/components/marketing/CTABand";
 import FaqSection from "@/components/marketing/FaqSection";
 import NextStepPanel from "@/components/marketing/NextStepPanel";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
-import { discoveryCallUrl } from "@/lib/services";
+import { projectEnquiryUrl } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -107,7 +107,7 @@ const faqs = [
   {
     question: "How do we get started?",
     answer:
-      "Book a discovery call or send a project enquiry. Share what is live today, what is breaking and what “better” should look like in 90 days.",
+      "Send a project enquiry. Share what is live today, what is breaking and what “better” should look like in 90 days.",
   },
 ];
 
@@ -128,11 +128,11 @@ export default function OngoingSupportPage() {
           reliability—scoped to your priorities, without public price theatre.
         </p>
         <div className="button-row mt-8">
-          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-            Book a discovery call
-          </a>
-          <Link className="button button-secondary" href="/contact">
+          <Link className="button button-primary" href={projectEnquiryUrl}>
             Send a project brief
+          </Link>
+          <Link className="button button-secondary" href="/work">
+            See client work
           </Link>
         </div>
       </header>
@@ -246,7 +246,7 @@ export default function OngoingSupportPage() {
       <CTABand
         eyebrow="Ongoing support"
         title="Ready for a partner who stays after launch?"
-        description="Book a discovery call. We will map the lightest retainer that still protects what matters."
+        description="Send a project brief. We will map the lightest retainer that still protects what matters."
       />
     </div>
   );

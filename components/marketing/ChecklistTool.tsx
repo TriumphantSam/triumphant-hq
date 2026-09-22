@@ -7,7 +7,7 @@ import {
   scoreChecklist,
   type ChecklistMagnet,
 } from "@/lib/lead-magnets";
-import { discoveryCallUrl } from "@/lib/services";
+import { projectEnquiryUrl } from "@/lib/services";
 
 export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
   const [answers, setAnswers] = useState<Record<string, boolean | null>>(
@@ -84,8 +84,8 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
               {band.nextStep}
             </p>
             <div className="button-row mt-10">
-              <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-                Book a discovery call
+              <a className="button button-primary" href={projectEnquiryUrl}>
+                Send a project brief
               </a>
               <Link className="button button-secondary" href={magnet.relatedServiceHref}>
                 Explore {magnet.relatedService}

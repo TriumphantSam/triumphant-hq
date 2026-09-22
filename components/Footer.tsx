@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { agencyServices, discoveryCallUrl, whatsappNumber } from '@/lib/services';
+import { agencyServices, projectEnquiryUrl, whatsappNumber } from '@/lib/services';
 import { formattedNapAddress, siteIdentity } from '@/lib/seo';
 
 const columns = [
@@ -111,12 +111,12 @@ export default function Footer() {
             </address>
 
             <div className="site-footer-ctas flex w-full flex-wrap items-start gap-3">
-              <a href={discoveryCallUrl} target="_blank" rel="noreferrer" className="button button-primary">
-                Book a call
+              <Link href={projectEnquiryUrl} className="button button-primary">
+                Start a project enquiry
                 <span className="button-arrow" aria-hidden="true">→</span>
-              </a>
-              <Link href="/contact" className="button button-secondary">
-                Project enquiry
+              </Link>
+              <Link href="/digital-product" className="button button-secondary">
+                Shop digital products
               </Link>
             </div>
           </div>

@@ -11,6 +11,7 @@ import Reveal from "@/components/marketing/Reveal";
 import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
 import { agencyServices, whatsappNumber } from "@/lib/services";
+import { formatOfferPrice, resolveLaunchBundleOffer } from "@/lib/digital-forge-offers";
 import { buildPageMetadata, locationPages } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -41,9 +42,51 @@ const localWa = (text: string) =>
   `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
 
 export default function Home() {
+  const launchBundle = resolveLaunchBundleOffer();
+
   return (
     <div className="min-h-screen">
       <Hero />
+
+      <section className="section-shell !py-12">
+        <div className="mb-7 max-w-2xl">
+          <p className="eyebrow">Two ways to work with Triumphant HQ</p>
+          <h2 className="font-display mt-4 text-[clamp(1.8rem,3vw,2.6rem)] font-bold tracking-[-0.04em] text-slate-950">
+            Choose the next step that fits your goal.
+          </h2>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          <article className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
+            <p className="eyebrow">For businesses</p>
+            <h3 className="font-display mt-3 text-2xl font-bold tracking-[-0.03em] text-slate-950">
+              Get a website or growth system built for you.
+            </h3>
+            <p className="mt-4 leading-7 text-slate-600">
+              Tell us where customers or operations are getting stuck. We will recommend a focused scope across websites, SEO, software or automation.
+            </p>
+            <div className="button-row mt-7">
+              <Link className="button button-primary" href="/contact">Send a project brief</Link>
+              <Link className="button button-secondary" href="/work">See client work</Link>
+            </div>
+          </article>
+          <article className="rounded-2xl border border-blue-200 bg-blue-50/50 p-7 shadow-sm sm:p-9">
+            <p className="eyebrow">For creators and sellers</p>
+            <h3 className="font-display mt-3 text-2xl font-bold tracking-[-0.03em] text-slate-950">
+              Launch your digital product with ready-made sales assets.
+            </h3>
+            <p className="mt-4 leading-7 text-slate-600">
+              Start with the Digital Product Seller Launch Bundle: WhatsApp scripts, price replies and daily sales posts you can adapt today.
+            </p>
+            <p className="mt-3 font-display text-xl font-bold text-slate-950">
+              {formatOfferPrice(launchBundle.amount, launchBundle.currency)}
+            </p>
+            <div className="button-row mt-7">
+              <Link className="button button-primary" href="/digital-product">See the launch bundle</Link>
+              <Link className="button button-secondary" href="/digital-forge/products">Browse all products</Link>
+            </div>
+          </article>
+        </div>
+      </section>
 
       <section className="section-shell">
         <Reveal className="proof-strip mb-16" stagger>

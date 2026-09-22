@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { AgencyService } from "@/lib/services";
-import { discoveryCallUrl } from "@/lib/services";
+import { projectEnquiryUrl } from "@/lib/services";
 import { serviceFaqs, serviceLeadMagnets } from "@/lib/faqs";
 import { serviceJsonLd } from "@/lib/seo";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
@@ -70,17 +70,17 @@ export default function ServiceLanding({
           </p>
         )}
         <div className="button-row mt-8">
-          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
+          <Link className="button button-primary" href={projectEnquiryUrl}>
             Discuss your project
             <span className="button-arrow" aria-hidden="true">→</span>
-          </a>
+          </Link>
           {magnet ? (
             <Link className="button button-secondary" href={magnet.href}>
               {magnet.cta}
             </Link>
           ) : (
-            <Link className="button button-secondary" href="/contact">
-              Send a project brief
+            <Link className="button button-secondary" href="/work">
+              See client work
             </Link>
           )}
         </div>

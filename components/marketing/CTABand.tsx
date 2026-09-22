@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { discoveryCallUrl } from "@/lib/services";
+import { projectEnquiryUrl } from "@/lib/services";
 
 export default function CTABand({
   eyebrow = "Start a conversation",
@@ -19,14 +19,14 @@ export default function CTABand({
           <p>{description}</p>
         </div>
         <div className="button-row lg:justify-end">
-          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-            Book a discovery call
+          <Link className="button button-primary" href={projectEnquiryUrl}>
+            Send a project brief
             <span className="button-arrow" aria-hidden="true">
               →
             </span>
-          </a>
-          <Link className="button button-ghost" href="/contact">
-            Send a project brief
+          </Link>
+          <Link className="button button-ghost" href="/work">
+            See client work
           </Link>
         </div>
       </div>

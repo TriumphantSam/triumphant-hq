@@ -219,15 +219,25 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
               </div>
 
               <div style={{ borderTop: "1px solid rgba(15,23,42,0.11)", paddingTop: "2rem" }}>
-                <CheckoutClient
-                  offerKey={offer.key}
-                  offerKind={offer.kind}
-                  slug={offer.slug}
-                  title={offer.title}
-                  priceLabel={localPriceLabel}
-                  usdPriceLabel={usdPriceLabel}
-                  hasInternationalCheckout={hasInternationalCheckout}
-                />
+                {offer.deliveryUrl ? (
+                  <CheckoutClient
+                    offerKey={offer.key}
+                    offerKind={offer.kind}
+                    slug={offer.slug}
+                    title={offer.title}
+                    priceLabel={localPriceLabel}
+                    usdPriceLabel={usdPriceLabel}
+                    hasInternationalCheckout={hasInternationalCheckout}
+                  />
+                ) : (
+                  <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 text-slate-800">
+                    <p className="font-bold">This offer is temporarily unavailable.</p>
+                    <p className="mt-2 text-sm leading-6">Please contact us before purchasing. We will confirm when delivery is ready.</p>
+                    <Link className="mt-4 inline-block font-semibold text-blue-700 underline" href="/contact">
+                      Contact Triumphant HQ
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>

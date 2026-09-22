@@ -48,6 +48,12 @@ export async function POST(request: NextRequest) {
     if (!offer) {
       return NextResponse.json({ error: "Offer not found." }, { status: 404 });
     }
+    if (!offer.deliveryUrl) {
+      return NextResponse.json(
+        { error: "This offer is temporarily unavailable. Please contact support before purchasing." },
+        { status: 409 },
+      );
+    }
 
     const txRef = buildTxRef(offer.key);
     const redirectUrl = new URL("/digital-forge/checkout/confirmed", SITE_URL);

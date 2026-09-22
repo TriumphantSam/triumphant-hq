@@ -8,7 +8,7 @@ import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
 import Testimonials from "@/components/Testimonials";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
-import { agencyServices, discoveryCallUrl } from "@/lib/services";
+import { agencyServices, projectEnquiryUrl } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -40,17 +40,15 @@ export default function ServicesPage() {
           Ibadan, we combine strategy and hands-on delivery across four core disciplines.
         </p>
         <div className="button-row mt-8">
-          <a
+          <Link
             className="button button-primary"
-            href={discoveryCallUrl}
-            target="_blank"
-            rel="noreferrer"
+            href={projectEnquiryUrl}
           >
-            Book a discovery call
-            <span className="button-arrow" aria-hidden="true">→</span>
-          </a>
-          <Link className="button button-secondary" href="/contact">
             Send a project brief
+            <span className="button-arrow" aria-hidden="true">→</span>
+          </Link>
+          <Link className="button button-secondary" href="/work">
+            See client work
           </Link>
         </div>
       </header>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { discoveryCallUrl } from "@/lib/services";
+import { projectEnquiryUrl } from "@/lib/services";
 
 type Action = {
   href: string;
@@ -22,8 +22,8 @@ export default function NextStepPanel({
   const resolvedActions: Action[] =
     actions ??
     ([
-      { href: discoveryCallUrl, label: "Book a discovery call", external: true, variant: "primary" },
-      { href: "/contact", label: "Send a project brief", variant: "secondary" },
+      { href: projectEnquiryUrl, label: "Send a project brief", variant: "primary" },
+      { href: "/work", label: "See client work", variant: "secondary" },
     ] satisfies Action[]);
 
   return (

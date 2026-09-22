@@ -6,7 +6,7 @@ import ClientLogos from "@/components/marketing/ClientLogos";
 import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceIcon from "@/components/marketing/ServiceIcon";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
-import { discoveryCallUrl, agencyServices } from "@/lib/services";
+import { projectEnquiryUrl, agencyServices } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -95,11 +95,11 @@ export default function AboutPage() {
             </div>
 
             <div className="button-row mt-10">
-              <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-                Book a discovery call
-              </a>
-              <Link className="button button-secondary" href="/contact">
+              <Link className="button button-primary" href={projectEnquiryUrl}>
                 Send a project brief
+              </Link>
+              <Link className="button button-secondary" href="/work">
+                See client work
               </Link>
             </div>
           </div>

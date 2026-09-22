@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { getForgeProducts } from "@/lib/digital-forge";
+import { formatOfferPrice, resolveLaunchBundleOffer } from "@/lib/digital-forge-offers";
 
 export const metadata = {
   title: "Digital Forge Products — AI Playbooks & Systems | Triumphant HQ",
   description:
     "Buy AI playbooks, prompt packs, workflow systems, and business toolkits from the Digital Forge store. Instant delivery. Built for serious operators.",
 };
-
-const PRICE_NGN = 5000;
 
 const CATEGORY_COLOR: Record<string, string> = {
   "AI Systems": "#075ee5",
@@ -31,16 +30,6 @@ const CATEGORY_COLOR: Record<string, string> = {
 
 function getColor(category: string): string {
   return CATEGORY_COLOR[category] ?? "#075ee5";
-}
-
-/** Returns first 3 meaningful words of a title for the cover tile */
-function getCoverWords(title: string): string {
-  return title
-    .replace(/[^a-zA-Z0-9 ]/g, " ")
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 3)
-    .join(" ");
 }
 
 /** Large emoji icon for the cover tile */
@@ -70,11 +59,6 @@ function getCoverLabel(category: string): string {
   return "AI Playbook";
 }
 
-function formatPrice(priceNgn?: number): string {
-  const price = priceNgn ?? PRICE_NGN;
-  return `₦${price.toLocaleString("en-NG")}`;
-}
-
 function checkoutUrl(slug: string): string {
   return `/digital-forge/checkout?offer=${slug}`;
 }
@@ -82,6 +66,7 @@ function checkoutUrl(slug: string): string {
 
 export default async function DigitalForgeProductsPage() {
   const forgeProducts = await getForgeProducts();
+  const launchBundle = resolveLaunchBundleOffer();
 
   return (
     <div className="min-h-screen pb-24">
@@ -190,6 +175,22 @@ export default async function DigitalForgeProductsPage() {
                 {forgeProducts.length} Products Available
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-screen-xl px-6 pt-8 sm:px-10 lg:px-16">
+        <div className="grid gap-6 rounded-2xl border border-blue-200 bg-blue-50 p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-blue-700">Best place to start</p>
+            <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">Digital Product Seller Launch Bundle</h2>
+            <p className="mt-3 max-w-2xl leading-7 text-slate-700">
+              Ready-to-use WhatsApp launch scripts, price objection replies, TikTok handoff messages and daily sales posts.
+            </p>
+          </div>
+          <div className="flex flex-col items-start gap-3">
+            <p className="font-display text-2xl font-bold text-slate-950">{formatOfferPrice(launchBundle.amount, launchBundle.currency)}</p>
+            <Link className="button button-primary" href="/digital-product">Explore the bundle →</Link>
           </div>
         </div>
       </section>

@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import CTABand from "@/components/marketing/CTABand";
-import { discoveryCallUrl, whatsappNumber } from "@/lib/services";
+import { whatsappNumber } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Enquiry received | Triumphant HQ",
   description:
-    "Your project enquiry is with us. Book a discovery call or message us on WhatsApp while we review the details.",
+    "Your project enquiry is with us. We will reply within one business day; you can also message us on WhatsApp.",
   path: "/contact/thank-you",
   noIndex: true,
 });
@@ -20,8 +19,8 @@ const nextSteps = [
   },
   {
     number: "02",
-    title: "Book a time that works",
-    copy: "Skip the wait—reserve a 30-minute discovery call now. Come with the problem, not a perfect brief.",
+    title: "We reply with a next step",
+    copy: "We will suggest a conversation or request any details needed to scope the work.",
   },
   {
     number: "03",
@@ -37,8 +36,7 @@ export default function ContactThankYouPage() {
         <p className="eyebrow">Enquiry received</p>
         <h1>Thank you—your project details are with us.</h1>
         <p>
-          We will review what you shared and reply within one business day. If you want to move faster, book a discovery
-          call or message us on WhatsApp below.
+          We will review what you shared and reply within one business day. If you want to add context now, message us on WhatsApp below.
         </p>
       </header>
 
@@ -56,11 +54,8 @@ export default function ContactThankYouPage() {
         </div>
 
         <div className="button-row mt-12">
-          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-            Book a discovery call
-          </a>
           <a
-            className="button button-secondary"
+            className="button button-primary"
             href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi Triumphant HQ — I just sent a project enquiry and would like to follow up.")}`}
             target="_blank"
             rel="noreferrer"
@@ -73,40 +68,6 @@ export default function ContactThankYouPage() {
         </div>
       </section>
 
-      <section className="section-muted">
-        <div className="section-shell">
-          <div className="mb-8 max-w-2xl">
-            <p className="eyebrow">Pick a time</p>
-            <h2 className="font-display mt-5 text-[clamp(1.7rem,3vw,2.4rem)] font-bold tracking-[-0.04em] text-slate-950">
-              Schedule your discovery call now.
-            </h2>
-            <p className="mt-4 text-[1.02rem] leading-8 text-slate-600">
-              Thirty minutes. No pressure. We clarify fit, priorities and the practical next step.
-            </p>
-          </div>
-          <div className="overflow-hidden rounded-[1.25rem] border border-slate-200 bg-white">
-            <iframe
-              title="Book a discovery call with Triumphant HQ"
-              src={`${discoveryCallUrl}?embed=true`}
-              className="h-[720px] w-full border-0"
-              loading="lazy"
-            />
-          </div>
-          <p className="mt-5 text-sm text-slate-500">
-            Calendar not loading?{" "}
-            <a className="font-semibold text-blue-600 hover:text-blue-800" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-              Open booking in a new tab
-            </a>
-            .
-          </p>
-        </div>
-      </section>
-
-      <CTABand
-        eyebrow="While you wait"
-        title="Explore how we approach websites, SEO, apps and automation."
-        description="Or revisit your enquiry details anytime from Work With Us."
-      />
     </div>
   );
 }

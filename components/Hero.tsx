@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { discoveryCallUrl } from "@/lib/services";
+import { projectEnquiryUrl } from "@/lib/services";
 
 export default function Hero() {
   return (
@@ -53,19 +53,17 @@ export default function Hero() {
           </p>
 
           <div className="button-row animate-fade-in-up-delay-3 mt-9 justify-center">
-            <a
+            <Link
               className="button button-primary"
-              href={discoveryCallUrl}
-              target="_blank"
-              rel="noreferrer"
+              href={projectEnquiryUrl}
             >
-              Book a discovery call
+              Send a project brief
               <span className="button-arrow" aria-hidden="true">
                 →
               </span>
-            </a>
-            <Link className="button button-ghost" href="/services">
-              Explore services
+            </Link>
+            <Link className="button button-ghost" href="/digital-product">
+              Shop a ready-to-use tool
             </Link>
           </div>
         </div>

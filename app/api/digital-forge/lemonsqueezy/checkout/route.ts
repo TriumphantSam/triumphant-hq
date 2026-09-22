@@ -57,6 +57,12 @@ export async function POST(request: NextRequest) {
     if (!offer) {
       return NextResponse.json({ error: "Offer not found." }, { status: 404 });
     }
+    if (!offer.deliveryUrl) {
+      return NextResponse.json(
+        { error: "This offer is temporarily unavailable. Please contact support before purchasing." },
+        { status: 409 },
+      );
+    }
 
     const launchBundleVariantId = Number(process.env.DIGITAL_PRODUCT_LAUNCH_BUNDLE_LS_VARIANT_ID ?? "");
     const variantId =

@@ -3,7 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-import { agencyServices, discoveryCallUrl, whatsappNumber } from "@/lib/services";
+import Link from "next/link";
+import posthog from "posthog-js";
+import { agencyServices, whatsappNumber } from "@/lib/services";
 
 const serviceLabels: Record<string, string> = Object.fromEntries(
   agencyServices.map((service) => [service.slug, service.shortTitle]),
@@ -50,7 +52,7 @@ export default function ContactForm() {
     setSending(true);
     setError("");
     try {
-      const leadResponse = await fetch("/api/contact-lead", {
+      const leadRequest = fetch("/api/contact-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -60,9 +62,7 @@ export default function ContactForm() {
           message: projectMessage,
         }),
       });
-      if (!leadResponse.ok) throw new Error("We could not save your enquiry. Please try again.");
-
-      const emailResponse = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      const emailRequest = fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -77,8 +77,24 @@ export default function ContactForm() {
           },
         }),
       });
-      if (!emailResponse.ok) throw new Error("We could not send your enquiry. Please try again.");
+      const [leadResult, emailResult] = await Promise.allSettled([leadRequest, emailRequest]);
+      let storedInAirtable = false;
+      if (leadResult.status === "fulfilled" && leadResult.value.ok) {
+        const leadPayload = (await leadResult.value.json().catch(() => ({}))) as { storedInAirtable?: boolean };
+        storedInAirtable = leadPayload.storedInAirtable === true;
+      }
+      const emailSent = emailResult.status === "fulfilled" && emailResult.value.ok;
+      if (!storedInAirtable && !emailSent) {
+        throw new Error("We could not send your enquiry. Please try again or use WhatsApp.");
+      }
 
+      try {
+        posthog.capture("project_enquiry_submitted", {
+          service: formData.service || "not_specified",
+        });
+      } catch {
+        // An analytics failure must not interrupt a successfully delivered enquiry.
+      }
       router.push("/contact/thank-you");
     } catch (submissionError) {
       setError(submissionError instanceof Error ? submissionError.message : "Failed to send. Please try again.");
@@ -141,9 +157,9 @@ export default function ContactForm() {
             </div>
 
             <div className="mt-12 space-y-4 border-t border-slate-200/80 pt-8">
-              <a className="text-link !mt-0 !pt-0" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-                Book a discovery call instead <span>→</span>
-              </a>
+              <Link className="text-link !mt-0 !pt-0" href="/work">
+                See client work <span>→</span>
+              </Link>
               <div className="flex flex-col gap-2.5 text-[0.95rem]">
                 <a
                   className="font-medium text-slate-600 transition hover:text-blue-700"

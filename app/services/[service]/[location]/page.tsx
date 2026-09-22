@@ -11,7 +11,7 @@ import {
   serviceJsonLd,
   serviceLocationPages,
 } from "@/lib/seo";
-import { discoveryCallUrl } from "@/lib/services";
+import { projectEnquiryUrl } from "@/lib/services";
 
 type Params = { service: string; location: string };
 
@@ -70,12 +70,12 @@ export default async function ServiceLocationPage({ params }: { params: Promise<
         <h1>{page.h1}</h1>
         <p>{page.intro[0]}</p>
         <div className="button-row mt-8">
-          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-            Book a discovery call
+          <Link className="button button-primary" href={projectEnquiryUrl}>
+            Send a project brief
             <span className="button-arrow" aria-hidden="true">
               →
             </span>
-          </a>
+          </Link>
           <Link className="button button-secondary" href={parentHref}>
             Full {parentLabel.toLowerCase()} service
           </Link>

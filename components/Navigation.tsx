@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { agencyServices, discoveryCallUrl } from "@/lib/services";
+import { agencyServices, projectEnquiryUrl } from "@/lib/services";
 
 const resources = [
   { href: "/blog", label: "Insights", hoverLabel: "Blogs", description: "Practical guides from our team" },
@@ -212,11 +212,10 @@ export default function Navigation() {
             </span>
           </Link>
           <Link
-            href={discoveryCallUrl}
-            target="_blank"
+            href={projectEnquiryUrl}
             className="button button-primary !min-h-10 !px-4 !py-2 !text-[0.72rem]"
           >
-            Book a call
+            Start a project
             <span className="button-arrow" aria-hidden="true">
               →
             </span>
@@ -291,18 +290,16 @@ export default function Navigation() {
             <Link href="/contact" className="mobile-nav-link" onClick={() => setMobileOpen(false)}>
               Contact Us
             </Link>
-            <a
-              href={discoveryCallUrl}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href={projectEnquiryUrl}
               className="button button-primary mt-4"
               onClick={() => setMobileOpen(false)}
             >
-              Book a discovery call
+              Start a project enquiry
               <span className="button-arrow" aria-hidden="true">
                 →
               </span>
-            </a>
+            </Link>
           </div>
         </div>
       )}

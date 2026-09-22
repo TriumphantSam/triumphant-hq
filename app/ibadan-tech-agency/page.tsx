@@ -12,7 +12,7 @@ import {
   serviceJsonLd,
   siteIdentity,
 } from "@/lib/seo";
-import { discoveryCallUrl, whatsappNumber } from "@/lib/services";
+import { projectEnquiryUrl, whatsappNumber } from "@/lib/services";
 
 const faqs = [
   {
@@ -81,12 +81,12 @@ export default function IbadanTechAgencyPage() {
           {entityDefinition}
         </p>
         <div className="button-row mt-8">
-          <a className="button button-primary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-            Book a discovery call
+          <Link className="button button-primary" href={projectEnquiryUrl}>
+            Send a project brief
             <span className="button-arrow" aria-hidden="true">
               →
             </span>
-          </a>
+          </Link>
           <Link className="button button-secondary" href="/work">
             See selected work
           </Link>

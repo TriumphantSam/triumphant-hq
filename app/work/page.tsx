@@ -6,7 +6,6 @@ import ClientLogos from "@/components/marketing/ClientLogos";
 import CTABand from "@/components/marketing/CTABand";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import { caseStudies } from "@/lib/case-studies";
-import { discoveryCallUrl } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -82,9 +81,9 @@ export default function WorkPage() {
               Start a project enquiry
               <span className="button-arrow" aria-hidden="true">→</span>
             </Link>
-            <a className="button button-secondary" href={discoveryCallUrl} target="_blank" rel="noreferrer">
-              Book a call
-            </a>
+            <Link className="button button-secondary" href="/services">
+              Explore services
+            </Link>
           </div>
         </div>
       </section>
