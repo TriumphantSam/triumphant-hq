@@ -4,7 +4,7 @@ import { normalizeCountryCode } from "@/lib/currency-pricing";
 
 const LEMON_SQUEEZY_API_KEY = process.env.LEMON_SQUEEZY_API_KEY ?? "";
 const LEMON_SQUEEZY_STORE_ID = process.env.LEMON_SQUEEZY_STORE_ID ?? "";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? "https://triumphanthq.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? "https://triumphantech.com";
 const LS_VARIANT_MAP = parseVariantMap(process.env.DIGITAL_FORGE_LS_VARIANT_MAP_JSON ?? "");
 const DEFAULT_LS_VARIANT_ID = Number(process.env.DIGITAL_FORGE_LS_DEFAULT_VARIANT_ID ?? "");
 

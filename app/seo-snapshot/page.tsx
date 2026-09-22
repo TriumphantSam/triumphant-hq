@@ -123,7 +123,7 @@ export default function SeoSnapshotPage() {
                   marginBottom: '1.5rem',
                 }}
               >
-                Why is Google
+                Why is Google{" "}
                 <br />
                 <span
                   style={{

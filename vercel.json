@@ -8,6 +8,25 @@
       "path": "/api/digital-forge/follow-ups/run",
       "schedule": "0 2 * * *"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.triumphantech.com" }],
+      "destination": "https://triumphantech.com/$1",
+      "statusCode": 301
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "triumphanthq.com" }],
+      "destination": "https://triumphantech.com/$1",
+      "statusCode": 301
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.triumphanthq.com" }],
+      "destination": "https://triumphantech.com/$1",
+      "statusCode": 301
+    }
   ]
 }
-

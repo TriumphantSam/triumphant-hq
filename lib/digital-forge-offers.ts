@@ -29,7 +29,7 @@ const FIXED_COURSE_PRICE_NGN = 35000;
 const DEFAULT_CURRENCY = (process.env.DIGITAL_FORGE_CHECKOUT_CURRENCY ?? "NGN").toUpperCase() as "NGN" | "USD";
 const DEFAULT_SYSTEM_DELIVERY_URL = "https://drive.google.com/file/d/1yFhf481gP2F4c2VkDOXKzrazYHKFFILA/view?usp=sharing";
 const SYSTEM_DELIVERY_URL = process.env.DIGITAL_FORGE_SYSTEM_DELIVERY_URL ?? DEFAULT_SYSTEM_DELIVERY_URL;
-const COURSE_DELIVERY_URL = process.env.DIGITAL_FORGE_COURSE_DELIVERY_URL ?? "https://triumphanthq.com/digital-forge/course/access";
+const COURSE_DELIVERY_URL = process.env.DIGITAL_FORGE_COURSE_DELIVERY_URL ?? "https://triumphantech.com/digital-forge/course/access";
 const PRICE_OVERRIDES = parsePriceOverrides(process.env.DIGITAL_FORGE_PRICE_OVERRIDES_JSON ?? "");
 const DELIVERY_URL_OVERRIDES = parseStringOverrides(process.env.DIGITAL_FORGE_DELIVERY_URL_OVERRIDES_JSON ?? "");
 const LEGACY_SLUG_PRICE_HINTS: Record<string, number> = {

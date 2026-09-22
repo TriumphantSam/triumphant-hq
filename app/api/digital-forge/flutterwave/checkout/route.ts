@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { resolveCheckoutOffer } from "@/lib/digital-forge-offers";
 
 const FLUTTERWAVE_SECRET_KEY = (process.env.FLUTTERWAVE_SECRET_KEY ?? "").trim();
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? "https://triumphanthq.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL ?? "https://triumphantech.com";
 const SUPPORT_EMAIL = process.env.DIGITAL_FORGE_SUPPORT_EMAIL ?? "support@triumphanthq.com";
 
 type CheckoutBody = {

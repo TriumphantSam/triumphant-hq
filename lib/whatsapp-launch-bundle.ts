@@ -2,7 +2,7 @@ const PRODUCT_NAME = "Digital Product Seller Launch Bundle";
 const PRICE_LABEL = "₦3,000";
 const CHECKOUT_URL =
   process.env.DIGITAL_PRODUCT_BUNDLE_CHECKOUT_URL?.trim() ||
-  "https://triumphanthq.com/digital-forge/checkout?offer=digital-product-seller-launch-bundle";
+  "https://triumphantech.com/digital-forge/checkout?offer=digital-product-seller-launch-bundle";
 const GRAPH_VERSION = "v22.0";
 
 const MENU_ALIASES = new Set(["hi", "hello", "hey", "start", "menu", "digital product", "launch bundle", "bundle"]);

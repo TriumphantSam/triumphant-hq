@@ -7,15 +7,14 @@ import { buildPageMetadata, formattedNapAddress, siteIdentity } from "@/lib/seo"
 import { whatsappNumber } from "@/lib/services";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Work With Us | Project Enquiry in Ibadan & Nigeria",
+  title: "Contact Triumphant HQ | Project Enquiry in Ibadan",
   description:
-    "Contact Triumphant HQ in Ibadan for websites, SEO, apps and automation. Share your project context—we respond within one business day.",
+    "Contact Triumphant HQ in Ibadan for website design, SEO, apps and automation. Share your project context—we respond within one business day.",
   path: "/contact",
   keywords: [
     "contact Triumphant HQ",
     "website agency Ibadan contact",
-    "SEO agency Oyo State",
-    "project enquiry Nigeria",
+    "SEO agency Ibadan",
   ],
 });
 

@@ -68,7 +68,7 @@ export default function LocalSupportExperience() {
     <div className="pb-24 lg:pb-0">
       <header className="page-hero !pb-10 !pt-8">
         <p className="eyebrow">Local support desk · Ibadan</p>
-        <h1>NIN and BVN help you can trust—plus careful support for everyday digital tasks.</h1>
+        <h1>NIN enrolment in Ibadan—plus BVN support you can trust</h1>
         <p>
           Certified ID Ecosystem training. Thousands of successful enrolments. WhatsApp-first assistance for Ibadan,
           Akobo, Bashorun and Oyo State—so you know what to bring before you arrive.
@@ -143,6 +143,20 @@ export default function LocalSupportExperience() {
             </a>
           </div>
         </div>
+        <p className="mt-8 max-w-2xl text-sm leading-7 text-slate-500">
+          Looking for a website or SEO partner instead of NIN enrolment?{" "}
+          <Link href="/services/websites" className="font-medium text-blue-600 hover:text-blue-800">
+            Website design in Ibadan
+          </Link>
+          {" · "}
+          <Link href="/services/seo" className="font-medium text-blue-600 hover:text-blue-800">
+            SEO agency in Ibadan
+          </Link>
+          {" · "}
+          <Link href="/ibadan-tech-agency" className="font-medium text-blue-600 hover:text-blue-800">
+            Tech company in Ibadan
+          </Link>
+        </p>
       </section>
 
       {/* Primary NIN block */}
