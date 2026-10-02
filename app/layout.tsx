@@ -8,6 +8,8 @@ import PageReader from "@/components/PageReader";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import JsonLd from "@/components/seo/JsonLd";
 import { PostHogProvider } from "./providers";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { GA_MEASUREMENT_ID } from "@/lib/google-analytics";
 import Script from "next/script";
 import {
   defaultKeywords,
@@ -123,6 +125,19 @@ export default function RootLayout({
             fbq('track', 'PageView');
           `}
         </Script>
+        <Script id="ga4" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function gtag(){window.dataLayer.push(arguments);}
+            window.gtag('js', new Date());
+            window.gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
+        <Script
+          id="ga4-loader"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
       </head>
       <body className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}>
         <JsonLd data={[organizationJsonLd(), localBusinessJsonLd(), websiteJsonLd()]} />
@@ -135,6 +150,7 @@ export default function RootLayout({
             src="https://www.facebook.com/tr?id=951975760918976&ev=PageView&noscript=1"
           />
         </noscript>
+        <GoogleAnalytics />
         <PostHogProvider>
           <AntigravityBackground />
           <Navigation />
