@@ -2,7 +2,6 @@
 
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef } from "react";
-import { GA_MEASUREMENT_ID } from "@/lib/google-analytics";
 
 function GoogleAnalyticsPageViews() {
   const pathname = usePathname();

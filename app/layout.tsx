@@ -111,6 +111,8 @@ export default function RootLayout({
     <html lang="en-NG">
       <head>
         <meta name="facebook-domain-verification" content="tzruqlr2vdzldqybooi5n4t2100mxq" />
+      </head>
+      <body className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}>
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)
@@ -138,8 +140,6 @@ export default function RootLayout({
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
         />
-      </head>
-      <body className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}>
         <JsonLd data={[organizationJsonLd(), localBusinessJsonLd(), websiteJsonLd()]} />
         <noscript>
           <img
