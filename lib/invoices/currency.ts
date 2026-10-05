@@ -37,6 +37,15 @@ export function lineItemAmount(quantity: number, unitPrice: number): number {
   return roundMoney(quantity * unitPrice);
 }
 
+/** "NGN 1,512,710" — currency code prefix; decimals only when the amount has kobo/cents. */
+export function formatCodeAmount(amount: number, currency: InvoiceCurrency): string {
+  const hasFraction = Math.round(amount * 100) % 100 !== 0;
+  return `${currency} ${amount.toLocaleString("en-US", {
+    minimumFractionDigits: hasFraction ? 2 : 0,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
 export function roundMoney(value: number): number {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }

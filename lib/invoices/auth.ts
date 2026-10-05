@@ -195,3 +195,26 @@ export async function verifyPrintToken(
   if (!payload?.invoiceId || payload.exp < Math.floor(Date.now() / 1000)) return null;
   return { invoiceId: payload.invoiceId };
 }
+
+export async function createReceiptPrintToken(receiptId: string): Promise<string> {
+  const nonceBytes = new Uint8Array(8);
+  crypto.getRandomValues(nonceBytes);
+  const nonce = Array.from(nonceBytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  const exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 90;
+  const body = encodePayload({ receiptId, exp, nonce });
+  const signature = await sign(body);
+  return `${body}.${signature}`;
+}
+
+export async function verifyReceiptPrintToken(
+  token: string | undefined | null
+): Promise<{ receiptId: string } | null> {
+  if (!token) return null;
+  const [body, signature] = token.split(".");
+  if (!body || !signature) return null;
+  const expected = await sign(body);
+  if (!(await signaturesMatch(signature, expected))) return null;
+  const payload = decodePayload<{ receiptId: string; exp: number }>(body);
+  if (!payload?.receiptId || payload.exp < Math.floor(Date.now() / 1000)) return null;
+  return { receiptId: payload.receiptId };
+}

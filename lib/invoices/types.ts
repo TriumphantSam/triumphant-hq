@@ -61,6 +61,31 @@ export type ProformaInvoice = {
   lastEmailedAt?: string | null;
 };
 
+export type PaymentMethod = "bank_transfer" | "cash" | "pos" | "card" | "online" | "other";
+
+export type PaymentReceipt = {
+  id: string;
+  number: string;
+  paymentDate: string;
+  currency: InvoiceCurrency;
+  amount: number;
+  clientId: string | null;
+  client: InvoiceClientSnapshot;
+  /** What the payment was for, e.g. "Website design — 80% deposit" */
+  description: string;
+  paymentMethod: PaymentMethod;
+  /** Bank / gateway transaction reference */
+  reference: string;
+  /** Optional link to the proforma this payment settles */
+  invoiceId: string | null;
+  invoiceNumber: string;
+  notes: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  lastEmailedAt?: string | null;
+};
+
 export type InvoiceSequenceStore = {
   /** key: YYYY-MM, value: last sequence number used */
   months: Record<string, number>;

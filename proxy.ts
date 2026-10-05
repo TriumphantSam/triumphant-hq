@@ -17,7 +17,10 @@ export async function proxy(request: NextRequest) {
 
   // Invoice studio auth
   if (pathname.startsWith("/invoices") || pathname.startsWith("/api/invoices")) {
-    if (pathname.match(/^\/invoices\/[^/]+\/print$/) && request.nextUrl.searchParams.get("token")) {
+    if (
+      pathname.match(/^\/invoices\/(receipts\/)?[^/]+\/print$/) &&
+      request.nextUrl.searchParams.get("token")
+    ) {
       return NextResponse.next();
     }
 

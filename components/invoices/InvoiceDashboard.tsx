@@ -57,6 +57,24 @@ export default function InvoiceDashboard({ invoices }: { invoices: Row[] }) {
     }
   }
 
+  async function issueReceipt(invoiceId: string) {
+    setError(null);
+    setBusyId(invoiceId);
+    try {
+      const res = await fetch("/api/invoices/receipts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fromInvoiceId: invoiceId }),
+      });
+      const data = await readApiJson<{ error?: string; receipt?: { id: string } }>(res);
+      if (!res.ok || !data.receipt?.id) throw new Error(data.error || "Could not issue receipt");
+      router.push(`/invoices/receipts/${data.receipt.id}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not issue receipt");
+      setBusyId(null);
+    }
+  }
+
   async function remove(id: string) {
     if (!confirm("Delete this proforma invoice?")) return;
     setError(null);
@@ -153,6 +171,14 @@ export default function InvoiceDashboard({ invoices }: { invoices: Row[] }) {
                       >
                         Print
                       </Link>
+                      <button
+                        type="button"
+                        className="invoice-btn-ghost !px-2 !py-1 text-xs text-[#0a9a4a]"
+                        disabled={busyId === inv.id}
+                        onClick={() => issueReceipt(inv.id)}
+                      >
+                        Receipt
+                      </button>
                       <button
                         type="button"
                         className="invoice-btn-ghost !px-2 !py-1 text-xs"

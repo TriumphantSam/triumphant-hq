@@ -44,3 +44,17 @@ export function formatDisplayDate(isoDate: string): string {
     return isoDate;
   }
 }
+
+export function formatReceiptNumber(yearMonth: string, sequence: number): string {
+  const [year, month] = yearMonth.split("-");
+  return `THQ-RC-${year}-${month}-${String(sequence).padStart(3, "0")}`;
+}
+
+/** e.g. "Mon. Oct. 05, 2026" — used in the receipt header */
+export function formatReceiptHeaderDate(isoDate: string): string {
+  try {
+    return format(parseISO(isoDate), "EEE. MMM. dd, yyyy");
+  } catch {
+    return isoDate;
+  }
+}

@@ -86,6 +86,29 @@ export async function ensureInvoiceSchema(): Promise<void> {
         )
       `;
 
+      await sql`
+        CREATE TABLE IF NOT EXISTS receipts (
+          id TEXT PRIMARY KEY,
+          number TEXT NOT NULL UNIQUE,
+          payment_date DATE NOT NULL,
+          currency TEXT NOT NULL DEFAULT 'NGN',
+          amount DOUBLE PRECISION NOT NULL DEFAULT 0,
+          client_id TEXT NULL REFERENCES invoice_clients(id) ON DELETE SET NULL,
+          client JSONB NOT NULL DEFAULT '{}'::jsonb,
+          description TEXT NOT NULL DEFAULT '',
+          payment_method TEXT NOT NULL DEFAULT 'bank_transfer',
+          reference TEXT NOT NULL DEFAULT '',
+          invoice_id TEXT NULL REFERENCES invoices(id) ON DELETE SET NULL,
+          invoice_number TEXT NOT NULL DEFAULT '',
+          notes TEXT NOT NULL DEFAULT '',
+          created_by TEXT NOT NULL DEFAULT '',
+          created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+          last_emailed_at TIMESTAMPTZ NULL
+        )
+      `;
+
+      await sql`CREATE INDEX IF NOT EXISTS receipts_updated_at_idx ON receipts (updated_at DESC)`;
       await sql`CREATE INDEX IF NOT EXISTS invoices_updated_at_idx ON invoices (updated_at DESC)`;
       await sql`CREATE INDEX IF NOT EXISTS invoice_clients_name_idx ON invoice_clients (name)`;
       await sql`CREATE INDEX IF NOT EXISTS invoice_templates_name_idx ON invoice_templates (name)`;

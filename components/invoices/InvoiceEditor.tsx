@@ -168,6 +168,22 @@ export default function InvoiceEditor({ initialInvoice, clients, templates }: Pr
     }
   }
 
+  async function issueReceipt() {
+    setError(null);
+    try {
+      const res = await fetch("/api/invoices/receipts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fromInvoiceId: invoice.id, currency: invoice.currency }),
+      });
+      const data = await readApiJson<{ error?: string; receipt?: { id: string } }>(res);
+      if (!res.ok || !data.receipt?.id) throw new Error(data.error || "Could not issue receipt");
+      router.push(`/invoices/receipts/${data.receipt.id}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not issue receipt");
+    }
+  }
+
   return (
     <div className="invoice-editor">
       <div className="invoice-editor-toolbar">
@@ -181,6 +197,9 @@ export default function InvoiceEditor({ initialInvoice, clients, templates }: Pr
           {error ? <span className="text-sm font-medium text-red-600">{error}</span> : null}
         </div>
         <div className="flex flex-wrap items-center gap-2">
+          <button type="button" className="invoice-btn-secondary" onClick={issueReceipt}>
+            Issue receipt
+          </button>
           <button type="button" className="invoice-btn-secondary" onClick={() => setEmailOpen(true)}>
             Email client
           </button>
