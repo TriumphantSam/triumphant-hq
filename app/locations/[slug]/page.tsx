@@ -33,7 +33,7 @@ export async function generateMetadata({
       `${page.name} NIN`,
       `${page.name} BVN`,
       `website design ${page.name}`,
-      `SEO ${page.name}`,
+      page.slug === "nigeria" ? "technology agency Nigeria" : `digital services ${page.name}`,
       `digital support ${page.name}`,
       page.region,
     ],
@@ -54,6 +54,13 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     description: page.description,
     path: `/locations/${page.slug}`,
     serviceType: "Technology and local digital support",
+    areaServed:
+      page.slug === "nigeria"
+        ? [{ "@type": "Country", name: "Nigeria" }]
+        : [
+            { "@type": "City", name: page.name },
+            { "@type": "AdministrativeArea", name: page.region },
+          ],
   });
 
   return (
@@ -125,7 +132,11 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             </ul>
             <div className="mt-8 flex flex-wrap gap-4 text-sm font-semibold text-blue-600">
               <Link href="/services/websites/ibadan">Websites in Ibadan</Link>
-              <Link href="/services/seo/ibadan">SEO in Ibadan</Link>
+              {page.slug === "nigeria" ? (
+                <Link href="/services/seo">SEO company in Nigeria</Link>
+              ) : (
+                <Link href="/services/seo/ibadan">SEO services in Ibadan</Link>
+              )}
               <Link href="/services/app-development">Apps</Link>
               <Link href="/services/automation">Automation</Link>
               <Link href="/ibadan-tech-agency">Ibadan tech partner guide</Link>

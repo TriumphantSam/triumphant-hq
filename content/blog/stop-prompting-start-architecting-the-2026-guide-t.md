@@ -1,7 +1,8 @@
 ---
 title: "Your AI Prompts Are a Dead End. It's Time for AI Workflow Automation."
+metaTitle: "From AI Prompts to Workflow Automation"
 date: "2026-04-05"
-excerpt: "Stop collecting clever prompts. The real leverage in AI comes from architecting automated systems that solve business problems. Here’s the operator's guide."
+excerpt: "Clever prompts are not a system. The leverage is in workflows that solve a real business problem."
 category: "AI & Automation"
 readTime: "6 min read"
 published: true

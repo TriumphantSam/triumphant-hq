@@ -1,7 +1,8 @@
 ---
 title: "Beyond the Hype: The Operator's Guide to AI Skills Courses for Non-Technical Professionals"
+metaTitle: "AI Skills Courses for Non-Technical People"
 date: "2026-04-05"
-excerpt: "Tired of scattered AI tips and endless theory? This is a practical path for non-technical professionals to build a real system that automates work and drives profit."
+excerpt: "A practical path for non-technical professionals: build an AI system that does real work, instead of collecting scattered tips."
 category: "AI & Automation"
 readTime: "6 min read"
 published: true

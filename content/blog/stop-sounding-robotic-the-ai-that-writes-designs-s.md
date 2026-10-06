@@ -1,7 +1,7 @@
 ---
 title: "Your AI Productivity Tools Are Useless Without a System"
 date: "2026-04-05"
-excerpt: "Tired of generic AI output? The problem isn't the tool, it's the process. Learn the system serious operators use to make AI sound less robotic and more like you."
+excerpt: "Generic AI output is a process problem. Here is how operators make the writing sound like them."
 category: "AI & Automation"
 readTime: "7 min read"
 published: true

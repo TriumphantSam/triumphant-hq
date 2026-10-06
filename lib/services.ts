@@ -53,16 +53,23 @@ export const agencyServices: AgencyService[] = [
     slug: "seo",
     icon: "seo",
     eyebrow: "Organic and AI-search growth",
-    title: "SEO execution that makes your expertise discoverable",
+    title: "SEO for Nigerian businesses that need search to bring in leads",
     shortTitle: "SEO Growth",
-    promise: "Build durable visibility across Google and the emerging AI-powered search landscape.",
+    promise: "Technical SEO, content and local visibility for businesses across Nigeria.",
     description:
-      "We diagnose technical blockers, map search demand and implement the pages, content and authority signals required for sustainable organic growth.",
-    idealFor: "Businesses with a proven offer that need stronger discoverability, qualified organic traffic and a disciplined execution partner.",
+      "We diagnose technical blockers, map how customers search in Nigerian cities, and implement the pages and content that help the right people find you.",
+    idealFor:
+      "Nigerian businesses with a real offer that need a search programme distinct from a single-city page — including teams in Lagos, Abuja and Ibadan.",
     image: "/images/service-seo.png",
     imageAlt: "Laptop on a desk showing abstract search analytics in soft blue light",
     outcomes: ["Stronger search visibility", "Higher-intent organic traffic", "Improved technical health", "AI citation readiness"],
-    deliverables: ["Technical and content audit", "Search opportunity map", "On-page and technical implementation", "Content briefs and optimization", "Reporting and growth roadmap"],
+    deliverables: [
+      "Technical SEO audit and site migrations",
+      "Service pages without city doorway clones",
+      "Content planned around real Nigerian searches",
+      "Local SEO only where you have a genuine location",
+      "Monthly Search Console reporting",
+    ],
     process: ["Snapshot", "Opportunity mapping", "Technical fixes", "Content execution", "Measure and compound"],
   },
   {

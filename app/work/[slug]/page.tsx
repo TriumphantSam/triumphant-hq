@@ -65,6 +65,27 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 <p className="mt-4 text-[1.08rem] leading-8 text-slate-700">{copy}</p>
               </div>
             ))}
+            {study.narrative?.map((section) => (
+              <div key={section.heading} className="border-l border-blue-200/80 pl-6 sm:pl-8">
+                <h2 className="font-display text-2xl font-bold tracking-[-0.03em] text-slate-950">{section.heading}</h2>
+                <div className="mt-4 space-y-4 text-[1.05rem] leading-8 text-slate-700">
+                  {section.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            ))}
+            <p className="text-[1.02rem] leading-8 text-slate-600">
+              Search programmes:{" "}
+              <Link href="/services/seo/ibadan" className="font-semibold text-blue-700">
+                SEO in Ibadan
+              </Link>
+              {" · "}
+              <Link href="/services/seo" className="font-semibold text-blue-700">
+                SEO company in Nigeria
+              </Link>
+              .
+            </p>
           </div>
 
           <aside className="lg:sticky lg:top-28 lg:self-start">

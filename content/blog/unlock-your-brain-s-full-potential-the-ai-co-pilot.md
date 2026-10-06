@@ -1,7 +1,8 @@
 ---
 title: "Beyond Listening: The Operator's Guide to AI Audiobook Retention"
+metaTitle: "Keep More of What You Hear in Audiobooks"
 date: "2026-04-05"
-excerpt: "Finished another great audiobook and already forgot the key lessons? The problem isn't your memory, it's your method. Learn how to stop passive listening and build an AI-powered..."
+excerpt: "Forgetting an audiobook is a method problem. Here is how to turn listening into notes you can reuse."
 category: "AI & Automation"
 readTime: "6 min read"
 published: true

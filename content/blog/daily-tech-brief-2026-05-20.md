@@ -1,7 +1,8 @@
 ---
 title: "Operator's Briefing: Google’s New AI Tools Meet Africa’s New Rules"
+metaTitle: "Google’s New AI Tools and Africa’s New Rules"
 date: "2026-05-20"
-excerpt: "Google I/O 2026 just unveiled a new suite of AI-powered creator tools. But as African operators look to leverage them, local realities like new tax mandates and infrastructure..."
+excerpt: "Google I/O 2026 added AI creator tools. African operators still have to weigh tax rules, infrastructure and what is usable."
 category: "Digital Business"
 readTime: "6 min read"
 published: true

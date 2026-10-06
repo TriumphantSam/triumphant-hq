@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { getForgeProducts } from "@/lib/digital-forge";
 import { formatOfferPrice, resolveLaunchBundleOffer } from "@/lib/digital-forge-offers";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Digital Forge Products — AI Playbooks & Systems | Triumphant HQ",
+export const metadata = buildPageMetadata({
+  title: "Digital Forge Products | Triumphant HQ",
   description:
-    "Buy AI playbooks, prompt packs, workflow systems, and business toolkits from the Digital Forge store. Instant delivery. Built for serious operators.",
-};
+    "AI playbooks, prompt packs and workflow systems from the Digital Forge store. Instant delivery for people who want a finished method.",
+  path: "/digital-forge/products",
+});
 
 const CATEGORY_COLOR: Record<string, string> = {
   "AI Systems": "#075ee5",

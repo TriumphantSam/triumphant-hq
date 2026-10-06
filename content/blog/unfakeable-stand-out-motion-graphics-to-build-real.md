@@ -1,7 +1,8 @@
 ---
 title: "The Visual Trust Gap: Why Your Content Looks AI-Generated (And How to Fix It)"
+metaTitle: "Why Your Content Looks AI-Generated"
 date: "2026-04-10"
-excerpt: "Your content is getting lost in a sea of soulless, AI-generated visuals. We break down why generic templates are killing your authority and provide a strategic playbook for using..."
+excerpt: "Generic templates make content look machine-made. Here is a practical way to use visuals that still look like your brand."
 category: "Workflow Design"
 readTime: "6 min read"
 published: true

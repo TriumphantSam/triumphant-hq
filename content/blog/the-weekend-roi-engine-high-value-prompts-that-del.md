@@ -1,7 +1,8 @@
 ---
 title: "The AI Prompt Lie: Why Your Results Are Generic and How to Fix It"
+metaTitle: "Stop Chasing Magic Prompts. Build a System"
 date: "2026-04-22"
-excerpt: "Tired of AI content that sounds robotic and off-brand? The problem isn't the AI—it's your workflow. Stop chasing magic prompts and build a system that delivers real assets."
+excerpt: "Robotic AI content usually comes from the workflow, not the model. Build a system that produces work you can ship."
 category: "Workflow Design"
 readTime: "6 min read"
 published: true

@@ -1,11 +1,13 @@
 import Link from "next/link";
 import CurrencyPrice from "@/components/CurrencyPrice";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Get Course Access | Digital Forge",
+export const metadata = buildPageMetadata({
+  title: "Course Access | Digital Forge · Triumphant HQ",
   description:
-    "Join the Digital Forge Course waitlist for priority access when enrollment opens, or start with the Starter System and free training available now.",
-};
+    "Join the Digital Forge Course waitlist, or start with the Starter System and the free training available now.",
+  path: "/digital-forge/course/access",
+});
 
 const ACCESS_PATHS = [
   {

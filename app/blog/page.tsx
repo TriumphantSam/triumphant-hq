@@ -23,10 +23,19 @@ const categoryColors: Record<string, string> = {
     'Workflow Design': '#a855f7',
     'Market Intelligence': '#e11d48',
     'General': '#f59e0b',
+    'SEO': '#075ee5',
+    'Local Growth': '#075ee5',
 };
 
-export default async function BlogPage() {
-    const posts = getAllPosts();
+export default async function BlogPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ category?: string }>;
+}) {
+    const { category } = await searchParams;
+    const allPosts = getAllPosts();
+    const categories = Array.from(new Set(allPosts.map((post) => post.category))).sort();
+    const posts = category ? allPosts.filter((post) => post.category === category) : allPosts;
 
     return (
         <div className="min-h-screen">
@@ -50,6 +59,24 @@ export default async function BlogPage() {
                     Useful breakdowns, local examples, and implementation notes built around the Digital Forge products and the real problems founders, creators, and operators face.
                 </p>
             </section>
+
+            <nav className="mx-auto flex max-w-screen-lg flex-wrap gap-2 px-6 pb-8 sm:px-10 lg:px-16" aria-label="Article categories">
+                <Link
+                    href="/blog"
+                    className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${!category ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 text-slate-600"}`}
+                >
+                    All
+                </Link>
+                {categories.map((item) => (
+                    <Link
+                        key={item}
+                        href={`/blog?category=${encodeURIComponent(item)}`}
+                        className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${category === item ? "border-blue-600 bg-blue-600 text-white" : "border-slate-200 text-slate-600"}`}
+                    >
+                        {item}
+                    </Link>
+                ))}
+            </nav>
 
             <section
                 className="max-w-screen-lg mx-auto px-6 sm:px-10 lg:px-16"

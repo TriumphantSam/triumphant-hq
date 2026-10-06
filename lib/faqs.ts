@@ -113,39 +113,54 @@ export const serviceFaqs: Record<string, FaqItem[]> = {
   ],
   seo: [
     {
-      question: "Are you an SEO agency in Ibadan?",
+      question: "How much does SEO cost in Nigeria?",
       answer:
-        "Yes. We run SEO from Ibadan for Oyo State and Nigerian businesses: technical health, local and service pages, and content tied to commercial intent. We do not guarantee number-one rankings.",
+        "We do not publish a price list. An audit, a site migration and a monthly programme are different pieces of work, and the proposal depends on the number of pages, the cities you need to be found in, and how much technical repair the site needs first. Send a brief or run the free snapshot and we will tell you what the first stage should cover.",
     },
     {
-      question: "How soon can we expect SEO results?",
+      question: "How long does SEO take to work in Nigeria?",
       answer:
-        "Technical fixes and on-page clarity can improve crawlability and relevance relatively quickly. Rankings and compounding traffic typically take sustained execution over months. We set expectations around foundations first, then growth—not overnight promises.",
+        "Technical repairs and clearer pages can be finished in weeks. Competitive national phrases usually take months of steady work. We do not name a ranking or a date. The monthly report shows what was shipped and what Search Console records.",
     },
     {
-      question: "What is included in ongoing SEO work?",
+      question: "Do you work with businesses in Lagos and Abuja?",
       answer:
-        "Technical health, search opportunity mapping, on-page and content execution, and accountable reporting. Exact priorities depend on your audit findings and commercial goals.",
+        "Yes, remotely. The office is in Ibadan. Lagos, Abuja, Port Harcourt and other cities are delivered by call, shared documents and WhatsApp. We do not pretend to have an office in those cities.",
     },
     {
-      question: "Do you work with Google only, or AI search as well?",
+      question: "Can you rank us on Google Maps in several cities?",
       answer:
-        "We build for durable organic visibility across classic search and the emerging AI-powered discovery landscape—technical clarity, useful content and entity signals that help both engines and assistants understand your offer.",
+        "A Google Business Profile is tied to a real location. We will not build a stack of city pages or profiles for places you do not operate. If you have genuine branches, each profile should match that branch. One Ibadan office cannot honestly occupy the map pack in every Nigerian city.",
     },
     {
-      question: "What do you need access to?",
+      question: "Can you migrate a WordPress site without losing rankings?",
       answer:
-        "Typically Search Console, analytics, CMS or hosting access where required, and a point of contact who can approve content and technical changes. We keep requests proportionate to the work.",
+        "We plan redirects, keep the URLs that already earn visits, and check Search Console after launch. No migration is risk-free. We would rather keep a healthy WordPress site than rebuild it for the sake of a new stack.",
     },
     {
-      question: "Can we start with a free snapshot?",
+      question: "Do you optimise for Google AI Overviews and ChatGPT?",
       answer:
-        "Yes. Run the free SEO visibility snapshot for a practical first read of technical health and priority gaps—without a retainer commitment. From there we can recommend a focused engagement if it makes sense.",
+        "We make the business easy to quote: one clear name, service pages that answer real questions, FAQs that match the page, and schema that repeats facts already visible on the page. We do not promise a citation in an AI answer.",
     },
     {
-      question: "Do you guarantee number-one rankings?",
+      question: "What is included in a monthly SEO programme?",
       answer:
-        "No responsible partner should. Search rankings depend on competition, demand and consistency. We commit to clear diagnosis, disciplined execution and transparent reporting—not vanity guarantees.",
+        "A written list of what will be done that month, the technical and on-page work itself, and a short report. The mix depends on the audit. It is not a fixed bundle of blog posts.",
+    },
+    {
+      question: "What do you report each month?",
+      answer:
+        "What changed on the site, which queries and pages Search Console is showing, and what we recommend next. If you use GA4, we can include organic landing pages. We do not send a ranking screenshot with no context.",
+    },
+    {
+      question: "Do you guarantee number one on Google?",
+      answer:
+        "No. Search results depend on competition, the usefulness of the page, and work that happens off the site, including reviews and links. We commit to the diagnosis, the agreed work, and an honest report.",
+    },
+    {
+      question: "Who owns the content and the accounts?",
+      answer:
+        "You do. Search Console, analytics, the domain, the hosting account and the Google Business Profile stay in your name. We ask for access, not ownership.",
     },
   ],
   automation: [
@@ -189,6 +204,54 @@ export type LeadMagnetMeta = {
   description: string;
   cta: string;
 };
+
+export const ibadanSeoFaqs: FaqItem[] = [
+  {
+    question: "How much does SEO cost in Ibadan?",
+    answer:
+      "We do not publish a price. A one-off audit, a page-and-content project and a monthly programme are different jobs. What we propose depends on how many pages you have, how crowded the searches are, and whether the site needs technical repair before anyone writes a new paragraph. Start with the free snapshot or a short brief. We will say what the first stage should be, and we will not invent a starting fee.",
+  },
+  {
+    question: "How long does SEO take to work for an Ibadan business?",
+    answer:
+      "Technical fixes and clearer service pages can be done in weeks. Phrases with real competition usually take months of consistent work. We will not promise a position or a date. You should see, in Search Console, which queries and pages are being shown — that is the progress we report, not a guarantee.",
+  },
+  {
+    question: "Can you get my business on Google Maps in Ibadan?",
+    answer:
+      "We can set up or tidy a Google Business Profile: the right category, services, photos, posts, and a name, address and phone that match the website. Whether you appear in the map pack also depends on reviews, how close the searcher is, and who else is listed. We will not guarantee a map-pack place.",
+  },
+  {
+    question: "What is the difference between local SEO and regular SEO?",
+    answer:
+      "Local SEO helps nearby people find one business: Google Maps, the Business Profile, consistent contact details, and pages that match Ibadan searches. The rest of SEO is the site itself — technical health, service pages and content for searches that are not tied to one neighbourhood. Most Ibadan firms need both, in that order.",
+  },
+  {
+    question: "Do you guarantee first position on Google?",
+    answer:
+      "No. A promise of number one is a promise about a result we do not control. We commit to a clear audit, the work we agreed, and a report of what changed. Competition, reviews and links all sit outside a single page edit.",
+  },
+  {
+    question: "Do you work with businesses outside Ibadan, including Oyo, Osun and Lagos?",
+    answer:
+      "Yes. The office is in Ibadan and day-to-day local work is for Ibadan and Oyo State. Osun, Lagos and other cities are remote engagements. If you want a national programme rather than Ibadan local SEO, use the SEO company in Nigeria page.",
+  },
+  {
+    question: "Can I visit your office? Where are you on Basorun Rd?",
+    answer:
+      "We are on Basorun Rd, Ibadan 211107, Oyo State, in the Bashorun area. This site does not publish a street number. Message us on WhatsApp before you come so we can confirm we are in. Agency conversations are often a call. The NIN and BVN desk is the separate walk-in service.",
+  },
+  {
+    question: "Do you do SEO for WordPress, Wix and Shopify sites?",
+    answer:
+      "Yes. We audit and improve WordPress, Wix, Shopify and custom sites, including Next.js. If the platform is blocking crawling, we will say so and scope a repair or a move. We do not push a rebuild when the current site can be fixed.",
+  },
+  {
+    question: "What do you need from me to start?",
+    answer:
+      "Access to Google Search Console and, if you already have it, analytics. Someone who can approve changes. A plain description of what you sell and where the customers are. For Maps work, access to the Google Business Profile. You do not need a finished brief.",
+  },
+];
 
 export const localSupportFaqs: FaqItem[] = [
   {

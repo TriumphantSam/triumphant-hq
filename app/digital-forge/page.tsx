@@ -1,12 +1,14 @@
 import Link from "next/link";
 import CurrencyPrice from "@/components/CurrencyPrice";
 import { getForgeProducts } from "@/lib/digital-forge";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Digital Forge — Build, Package, and Sell AI-Powered Digital Products | Triumphant HQ",
+export const metadata = buildPageMetadata({
+  title: "Digital Forge | AI Product Systems · Triumphant HQ",
   description:
-    "Digital Forge is the practical system for creators, professionals, and operators worldwide who want to build and sell AI-powered digital products with better structure, stronger offers, and a real path to income.",
-};
+    "Digital Forge is a practical system for building and selling AI-powered digital products, with guides, templates and a clear next step.",
+  path: "/digital-forge",
+});
 
 const WHY_DIGITAL_FORGE = [
   {

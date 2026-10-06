@@ -17,7 +17,7 @@ import { buildPageMetadata, locationPages } from "@/lib/seo";
 export const metadata: Metadata = buildPageMetadata({
   title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
   description:
-    "Triumphant HQ is a technology agency and tech company in Ibadan, Oyo State—website design, SEO, custom applications and automation, plus NIN enrolment and BVN support.",
+    "Triumphant HQ is a technology agency in Ibadan, Oyo State: website design, SEO, custom apps and AI automation, plus NIN enrolment and BVN support.",
   path: "/",
   keywords: [
     "Triumphant HQ Ibadan",
@@ -287,6 +287,10 @@ export default function Home() {
                   Explore SEO service
                 </Link>
               </div>
+              <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-blue-700">
+                <Link href="/services/seo/ibadan">SEO company in Ibadan</Link>
+                <Link href="/services/seo">SEO agency in Nigeria</Link>
+              </p>
             </Reveal>
 
             <Reveal className="grid gap-8 border-l border-blue-200/80 pl-6 sm:pl-8" variant="right" stagger delayMs={80}>
@@ -334,9 +338,15 @@ export default function Home() {
               Local support and agency delivery for neighbourhoods across the city, Oyo State, Osun State and remote
               clients nationwide.
             </p>
-            <p className="mt-3">
-              <Link href="/ibadan-tech-agency" className="text-sm font-semibold text-blue-600 hover:text-blue-800">
+            <p className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-blue-600">
+              <Link href="/ibadan-tech-agency" className="hover:text-blue-800">
                 How to choose a technology partner in Ibadan →
+              </Link>
+              <Link href="/services/seo/ibadan" className="hover:text-blue-800">
+                SEO company in Ibadan
+              </Link>
+              <Link href="/services/seo" className="hover:text-blue-800">
+                SEO agency in Nigeria
               </Link>
             </p>
             </div>

@@ -8,7 +8,7 @@ import { whatsappNumber } from "@/lib/services";
 export const metadata: Metadata = buildPageMetadata({
   title: "Service Areas | Ibadan, Oyo, Osun & Nigeria | Triumphant HQ",
   description:
-    "Triumphant HQ serves Ibadan neighbourhoods including Akobo and Bashorun, Oyo State, Osun State and clients across Nigeria with tech agency services and local NIN/BVN support.",
+    "Service areas for Triumphant HQ: Ibadan neighbourhoods, Oyo State, Osun State and remote clients across Nigeria, plus local NIN and BVN support.",
   path: "/locations",
   keywords: [
     "technology agency Ibadan",

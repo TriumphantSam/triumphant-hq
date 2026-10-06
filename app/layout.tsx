@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     template: "%s | Triumphant HQ",
   },
   description:
-    "Triumphant HQ is a technology agency and tech company in Ibadan, Oyo State—website design, SEO, custom applications and automation, plus NIN enrolment and BVN support.",
+    "Triumphant HQ is a technology agency in Ibadan, Oyo State: website design, SEO, custom apps and AI automation, plus NIN enrolment and BVN support.",
   keywords: defaultKeywords,
   authors: [{ name: siteIdentity.brandName }],
   creator: siteIdentity.brandName,

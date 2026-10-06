@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import ChecklistTool from "@/components/marketing/ChecklistTool";
 import { appReadiness } from "@/lib/lead-magnets";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Free App Build Readiness Check | Triumphant HQ",
+export const metadata: Metadata = buildPageMetadata({
+  title: "App Build Readiness Check | Triumphant HQ",
   description: appReadiness.description,
-};
+  path: "/app-readiness",
+});
 
 export default function AppReadinessPage() {
   return (

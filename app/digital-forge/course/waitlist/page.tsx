@@ -1,12 +1,13 @@
 import Link from "next/link";
 import CurrencyPrice from "@/components/CurrencyPrice";
 import WaitlistForm from "./WaitlistForm";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Digital Forge Course Waitlist | Digital Forge",
-  description:
-    "Join the Digital Forge Course waitlist for priority access, launch price notification, and the clearest next step into the full guided curriculum.",
-};
+export const metadata = buildPageMetadata({
+  title: "Digital Forge Course Waitlist | Triumphant HQ",
+  description: "Join the Digital Forge Course waitlist for priority access and a note when enrolment opens.",
+  path: "/digital-forge/course/waitlist",
+});
 
 const WAITLIST_BENEFITS = [
   "Be first to know when hosted course enrollment and access go live",

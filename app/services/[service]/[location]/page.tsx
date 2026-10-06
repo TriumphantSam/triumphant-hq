@@ -45,6 +45,7 @@ export default async function ServiceLocationPage({ params }: { params: Promise<
 
   const parentHref = `/services/${page.serviceSlug}`;
   const parentLabel = page.serviceSlug === "seo" ? "SEO" : "Websites";
+  const readableLabel = parentLabel === "SEO" ? "SEO" : parentLabel.toLowerCase();
 
   return (
     <div>
@@ -54,6 +55,10 @@ export default async function ServiceLocationPage({ params }: { params: Promise<
           description: page.description,
           path: `/services/${page.serviceSlug}/${page.locationSlug}`,
           serviceType: parentLabel,
+          areaServed: [
+            { "@type": "City", name: "Ibadan" },
+            { "@type": "AdministrativeArea", name: "Oyo State" },
+          ],
         })}
       />
       <Breadcrumbs
@@ -77,7 +82,7 @@ export default async function ServiceLocationPage({ params }: { params: Promise<
             </span>
           </Link>
           <Link className="button button-secondary" href={parentHref}>
-            Full {parentLabel.toLowerCase()} service
+            Full {readableLabel} service
           </Link>
         </div>
       </header>
@@ -109,14 +114,14 @@ export default async function ServiceLocationPage({ params }: { params: Promise<
       </section>
 
       <FaqSection
-        title={`Questions about ${parentLabel.toLowerCase()} in Ibadan`}
+        title={`Questions about ${readableLabel} in Ibadan`}
         description="Scope, fit and next steps—answered before you book a call."
         items={page.faqs}
       />
 
       <CTABand
         eyebrow={`${parentLabel} · Ibadan`}
-        title={`Ready to improve your ${parentLabel.toLowerCase()} outcomes in Ibadan?`}
+        title={`Ready to improve your ${readableLabel} outcomes in Ibadan?`}
         description="Tell us what you need. We will recommend a clear next step—project, retainer or a free diagnostic where relevant."
       />
     </div>

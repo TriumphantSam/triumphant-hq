@@ -1,11 +1,13 @@
 import Link from "next/link";
 import CurrencyPrice from "@/components/CurrencyPrice";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Digital Forge Course — The Complete AI Product Business Curriculum | Digital Forge",
+export const metadata = buildPageMetadata({
+  title: "Digital Forge Course | Triumphant HQ",
   description:
-    "Join the waitlist for the Digital Forge Course: a step-by-step guided curriculum for building, packaging, launching, and growing a practical AI-assisted digital product business with prompts, templates, and reusable systems.",
-};
+    "Waitlist for the Digital Forge Course: a guided path for building, packaging and launching an AI-assisted digital product.",
+  path: "/digital-forge/course",
+});
 
 const MODULES = [
   {

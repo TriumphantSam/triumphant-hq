@@ -21,7 +21,7 @@ export async function generateMetadata({
     const post = getPostBySlug(slug);
     if (!post) return {};
     return buildPageMetadata({
-        title: post.title,
+        title: post.metaTitle || post.title,
         description: post.excerpt || `${post.title} — insights from Triumphant HQ.`,
         path: `/blog/${post.slug}`,
         keywords: [post.category, 'Triumphant HQ blog', 'digital growth Nigeria'],
@@ -35,6 +35,8 @@ const categoryColors: Record<string, string> = {
     'Workflow Design': '#a855f7',
     'Market Intelligence': '#e11d48',
     'General': '#f59e0b',
+    'SEO': '#075ee5',
+    'Local Growth': '#075ee5',
 };
 
 function renderInlineMarkdown(text: string) {
@@ -174,6 +176,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     description: post.excerpt || post.title,
                     path: `/blog/${post.slug}`,
                     datePublished: post.date,
+                    dateModified: post.updated || post.date,
                 })}
             />
             {faqSchema ? (

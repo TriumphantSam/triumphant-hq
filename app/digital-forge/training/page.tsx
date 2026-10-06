@@ -1,11 +1,12 @@
 import Link from "next/link";
 import CurrencyPrice from "@/components/CurrencyPrice";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Free Training — Coming Soon | Digital Forge",
-  description:
-    "The Digital Forge free training is launching alongside the full course. Join the waitlist to be first in when it goes live.",
-};
+export const metadata = buildPageMetadata({
+  title: "Free Digital Forge Training | Triumphant HQ",
+  description: "The Digital Forge free training launches with the course. Join the waitlist to hear when it goes live.",
+  path: "/digital-forge/training",
+});
 
 export default function DigitalForgeTrainingPage() {
   return (

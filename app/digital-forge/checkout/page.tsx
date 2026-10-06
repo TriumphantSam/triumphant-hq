@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import CheckoutClient from "./CheckoutClient";
 import CurrencyPrice from "@/components/CurrencyPrice";
 import { formatOfferPrice, isLaunchBundleOffer, resolveCheckoutOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
+import { buildPageMetadata } from "@/lib/seo";
 
 function parseLsVariantMap(raw: string): Record<string, number> {
   if (!raw.trim()) return {};
@@ -25,10 +26,11 @@ type CheckoutPageProps = {
   }>;
 };
 
-export const metadata = {
-  title: "Secure Checkout | Digital Forge",
-  description: "Complete your Digital Forge purchase securely. Global and local payment options available.",
-};
+export const metadata = buildPageMetadata({
+  title: "Secure Checkout | Triumphant HQ",
+  description: "Complete a Digital Forge purchase. Global and local payment options are available.",
+  path: "/digital-forge/checkout",
+});
 
 export default async function DigitalForgeCheckoutPage({ searchParams }: CheckoutPageProps) {
   const params = await searchParams;
