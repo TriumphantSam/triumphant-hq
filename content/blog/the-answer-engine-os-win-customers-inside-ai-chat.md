@@ -1,7 +1,7 @@
 ---
 title: "Your AI Content is Generic. Here's How to Fix It."
 date: "2026-04-10"
-excerpt: "You're using AI, but the output is bland and off-brand. The problem isn't your prompts; it's your lack of a system. Stop chasing tactics and build an engine."
+excerpt: "Bland AI output is usually a missing system, not a bad prompt. Stop chasing tactics and build one you can reuse."
 category: "AI & Automation"
 readTime: "6 min read"
 published: true

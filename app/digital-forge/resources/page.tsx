@@ -1,9 +1,11 @@
 import { forgeResources } from "@/lib/digital-forge";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = buildPageMetadata({
   title: "Digital Forge Resources | Triumphant HQ",
-  description: "Free and supporting Digital Forge resources, lead magnets, prompt packs, and frameworks.",
-};
+  description: "Free and supporting Digital Forge resources, lead magnets, prompt packs and frameworks.",
+  path: "/digital-forge/resources",
+});
 
 export default function DigitalForgeResourcesPage() {
   return (

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { getForgeProduct, getForgeProductSlugs } from "@/lib/digital-forge";
+import { buildPageMetadata } from "@/lib/seo";
 import { resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 import CurrencyPrice from "@/components/CurrencyPrice";
 
@@ -56,19 +57,27 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+function clipMeta(value: string, max: number) {
+  const clean = value.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const slice = clean.slice(0, max);
+  const space = slice.lastIndexOf(" ");
+  return (space > 24 ? slice.slice(0, space) : slice).replace(/[|.,;:\s-]+$/g, "");
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
   const product = await getForgeProduct(slug);
   if (!product) return {};
-  return {
-    title: product.seo?.metaTitle || `${product.title} | Digital Forge`,
-    description: product.seo?.metaDescription || product.promise,
-    openGraph: {
-      title: product.seo?.ogTitle || product.title,
-      description: product.seo?.ogDescription || product.promise,
-      type: "article",
-    },
-  };
+  const rawTitle = (product.seo?.metaTitle || product.title)
+    .replace(/\s*\|\s*Triumphant HQ\s*$/i, "")
+    .replace(/\s*\|\s*Digital Forge\s*$/i, "");
+  const descriptionSource = product.seo?.metaDescription || product.promise || product.title;
+  return buildPageMetadata({
+    title: `${clipMeta(rawTitle, 42)} | Triumphant HQ`,
+    description: clipMeta(descriptionSource, 155),
+    path: `/digital-forge/products/${product.slug}`,
+  });
 }
 
 export default async function DigitalForgeProductDetailPage({ params }: PageProps) {

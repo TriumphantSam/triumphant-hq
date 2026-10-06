@@ -1,11 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import blogIndex from '@/content/blog-index.json';
 
 export interface BlogPost {
     slug: string;
     title: string;
+    /** Title tag when the visible headline is longer than 60 characters. */
+    metaTitle?: string;
     date: string;
+    /** ISO date of the last substantive edit. Falls back to `date` for sitemap lastmod. */
+    updated?: string;
     excerpt: string;
     category: string;
     readTime: string;
@@ -31,7 +36,9 @@ function parsePost(filename: string): BlogPost {
     return {
         slug: filename.replace('.md', ''),
         title: data.title ?? 'Untitled',
+        metaTitle: data.metaTitle || undefined,
         date: data.date ?? '',
+        updated: data.updated || undefined,
         excerpt: data.excerpt ?? '',
         category: data.category ?? 'General',
         readTime: data.readTime ?? '3 min read',
@@ -57,6 +64,37 @@ export function getAllPosts(includeDrafts = false): BlogPost[] {
 
     // Sort newest first
     return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+}
+
+export type BlogSitemapEntry = {
+    slug: string;
+    date: string;
+    updated?: string;
+};
+
+/**
+ * Posts for the sitemap.
+ * Prefer the markdown directory when it is present (local builds and static generation).
+ * If the directory is missing — which happens when the Vercel sitemap function is traced
+ * without content/blog — fall back to the JSON index bundled with this module.
+ */
+export function getBlogSitemapEntries(): BlogSitemapEntry[] {
+    if (fs.existsSync(BLOG_DIR)) {
+        const posts = getAllPosts();
+        if (posts.length > 0) {
+            return posts.map((post) => ({
+                slug: post.slug,
+                date: post.date,
+                updated: post.updated,
+            }));
+        }
+    }
+
+    return (blogIndex as BlogSitemapEntry[]).map((post) => ({
+        slug: post.slug,
+        date: post.date,
+        updated: post.updated,
+    }));
 }
 
 export function getPostBySlug(slug: string, includeDrafts = false): BlogPost | null {

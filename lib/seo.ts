@@ -18,7 +18,7 @@ export const siteIdentity = {
   whatsapp: "2348107711190",
   streetAddress: "Basorun Rd",
   addressLocality: "Ibadan",
-  addressRegion: "Oyo",
+  addressRegion: "Oyo State",
   addressCountry: "NG",
   postalCode: "211107",
   geo: {
@@ -26,11 +26,13 @@ export const siteIdentity = {
     longitude: 3.947,
   },
   foundingYear: 2017,
-  /** Public profile URLs — add LinkedIn/Facebook when live */
+  /**
+   * Public profiles that are already linked from this site.
+   * Do not add Facebook, X, LinkedIn, YouTube or Crunchbase until those URLs are on a page.
+   */
   sameAs: [
     "https://share.google/RLZXJGOCCI82sx8tx",
     "https://www.instagram.com/triumphant_tech/",
-    SITE_URL,
   ] as string[],
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Basorun+Rd,+Ibadan+211107,+Oyo",
@@ -329,13 +331,17 @@ export const locationPages: LocationPage[] = [
     slug: "nigeria",
     name: "Nigeria",
     region: "Nationwide",
-    title: "Nigerian Technology & SEO Agency | Triumphant HQ",
+    title: "Technology Agency in Nigeria | Web, Apps & AI | Triumphant",
     description:
-      "Triumphant HQ is a Nigerian technology and growth agency for websites, SEO, custom applications and automation—serving clients nationwide from Ibadan.",
+      "Nigerian technology agency based in Ibadan: websites, custom apps, SEO and AI automation for businesses nationwide, plus a NIN/BVN desk.",
     h1: "A Nigerian technology partner for ambitious businesses",
     intro: [
-      "Triumphant HQ works with organisations across Nigeria. Our headquarters is in Ibadan, Oyo State, with remote-first delivery for teams anywhere in the country.",
-      "Local clients also use our NIN and BVN support desk for essential identity services.",
+      "Triumphant HQ (Triumphant Technological Services) is a technology agency headquartered on Basorun Rd, Ibadan. We have worked with organisations since 2017. This page is about that national technology practice: websites, custom applications and automation for teams anywhere in Nigeria. Search programmes have their own page, so this one does not try to rank as an SEO company.",
+      "The office is in Ibadan, in the Bashorun area of Oyo State. We do not run branch offices in Lagos, Abuja or Port Harcourt. When a client is outside Ibadan, delivery is remote: a discovery call, a written scope, and WhatsApp for the questions that should not wait for a meeting. Osun State clients in Osogbo and Ile-Ife use the same remote path.",
+      "Website work is usually a Next.js build with a clear structure, fast mobile pages and the technical basics search engines need. Application work is for a workflow that spreadsheets and off-the-shelf tools keep breaking. Automation is for repetitive follow-up, handoffs and reporting. We will say when a smaller job is the right one.",
+      "Local Support — NIN enrolment, modifications and BVN help — is a separate desk at the same Ibadan address. It is WhatsApp-first and it is not bundled into a software project. Nationwide clients who only need a website, an application or an automation stay on the agency path.",
+      "If the job is search visibility, start with the national SEO page or the Ibadan SEO page, not this location note. We keep those URLs distinct so Google is not asked to choose between three versions of the same promise.",
+      "A typical remote engagement still has a named person on our side, a written scope, and a shared place to see what is done. We do not disappear behind a ticket queue. If the work needs a visit, Ibadan is where that happens. If it does not, we will not ask you to travel for a conversation that a call can finish.",
     ],
     localFocus: ["Ibadan-based NIN and BVN desk for Southwestern Nigeria", "Practical WhatsApp support"],
     agencyFocus: ["Nationwide website, SEO, app and automation delivery", "Ongoing support retainers"],
@@ -344,7 +350,12 @@ export const locationPages: LocationPage[] = [
       {
         question: "Does Triumphant HQ work nationwide?",
         answer:
-          "Yes. Agency delivery is available nationwide from our Ibadan base. The Local Support desk for NIN/BVN is Ibadan-centred with WhatsApp coordination.",
+          "Yes. Website, application and automation work is delivered nationwide from our Ibadan headquarters. The NIN and BVN desk is in Ibadan and is coordinated on WhatsApp.",
+      },
+      {
+        question: "Where should I go for SEO?",
+        answer:
+          "Use the SEO company in Nigeria page for a national search programme, or the SEO in Ibadan page if the customers you want are in Ibadan and Oyo State. This location page is not an SEO offer.",
       },
     ],
   },
@@ -410,48 +421,6 @@ export const serviceLocationPages: ServiceLocationPage[] = [
       "best website design Ibadan",
     ],
   },
-  {
-    serviceSlug: "seo",
-    locationSlug: "ibadan",
-    title: "SEO Agency in Ibadan & Oyo State | Triumphant HQ",
-    description:
-      "SEO agency in Ibadan for technical health, content and local visibility—helping Oyo State businesses get found on Google and AI search.",
-    h1: "SEO services for Ibadan and Oyo State businesses",
-    intro: [
-      "Triumphant HQ is an SEO agency based in Ibadan. We improve technical foundations, on-page clarity and content systems so the right customers can find you.",
-      "Local businesses often need both city-level visibility (Ibadan, Akobo, Bashorun) and service-level pages that match how people search.",
-      "Start with a free SEO visibility snapshot, then decide whether a focused project or ongoing growth retainer fits.",
-    ],
-    bullets: [
-      "Technical SEO and crawlability fixes",
-      "Local and service-page structure for Ibadan queries",
-      "Content guidance tied to real commercial intent",
-      "AI-search readiness: clear facts, FAQs and entity consistency",
-    ],
-    faqs: [
-      {
-        question: "Do you offer local SEO for Ibadan businesses?",
-        answer:
-          "Yes. We align site structure, Google Business Profile guidance and location-relevant pages so local searches can convert into enquiries.",
-      },
-      {
-        question: "Is SEO different from running ads?",
-        answer:
-          "Yes. SEO builds durable organic visibility. Ads can complement it, but our SEO work focuses on technical health, content and local relevance.",
-      },
-      {
-        question: "Who is your SEO agency for?",
-        answer:
-          "Ibadan and Oyo State businesses with a real offer that need to be findable—professional firms, clinics, schools and service operators. We start with a free snapshot rather than a retainer pitch.",
-      },
-    ],
-    keywords: [
-      "SEO agency Ibadan",
-      "SEO company Oyo State",
-      "local SEO Ibadan",
-      "search visibility Ibadan",
-    ],
-  },
 ];
 
 export function getServiceLocationPage(serviceSlug: string, locationSlug: string) {
@@ -466,8 +435,8 @@ export const defaultKeywords = [
   "technology company Ibadan",
   "best tech company Ibadan",
   "website design Ibadan",
-  "SEO agency Ibadan",
-  "SEO company Oyo State",
+  "SEO in Ibadan",
+  "SEO company in Nigeria",
   "NIN enrolment Ibadan",
   "BVN support Ibadan",
   "NIN Akobo",
@@ -565,14 +534,19 @@ export function localBusinessJsonLd() {
     "@context": "https://schema.org",
     "@type": ["LocalBusiness", "ProfessionalService"],
     "@id": `${SITE_URL}/#localbusiness`,
-    name: siteIdentity.brandName,
+    name: siteIdentity.legalName,
     legalName: siteIdentity.legalName,
-    alternateName: [siteIdentity.legalName, "Triumphant Tech"],
+    alternateName: [siteIdentity.brandName, "Triumphant Tech"],
     image: `${SITE_URL}/images/agency-hero-cinematic.png`,
     url: SITE_URL,
     telephone: siteIdentity.phoneE164,
     email: siteIdentity.email,
-    priceRange: "$$",
+    foundingDate: String(siteIdentity.foundingYear),
+    founder: {
+      "@type": "Person",
+      name: "Adeyemi Olayemi",
+      jobTitle: "Founder",
+    },
     hasMap: siteIdentity.mapsUrl,
     address: {
       "@type": "PostalAddress",
@@ -595,11 +569,12 @@ export function localBusinessJsonLd() {
     knowsAbout: [
       "Website design",
       "Search engine optimization",
+      "Local SEO",
+      "Technical SEO",
       "Custom application development",
       "Business automation",
       "NIN enrolment support",
       "BVN support",
-      "Technology company Ibadan",
     ],
     sameAs: siteIdentity.sameAs,
     parentOrganization: { "@id": `${SITE_URL}/#organization` },
@@ -644,21 +619,59 @@ export function breadcrumbJsonLd(items: Array<{ name: string; path: string }>) {
   };
 }
 
+export type SchemaArea =
+  | string
+  | {
+      "@type": "City" | "AdministrativeArea" | "Country" | "State";
+      name: string;
+    };
+
 export function serviceJsonLd(input: {
   name: string;
   description: string;
   path: string;
   serviceType: string;
+  areaServed?: SchemaArea[];
+  offerNames?: string[];
 }) {
-  return {
+  const data: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "Service",
     name: input.name,
     description: input.description,
     serviceType: input.serviceType,
     provider: { "@id": `${SITE_URL}/#localbusiness` },
-    areaServed: serviceAreas.map((area) => area.name),
+    areaServed: input.areaServed ?? serviceAreas.map((area) => area.name),
     url: absoluteCanonicalUrl(input.path),
+  };
+
+  if (input.offerNames && input.offerNames.length > 0) {
+    data.hasOfferCatalog = {
+      "@type": "OfferCatalog",
+      name: input.name,
+      itemListElement: input.offerNames.map((name) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name,
+        },
+      })),
+    };
+  }
+
+  return data;
+}
+
+export function webPageJsonLd(input: { name: string; description: string; path: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: input.name,
+    description: input.description,
+    url: absoluteCanonicalUrl(input.path),
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#localbusiness` },
+    inLanguage: "en-NG",
   };
 }
 
@@ -692,9 +705,14 @@ export function articleJsonLd(input: {
     datePublished: input.datePublished,
     dateModified: input.dateModified || input.datePublished,
     author: {
-      "@type": "Organization",
-      name: siteIdentity.brandName,
-      url: SITE_URL,
+      "@type": "Person",
+      name: "Adeyemi Olayemi",
+      jobTitle: "Founder",
+      worksFor: {
+        "@type": "Organization",
+        name: siteIdentity.legalName,
+        url: SITE_URL,
+      },
     },
     publisher: {
       "@type": "Organization",

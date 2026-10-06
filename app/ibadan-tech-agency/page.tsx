@@ -45,7 +45,7 @@ const faqs = [
 export const metadata: Metadata = buildPageMetadata({
   title: "Tech Company in Ibadan | Technology Agency · Triumphant HQ",
   description:
-    "Looking for a tech company or technology agency in Ibadan? Triumphant HQ (Triumphant Technological Services) delivers websites, SEO, apps and automation from Basorun Rd, Oyo State.",
+    "Tech company in Ibadan on Basorun Rd: websites, SEO, custom apps and automation from Triumphant Technological Services, plus a NIN and BVN desk.",
   path: "/ibadan-tech-agency",
   keywords: [
     "tech company Ibadan",
@@ -171,8 +171,8 @@ export default function IbadanTechAgencyPage() {
               },
               {
                 href: "/services/seo/ibadan",
-                title: "SEO agency services",
-                copy: "Technical health, local relevance and content systems so customers can find you.",
+                title: "SEO in Ibadan",
+                copy: "Technical health, Google Business Profile work and pages for Ibadan and Oyo State searches.",
               },
               {
                 href: "/services/app-development",
@@ -196,6 +196,13 @@ export default function IbadanTechAgencyPage() {
               </Link>
             ))}
           </Reveal>
+          <p className="mt-8 text-[1.02rem] leading-8 text-slate-600">
+            For a programme that is not limited to Ibadan, see{" "}
+            <Link href="/services/seo" className="font-semibold text-blue-700">
+              SEO company in Nigeria
+            </Link>
+            .
+          </p>
           <Reveal className="mt-10 flex flex-col gap-4 border-l border-blue-200/80 pl-6 sm:flex-row sm:items-center sm:justify-between sm:pl-8">
             <div>
               <p className="font-display text-xl font-bold text-slate-950">Need NIN or BVN help instead?</p>

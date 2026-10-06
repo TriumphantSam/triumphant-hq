@@ -1,7 +1,8 @@
 ---
 title: "Your Audiobook Backlog Is a Liability. Here’s How to Co-Create Your Way Out."
+metaTitle: "Turn an Audiobook Backlog into Useful Notes"
 date: "2026-04-05"
-excerpt: "Stop passively consuming audiobooks and start actively co-creating with them. This is the operator's guide to turning your listening time into a high-ROI asset using AI."
+excerpt: "Stop only consuming audiobooks. This guide shows how to co-create with them so listening time becomes notes you can use."
 category: "AI & Automation"
 readTime: "6 min read"
 published: true

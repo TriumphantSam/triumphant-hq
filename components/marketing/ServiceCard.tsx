@@ -49,6 +49,12 @@ export default function ServiceCard({
               ))}
             </ul>
           ) : null}
+          {service.slug === "seo" ? (
+            <p className="mt-4 flex flex-col gap-2 text-sm font-semibold text-blue-700">
+              <Link href="/services/seo/ibadan">SEO company in Ibadan</Link>
+              <Link href="/services/seo">SEO agency in Nigeria</Link>
+            </p>
+          ) : null}
         </div>
       </div>
       <div className="px-6 pb-6 pt-0 sm:px-8 sm:pb-8">

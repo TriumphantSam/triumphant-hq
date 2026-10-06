@@ -96,21 +96,37 @@ export default function Navigation() {
                   </span>
                 </Link>
                 {agencyServices.map((service, i) => (
-                  <Link
-                    key={service.slug}
-                    href={`/services/${service.slug}`}
-                    className="group/item flex gap-3.5 border-b border-slate-100 px-4 py-3.5 transition-colors hover:bg-slate-50"
-                  >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-[var(--accent-color)] transition-colors group-hover/item:bg-[var(--accent-color)] group-hover/item:text-white">
-                      {String(i + 2).padStart(2, "0")}
-                    </span>
-                    <span>
-                      <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-[var(--accent-color)]">
-                        {service.shortTitle}
+                  <div key={service.slug}>
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className="group/item flex gap-3.5 border-b border-slate-100 px-4 py-3.5 transition-colors hover:bg-slate-50"
+                    >
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-slate-100 font-mono text-[10px] font-bold text-[var(--accent-color)] transition-colors group-hover/item:bg-[var(--accent-color)] group-hover/item:text-white">
+                        {String(i + 2).padStart(2, "0")}
                       </span>
-                      <span className="mt-0.5 block text-xs leading-5 text-slate-500">{service.promise}</span>
-                    </span>
-                  </Link>
+                      <span>
+                        <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-[var(--accent-color)]">
+                          {service.slug === "seo" ? "SEO in Nigeria" : service.shortTitle}
+                        </span>
+                        <span className="mt-0.5 block text-xs leading-5 text-slate-500">{service.promise}</span>
+                      </span>
+                    </Link>
+                    {service.slug === "seo" ? (
+                      <Link
+                        href="/services/seo/ibadan"
+                        className="group/item flex gap-3.5 border-b border-slate-100 py-3 pr-4 pl-16 transition-colors hover:bg-slate-50"
+                      >
+                        <span>
+                          <span className="block text-sm font-semibold text-slate-950 group-hover/item:text-[var(--accent-color)]">
+                            SEO in Ibadan
+                          </span>
+                          <span className="mt-0.5 block text-xs leading-5 text-slate-500">
+                            Local SEO for Ibadan and Oyo State
+                          </span>
+                        </span>
+                      </Link>
+                    ) : null}
+                  </div>
                 ))}
                 <Link
                   href="/ongoing-support"
@@ -250,14 +266,24 @@ export default function Navigation() {
               01 · Local Support
             </Link>
             {agencyServices.map((service, index) => (
-              <Link
-                key={service.slug}
-                href={`/services/${service.slug}`}
-                className="mobile-nav-sublink"
-                onClick={() => setMobileOpen(false)}
-              >
-                {String(index + 2).padStart(2, "0")} · {service.shortTitle}
-              </Link>
+              <span key={service.slug} className="contents">
+                <Link
+                  href={`/services/${service.slug}`}
+                  className="mobile-nav-sublink"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {String(index + 2).padStart(2, "0")} · {service.slug === "seo" ? "SEO in Nigeria" : service.shortTitle}
+                </Link>
+                {service.slug === "seo" ? (
+                  <Link
+                    href="/services/seo/ibadan"
+                    className="mobile-nav-sublink pl-6"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    SEO in Ibadan
+                  </Link>
+                ) : null}
+              </span>
             ))}
             <Link href="/ongoing-support" className="mobile-nav-sublink" onClick={() => setMobileOpen(false)}>
               06 · Ongoing Support

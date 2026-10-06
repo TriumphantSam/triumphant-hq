@@ -1,7 +1,8 @@
 ---
 title: "Beyond ChatGPT: Why You Need an AI Notion Command Center to Actually Get Work Done"
+metaTitle: "An AI Notion Command Centre for Real Work"
 date: "2026-04-05"
-excerpt: "Stop copy-pasting prompts into a dozen tabs. The sharpest operators are building a central nervous system for their AI workflows in Notion. Here’s the blueprint."
+excerpt: "Stop copy-pasting prompts across tabs. Build one Notion command centre for the AI workflows you repeat."
 category: "AI & Automation"
 readTime: "6 min read"
 published: true

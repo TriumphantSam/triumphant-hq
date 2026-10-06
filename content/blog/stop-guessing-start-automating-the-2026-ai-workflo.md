@@ -1,7 +1,8 @@
 ---
 title: "Your AI Strategy is a Pile of Tools, Not a System. Here’s How to Fix It."
+metaTitle: "Turn a Pile of AI Tools into One Workflow"
 date: "2026-04-05"
-excerpt: "Stop collecting shiny AI tools. A scattered approach bleeds cash and creates chaos. Learn why successful operators focus on building AI workflow blueprints."
+excerpt: "A pile of AI tools is not a strategy. Operators get further by building one workflow they can run every week."
 category: "Workflow Design"
 readTime: "6 min read"
 published: true

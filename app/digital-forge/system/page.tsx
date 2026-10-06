@@ -2,12 +2,14 @@ import Link from "next/link";
 import CurrencyPrice from "@/components/CurrencyPrice";
 import Testimonials from "@/components/Testimonials";
 import { formatOfferPrice, resolveSystemOffer, resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "Digital Forge Side Hustle Starter System — Build and Sell Your First AI Product | Digital Forge",
+export const metadata = buildPageMetadata({
+  title: "Digital Forge Starter System | Triumphant HQ",
   description:
-    "Get the Digital Forge Side Hustle Starter System: the complete practical toolkit with guide, prompts, templates, launch assets, and operating documents to build and sell your first AI-powered digital product.",
-};
+    "The Digital Forge Starter System: guides, prompts and templates for building and selling a first AI-powered digital product.",
+  path: "/digital-forge/system",
+});
 
 const DELIVERABLES = [
   "01 Start Here.pdf — the first-step guide so you know exactly where to begin",

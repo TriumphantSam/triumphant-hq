@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CTABand from "@/components/marketing/CTABand";
 import SectionHeader from "@/components/marketing/SectionHeader";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Resources | Digital Forge, Training and Insights",
-  description: "Explore Triumphant HQ guides, training, digital products and practical systems for building with technology and AI.",
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Resources | Guides and Training · Triumphant HQ",
+  description: "Guides, training, digital products and practical systems from Triumphant HQ for building with technology and AI.",
+  path: "/resources",
+});
 
 const resources = [
   {

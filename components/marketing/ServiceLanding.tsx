@@ -15,6 +15,10 @@ import Reveal from "./Reveal";
 import SectionHeader from "./SectionHeader";
 import ServiceIcon from "./ServiceIcon";
 
+function readableServiceName(value: string) {
+  return value.toLowerCase().replace(/\bseo\b/g, "SEO");
+}
+
 export default function ServiceLanding({
   service,
   h1,
@@ -224,7 +228,7 @@ export default function ServiceLanding({
       <Reveal>
         <CTABand
           eyebrow={service.shortTitle}
-          title={`Let's turn your ${service.shortTitle.toLowerCase()} priority into a clear delivery plan.`}
+          title={`Let's turn your ${readableServiceName(service.shortTitle)} priority into a clear delivery plan.`}
         />
       </Reveal>
     </div>

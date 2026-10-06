@@ -1,7 +1,8 @@
 ---
 title: "The Uncanny Valley of AI Content: Why Your Prompts Are Failing and How to Fix It"
+metaTitle: "Why Generic AI Prompts Fail a Brand"
 date: "2026-04-08"
-excerpt: "Tired of generic, robotic AI outputs that damage your brand? The problem isn't the tool, it's the prompt. Learn the framework for creating strategic, non-generic AI content."
+excerpt: "Generic AI copy hurts a brand. The fix is a prompting framework that produces specific, usable writing."
 category: "AI & Automation"
 readTime: "5 min read"
 published: true

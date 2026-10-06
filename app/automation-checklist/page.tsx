@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import ChecklistTool from "@/components/marketing/ChecklistTool";
 import { automationChecklist } from "@/lib/lead-magnets";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Free Automation Readiness Checklist | Triumphant HQ",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Automation Readiness Checklist | Triumphant HQ",
   description: automationChecklist.description,
-};
+  path: "/automation-checklist",
+});
 
 export default function AutomationChecklistPage() {
   return (

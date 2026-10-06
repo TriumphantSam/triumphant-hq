@@ -2,6 +2,7 @@ import Link from "next/link";
 import Script from "next/script";
 import { isLaunchBundleOffer } from "@/lib/digital-forge-offers";
 import { fulfillFlutterwavePurchase } from "@/lib/digital-forge-fulfill";
+import { buildPageMetadata } from "@/lib/seo";
 
 type ConfirmedPageProps = {
   searchParams: Promise<{
@@ -16,10 +17,11 @@ type ConfirmedPageProps = {
 
 export const dynamic = "force-dynamic";
 
-export const metadata = {
-  title: "Payment Received",
-  description: "Your payment is being verified for delivery.",
-};
+export const metadata = buildPageMetadata({
+  title: "Payment Received | Triumphant HQ",
+  description: "Your Digital Forge payment is being verified before delivery.",
+  path: "/digital-forge/checkout/confirmed",
+});
 
 const START_STEPS = [
   { num: "01", text: 'Open "01 Start Here.pdf" — your first-step orientation guide.' },

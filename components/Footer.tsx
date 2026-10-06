@@ -9,9 +9,13 @@ const columns = [
   {
     title: 'Agency Services',
     links: agencyServices.map((service) => ({
-      label: service.shortTitle,
+      label: service.slug === 'seo' ? 'SEO in Nigeria' : service.shortTitle,
       href: `/services/${service.slug}`,
-    })).concat([{ label: 'Ongoing Support', href: '/ongoing-support' }]),
+    })).concat([
+      { label: 'SEO in Ibadan', href: '/services/seo/ibadan' },
+      { label: 'Website design in Ibadan', href: '/services/websites/ibadan' },
+      { label: 'Ongoing Support', href: '/ongoing-support' },
+    ]),
   },
   {
     title: 'Resources',

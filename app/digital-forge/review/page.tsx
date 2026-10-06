@@ -1,11 +1,13 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import CurrencyPrice from "@/components/CurrencyPrice";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Free Product Idea Review — Digital Forge | Triumphant HQ",
-  description: "Have an idea, skill, or AI workflow you think could become a digital product? Send it in for a free product idea review and get practical offer clarity.",
-};
+export const metadata: Metadata = buildPageMetadata({
+  title: "Free Product Idea Review | Triumphant HQ",
+  description: "Send a product idea, skill or AI workflow for a free review and practical offer clarity from Digital Forge.",
+  path: "/digital-forge/review",
+});
 
 const whatsappHref =
   "https://wa.me/2348107711190?text=Hi%20Adeyemi%2C%20I%20have%20a%20product%20idea%20I%20want%20reviewed.%20Here%20it%20is%3A%20";
