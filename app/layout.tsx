@@ -154,7 +154,7 @@ export default function RootLayout({
         <PostHogProvider>
           <AntigravityBackground />
           <Navigation />
-          <main id="site-main-content" className="flex-grow w-full" data-page-reader-root>
+          <main id="site-main-content" className="flex-grow w-full pt-[88px]" data-page-reader-root>
             {children}
           </main>
           <Footer />

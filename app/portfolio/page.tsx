@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import JsonLd from "@/components/seo/JsonLd";
 import TrackedLink from "@/components/portfolio/TrackedLink";
-import { whatsappNumber } from "@/lib/services";
+import { whatsappLink } from "@/lib/contact";
 import { buildPageMetadata, SITE_URL, siteIdentity } from "@/lib/seo";
 
 const title = "Portfolio | Triumphant Tech, Website & AI Automation Agency in Ibadan";
@@ -52,7 +52,7 @@ const projects = [
   },
 ] as const;
 
-const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi Triumphant Tech, I saw your portfolio and I'd like a website for my business.")}`;
+const whatsappUrl = whatsappLink("Hi Triumphant Tech, I saw your portfolio and I'd like a website for my business.");
 
 const automation = [
   { icon: "↗", title: "Missed-call follow-up", copy: "Send a timely WhatsApp reply when a potential customer calls and cannot reach you." },

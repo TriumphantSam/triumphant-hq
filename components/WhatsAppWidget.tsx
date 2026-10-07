@@ -3,11 +3,9 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
-import { launchBundleWhatsappNumber, whatsappNumber } from "@/lib/services";
+import { launchBundleWhatsappNumber } from "@/lib/services";
+import { whatsappLink } from "@/lib/contact";
 
-const AGENCY_MESSAGE = encodeURIComponent(
-  "Hi Triumphant HQ, I'd like to discuss a project with your agency."
-);
 const LAUNCH_BUNDLE_MESSAGE = encodeURIComponent("HI");
 
 export default function WhatsAppWidget() {
@@ -16,7 +14,7 @@ export default function WhatsAppWidget() {
   const waUrl =
     pathname.startsWith("/digital-product") || pathname.startsWith("/digital-forge/checkout")
       ? `https://wa.me/${launchBundleWhatsappNumber}?text=${LAUNCH_BUNDLE_MESSAGE}`
-      : `https://wa.me/${whatsappNumber}?text=${AGENCY_MESSAGE}`;
+      : whatsappLink("Hi Triumphant HQ, I'd like to discuss a project with your agency.");
 
   if (
     pathname.startsWith("/parent-home-routine") ||
