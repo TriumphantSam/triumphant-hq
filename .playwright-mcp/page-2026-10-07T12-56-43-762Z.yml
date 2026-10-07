@@ -1,0 +1,376 @@
+- generic [active] [ref=f16e1]:
+  - link "Skip to content" [ref=f16e2] [cursor=pointer]:
+    - /url: "#site-main-content"
+  - navigation "Main navigation" [ref=f16e3]:
+    - generic [ref=f16e4]:
+      - link "Triumphant HQ home" [ref=f16e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f16e6]: T
+        - generic [ref=f16e7]: TriumphantHQ
+      - generic [ref=f16e8]:
+        - link "Home" [ref=f16e9] [cursor=pointer]:
+          - /url: /
+        - button "Services" [ref=f16e12] [cursor=pointer]
+        - link "Portfolio" [ref=f16e15] [cursor=pointer]:
+          - /url: /portfolio
+        - link "How we work" [ref=f16e16] [cursor=pointer]:
+          - /url: /#how-we-work
+        - link "About" [ref=f16e17] [cursor=pointer]:
+          - /url: /about
+        - link "Contact" [ref=f16e18] [cursor=pointer]:
+          - /url: /contact
+        - button "More" [ref=f16e20] [cursor=pointer]
+      - generic [ref=f16e23]:
+        - link "Chat on WhatsApp" [ref=f16e24] [cursor=pointer]:
+          - /url: https://wa.me/2348107711190?text=Hi%20Triumphant%20Tech%2C%20I%20saw%20your%20website%20and%20I'd%20like%20a%20website%20with%20WhatsApp%20automation%20for%20my%20business.
+        - link "Start a project" [ref=f16e27] [cursor=pointer]:
+          - /url: /contact
+  - main [ref=f16e28]:
+    - generic [ref=f16e29]:
+      - generic [ref=f16e31]:
+        - paragraph [ref=f16e32]: Ibadan-based · Serving Nigeria since 2017
+        - heading "Websites that make it easier for customers to choose you." [level=1] [ref=f16e33]
+        - paragraph [ref=f16e34]: We build clear, fast websites and connect WhatsApp and AI automation so your business can respond, book and follow up with confidence.
+        - generic [ref=f16e35]:
+          - link "Chat on WhatsApp ↗" [ref=f16e36] [cursor=pointer]:
+            - /url: https://wa.me/2348107711190?text=Hi%20Triumphant%20Tech%2C%20I%20saw%20your%20website%20and%20I'd%20like%20a%20website%20with%20WhatsApp%20automation%20for%20my%20business.
+          - link "See our work →" [ref=f16e37] [cursor=pointer]:
+            - /url: /portfolio
+      - region [ref=f16e38]:
+        - generic [ref=f16e39]:
+          - generic [ref=f16e40]:
+            - generic [ref=f16e41]:
+              - paragraph [ref=f16e42]: Selected work
+              - heading "Real websites. Real businesses. Live today." [level=2] [ref=f16e43]
+              - paragraph [ref=f16e44]: Explore websites built for care, agriculture, training and community.
+            - link "View full portfolio →" [ref=f16e45] [cursor=pointer]:
+              - /url: /portfolio
+          - generic [ref=f16e46]:
+            - link [ref=f16e47] [cursor=pointer]:
+              - /url: /portfolio#projects
+              - img "Homepage of Metropolitan Family Hospital website built by Triumphant Tech" [ref=f16e49]
+              - generic [ref=f16e50]:
+                - paragraph [ref=f16e51]: Healthcare
+                - heading "Metropolitan Family Hospital" [level=3] [ref=f16e52]
+            - link [ref=f16e53] [cursor=pointer]:
+              - /url: /portfolio#projects
+              - img "Homepage of IAPrecision website built by Triumphant Tech" [ref=f16e55]
+              - generic [ref=f16e56]:
+                - paragraph [ref=f16e57]: Agricultural technology
+                - heading "IAPrecision" [level=3] [ref=f16e58]
+            - link [ref=f16e59] [cursor=pointer]:
+              - /url: /portfolio#projects
+              - img "Homepage of Echitech website built by Triumphant Tech" [ref=f16e61]
+              - generic [ref=f16e62]:
+                - paragraph [ref=f16e63]: Engineering and safety
+                - heading "Echitech" [level=3] [ref=f16e64]
+            - link [ref=f16e65] [cursor=pointer]:
+              - /url: /portfolio#projects
+              - img "Homepage of Precision Field Academy website built by Triumphant Tech" [ref=f16e67]
+              - generic [ref=f16e68]:
+                - paragraph [ref=f16e69]: Agricultural education
+                - heading "Precision Field Academy" [level=3] [ref=f16e70]
+            - link [ref=f16e71] [cursor=pointer]:
+              - /url: /portfolio#projects
+              - img "Homepage of Eternal Life Global Community Church website built by Triumphant Tech" [ref=f16e73]
+              - generic [ref=f16e74]:
+                - paragraph [ref=f16e75]: Faith and community
+                - heading "Eternal Life Global Community Church" [level=3] [ref=f16e76]
+      - generic [ref=f16e78]:
+        - paragraph [ref=f16e79]: Built for growth
+        - heading "Websites + WhatsApp AI that books customers for Nigerian clinics, solar installers and service businesses." [level=2] [ref=f16e80]
+        - paragraph [ref=f16e81]: We connect a credible online presence with faster responses, easier booking and practical follow-up.
+        - link "Chat on WhatsApp ↗" [ref=f16e82] [cursor=pointer]:
+          - /url: https://wa.me/2348107711190?text=Hi%20Triumphant%20Tech%2C%20I%20saw%20your%20website%20and%20I'd%20like%20a%20website%20with%20WhatsApp%20automation%20for%20my%20business.
+      - generic [ref=f16e84]:
+        - paragraph [ref=f16e85]: What we do
+        - heading "One partner across the systems that power modern growth." [level=2] [ref=f16e86]
+        - paragraph [ref=f16e87]: Strategy only matters when customers can feel it and teams can run it. We connect design, engineering, visibility and automation into focused delivery.
+        - generic [ref=f16e88]:
+          - article [ref=f16e89]:
+            - generic [ref=f16e90]:
+              - img "Modern website design workspace with a large display and soft daylight" [ref=f16e92]
+              - generic [ref=f16e94]:
+                - generic [ref=f16e95]: "01"
+                - paragraph [ref=f16e101]: Web design and development
+                - heading "Website Design" [level=3] [ref=f16e102]
+                - paragraph [ref=f16e103]: Turn your website into a credible, fast and conversion-focused growth asset.
+            - link "Explore Website Design" [ref=f16e105] [cursor=pointer]:
+              - /url: /services/websites
+              - text: Explore Website Design
+              - generic [aria-hidden] [ref=f16e106]: →
+          - article [ref=f16e107]:
+            - generic [ref=f16e108]:
+              - img "Software engineering workspace with dual monitors and cool ambient light" [ref=f16e110]
+              - generic [ref=f16e112]:
+                - generic [ref=f16e113]: "02"
+                - paragraph [ref=f16e119]: Custom product engineering
+                - heading "Custom Applications" [level=3] [ref=f16e120]
+                - paragraph [ref=f16e121]: Replace fragmented tools and manual work with software designed for your business.
+            - link "Explore Custom Applications" [ref=f16e123] [cursor=pointer]:
+              - /url: /services/app-development
+              - text: Explore Custom Applications
+              - generic [aria-hidden] [ref=f16e124]: →
+          - article [ref=f16e125]:
+            - generic [ref=f16e126]:
+              - img "Laptop on a desk showing abstract search analytics in soft blue light" [ref=f16e128]
+              - generic [ref=f16e130]:
+                - generic [ref=f16e131]: "03"
+                - paragraph [ref=f16e137]: Organic and AI-search growth
+                - heading "SEO Growth" [level=3] [ref=f16e138]
+                - paragraph [ref=f16e139]: Technical SEO, content and local visibility for businesses across Nigeria.
+                - paragraph [ref=f16e140]:
+                  - link "SEO company in Ibadan" [ref=f16e141] [cursor=pointer]:
+                    - /url: /services/seo/ibadan
+                  - link "SEO agency in Nigeria" [ref=f16e142] [cursor=pointer]:
+                    - /url: /services/seo
+            - link "Explore SEO Growth" [ref=f16e144] [cursor=pointer]:
+              - /url: /services/seo
+              - text: Explore SEO Growth
+              - generic [aria-hidden] [ref=f16e145]: →
+          - article [ref=f16e146]:
+            - generic [ref=f16e147]:
+              - img "Operations desk with devices showing connected workflow diagrams" [ref=f16e149]
+              - generic [ref=f16e151]:
+                - generic [ref=f16e152]: "04"
+                - paragraph [ref=f16e158]: AI and workflow automation
+                - heading "AI Automation" [level=3] [ref=f16e159]
+                - paragraph [ref=f16e160]: Connect tools, remove repetitive work and turn manual processes into reliable systems.
+            - link "Explore AI Automation" [ref=f16e162] [cursor=pointer]:
+              - /url: /services/automation
+              - text: Explore AI Automation
+              - generic [aria-hidden] [ref=f16e163]: →
+      - generic [ref=f16e165]:
+        - generic [ref=f16e166]:
+          - paragraph [ref=f16e167]: Who we work with
+          - heading "Trusted across sectors that need clear digital systems." [level=2] [ref=f16e168]
+        - list [ref=f16e169]:
+          - listitem [ref=f16e170]:
+            - img "Integrated Aerial Precision logo" [ref=f16e172]
+            - paragraph [ref=f16e173]: AgTech / drones
+          - listitem [ref=f16e174]:
+            - img "Dr Seyi Absolute Wellness logo" [ref=f16e176]
+            - paragraph [ref=f16e177]: Wellness
+          - listitem [ref=f16e178]:
+            - img "Eternal Life Global Community Church logo" [ref=f16e180]
+            - paragraph [ref=f16e181]: Faith / community
+          - listitem [ref=f16e182]:
+            - img "Black MD logo" [ref=f16e184]
+            - paragraph [ref=f16e185]: Healthcare
+          - listitem [ref=f16e186]:
+            - img "Echitech logo" [ref=f16e188]
+            - paragraph [ref=f16e189]: Engineering / tech
+          - listitem [ref=f16e190]:
+            - img "Metropolitan Family Hospital logo" [ref=f16e192]
+            - paragraph [ref=f16e193]: Hospital
+          - listitem [ref=f16e194]:
+            - img "Mercy Medical Clinic logo" [ref=f16e196]
+            - paragraph [ref=f16e197]: Clinic
+          - listitem [ref=f16e198]:
+            - img "Precision Field Academy logo" [ref=f16e200]
+            - paragraph [ref=f16e201]: Training / AgTech
+          - listitem [ref=f16e202]:
+            - img "Chicago SEO Company logo" [ref=f16e204]
+            - paragraph [ref=f16e205]: Digital marketing
+      - generic [ref=f16e207]:
+        - paragraph [ref=f16e208]: How we work
+        - heading "A clear path from challenge to working solution." [level=2] [ref=f16e209]
+        - paragraph [ref=f16e210]: You stay close to the decisions that matter, without managing every technical detail.
+        - generic [ref=f16e213]:
+          - generic [ref=f16e214]:
+            - generic [ref=f16e218]: STEP 01
+            - heading "Discover" [level=3] [ref=f16e219]
+            - paragraph [ref=f16e220]: We clarify the commercial problem, key constraints, and what measurable success must look like.
+          - generic [ref=f16e221]:
+            - generic [ref=f16e225]: STEP 02
+            - heading "Design" [level=3] [ref=f16e226]
+            - paragraph [ref=f16e227]: We shape the user experience, systems architecture, and delivery roadmap before production.
+          - generic [ref=f16e228]:
+            - generic [ref=f16e232]: STEP 03
+            - heading "Build" [level=3] [ref=f16e233]
+            - paragraph [ref=f16e234]: We engineer in focused iterations with continuous previews, production quality, and test coverage.
+          - generic [ref=f16e235]:
+            - generic [ref=f16e239]: STEP 04
+            - heading "Improve" [level=3] [ref=f16e240]
+            - paragraph [ref=f16e241]: We launch with analytics and technical handoff, measuring real demand and compounding growth.
+      - generic [ref=f16e243]:
+        - generic [ref=f16e244]:
+          - paragraph [ref=f16e245]: Start a conversation
+          - heading "Ready to turn the next challenge into a working system?" [level=2] [ref=f16e246]
+        - link "Send a project brief →" [ref=f16e247] [cursor=pointer]:
+          - /url: /contact
+      - generic [ref=f16e249]:
+        - generic [ref=f16e250]:
+          - paragraph [ref=f16e251]: Client perspective
+          - heading "Professional execution, with a partner who stays close to the problem." [level=2] [ref=f16e252]
+        - generic [ref=f16e254]:
+          - blockquote [ref=f16e255]:
+            - paragraph [ref=f16e256]: “Triumphant HQ brought clarity to our digital systems from the very first conversation. The final experience felt considered, fast, and significantly easier for our patients and partners to navigate.”
+            - generic [ref=f16e257]:
+              - paragraph [ref=f16e258]: Dr. Seyi O.
+              - paragraph [ref=f16e259]: Clinical Director · Absolute Wellness & Medical
+          - generic [ref=f16e260]:
+            - button "Previous testimonial" [ref=f16e261] [cursor=pointer]: ←
+            - generic [ref=f16e262]:
+              - button "Go to testimonial 1" [ref=f16e263] [cursor=pointer]
+              - button "Go to testimonial 2" [ref=f16e264] [cursor=pointer]
+              - button "Go to testimonial 3" [ref=f16e265] [cursor=pointer]
+            - button "Next testimonial" [ref=f16e266] [cursor=pointer]: →
+      - generic [ref=f16e268]:
+        - generic [ref=f16e269]:
+          - paragraph [ref=f16e270]: Let's build
+          - heading "Your next customer should find a business ready to respond." [level=2] [ref=f16e271]
+          - paragraph [ref=f16e272]: Tell us what you do. We’ll help you find the right website and automation starting point.
+        - link "Chat on WhatsApp ↗" [ref=f16e273] [cursor=pointer]:
+          - /url: https://wa.me/2348107711190?text=Hi%20Triumphant%20Tech%2C%20I%20saw%20your%20website%20and%20I'd%20like%20a%20website%20with%20WhatsApp%20automation%20for%20my%20business.
+  - contentinfo [ref=f16e274]:
+    - generic [ref=f16e275]:
+      - generic [ref=f16e276]:
+        - generic [ref=f16e277]:
+          - link "Triumphant HQ" [ref=f16e278] [cursor=pointer]:
+            - /url: /
+            - generic [ref=f16e279]: T
+            - generic [ref=f16e281]: TriumphantHQ
+          - paragraph [ref=f16e282]: Websites, software, SEO and automation for ambitious businesses—based in Ibadan, serving Oyo, Osun and Nigeria.
+          - generic [ref=f16e283]:
+            - paragraph [ref=f16e284]: Triumphant Technological Services
+            - paragraph [ref=f16e285]: Basorun Rd, Ibadan 211107, Oyo State
+            - paragraph [ref=f16e286]:
+              - link "admin@triumphantech.com" [ref=f16e287] [cursor=pointer]:
+                - /url: mailto:admin@triumphantech.com
+            - paragraph [ref=f16e288]:
+              - link "+234 810 771 1190" [ref=f16e289] [cursor=pointer]:
+                - /url: tel:+2348107711190
+              - text: ·
+              - link "WhatsApp" [ref=f16e290] [cursor=pointer]:
+                - /url: https://wa.me/2348107711190
+            - paragraph [ref=f16e291]:
+              - link "Service areas →" [ref=f16e292] [cursor=pointer]:
+                - /url: /locations
+              - text: ·
+              - link "Ibadan tech guide" [ref=f16e293] [cursor=pointer]:
+                - /url: /ibadan-tech-agency
+          - generic [ref=f16e294]:
+            - link "Start a project enquiry" [ref=f16e295] [cursor=pointer]:
+              - /url: /contact
+              - text: Start a project enquiry
+              - generic [aria-hidden] [ref=f16e296]: →
+            - link "Shop digital products" [ref=f16e297] [cursor=pointer]:
+              - /url: /digital-product
+        - generic [ref=f16e298]:
+          - generic [ref=f16e299]:
+            - heading "Agency Services" [level=3] [ref=f16e300]
+            - list [ref=f16e301]:
+              - listitem [ref=f16e302]:
+                - link "Website Design" [ref=f16e303] [cursor=pointer]:
+                  - /url: /services/websites
+              - listitem [ref=f16e304]:
+                - link "Custom Applications" [ref=f16e305] [cursor=pointer]:
+                  - /url: /services/app-development
+              - listitem [ref=f16e306]:
+                - link "SEO in Nigeria" [ref=f16e307] [cursor=pointer]:
+                  - /url: /services/seo
+              - listitem [ref=f16e308]:
+                - link "AI Automation" [ref=f16e309] [cursor=pointer]:
+                  - /url: /services/automation
+              - listitem [ref=f16e310]:
+                - link "SEO in Ibadan" [ref=f16e311] [cursor=pointer]:
+                  - /url: /services/seo/ibadan
+              - listitem [ref=f16e312]:
+                - link "Website design in Ibadan" [ref=f16e313] [cursor=pointer]:
+                  - /url: /services/websites/ibadan
+              - listitem [ref=f16e314]:
+                - link "Ongoing Support" [ref=f16e315] [cursor=pointer]:
+                  - /url: /ongoing-support
+          - generic [ref=f16e316]:
+            - heading "Resources" [level=3] [ref=f16e317]
+            - list [ref=f16e318]:
+              - listitem [ref=f16e319]:
+                - link "Resources Hub" [ref=f16e320] [cursor=pointer]:
+                  - /url: /resources
+              - listitem [ref=f16e321]:
+                - link "Digital Forge" [ref=f16e322] [cursor=pointer]:
+                  - /url: /digital-forge
+              - listitem [ref=f16e323]:
+                - link "Products" [ref=f16e324] [cursor=pointer]:
+                  - /url: /digital-forge/products
+              - listitem [ref=f16e325]:
+                - link "Free Training" [ref=f16e326] [cursor=pointer]:
+                  - /url: /digital-forge/training
+              - listitem [ref=f16e327]:
+                - link "Insights" [ref=f16e328] [cursor=pointer]:
+                  - /url: /blog
+          - generic [ref=f16e329]:
+            - heading "Company" [level=3] [ref=f16e330]
+            - list [ref=f16e331]:
+              - listitem [ref=f16e332]:
+                - link "About" [ref=f16e333] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f16e334]:
+                - link "Work" [ref=f16e335] [cursor=pointer]:
+                  - /url: /work
+              - listitem [ref=f16e336]:
+                - link "Portfolio" [ref=f16e337] [cursor=pointer]:
+                  - /url: /portfolio
+              - listitem [ref=f16e338]:
+                - link "NIN/BVN desk" [ref=f16e339] [cursor=pointer]:
+                  - /url: /nin-bvn-desk
+              - listitem [ref=f16e340]:
+                - link "Shop" [ref=f16e341] [cursor=pointer]:
+                  - /url: /shop
+              - listitem [ref=f16e342]:
+                - link "Ibadan Tech Partner" [ref=f16e343] [cursor=pointer]:
+                  - /url: /ibadan-tech-agency
+              - listitem [ref=f16e344]:
+                - link "Locations" [ref=f16e345] [cursor=pointer]:
+                  - /url: /locations
+              - listitem [ref=f16e346]:
+                - link "Ibadan" [ref=f16e347] [cursor=pointer]:
+                  - /url: /locations/ibadan
+              - listitem [ref=f16e348]:
+                - link "Akobo" [ref=f16e349] [cursor=pointer]:
+                  - /url: /locations/akobo
+              - listitem [ref=f16e350]:
+                - link "Bashorun" [ref=f16e351] [cursor=pointer]:
+                  - /url: /locations/bashorun
+              - listitem [ref=f16e352]:
+                - link "Oyo" [ref=f16e353] [cursor=pointer]:
+                  - /url: /locations/oyo
+              - listitem [ref=f16e354]:
+                - link "Osogbo" [ref=f16e355] [cursor=pointer]:
+                  - /url: /locations/osogbo
+              - listitem [ref=f16e356]:
+                - link "Industries" [ref=f16e357] [cursor=pointer]:
+                  - /url: /industries
+              - listitem [ref=f16e358]:
+                - link "Compare" [ref=f16e359] [cursor=pointer]:
+                  - /url: /compare
+              - listitem [ref=f16e360]:
+                - link "Work With Us" [ref=f16e361] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=f16e362]:
+                - link "Free SEO Audit" [ref=f16e363] [cursor=pointer]:
+                  - /url: /seo-snapshot
+              - listitem [ref=f16e364]:
+                - link "Website Scorecard" [ref=f16e365] [cursor=pointer]:
+                  - /url: /website-scorecard
+              - listitem [ref=f16e366]:
+                - link "Local Support" [ref=f16e367] [cursor=pointer]:
+                  - /url: /local-support
+      - generic [ref=f16e368]:
+        - paragraph [ref=f16e369]: © 2026 Triumphant Technological Services. All rights reserved.
+        - generic [ref=f16e370]:
+          - link "admin@triumphantech.com" [ref=f16e371] [cursor=pointer]:
+            - /url: mailto:admin@triumphantech.com
+          - link "WhatsApp" [ref=f16e372] [cursor=pointer]:
+            - /url: https://wa.me/2348107711190
+          - link "Privacy" [ref=f16e373] [cursor=pointer]:
+            - /url: /privacy-policy
+          - link "Terms" [ref=f16e374] [cursor=pointer]:
+            - /url: /terms
+          - link "Refunds" [ref=f16e375] [cursor=pointer]:
+            - /url: /refund-policy
+  - generic [aria-hidden]: Chat with us on WhatsApp
+  - link "Chat with us on WhatsApp" [ref=f16e376] [cursor=pointer]:
+    - /url: https://wa.me/2348107711190?text=Hi%20Triumphant%20HQ%2C%20I'd%20like%20to%20discuss%20a%20project%20with%20your%20agency.
+  - button "Open Next.js Dev Tools" [ref=f16e384] [cursor=pointer]

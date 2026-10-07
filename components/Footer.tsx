@@ -32,6 +32,9 @@ const columns = [
     links: [
       { label: 'About', href: '/about' },
       { label: 'Work', href: '/work' },
+      { label: 'Portfolio', href: '/portfolio' },
+      { label: 'NIN/BVN desk', href: '/nin-bvn-desk' },
+      { label: 'Shop', href: '/shop' },
       { label: 'Ibadan Tech Partner', href: '/ibadan-tech-agency' },
       { label: 'Locations', href: '/locations' },
       { label: 'Ibadan', href: '/locations/ibadan' },

@@ -1,392 +1,66 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import Hero from "@/components/Hero";
-import Testimonials from "@/components/Testimonials";
-import CaseStudies from "@/components/marketing/CaseStudies";
 import ClientLogos from "@/components/marketing/ClientLogos";
-import CTABand from "@/components/marketing/CTABand";
 import ProcessSteps from "@/components/marketing/ProcessSteps";
-import Reveal from "@/components/marketing/Reveal";
-import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
-import { agencyServices, whatsappNumber } from "@/lib/services";
-import { formatOfferPrice, resolveLaunchBundleOffer } from "@/lib/digital-forge-offers";
-import { buildPageMetadata, locationPages } from "@/lib/seo";
+import Testimonials from "@/components/Testimonials";
+import { whatsappLink } from "@/lib/contact";
+import { agencyServices } from "@/lib/services";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
-  description:
-    "Triumphant HQ is a technology agency in Ibadan, Oyo State: website design, SEO, custom apps and AI automation, plus NIN enrolment and BVN support.",
+  description: "Triumphant HQ builds websites, custom apps, SEO and AI automation for Nigerian businesses. Based in Ibadan and delivering practical digital systems since 2017.",
   path: "/",
-  keywords: [
-    "Triumphant HQ Ibadan",
-    "Triumphant Technological Services",
-    "technology agency Ibadan",
-    "tech company Ibadan",
-    "technology company Ibadan",
-  ],
+  keywords: ["Triumphant HQ Ibadan", "Triumphant Technological Services", "technology agency Ibadan", "website design Ibadan"],
 });
 
-const outcomes = [
-  ["Credibility", "A sharper digital presence that reflects the quality of your work."],
-  ["Efficiency", "Purpose-built systems that reduce friction for customers and teams."],
-  ["Visibility", "Technical and content foundations that make demand easier to capture."],
+const projects = [
+  { name: "Metropolitan Family Hospital", sector: "Healthcare", slug: "metropolitan-family-hospital" },
+  { name: "IAPrecision", sector: "Agricultural technology", slug: "iaprecision" },
+  { name: "Echitech", sector: "Engineering and safety", slug: "echitech" },
+  { name: "Precision Field Academy", sector: "Agricultural education", slug: "precision-field-academy" },
+  { name: "Eternal Life Global Community Church", sector: "Faith and community", slug: "elgcc" },
 ];
-
-const featuredLocations = locationPages.filter((page) =>
-  ["ibadan", "akobo", "bashorun", "oyo", "osogbo", "nigeria"].includes(page.slug)
-);
-
-const localWa = (text: string) =>
-  `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+const wa = whatsappLink("Hi Triumphant Tech, I saw your website and I'd like a website with WhatsApp automation for my business.");
 
 export default function Home() {
-  const launchBundle = resolveLaunchBundleOffer();
-
   return (
-    <div className="min-h-screen">
+    <div className="home-page min-h-screen" style={{ marginTop: -88 }}>
       <Hero />
 
-      <section className="section-shell !py-12">
-        <div className="mb-7 max-w-2xl">
-          <p className="eyebrow">Two ways to work with Triumphant HQ</p>
-          <h2 className="font-display mt-4 text-[clamp(1.8rem,3vw,2.6rem)] font-bold tracking-[-0.04em] text-slate-950">
-            Choose the next step that fits your goal.
-          </h2>
-        </div>
-        <div className="grid gap-5 md:grid-cols-2">
-          <article className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
-            <p className="eyebrow">For businesses</p>
-            <h3 className="font-display mt-3 text-2xl font-bold tracking-[-0.03em] text-slate-950">
-              Get a website or growth system built for you.
-            </h3>
-            <p className="mt-4 leading-7 text-slate-600">
-              Tell us where customers or operations are getting stuck. We will recommend a focused scope across websites, SEO, software or automation.
-            </p>
-            <div className="button-row mt-7">
-              <Link className="button button-primary" href="/contact">Send a project brief</Link>
-              <Link className="button button-secondary" href="/work">See client work</Link>
-            </div>
-          </article>
-          <article className="rounded-2xl border border-blue-200 bg-blue-50/50 p-7 shadow-sm sm:p-9">
-            <p className="eyebrow">For creators and sellers</p>
-            <h3 className="font-display mt-3 text-2xl font-bold tracking-[-0.03em] text-slate-950">
-              Launch your digital product with ready-made sales assets.
-            </h3>
-            <p className="mt-4 leading-7 text-slate-600">
-              Start with the Digital Product Seller Launch Bundle: WhatsApp scripts, price replies and daily sales posts you can adapt today.
-            </p>
-            <p className="mt-3 font-display text-xl font-bold text-slate-950">
-              {formatOfferPrice(launchBundle.amount, launchBundle.currency)}
-            </p>
-            <div className="button-row mt-7">
-              <Link className="button button-primary" href="/digital-product">See the launch bundle</Link>
-              <Link className="button button-secondary" href="/digital-forge/products">Browse all products</Link>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section className="section-shell">
-        <Reveal className="proof-strip mb-16" stagger>
-          {[
-            ["Since 2017", "Continuous digital delivery"],
-            ["Four disciplines", "One accountable partner"],
-            ["Global standard", "Local responsiveness"],
-          ].map(([title, copy]) => (
-            <div className="proof-cell" key={title}>
-              <strong>{title}</strong>
-              <span>{copy}</span>
-            </div>
-          ))}
-        </Reveal>
-
-        <Reveal>
-          <SectionHeader
-            eyebrow="What we do"
-            title="One partner across the systems that power modern growth."
-            description="Strategy only matters when customers can feel it and teams can run it. We connect design, engineering, visibility and automation into focused delivery."
-          />
-        </Reveal>
-        <Reveal className="agency-grid" stagger>
-          {agencyServices.map((service) => (
-            <ServiceCard key={service.slug} service={service} />
-          ))}
-        </Reveal>
-      </section>
-
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/local-bvn-atmosphere.png"
-            alt=""
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(105deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.93) 40%, rgba(255,255,255,0.58) 72%, rgba(255,255,255,0.32) 100%)",
-            }}
-          />
-        </div>
-        <div className="section-shell relative">
-          <div className="grid gap-12 py-4 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-16">
-            <Reveal className="lg:sticky lg:top-28" variant="left">
-              <p className="eyebrow inline-flex items-center gap-2">
-                <span className="live-dot" aria-hidden="true" />
-                Local support desk
-              </p>
-              <h2 className="font-display mt-6 max-w-xl text-[clamp(2rem,3.8vw,3.1rem)] font-bold leading-[1.08] tracking-[-0.045em] text-slate-950">
-                Need NIN or BVN help <span className="accent-word">today</span>?
-              </h2>
-              <p className="mt-5 max-w-lg text-[1.05rem] leading-8 text-slate-600">
-                Our local desk supports NIN enrolment and modifications, BVN services, school portals and documents—
-                separate from agency projects, WhatsApp-first, and backed by certified NIMC training.
-              </p>
-              <div className="button-row mt-9">
-                <a
-                  className="button button-primary"
-                  href={localWa("Hello Triumphant HQ — I need NIN or BVN support.")}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Message on WhatsApp
-                  <span className="button-arrow" aria-hidden="true">
-                    →
-                  </span>
-                </a>
-                <Link className="button button-secondary" href="/local-support">
-                  Explore Local Support
-                </Link>
-              </div>
-            </Reveal>
-
-            <Reveal className="grid gap-7 border-l border-blue-200/80 pl-6 sm:pl-8" variant="right" stagger delayMs={80}>
-              {[
-                ["3,000+", "People enrolled for NIN to date"],
-                ["NIN + BVN", "Enrolment, modifications, recovery and card printing"],
-                ["Certified", "NIMC ID Ecosystem Enrolment Process Training"],
-              ].map(([title, copy]) => (
-                <div key={title} className="reveal-item">
-                  <p className="font-display text-[1.35rem] font-bold tracking-[-0.03em] text-slate-950">{title}</p>
-                  <p className="mt-1.5 text-[0.95rem] leading-7 text-slate-500">{copy}</p>
-                </div>
-              ))}
-            </Reveal>
+      <section className="bg-white py-16 sm:py-20" aria-labelledby="portfolio-preview-title">
+        <div className="mx-auto max-w-[1240px] px-5 lg:px-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+            <div><p className="eyebrow">Selected work</p><h2 id="portfolio-preview-title" className="font-display mt-4 max-w-2xl text-[clamp(2rem,4vw,3.2rem)] font-bold leading-tight tracking-[-0.045em] text-slate-950">Real websites. Real businesses. Live today.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-600">Explore websites built for care, agriculture, training and community.</p></div>
+            <Link href="/portfolio" className="inline-flex min-h-11 shrink-0 items-center font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-700">View full portfolio →</Link>
+          </div>
+          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {projects.map((project, index) => <Link key={project.slug} href="/portfolio#projects" className={`group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-blue-700 ${index === 0 ? "sm:col-span-2 lg:col-span-2 lg:row-span-2" : ""}`}>
+              <div className={`relative overflow-hidden bg-slate-100 ${index === 0 ? "aspect-[1.45] lg:aspect-auto lg:h-[385px]" : "aspect-[1.5]"}`}><Image src={`/portfolio/${project.slug}-desktop.webp`} alt={`Homepage of ${project.name} website built by Triumphant Tech`} fill sizes={index === 0 ? "(max-width: 640px) 100vw, 50vw" : "(max-width: 640px) 100vw, 25vw"} className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" priority={index === 0} /></div>
+              <div className="p-4 sm:p-5"><p className="text-xs font-bold uppercase tracking-[0.12em] text-blue-700">{project.sector}</p><h3 className="mt-2 text-lg font-bold text-slate-950">{project.name}</h3></div>
+            </Link>)}
           </div>
         </div>
       </section>
 
-      <div className="section-muted">
-        <Reveal variant="fade">
-          <ClientLogos />
-        </Reveal>
-      </div>
-
-      <Reveal>
-        <CaseStudies limit={2} teaser />
-      </Reveal>
-
-      <section className="section-muted">
-        <div className="section-shell">
-          <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
-            <Reveal className="lg:sticky lg:top-28" variant="left">
-              <SectionHeader
-                align="left"
-                eyebrow="Built around outcomes"
-                title="Technology should improve how your business is understood, found and run."
-                description="We begin with the commercial problem, then choose the right combination of creative and technical work to solve it."
-              />
-              <div className="outcome-row mt-10">
-                {outcomes.map(([title, copy], index) => (
-                  <div className="outcome-item" key={title}>
-                    <span>0{index + 1}</span>
-                    <div>
-                      <h3>{title}</h3>
-                      <p>{copy}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-            <Reveal variant="right" delayMs={100}>
-              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-slate-200/80 shadow-sm sm:aspect-[5/4] lg:aspect-[4/5] lg:min-h-[520px]">
-                <Image
-                  src="/images/home-outcomes.png"
-                  alt="Modern workspace with a laptop open to a clean digital dashboard"
-                  fill
-                  className="object-cover object-center transition duration-700 hover:scale-[1.02]"
-                  sizes="(max-width: 1024px) 100vw, 48vw"
-                />
-              </div>
-            </Reveal>
-          </div>
-        </div>
+      <section className="bg-[var(--tint)] px-5 py-16 sm:py-20 lg:px-8">
+        <div className="mx-auto max-w-[1240px]"><p className="eyebrow">Built for growth</p><h2 className="font-display mt-4 max-w-4xl text-[clamp(2rem,4vw,3.5rem)] font-bold leading-tight tracking-[-0.045em] text-slate-950">Websites + WhatsApp AI that books customers for Nigerian clinics, solar installers and service businesses.</h2><p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700">We connect a credible online presence with faster responses, easier booking and practical follow-up.</p><a href={wa} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex min-h-12 items-center rounded-xl bg-[var(--wa)] px-6 font-bold text-white hover:bg-[#16a34a] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[var(--brand)]">Chat on WhatsApp ↗</a></div>
       </section>
 
-      <section className="section-shell">
-        <Reveal>
-          <SectionHeader
-            eyebrow="How we work"
-            title="A clear path from challenge to working solution."
-            description="You stay close to the decisions that matter, without managing every technical detail."
-          />
-        </Reveal>
-        <Reveal delayMs={60}>
-          <ProcessSteps />
-        </Reveal>
-      </section>
+      <section className="bg-white py-16 sm:py-20"><div className="mx-auto max-w-[1240px] px-5 lg:px-8"><p className="eyebrow">What we do</p><h2 className="font-display mt-4 max-w-2xl text-[clamp(2rem,4vw,3.2rem)] font-bold tracking-[-0.045em] text-slate-950">One partner across the systems that power modern growth.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-600">Strategy only matters when customers can feel it and teams can run it. We connect design, engineering, visibility and automation into focused delivery.</p><div className="agency-grid mt-9">{agencyServices.map((service) => <ServiceCard key={service.slug} service={service} />)}</div></div></section>
 
-      <div className="section-muted">
-        <Reveal>
-          <Testimonials />
-        </Reveal>
-      </div>
+      <div className="bg-[var(--tint)]"><ClientLogos /></div>
 
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/seo-snapshot.png"
-            alt="Desk setup with search analytics visible on a laptop screen"
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(105deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.9) 42%, rgba(255,255,255,0.55) 70%, rgba(255,255,255,0.35) 100%)",
-            }}
-          />
-        </div>
-        <div className="section-shell relative">
-          <div className="grid gap-12 py-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
-            <Reveal variant="left">
-              <p className="eyebrow">Free SEO visibility snapshot</p>
-              <h2 className="font-display mt-7 max-w-xl text-[clamp(2.1rem,4vw,3.25rem)] font-bold leading-[1.08] tracking-[-0.045em] text-slate-950">
-                Find the gaps limiting your <span className="accent-word">search visibility</span>.
-              </h2>
-              <p className="mt-6 max-w-lg text-[1.05rem] leading-8 text-slate-600">
-                A practical first view of technical health, search signals and priority opportunities—without a retainer
-                commitment.
-              </p>
-              <div className="button-row mt-10">
-                <Link className="button button-primary" href="/seo-snapshot">
-                  Run my free snapshot
-                  <span className="button-arrow" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-                <Link className="button button-secondary" href="/services/seo">
-                  Explore SEO service
-                </Link>
-              </div>
-              <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-blue-700">
-                <Link href="/services/seo/ibadan">SEO company in Ibadan</Link>
-                <Link href="/services/seo">SEO agency in Nigeria</Link>
-              </p>
-            </Reveal>
+      <section id="how-we-work" className="scroll-mt-24 bg-white py-16 sm:py-20"><div className="mx-auto max-w-[1240px] px-5 lg:px-8"><p className="eyebrow">How we work</p><h2 className="font-display mt-4 text-[clamp(2rem,4vw,3.2rem)] font-bold tracking-[-0.045em] text-slate-950">A clear path from challenge to working solution.</h2><p className="mt-4 max-w-2xl leading-7 text-slate-600">You stay close to the decisions that matter, without managing every technical detail.</p><div className="mt-9"><ProcessSteps /></div></div></section>
 
-            <Reveal className="grid gap-8 border-l border-blue-200/80 pl-6 sm:pl-8" variant="right" stagger delayMs={80}>
-              {[
-                {
-                  number: "01",
-                  title: "Technical health",
-                  copy: "A clear read on crawlability, structure and foundational issues.",
-                },
-                {
-                  number: "02",
-                  title: "Visibility signals",
-                  copy: "On-page cues that help search engines understand your offer.",
-                },
-                {
-                  number: "03",
-                  title: "Priority actions",
-                  copy: "The few moves that matter first—not a wall of recommendations.",
-                },
-              ].map((item) => (
-                <div key={item.number} className="reveal-item relative">
-                  <span className="font-mono text-[0.7rem] font-bold tracking-[0.14em] text-blue-600">
-                    {item.number}
-                  </span>
-                  <h3 className="font-display mt-2 text-[1.15rem] font-bold tracking-[-0.025em] text-slate-950">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 max-w-sm text-[0.95rem] leading-7 text-slate-500">{item.copy}</p>
-                </div>
-              ))}
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <section className="bg-[var(--brand)] px-5 py-14 text-white sm:py-16 lg:px-8"><div className="mx-auto flex max-w-[1240px] flex-col gap-6 md:flex-row md:items-center md:justify-between"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-white/80">Start a conversation</p><h2 className="font-display mt-3 max-w-2xl text-[clamp(2rem,4vw,3rem)] font-bold leading-tight">Ready to turn the next challenge into a working system?</h2></div><Link href="/contact" className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-white px-6 font-bold text-[var(--brand)] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Send a project brief →</Link></div></section>
 
-      <section className="section-shell">
-        <Reveal>
-          <div className="flex flex-col gap-8 border-y border-slate-200 py-12 sm:flex-row sm:items-end sm:justify-between">
-            <div className="max-w-xl">
-              <p className="eyebrow">Where we serve</p>
-            <h2 className="font-display mt-4 text-[clamp(1.6rem,2.8vw,2.2rem)] font-bold tracking-[-0.035em] text-slate-950">
-              Ibadan first. Southwestern Nigeria covered.
-            </h2>
-            <p className="mt-3 text-[1.02rem] leading-8 text-slate-600">
-              Local support and agency delivery for neighbourhoods across the city, Oyo State, Osun State and remote
-              clients nationwide.
-            </p>
-            <p className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm font-semibold text-blue-600">
-              <Link href="/ibadan-tech-agency" className="hover:text-blue-800">
-                How to choose a technology partner in Ibadan →
-              </Link>
-              <Link href="/services/seo/ibadan" className="hover:text-blue-800">
-                SEO company in Ibadan
-              </Link>
-              <Link href="/services/seo" className="hover:text-blue-800">
-                SEO agency in Nigeria
-              </Link>
-            </p>
-            </div>
-            <Link className="text-link !mt-0 !pt-0 shrink-0" href="/locations">
-              All service areas <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </Reveal>
-        <Reveal className="flex flex-wrap gap-x-6 gap-y-3 pt-8" stagger delayMs={40}>
-          {featuredLocations.map((location) => (
-            <Link
-              key={location.slug}
-              href={`/locations/${location.slug}`}
-              className="reveal-item text-[0.95rem] font-medium text-slate-600 transition hover:text-blue-700"
-            >
-              {location.name}
-            </Link>
-          ))}
-        </Reveal>
-      </section>
+      <div className="bg-[var(--navy-2)] text-white">{/* TODO: add more real client testimonials after verification. */}<Testimonials /></div>
 
-      <Reveal>
-        <CTABand />
-      </Reveal>
-
-      <section className="section-shell !pt-0">
-        <Reveal>
-          <div className="flex flex-col items-start justify-between gap-5 border-t border-slate-200 pt-10 sm:flex-row sm:items-center">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Learning and products</p>
-              <p className="mt-2 text-[0.95rem] text-slate-600">
-                Looking for Digital Forge, practical training or ready-to-use systems?
-              </p>
-            </div>
-            <Link className="text-link !mt-0 !pt-0" href="/resources">
-              Visit Resources <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </Reveal>
-      </section>
+      <section className="bg-[var(--navy)] px-5 py-16 text-white sm:py-20 lg:px-8"><div className="mx-auto flex max-w-[1240px] flex-col gap-7 md:flex-row md:items-end md:justify-between"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-[#9ec2ff]">Let&apos;s build</p><h2 className="font-display mt-4 max-w-2xl text-[clamp(2.2rem,4vw,3.4rem)] font-bold leading-tight tracking-[-0.045em]">Your next customer should find a business ready to respond.</h2><p className="mt-4 max-w-xl leading-7 text-slate-200">Tell us what you do. We’ll help you find the right website and automation starting point.</p></div><a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-[var(--wa)] px-6 font-bold text-white hover:bg-[#16a34a] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Chat on WhatsApp ↗</a></div></section>
     </div>
   );
 }

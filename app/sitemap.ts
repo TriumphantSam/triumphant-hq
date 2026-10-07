@@ -77,6 +77,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry("/services/automation", 0.85, "monthly"),
     entry("/about", 0.7, "yearly"),
     entry("/work", 0.85, "monthly"),
+    entry("/portfolio", 0.85, "monthly", "2026-10-07"),
+    entry("/nin-bvn-desk", 0.8, "monthly", "2026-10-07"),
+    entry("/shop", 0.8, "monthly", "2026-10-07"),
     ...caseStudies.map((study) =>
       entry(`/work/${study.slug}`, 0.8, "monthly", study.updated),
     ),

@@ -1,0 +1,427 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation "Main navigation" [ref=e3]:
+      - link "Metropolitan Family Hospital home" [ref=e4] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=e6]:
+          - strong [ref=e7]: Metropolitan
+          - generic [ref=e8]: Family Hospital
+      - generic [ref=e9]:
+        - link "Services" [ref=e10] [cursor=pointer]:
+          - /url: "#services"
+        - link "Departments" [ref=e11] [cursor=pointer]:
+          - /url: "#departments"
+        - link "Black MD Hub" [ref=e12] [cursor=pointer]:
+          - /url: black-md.html
+        - link "Blog" [ref=e13] [cursor=pointer]:
+          - /url: blog.html
+        - link "Appointment" [ref=e14] [cursor=pointer]:
+          - /url: "#appointment"
+        - link "Contact" [ref=e15] [cursor=pointer]:
+          - /url: "#contact"
+  - main [ref=e16]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]: Family-first care.
+        - heading "Your trusted family hospital in Ibadan." [level=1] [ref=e21]
+        - paragraph [ref=e22]: Metropolitan Family Hospital delivers compassionate, reliable, and modern healthcare for individuals, families, and communities from our Akobo location.
+        - generic [ref=e23]:
+          - link "Book an Appointment" [ref=e24] [cursor=pointer]:
+            - /url: "#appointment"
+          - link "Explore Services" [ref=e25] [cursor=pointer]:
+            - /url: "#services"
+        - generic "Hospital highlights" [ref=e26]:
+          - generic [ref=e27]:
+            - strong [ref=e28]: 24/7
+            - generic [ref=e29]: Urgent support
+          - generic [ref=e30]:
+            - strong [ref=e31]: Family
+            - generic [ref=e32]: Focused care
+          - generic [ref=e33]:
+            - strong [ref=e34]: Akobo
+            - generic [ref=e35]: Ibadan, Oyo State
+      - generic "Hospital care preview" [ref=e36]:
+        - generic [ref=e37]: Emergency medical services available
+        - img "Medical professional providing patient care" [ref=e41]
+        - generic [ref=e42]:
+          - strong [ref=e43]: "08064549283"
+          - generic [ref=e44]: Appointment hotline
+        - generic [ref=e45]:
+          - strong [ref=e46]: Lab + Pharmacy
+          - generic [ref=e47]: All in one visit
+    - generic [ref=e49]:
+      - article [ref=e50]:
+        - generic [ref=e51]: Address
+        - strong [ref=e52]: No1, Zone 6, OYSHC, Bashorun Estate Akobo, Ibadan, Oyo State.
+      - article [ref=e53]:
+        - generic [ref=e54]: Email
+        - strong [ref=e55]: metrofamilyhospital@gmail.com
+      - article [ref=e56]:
+        - generic [ref=e57]: Appointments
+        - strong [ref=e58]: "08064549283"
+    - region "Metropolitan Family Hospital care standards" [ref=e59]:
+      - generic [ref=e60]:
+        - article [ref=e61]:
+          - img "Doctor consulting with a patient" [ref=e62]
+          - generic [ref=e63]:
+            - generic [ref=e64]: Patient Experience
+            - heading "Warm care, clear communication, and faster access." [level=2] [ref=e65]
+        - article [ref=e66]:
+          - img "Modern hospital corridor" [ref=e67]
+          - generic [ref=e68]:
+            - generic [ref=e69]: Clean Facility
+            - heading "Organized clinical spaces" [level=3] [ref=e70]
+        - article [ref=e71]:
+          - img "Laboratory equipment for diagnostics" [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]: Diagnostics
+            - heading "Reliable lab support" [level=3] [ref=e75]
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e79]: Our Services
+        - heading "Complete healthcare services for every stage of family life." [level=2] [ref=e80]
+        - paragraph [ref=e81]: Built from the hospital's current service offer, presented with a cleaner and more modern patient experience.
+      - generic [ref=e82]:
+        - link "01 General Medical Services Consultations, treatment plans, follow-up care, and preventive health guidance. Learn More →" [ref=e83] [cursor=pointer]:
+          - /url: services/general-medical.html
+          - generic [ref=e84]: "01"
+          - heading "General Medical Services" [level=3] [ref=e85]
+          - paragraph [ref=e86]: Consultations, treatment plans, follow-up care, and preventive health guidance.
+          - generic [ref=e87]: Learn More →
+        - link "02 Diagnostic & Laboratory Services Fast, reliable testing to support accurate diagnosis and treatment decisions. Learn More →" [ref=e88] [cursor=pointer]:
+          - /url: services/diagnostics.html
+          - generic [ref=e89]: "02"
+          - heading "Diagnostic & Laboratory Services" [level=3] [ref=e90]
+          - paragraph [ref=e91]: Fast, reliable testing to support accurate diagnosis and treatment decisions.
+          - generic [ref=e92]: Learn More →
+        - link "03 Obstetrics & Gynaecology Women's health, antenatal care, delivery support, and family planning guidance. Learn More →" [ref=e93] [cursor=pointer]:
+          - /url: services/obstetrics-gynaecology.html
+          - generic [ref=e94]: "03"
+          - heading "Obstetrics & Gynaecology" [level=3] [ref=e95]
+          - paragraph [ref=e96]: Women's health, antenatal care, delivery support, and family planning guidance.
+          - generic [ref=e97]: Learn More →
+        - link "04 Emergency Medical Services Prompt care for urgent medical concerns with clear escalation pathways. Learn More →" [ref=e98] [cursor=pointer]:
+          - /url: services/emergency.html
+          - generic [ref=e99]: "04"
+          - heading "Emergency Medical Services" [level=3] [ref=e100]
+          - paragraph [ref=e101]: Prompt care for urgent medical concerns with clear escalation pathways.
+          - generic [ref=e102]: Learn More →
+        - link "05 Home Based Health Care Patient-centered support for people who need supervised care at home. Learn More →" [ref=e103] [cursor=pointer]:
+          - /url: services/home-care.html
+          - generic [ref=e104]: "05"
+          - heading "Home Based Health Care" [level=3] [ref=e105]
+          - paragraph [ref=e106]: Patient-centered support for people who need supervised care at home.
+          - generic [ref=e107]: Learn More →
+        - link "06 24 Hour Services Round-the-clock care access for emergencies and time-sensitive health needs. Learn More →" [ref=e108] [cursor=pointer]:
+          - /url: services/24-hour-care.html
+          - generic [ref=e109]: "06"
+          - heading "24 Hour Services" [level=3] [ref=e110]
+          - paragraph [ref=e111]: Round-the-clock care access for emergencies and time-sensitive health needs.
+          - generic [ref=e112]: Learn More →
+        - link "07 Specialist Clinics Specialized clinical sessions designed around focused patient needs. Learn More →" [ref=e113] [cursor=pointer]:
+          - /url: services/specialist-clinics.html
+          - generic [ref=e114]: "07"
+          - heading "Specialist Clinics" [level=3] [ref=e115]
+          - paragraph [ref=e116]: Specialized clinical sessions designed around focused patient needs.
+          - generic [ref=e117]: Learn More →
+        - link "08 Surgery Safe surgical care supported by clinical assessment and post-operative follow-up. Learn More →" [ref=e118] [cursor=pointer]:
+          - /url: services/surgery.html
+          - generic [ref=e119]: "08"
+          - heading "Surgery" [level=3] [ref=e120]
+          - paragraph [ref=e121]: Safe surgical care supported by clinical assessment and post-operative follow-up.
+          - generic [ref=e122]: Learn More →
+        - link "09 Pharmacy Accessible medication support, counselling, and prescription fulfillment. Learn More →" [ref=e123] [cursor=pointer]:
+          - /url: services/pharmacy.html
+          - generic [ref=e124]: "09"
+          - heading "Pharmacy" [level=3] [ref=e125]
+          - paragraph [ref=e126]: Accessible medication support, counselling, and prescription fulfillment.
+          - generic [ref=e127]: Learn More →
+    - generic [ref=e129]:
+      - generic [ref=e130]:
+        - generic [ref=e131]: Departments
+        - heading "Organized teams for smoother patient care." [level=2] [ref=e132]
+        - paragraph [ref=e133]: These departments help the hospital run with clinical strength, administrative clarity, and better patient coordination.
+        - link "Schedule a Visit" [ref=e134] [cursor=pointer]:
+          - /url: "#appointment"
+      - generic [ref=e135]:
+        - article [ref=e136]:
+          - generic [ref=e137]: MO
+          - heading "Medical Officer Department" [level=3] [ref=e138]
+          - paragraph [ref=e139]: General doctor consultation for everyday health complaints like malaria, fever, routine symptoms, and medical guidance.
+          - text: MED
+        - article [ref=e140]:
+          - generic [ref=e141]: EYE
+          - heading "Ophthalmologist & Optician" [level=3] [ref=e142]
+          - paragraph [ref=e143]: Comprehensive eye examinations, vision care, prescription optical services, and treatment for eye conditions.
+          - text: EYE
+        - article [ref=e144]:
+          - generic [ref=e145]: DEN
+          - heading "Dental Care (Dentist)" [level=3] [ref=e146]
+          - paragraph [ref=e147]: Oral health checkups, teeth cleaning, dental treatments, cavity care, and oral hygiene consulting.
+          - text: DEN
+        - article [ref=e148]:
+          - generic [ref=e149]: LAB
+          - heading "Laboratory Department" [level=3] [ref=e150]
+          - paragraph [ref=e151]: Diagnostic testing, sample handling, result management, and clinical reporting.
+          - text: LAB
+        - article [ref=e152]:
+          - generic [ref=e153]: NUR
+          - heading "Nursing Department" [level=3] [ref=e154]
+          - paragraph [ref=e155]: Ward care, triage, patient monitoring, medication support, and health education.
+          - text: +
+        - article [ref=e156]:
+          - generic [ref=e157]: PHA
+          - heading "Pharmacy Department" [level=3] [ref=e158]
+          - paragraph [ref=e159]: Medication dispensing, drug information, inventory control, and patient counselling.
+          - text: RX
+    - generic [ref=e161]:
+      - generic [ref=e162]:
+        - generic [ref=e163]: Modernisation Roadmap
+        - heading "Built to become one of the most trusted hospitals in the country." [level=2] [ref=e164]
+        - paragraph [ref=e165]: The website positions the hospital around quality, speed, transparency, and digital convenience for patients.
+      - generic [ref=e166]:
+        - article [ref=e167]:
+          - heading "Digital Appointments" [level=3] [ref=e168]
+          - paragraph [ref=e169]: Simple online booking that captures patient needs before they arrive.
+        - article [ref=e170]:
+          - heading "Patient Records Readiness" [level=3] [ref=e171]
+          - paragraph [ref=e172]: A professional front door for future medical records, result notifications, and follow-ups.
+        - article [ref=e173]:
+          - heading "Service Transparency" [level=3] [ref=e174]
+          - paragraph [ref=e175]: Clear services, departments, contact details, and care expectations.
+        - article [ref=e176]:
+          - heading "Community Trust" [level=3] [ref=e177]
+          - paragraph [ref=e178]: Brand language that communicates compassion, standards, and dependable family care.
+    - generic [ref=e180]:
+      - generic [ref=e181]:
+        - generic [ref=e182]: Health Knowledge
+        - heading "Black MD Media & Knowledge Hub" [level=2] [ref=e183]
+        - paragraph [ref=e184]: Empowering our community with practical, expert healthcare advice across television, radio, and social media.
+      - generic [ref=e185]:
+        - generic [ref=e186]:
+          - generic [ref=e187]:
+            - generic [ref=e188]:
+              - img "Dr. Chukwuma Okoli" [ref=e189]
+              - generic [ref=e190]:
+                - heading "Dr. Chukwuma Okoli" [level=3] [ref=e191]
+                - generic [ref=e192]: Black MD
+            - paragraph [ref=e193]: "\"As medical professionals, sharing actionable, evidence-based health tips online is one of the most powerful tools we have to prevent disease and protect our families before they ever need a hospital bed.\""
+          - link "Enter Black MD Media Hub →" [ref=e195] [cursor=pointer]:
+            - /url: black-md.html
+        - generic [ref=e196]:
+          - generic [ref=e197]:
+            - heading "🎙️ Solution 93.9 FM Radio Health Talk" [level=3] [ref=e198]
+            - paragraph [ref=e199]:
+              - text: Tune in every
+              - strong [ref=e200]: Friday at 9:00 AM
+              - text: for "The Solution Health Talk". Dr. Chucks Okoli goes live on the radio and on Facebook to share health tips and take live calls from listeners in Ibadan.
+          - generic [ref=e201]:
+            - heading "📱 Active Social Feeds" [level=3] [ref=e202]
+            - paragraph [ref=e203]: "Explore clinical tips, quick videos, and wellness hacks posted weekly on our educational channels:"
+            - generic [ref=e204]:
+              - generic [ref=e205]:
+                - generic [ref=e206]: 📺
+                - text: YouTube
+              - generic [ref=e207]:
+                - generic [ref=e208]: 🎵
+                - text: TikTok
+              - generic [ref=e209]:
+                - generic [ref=e210]: 📸
+                - text: Instagram
+              - generic [ref=e211]:
+                - generic [ref=e212]: 🐦
+                - text: X (Twitter)
+      - generic [ref=e213]:
+        - generic [ref=e214]:
+          - generic [ref=e215]:
+            - generic [ref=e216]: Articles & Insights
+            - heading "The Black MD Journal" [level=2] [ref=e217]
+          - link "All Articles →" [ref=e218] [cursor=pointer]:
+            - /url: blog.html
+        - generic [ref=e219]:
+          - article [ref=e220]:
+            - generic [ref=e221]:
+              - 'img "Understanding Blood Pressure: The Silent Killer and How to Stop It" [ref=e222]'
+              - generic [ref=e223]: Prevention
+            - generic [ref=e224]:
+              - generic [ref=e225]:
+                - generic [ref=e226]: 📅 July 12, 2026
+                - generic [ref=e227]: ⏱ 5 min read
+              - 'heading "Understanding Blood Pressure: The Silent Killer and How to Stop It" [level=3] [ref=e228]'
+              - paragraph [ref=e229]: Hypertension doesn't always show symptoms until it's too late. Learn practical steps to monitor, control, and prevent high blood pressure through simple lifestyle changes.
+              - link "Read Article →" [ref=e230] [cursor=pointer]:
+                - /url: javascript:void(0)
+                - text: Read Article
+                - generic [ref=e231]: →
+          - article [ref=e232]:
+            - generic [ref=e233]:
+              - 'img "Managing High Fever in Children: A Doctor''s Guide for Parents" [ref=e234]'
+              - generic [ref=e235]: Family Health
+            - generic [ref=e236]:
+              - generic [ref=e237]:
+                - generic [ref=e238]: 📅 July 08, 2026
+                - generic [ref=e239]: ⏱ 6 min read
+              - 'heading "Managing High Fever in Children: A Doctor''s Guide for Parents" [level=3] [ref=e240]'
+              - paragraph [ref=e241]: A child running a fever can be terrifying for any parent. Discover when a fever is dangerous, how to manage it safely at home, and paracetamol dosing guidelines.
+              - link "Read Article →" [ref=e242] [cursor=pointer]:
+                - /url: javascript:void(0)
+                - text: Read Article
+                - generic [ref=e243]: →
+          - article [ref=e244]:
+            - generic [ref=e245]:
+              - img "5 Dietary Habits That Are Slowly Damaging Your Kidneys" [ref=e246]
+              - generic [ref=e247]: Wellness
+            - generic [ref=e248]:
+              - generic [ref=e249]:
+                - generic [ref=e250]: 📅 July 01, 2026
+                - generic [ref=e251]: ⏱ 4 min read
+              - heading "5 Dietary Habits That Are Slowly Damaging Your Kidneys" [level=3] [ref=e252]
+              - paragraph [ref=e253]: Your kidneys filter waste and excess fluid from your blood. Are you putting them at risk? Here are 5 common eating habits that can cause kidney damage over time.
+              - link "Read Article →" [ref=e254] [cursor=pointer]:
+                - /url: javascript:void(0)
+                - text: Read Article
+                - generic [ref=e255]: →
+    - generic [ref=e258]:
+      - generic [ref=e259]:
+        - generic [ref=e260]: BOOK AN
+        - heading "Appointment" [level=2] [ref=e261]
+        - generic [ref=e262]:
+          - generic [ref=e263]:
+            - generic [ref=e264]:
+              - generic [ref=e265]: Name
+              - textbox "Name" [ref=e266]:
+                - /placeholder: David John
+            - generic [ref=e267]:
+              - generic [ref=e268]: Phone Number
+              - textbox "Phone Number" [ref=e269]:
+                - /placeholder: (123) 456 - 789
+          - generic [ref=e270]:
+            - generic [ref=e271]: Medical Record Number
+            - textbox "Medical Record Number" [ref=e272]:
+              - /placeholder: 123456-7890-0987
+          - generic [ref=e273]:
+            - generic [ref=e274]:
+              - generic [ref=e275]: Preferred Date
+              - textbox "Preferred Date" [ref=e276]
+              - text: 📅
+            - generic [ref=e277]:
+              - generic [ref=e278]: Preferred Time
+              - textbox "Preferred Time" [ref=e279]
+              - text: 🕒
+          - generic [ref=e280]:
+            - generic [ref=e281]: Reason for Visit
+            - generic [ref=e282]:
+              - generic [ref=e283] [cursor=pointer]: Routine Checkup
+              - generic [ref=e286] [cursor=pointer]: New Patient Visit
+              - generic [ref=e289] [cursor=pointer]: Returning / Old Patient Visit
+              - generic [ref=e292] [cursor=pointer]: Specific Concern
+          - generic [ref=e295]:
+            - generic [ref=e296]: Department
+            - generic [ref=e297]:
+              - generic [ref=e298] [cursor=pointer]: Medical Officer (General)
+              - generic [ref=e301] [cursor=pointer]: Ophthalmologist / Optician
+              - generic [ref=e304] [cursor=pointer]: Dentist
+              - generic [ref=e307] [cursor=pointer]: Pediatric
+              - generic [ref=e310] [cursor=pointer]: Obstetrics and Gynecology
+              - generic [ref=e313] [cursor=pointer]: Cardiology
+              - generic [ref=e316] [cursor=pointer]: Neurology
+          - button "Submit →" [ref=e320] [cursor=pointer]
+          - status [ref=e321]
+      - img "Smiling Medical Professional" [ref=e324]
+    - generic [ref=e326]:
+      - generic [ref=e327]:
+        - generic [ref=e328]: Contact Us
+        - heading "Visit Metropolitan Family Hospital." [level=2] [ref=e329]
+        - paragraph [ref=e330]: No1, Zone 6, OYSHC, Bashorun Estate Akobo, Ibadan, Oyo State.
+      - generic [ref=e331]:
+        - heading "Opening Support" [level=3] [ref=e332]
+        - paragraph [ref=e333]: For appointments, emergency guidance, or general enquiries, contact the hospital.
+        - link "08064549283" [ref=e334] [cursor=pointer]:
+          - /url: tel:08064549283
+        - link "metrofamilyhospital@gmail.com" [ref=e335] [cursor=pointer]:
+          - /url: mailto:metrofamilyhospital@gmail.com
+  - contentinfo [ref=e336]:
+    - generic [ref=e337]:
+      - generic [ref=e338]:
+        - generic [ref=e339]:
+          - link "Metropolitan Logo Metropolitan Family Hospital" [ref=e340] [cursor=pointer]:
+            - /url: "#top"
+            - img "Metropolitan Logo" [ref=e342]
+            - generic [ref=e343]:
+              - strong [ref=e344]: Metropolitan
+              - generic [ref=e345]: Family Hospital
+          - paragraph [ref=e346]: Healthcare for families in Ibadan. Providing modern, compassionate, and reliable patient-first clinical services.
+        - generic [ref=e347]:
+          - heading "Quick Links" [level=4] [ref=e348]
+          - list [ref=e349]:
+            - listitem [ref=e350]:
+              - link "Our Services" [ref=e351] [cursor=pointer]:
+                - /url: "#services"
+            - listitem [ref=e352]:
+              - link "Departments" [ref=e353] [cursor=pointer]:
+                - /url: "#departments"
+            - listitem [ref=e354]:
+              - link "Black MD Hub" [ref=e355] [cursor=pointer]:
+                - /url: "#black-md"
+            - listitem [ref=e356]:
+              - link "Health Blog" [ref=e357] [cursor=pointer]:
+                - /url: blog.html
+            - listitem [ref=e358]:
+              - link "Book Appointment" [ref=e359] [cursor=pointer]:
+                - /url: "#appointment"
+            - listitem [ref=e360]:
+              - link "Contact Us" [ref=e361] [cursor=pointer]:
+                - /url: "#contact"
+        - generic [ref=e362]:
+          - heading "Metropolitan Socials" [level=4] [ref=e363]
+          - generic [ref=e364]:
+            - link "📘 Facebook" [ref=e365] [cursor=pointer]:
+              - /url: https://facebook.com/chucks.okoli1
+              - generic [ref=e366]: 📘
+              - text: Facebook
+            - link "🐦 X (Twitter)" [ref=e367] [cursor=pointer]:
+              - /url: https://x.com/metropolitanfh
+              - generic [ref=e368]: 🐦
+              - text: X (Twitter)
+            - link "📸 Instagram" [ref=e369] [cursor=pointer]:
+              - /url: https://instagram.com/metrofamily1
+              - generic [ref=e370]: 📸
+              - text: Instagram
+            - link "📺 YouTube" [ref=e371] [cursor=pointer]:
+              - /url: https://youtube.com/@MetropolitanFamilyHospital
+              - generic [ref=e372]: 📺
+              - text: YouTube
+            - link "🎵 TikTok" [ref=e373] [cursor=pointer]:
+              - /url: https://tiktok.com/@metrofamily1
+              - generic [ref=e374]: 🎵
+              - text: TikTok
+        - generic [ref=e375]:
+          - heading "Black MD Channels" [level=4] [ref=e376]
+          - generic [ref=e377]:
+            - link "📺 YouTube" [ref=e378] [cursor=pointer]:
+              - /url: https://youtube.com/@BlackMDGlobal
+              - generic [ref=e379]: 📺
+              - text: YouTube
+            - link "🎵 TikTok" [ref=e380] [cursor=pointer]:
+              - /url: https://tiktok.com/@Black_md1
+              - generic [ref=e381]: 🎵
+              - text: TikTok
+            - link "📸 Instagram" [ref=e382] [cursor=pointer]:
+              - /url: https://instagram.com/chukwumaokoli
+              - generic [ref=e383]: 📸
+              - text: Instagram
+            - link "🐦 X (Twitter)" [ref=e384] [cursor=pointer]:
+              - /url: https://x.com/ChukwumaOkoli
+              - generic [ref=e385]: 🐦
+              - text: X (Twitter)
+            - link "📘 Facebook" [ref=e386] [cursor=pointer]:
+              - /url: https://www.facebook.com/Blackmd
+              - generic [ref=e387]: 📘
+              - text: Facebook
+      - generic [ref=e388]:
+        - paragraph [ref=e389]: © 2026 Metropolitan Family Hospital. All rights reserved.
+        - generic [ref=e390]:
+          - link "End of Year Sale" [ref=e391] [cursor=pointer]:
+            - /url: https://www.iaprecision.com/end-of-year-sale
+          - link "Back to Top ↑" [ref=e392] [cursor=pointer]:
+            - /url: "#top"

@@ -104,8 +104,8 @@ export default function CaseStudies({
               Recent outcomes for ambitious brands.
             </h2>
           </div>
-          <Link className="text-link !mt-0 !pt-0 shrink-0" href="/work">
-            See all case studies <span aria-hidden="true">→</span>
+          <Link className="text-link !mt-0 !pt-0 shrink-0" href="/portfolio">
+            View full portfolio <span aria-hidden="true">→</span>
           </Link>
         </div>
         <div className="border-y border-slate-200">

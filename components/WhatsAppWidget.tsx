@@ -3,11 +3,9 @@
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import posthog from "posthog-js";
-import { launchBundleWhatsappNumber, whatsappNumber } from "@/lib/services";
+import { launchBundleWhatsappNumber } from "@/lib/services";
+import { whatsappLink } from "@/lib/contact";
 
-const AGENCY_MESSAGE = encodeURIComponent(
-  "Hi Triumphant HQ, I'd like to discuss a project with your agency."
-);
 const LAUNCH_BUNDLE_MESSAGE = encodeURIComponent("HI");
 
 export default function WhatsAppWidget() {
@@ -16,9 +14,11 @@ export default function WhatsAppWidget() {
   const waUrl =
     pathname.startsWith("/digital-product") || pathname.startsWith("/digital-forge/checkout")
       ? `https://wa.me/${launchBundleWhatsappNumber}?text=${LAUNCH_BUNDLE_MESSAGE}`
-      : `https://wa.me/${whatsappNumber}?text=${AGENCY_MESSAGE}`;
+      : whatsappLink("Hi Triumphant HQ, I'd like to discuss a project with your agency.");
 
   if (
+    pathname === "/" ||
+    pathname === "/portfolio" ||
     pathname.startsWith("/parent-home-routine") ||
     pathname.startsWith("/digital-forge/funnel/") ||
     pathname.startsWith("/invoices")
@@ -83,7 +83,7 @@ export default function WhatsAppWidget() {
           width: 58,
           height: 58,
           borderRadius: "50%",
-          background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+          background: "var(--wa)",
           boxShadow: hovered
             ? "0 8px 32px rgba(37,211,102,0.55)"
             : "0 4px 20px rgba(37,211,102,0.38)",

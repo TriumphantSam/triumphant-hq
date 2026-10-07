@@ -1,0 +1,670 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - banner [ref=f4e3]:
+      - generic [ref=f4e4]:
+        - link [ref=f4e5] [cursor=pointer]:
+          - /url: /
+          - img "Precision Field Academy Logo" [ref=f4e7]
+        - generic [ref=f4e8]:
+          - link [ref=f4e9] [cursor=pointer]:
+            - /url: /learn
+          - button "Toggle navigation menu" [ref=f4e14]
+    - main [ref=f4e16]:
+      - generic [ref=f4e17]:
+        - img "Precision Field Academy Drone & Field Operations" [ref=f4e19]
+        - generic [ref=f4e22]:
+          - generic [ref=f4e23]:
+            - generic [ref=f4e24]: Africa's Leading AgriTech Education Platform
+            - heading "Building the Talent Powering the Future of Agriculture." [level=1] [ref=f4e27]
+            - paragraph [ref=f4e28]: Precision Field Academy develops the practical capabilities, technical skills, and innovative thinking needed to advance agriculture through technology.
+            - paragraph [ref=f4e29]: We equip individuals, agribusinesses, universities, and institutions with real-world capabilities across agricultural drone piloting, precision agriculture, GIS mapping, and digital farming systems.
+            - generic [ref=f4e30]:
+              - link [ref=f4e31] [cursor=pointer]:
+                - /url: /programmes
+              - link [ref=f4e35] [cursor=pointer]:
+                - /url: /learn
+            - generic [ref=f4e39]:
+              - generic [ref=f4e40]: Self-Paced Courses
+              - generic [ref=f4e43]: In-Person Flight Practicals
+              - generic [ref=f4e46]: Pan-African Network
+          - generic [ref=f4e51]:
+            - generic [ref=f4e52]:
+              - generic [ref=f4e53]: LIVE FIELD TRAINING IN SESSION
+              - generic [ref=f4e56]: 100% PRACTICAL FLIGHT
+            - generic [ref=f4e57]:
+              - img "Precision Field Academy Practical Agricultural Drone Pilot Training" [ref=f4e58]
+              - generic [ref=f4e60]:
+                - generic [ref=f4e61]: Field Practicals · Nigeria
+                - generic [ref=f4e66]: Cohort 4.0 Active
+              - generic [ref=f4e70]:
+                - generic [ref=f4e71]: Hands-On Drone Pilot Competency
+                - paragraph [ref=f4e73]: Agricultural Drone Piloting & Precision Farming
+                - paragraph [ref=f4e74]: Equipping African youth, agronomists, and researchers with certified field flight hours.
+              - generic [ref=f4e75]:
+                - generic [ref=f4e76]:
+                  - strong [ref=f4e81]: 5,000+
+                  - text: Certified
+                - generic [ref=f4e82]: "|"
+                - generic [ref=f4e83]:
+                  - strong [ref=f4e84]: 25+
+                  - text: African Nations
+                - generic [ref=f4e85]: "|"
+                - generic [ref=f4e86]:
+                  - strong [ref=f4e87]: 100%
+                  - text: Practical
+            - generic [ref=f4e88]:
+              - generic [ref=f4e89]:
+                - paragraph [ref=f4e90]: Featured Cohort
+                - paragraph [ref=f4e91]: PAIP Flagship
+                - link "Learn more" [ref=f4e92] [cursor=pointer]:
+                  - /url: /programmes/paip
+              - generic [ref=f4e96]:
+                - paragraph [ref=f4e97]: Commercial Pilots
+                - paragraph [ref=f4e98]: Agri Drone Pilot
+                - link "Explore course" [ref=f4e99] [cursor=pointer]:
+                  - /url: /programmes/agricultural-drone-pilot-course
+      - generic [ref=f4e103]:
+        - img "Pan-African AgriTech Telemetry" [ref=f4e105]
+        - generic [ref=f4e107]:
+          - generic [ref=f4e108]:
+            - paragraph [ref=f4e109]: Verified Impact Footprint
+            - heading "From Learning to Practical Field Impact" [level=2] [ref=f4e110]
+            - paragraph [ref=f4e111]: Our work is measured by the people reached, capabilities developed, and agricultural institutions empowered across Africa.
+          - generic [ref=f4e112]:
+            - generic [ref=f4e113]:
+              - paragraph [ref=f4e114]: 50,000+
+              - generic [ref=f4e115]:
+                - paragraph [ref=f4e116]: Participants Reached
+                - paragraph [ref=f4e117]: Across Pan-African webinars, field showcases, and digital learning cohorts
+            - generic [ref=f4e118]:
+              - paragraph [ref=f4e119]: 5000+
+              - generic [ref=f4e120]:
+                - paragraph [ref=f4e121]: Trainees Certified
+                - paragraph [ref=f4e122]: Equipped with certified, hands-on competency in drones, GIS, and precision farming
+            - generic [ref=f4e123]:
+              - paragraph [ref=f4e124]: 25+
+              - generic [ref=f4e125]:
+                - paragraph [ref=f4e126]: Countries Reached
+                - paragraph [ref=f4e127]: Connecting learners and institutions across Africa and international partners
+            - generic [ref=f4e128]:
+              - paragraph [ref=f4e129]: 20+
+              - generic [ref=f4e130]:
+                - paragraph [ref=f4e131]: Universities Engaged
+                - paragraph [ref=f4e132]: Collaborating with academic institutions on curricula and hands-on AgriTech labs
+            - generic [ref=f4e133]:
+              - paragraph [ref=f4e134]: 50+
+              - generic [ref=f4e135]:
+                - paragraph [ref=f4e136]: Organisations Trained
+                - paragraph [ref=f4e137]: Commercial agribusinesses, government agencies, and NGO partners upskilled
+      - generic [ref=f4e140]:
+        - generic [ref=f4e141]:
+          - generic [ref=f4e142]: Where Agriculture Meets Technology
+          - heading "Agriculture is evolving. The people shaping it must evolve with it." [level=2] [ref=f4e144]
+          - generic [ref=f4e145]:
+            - paragraph [ref=f4e146]: Agriculture is becoming more digital, data-driven, and technology-enabled. Drones, geospatial intelligence, artificial intelligence, and smart farming systems are creating unprecedented possibilities for how food challenges are understood and solved across Africa.
+            - paragraph [ref=f4e147]: Yet technology alone does not transform agriculture. People do.
+            - paragraph [ref=f4e148]: Precision Field Academy develops the human capacity behind agricultural transformation. Through practical education, applied learning, and innovation, we prepare the next generation of professionals to understand, apply, and lead with technology.
+          - link [ref=f4e150] [cursor=pointer]:
+            - /url: /about
+        - generic [ref=f4e154]:
+          - generic [ref=f4e155]:
+            - img "Where Agriculture Meets Technology" [ref=f4e156]
+            - generic [ref=f4e158]: Field & Satellite Operations
+          - generic [ref=f4e159]:
+            - generic [ref=f4e166]:
+              - heading "Digital & Data-Driven" [level=3] [ref=f4e167]
+              - paragraph [ref=f4e168]: Drones, satellite intelligence, AI, and smart farm systems are redefining productivity.
+            - generic [ref=f4e177]:
+              - heading "Human-Centered Capacity" [level=3] [ref=f4e178]
+              - paragraph [ref=f4e179]: Technology alone does not transform agriculture. Skilled, empowered people do.
+            - generic [ref=f4e185]:
+              - heading "Applied Innovation" [level=3] [ref=f4e186]
+              - paragraph [ref=f4e187]: Moving beyond pure theory into field applications, real-farm exercises, and enterprise solutions.
+            - generic [ref=f4e196]:
+              - heading "Ecosystem Collaboration" [level=3] [ref=f4e197]
+              - paragraph [ref=f4e198]: Partnering across universities, agribusinesses, governments, and development organizations.
+      - generic [ref=f4e200]:
+        - generic [ref=f4e201]:
+          - generic [ref=f4e202]: Why Choose PFA
+          - heading "Engineered for the Field, Built for Impact." [level=2] [ref=f4e205]
+          - paragraph [ref=f4e206]: Precision Field Academy brings together education, technology, and applied practice to prepare people for a rapidly transforming agricultural sector.
+        - generic [ref=f4e207]:
+          - generic [ref=f4e208]:
+            - generic [ref=f4e209]:
+              - heading "Expert-Led Learning" [level=3] [ref=f4e214]
+              - paragraph [ref=f4e215]: Learn directly from active practitioners and field professionals with deep operational experience across drone systems, precision agriculture, and digital farming.
+            - generic [ref=f4e216]: Explore capability
+          - generic [ref=f4e220]:
+            - generic [ref=f4e221]:
+              - heading "World-Class Standards" [level=3] [ref=f4e226]
+              - paragraph [ref=f4e227]: Our curricula reflect global aviation and geospatial benchmarks while remaining firmly grounded in the realities and opportunities of African food systems.
+            - generic [ref=f4e228]: Explore capability
+          - generic [ref=f4e232]:
+            - generic [ref=f4e233]:
+              - heading "Practical by Design" [level=3] [ref=f4e238]
+              - paragraph [ref=f4e239]: We move decisively beyond theory through hands-on simulator hours, field flight exercises, live farm mapping, and real-world capstone projects.
+            - generic [ref=f4e240]: Explore capability
+          - generic [ref=f4e244]:
+            - generic [ref=f4e245]:
+              - heading "Innovation-Focused" [level=3] [ref=f4e249]
+              - paragraph [ref=f4e250]: "Explore and deploy the cutting-edge technologies shaping modern agriculture: AI diagnostics, multispectral sensing, autonomous robotics, and telemetry."
+            - generic [ref=f4e251]: Explore capability
+          - generic [ref=f4e255]:
+            - generic [ref=f4e256]:
+              - heading "Career & Enterprise Ready" [level=3] [ref=f4e261]
+              - paragraph [ref=f4e262]: Develop high-demand market capabilities that immediately support employment, commercial consulting, venture building, and professional advancement.
+            - generic [ref=f4e263]: Explore capability
+          - generic [ref=f4e267]:
+            - generic [ref=f4e268]:
+              - heading "Pan-African Reach" [level=3] [ref=f4e275]
+              - paragraph [ref=f4e276]: With alumni and participants across 25+ countries, PFA connects learners and institutions to a vibrant, continent-wide agricultural technology network.
+            - generic [ref=f4e277]: Explore capability
+        - link [ref=f4e282] [cursor=pointer]:
+          - /url: /programmes
+      - generic [ref=f4e286]:
+        - img "African Agriculture Ecosystem" [ref=f4e288]
+        - generic [ref=f4e290]:
+          - generic [ref=f4e291]:
+            - generic [ref=f4e292]: Our Purpose
+            - heading "We Build More Than Skills. We Build Ecosystems." [level=2] [ref=f4e295]
+            - paragraph [ref=f4e296]: Agricultural transformation requires more than access to hardware. It requires people who can deploy it safely, build sustainable enterprises around it, and apply it to solve critical food security challenges.
+          - generic [ref=f4e297]:
+            - generic [ref=f4e298]:
+              - generic [ref=f4e299]:
+                - generic [ref=f4e300]:
+                  - generic [ref=f4e301]: "01"
+                  - generic [ref=f4e302]: Human Capital
+                - heading "Talent Development" [level=3] [ref=f4e309]
+                - paragraph [ref=f4e310]: Equipping individuals with certified, practical capabilities across drone piloting, precision agriculture, GIS mapping, and digital farm intelligence.
+              - generic [ref=f4e311]: PFA PURPOSE PILLAR
+            - generic [ref=f4e313]:
+              - generic [ref=f4e314]:
+                - generic [ref=f4e315]:
+                  - generic [ref=f4e316]: "02"
+                  - generic [ref=f4e317]: Tech Solutions
+                - heading "Applied Innovation" [level=3] [ref=f4e322]
+                - paragraph [ref=f4e323]: Enabling learners, researchers, and partners to design, test, and deploy practical technology solutions tailored to real African farming conditions.
+              - generic [ref=f4e324]: PFA PURPOSE PILLAR
+            - generic [ref=f4e326]:
+              - generic [ref=f4e327]:
+                - generic [ref=f4e328]:
+                  - generic [ref=f4e329]: "03"
+                  - generic [ref=f4e330]: Venture Building
+                - heading "Enterprise Creation" [level=3] [ref=f4e337]
+                - paragraph [ref=f4e338]: Catalyzing technology-enabled agricultural businesses, Drone-as-a-Service (DaaS) providers, precision consulting firms, and new commercial ventures.
+              - generic [ref=f4e339]: PFA PURPOSE PILLAR
+            - generic [ref=f4e341]:
+              - generic [ref=f4e342]:
+                - generic [ref=f4e343]:
+                  - generic [ref=f4e344]: "04"
+                  - generic [ref=f4e345]: Institutional Growth
+                - heading "Ecosystem Impact" [level=3] [ref=f4e351]
+                - paragraph [ref=f4e352]: Strengthening institutional capacity across agribusinesses, universities, research centers, and government bodies to drive long-term systemic progress.
+              - generic [ref=f4e353]: PFA PURPOSE PILLAR
+      - generic [ref=f4e356]:
+        - generic [ref=f4e357]:
+          - generic [ref=f4e358]: Learning Pathways
+          - heading "Practical Capabilities. Real-World Impact." [level=2] [ref=f4e361]
+          - paragraph [ref=f4e362]: Explore our structured learning pathways designed to develop field professionals from foundational technical literacy through to specialized enterprise leadership.
+        - generic [ref=f4e363]:
+          - generic [ref=f4e364]:
+            - generic [ref=f4e365]:
+              - generic [ref=f4e366]: Core Technical
+              - heading "Drone Technology" [level=3] [ref=f4e372]
+              - paragraph [ref=f4e373]: From flight safety and civil aviation rules to heavy-payload agricultural spraying drones and UK A2 CofC pathways.
+              - generic [ref=f4e374]:
+                - paragraph [ref=f4e375]: "Key Focus Areas:"
+                - list [ref=f4e376]:
+                  - listitem [ref=f4e377]:
+                    - generic [ref=f4e381]: Basic Drone Pilot
+                  - listitem [ref=f4e382]:
+                    - generic [ref=f4e386]: UK A2 CofC
+                  - listitem [ref=f4e387]:
+                    - generic [ref=f4e391]: Agri Drone Pilot (Spraying)
+            - link "View related programmes" [ref=f4e393] [cursor=pointer]:
+              - /url: /programmes
+          - generic [ref=f4e397]:
+            - generic [ref=f4e398]:
+              - generic [ref=f4e399]: Advanced Analytics
+              - heading "Precision Agriculture" [level=3] [ref=f4e414]
+              - paragraph [ref=f4e415]: Multispectral imaging, NDVI/NDRE crop health diagnostics, yield prediction, and precision variable-rate prescriptions.
+              - generic [ref=f4e416]:
+                - paragraph [ref=f4e417]: "Key Focus Areas:"
+                - list [ref=f4e418]:
+                  - listitem [ref=f4e419]:
+                    - generic [ref=f4e423]: Phyto-Mapping Masterclass
+                  - listitem [ref=f4e424]:
+                    - generic [ref=f4e428]: Crop Analytics
+                  - listitem [ref=f4e429]:
+                    - generic [ref=f4e433]: VRA Prescriptions
+            - link "View related programmes" [ref=f4e435] [cursor=pointer]:
+              - /url: /programmes
+          - generic [ref=f4e439]:
+            - generic [ref=f4e440]:
+              - generic [ref=f4e441]: Spatial Systems
+              - heading "Geospatial Intelligence & GIS" [level=3] [ref=f4e448]
+              - paragraph [ref=f4e449]: Foundational GIS, spatial analysis, satellite integration, and sub-centimeter RTK & PPK surveying workflows.
+              - generic [ref=f4e450]:
+                - paragraph [ref=f4e451]: "Key Focus Areas:"
+                - list [ref=f4e452]:
+                  - listitem [ref=f4e453]:
+                    - generic [ref=f4e457]: Basic GIS Course
+                  - listitem [ref=f4e458]:
+                    - generic [ref=f4e462]: Land Mapping & RTK
+                  - listitem [ref=f4e463]:
+                    - generic [ref=f4e467]: Photogrammetry
+            - link "View related programmes" [ref=f4e469] [cursor=pointer]:
+              - /url: /programmes
+          - generic [ref=f4e473]:
+            - generic [ref=f4e474]:
+              - generic [ref=f4e475]: Digital Agriculture
+              - heading "Data & Smart Farming" [level=3] [ref=f4e481]
+              - paragraph [ref=f4e482]: Digital toolchains, IoT telemetry, farm management software, and translating spatial data into profitable farm actions.
+              - generic [ref=f4e483]:
+                - paragraph [ref=f4e484]: "Key Focus Areas:"
+                - list [ref=f4e485]:
+                  - listitem [ref=f4e486]:
+                    - generic [ref=f4e490]: Farm Management Data
+                  - listitem [ref=f4e491]:
+                    - generic [ref=f4e495]: Sensor Telemetry
+                  - listitem [ref=f4e496]:
+                    - generic [ref=f4e500]: Digital Farm Tools
+            - link "View related programmes" [ref=f4e502] [cursor=pointer]:
+              - /url: /programmes
+          - generic [ref=f4e506]:
+            - generic [ref=f4e507]:
+              - generic [ref=f4e508]: Enterprise
+              - heading "AgriTech Entrepreneurship" [level=3] [ref=f4e514]
+              - paragraph [ref=f4e515]: Commercial Drone-as-a-Service (DaaS) models, pricing strategy, client acquisition, and building scalable AgriTech ventures.
+              - generic [ref=f4e516]:
+                - paragraph [ref=f4e517]: "Key Focus Areas:"
+                - list [ref=f4e518]:
+                  - listitem [ref=f4e519]:
+                    - generic [ref=f4e523]: Commercial DaaS Models
+                  - listitem [ref=f4e524]:
+                    - generic [ref=f4e528]: AgriTech Advisory
+                  - listitem [ref=f4e529]:
+                    - generic [ref=f4e533]: Venture Building
+            - link "View related programmes" [ref=f4e535] [cursor=pointer]:
+              - /url: /programmes
+          - generic [ref=f4e539]:
+            - generic [ref=f4e540]:
+              - generic [ref=f4e541]: Bespoke Workforce
+              - heading "Institutional & Custom Training" [level=3] [ref=f4e547]
+              - paragraph [ref=f4e548]: Bespoke workforce capacity building for agribusinesses, government agencies, universities, and international NGOs.
+              - generic [ref=f4e549]:
+                - paragraph [ref=f4e550]: "Key Focus Areas:"
+                - list [ref=f4e551]:
+                  - listitem [ref=f4e552]:
+                    - generic [ref=f4e556]: Corporate Drone Training
+                  - listitem [ref=f4e557]:
+                    - generic [ref=f4e561]: Executive Consultation
+                  - listitem [ref=f4e562]:
+                    - generic [ref=f4e566]: Gov Extension Labs
+            - link "View related programmes" [ref=f4e568] [cursor=pointer]:
+              - /url: /programmes
+        - generic [ref=f4e573]:
+          - generic [ref=f4e574]:
+            - text: The PFA Pedagogy
+            - heading "Our Applied Learning Model" [level=3] [ref=f4e575]
+            - paragraph [ref=f4e576]: Education designed around verifiable capability, direct practice, and enterprise application.
+          - generic [ref=f4e577]:
+            - generic [ref=f4e578]:
+              - generic [ref=f4e579]: STEP 01
+              - heading "LEARN" [level=4] [ref=f4e580]
+              - paragraph [ref=f4e581]: Master technical principles, safety protocols, flight dynamics, and digital software.
+            - generic [ref=f4e582]:
+              - generic [ref=f4e583]: STEP 02
+              - heading "APPLY" [level=4] [ref=f4e584]
+              - paragraph [ref=f4e585]: Hands-on flight hours, live field surveys, sensor calibration, and spatial mapping.
+            - generic [ref=f4e586]:
+              - generic [ref=f4e587]: STEP 03
+              - heading "BUILD" [level=4] [ref=f4e588]
+              - paragraph [ref=f4e589]: Develop real-world capstone projects, variable-rate prescriptions, and commercial plans.
+            - generic [ref=f4e590]:
+              - generic [ref=f4e591]: STEP 04
+              - heading "LEAD" [level=4] [ref=f4e592]
+              - paragraph [ref=f4e593]: Step into industry employment, high-value consulting, enterprise leadership, and policy.
+      - generic [ref=f4e597]:
+        - generic [ref=f4e598]:
+          - generic [ref=f4e599]:
+            - generic [ref=f4e600]: Flagship Innovation Cohort
+            - generic [ref=f4e602]: COHORT 4 APPLICATIONS OPEN
+          - heading "Precision Agriculture & Innovation Programme (PAIP)" [level=2] [ref=f4e603]
+          - paragraph [ref=f4e604]: Developing the next generation of agricultural technology talent. PAIP is PFA's flagship initiative designed to equip young people, university graduates, and agronomists with end-to-end practical capabilities for Africa's evolving food systems.
+          - generic [ref=f4e605]:
+            - generic [ref=f4e606]: Comprehensive 6-week multi-disciplinary cohort
+            - generic [ref=f4e611]: Hands-on flight hours on commercial agricultural drones
+            - generic [ref=f4e616]: GIS mapping & multispectral crop health diagnosis
+            - generic [ref=f4e621]: Real-farm capstone projects with agribusiness partners
+            - generic [ref=f4e626]: Mentorship from leading industry practitioners across Africa
+            - generic [ref=f4e631]: Dedicated career placement and venture-building support
+          - generic [ref=f4e636]:
+            - link [ref=f4e637] [cursor=pointer]:
+              - /url: /programmes/paip
+            - link "Sponsor or Host a Cohort →" [ref=f4e641] [cursor=pointer]:
+              - /url: /contact?subject=PAIP+Sponsorship
+        - generic [ref=f4e643]:
+          - generic [ref=f4e644]:
+            - img "PAIP Cohort Fellowship Field Practical" [ref=f4e645]
+            - generic [ref=f4e647]: COHORT 4 // FIELD OPS
+          - generic [ref=f4e648]:
+            - paragraph [ref=f4e649]: Talent Transformation
+            - heading "Certified PAIP Fellows" [level=3] [ref=f4e650]
+            - paragraph [ref=f4e651]: Our fellows are already managing commercial farm acreage, establishing DaaS startups, and leading precision agronomy across Africa.
+          - generic [ref=f4e652]:
+            - generic [ref=f4e653]:
+              - paragraph [ref=f4e654]: 5,000+
+              - paragraph [ref=f4e655]: Trained Fellows
+            - generic [ref=f4e656]:
+              - paragraph [ref=f4e657]: 25+
+              - paragraph [ref=f4e658]: African Nations
+          - generic [ref=f4e659]: "NEXT COHORT: SPRING / SUMMER 2026"
+      - generic [ref=f4e663]:
+        - generic [ref=f4e664]:
+          - generic [ref=f4e665]: Precision Field Academy LMS
+          - heading "Access Our Self Paced Courses" [level=2] [ref=f4e667]
+          - paragraph [ref=f4e668]: Master digital agriculture, drone flight principles, and geospatial fundamentals on your schedule. Learn online from industry practitioners with structured, certified modules.
+          - generic [ref=f4e669]:
+            - generic [ref=f4e670]: Practical Video Lessons
+            - generic [ref=f4e675]: Certified Completion
+            - generic [ref=f4e680]: Learn at Your Own Pace
+        - generic [ref=f4e685]:
+          - link [ref=f4e686] [cursor=pointer]:
+            - /url: /learn
+          - link "Existing student? Log in to Student Portal ↗" [ref=f4e690] [cursor=pointer]:
+            - /url: /learn
+      - generic [ref=f4e696]:
+        - generic [ref=f4e697]:
+          - generic [ref=f4e698]: Who We Serve
+          - heading "Tailored Pathways for Every Level of Agriculture." [level=2] [ref=f4e701]
+          - paragraph [ref=f4e702]: Whether you are an aspiring pilot launching your career, a commercial farm scaling field operations, or an institution driving national impact, PFA has a pathway for you.
+        - generic [ref=f4e703]:
+          - generic [ref=f4e704]:
+            - generic [ref=f4e705]:
+              - generic [ref=f4e706]: Career Launch
+              - heading "Students & Young Professionals" [level=3] [ref=f4e712]
+              - paragraph [ref=f4e713]: Develop high-demand skills across drone systems, GIS, and precision farming to secure employment or launch independent commercial services.
+              - list [ref=f4e714]:
+                - listitem [ref=f4e715]:
+                  - generic [ref=f4e719]: Globally recognized certifications (PFA, UK A2 CofC)
+                - listitem [ref=f4e720]:
+                  - generic [ref=f4e724]: Practical field hours on commercial agricultural hardware
+                - listitem [ref=f4e725]:
+                  - generic [ref=f4e729]: Direct access to Pan-African job and internship networks
+            - link [ref=f4e731] [cursor=pointer]:
+              - /url: /programmes
+          - generic [ref=f4e735]:
+            - generic [ref=f4e736]:
+              - generic [ref=f4e737]: Operational Scale
+              - heading "Farmers & Commercial Agribusinesses" [level=3] [ref=f4e746]
+              - paragraph [ref=f4e747]: Upskill internal farm teams to operate spray drones, map field acreage, detect crop stress early, and optimize costly agrochemical inputs.
+              - list [ref=f4e748]:
+                - listitem [ref=f4e749]:
+                  - generic [ref=f4e753]: Reduce chemical and water application costs by 30–50%
+                - listitem [ref=f4e754]:
+                  - generic [ref=f4e758]: Eliminate soil compaction and crop trampling losses
+                - listitem [ref=f4e759]:
+                  - generic [ref=f4e763]: Standard operating procedures (SOPs) tailored to your crops
+            - link [ref=f4e765] [cursor=pointer]:
+              - /url: /programmes/corporate-drone-training
+          - generic [ref=f4e769]:
+            - generic [ref=f4e770]:
+              - generic [ref=f4e771]: Curriculum Innovation
+              - heading "Academic & Research Institutions" [level=3] [ref=f4e779]
+              - paragraph [ref=f4e780]: Modernize agricultural and engineering departments with industry-aligned AgriTech training, student workshops, and joint research labs.
+              - list [ref=f4e781]:
+                - listitem [ref=f4e782]:
+                  - generic [ref=f4e786]: Co-developed practical drone and GIS curriculum modules
+                - listitem [ref=f4e787]:
+                  - generic [ref=f4e791]: Faculty upskilling and research trial aerial mapping
+                - listitem [ref=f4e792]:
+                  - generic [ref=f4e796]: High-throughput phenotyping and crop trial analytics
+            - link [ref=f4e798] [cursor=pointer]:
+              - /url: /partner
+          - generic [ref=f4e802]:
+            - generic [ref=f4e803]:
+              - generic [ref=f4e804]: Systemic Impact
+              - heading "Governments & Development Agencies" [level=3] [ref=f4e809]
+              - paragraph [ref=f4e810]: Equip thousands of young people with productive digital agricultural skills, modernize national extension workers, and accelerate food security.
+              - list [ref=f4e811]:
+                - listitem [ref=f4e812]:
+                  - generic [ref=f4e816]: Scalable youth employment and AgriTech skilling programs
+                - listitem [ref=f4e817]:
+                  - generic [ref=f4e821]: Modernization of public agricultural extension agents
+                - listitem [ref=f4e822]:
+                  - generic [ref=f4e826]: Transparent impact metrics, monitoring, and evaluation
+            - link [ref=f4e828] [cursor=pointer]:
+              - /url: /partner
+      - generic [ref=f4e833]:
+        - generic [ref=f4e834]:
+          - generic [ref=f4e835]: Media & Industry Recognition
+          - heading "Featured In" [level=2] [ref=f4e837]
+          - paragraph [ref=f4e838]: Recognized and featured across leading international broadcasts, business journals, and technology platforms.
+        - generic [ref=f4e839]:
+          - generic [ref=f4e840]:
+            - img "BBC" [ref=f4e843]
+            - generic [ref=f4e844]:
+              - heading "BBC" [level=3] [ref=f4e845]
+              - generic [ref=f4e846]: International Broadcast
+          - generic [ref=f4e852]:
+            - heading "BusinessBeat24" [level=3] [ref=f4e853]
+            - generic [ref=f4e854]: Business Press
+          - generic [ref=f4e855]:
+            - img "African Tech Roundup" [ref=f4e858]
+            - generic [ref=f4e859]:
+              - heading "African Tech Roundup" [level=3] [ref=f4e860]
+              - generic [ref=f4e861]: Tech Media
+          - generic [ref=f4e862]:
+            - img "WeRobotics" [ref=f4e865]
+            - generic [ref=f4e866]:
+              - heading "WeRobotics" [level=3] [ref=f4e867]
+              - generic [ref=f4e868]: Global Robotics
+          - generic [ref=f4e869]:
+            - img "Agribusiness Nigeria" [ref=f4e872]
+            - generic [ref=f4e873]:
+              - heading "Agribusiness Nigeria" [level=3] [ref=f4e874]
+              - generic [ref=f4e875]: Industry Journal
+          - generic [ref=f4e876]:
+            - img "Agra Podcast" [ref=f4e879]
+            - generic [ref=f4e880]:
+              - heading "Agra Podcast" [level=3] [ref=f4e881]
+              - generic [ref=f4e882]: Podcast & Audio
+      - generic [ref=f4e883]:
+        - generic [ref=f4e884]:
+          - paragraph [ref=f4e885]: Ecosystem & Industry Collaboration
+          - heading "Built With Industry. Designed for Impact." [level=2] [ref=f4e886]
+          - paragraph [ref=f4e887]: Collaborating with universities, agribusinesses, technology leaders, and global institutions to build real-world capability.
+        - generic [ref=f4e889]:
+          - img "Integrated Aerial Precision" [ref=f4e893]
+          - img "DJI Academy" [ref=f4e897]
+          - img "Dev Global" [ref=f4e901]
+          - img "Dev-Afrique" [ref=f4e905]
+          - img "International Society of Precision Agriculture" [ref=f4e909]
+          - img "African Association of Precision Agriculture" [ref=f4e913]
+          - img "Federal University of Agriculture, Abeokuta" [ref=f4e917]
+          - img "Federal University of Technology, Minna" [ref=f4e921]
+          - img "Agait-Agro Farms" [ref=f4e925]
+          - img "University of Ibadan" [ref=f4e929]
+          - img "Obafemi Awolowo University" [ref=f4e933]
+          - img "Landmark University" [ref=f4e937]
+          - img "Olabisi Onabanjo University" [ref=f4e941]
+          - img "Rivers State University" [ref=f4e945]
+          - img "Flour Mills of Nigeria (FMN)" [ref=f4e949]
+          - img "GB Foods" [ref=f4e953]
+          - img "Soilless Farm Lab" [ref=f4e957]
+          - img "Agrisiti" [ref=f4e961]
+          - img "Farmgo" [ref=f4e965]
+          - img "Integrated Aerial Precision" [ref=f4e969]
+          - img "DJI Academy" [ref=f4e973]
+          - img "Dev Global" [ref=f4e977]
+          - img "Dev-Afrique" [ref=f4e981]
+          - img "International Society of Precision Agriculture" [ref=f4e985]
+          - img "African Association of Precision Agriculture" [ref=f4e989]
+          - img "Federal University of Agriculture, Abeokuta" [ref=f4e993]
+          - img "Federal University of Technology, Minna" [ref=f4e997]
+          - img "Agait-Agro Farms" [ref=f4e1001]
+          - img "University of Ibadan" [ref=f4e1005]
+          - img "Obafemi Awolowo University" [ref=f4e1009]
+          - img "Landmark University" [ref=f4e1013]
+          - img "Olabisi Onabanjo University" [ref=f4e1017]
+          - img "Rivers State University" [ref=f4e1021]
+          - img "Flour Mills of Nigeria (FMN)" [ref=f4e1025]
+          - img "GB Foods" [ref=f4e1029]
+          - img "Soilless Farm Lab" [ref=f4e1033]
+          - img "Agrisiti" [ref=f4e1037]
+          - img "Farmgo" [ref=f4e1041]
+      - generic [ref=f4e1043]:
+        - generic [ref=f4e1044]:
+          - generic [ref=f4e1045]: Student & Alumni Voices
+          - heading "What Our Students Are Saying." [level=2] [ref=f4e1048]
+          - paragraph [ref=f4e1049]: Hear directly from precision agronomists, farm managers, and fellows applying their training to commercial acreage across Africa.
+        - generic [ref=f4e1050]:
+          - generic [ref=f4e1051]:
+            - generic [ref=f4e1052]:
+              - generic [ref=f4e1053]: Managed 200+ Hectares with Aerial Scouting
+              - blockquote [ref=f4e1069]: “As someone who managed over 200 hectares of crops, I experienced the challenges of exhaustive farm walks firsthand. PFA's training transformed our operations—equipping me with aerial scouting, crop stress diagnosis, and precision application workflows that drastically cut our field inspection time and chemical input costs.”
+            - generic [ref=f4e1071]:
+              - img "Idris Adepoju Moronkola" [ref=f4e1073]
+              - generic [ref=f4e1074]:
+                - paragraph [ref=f4e1075]: Idris Adepoju Moronkola
+                - paragraph [ref=f4e1076]: Farm Operations Manager & Precision Agronomist · Nigeria
+          - generic [ref=f4e1077]:
+            - generic [ref=f4e1078]:
+              - generic [ref=f4e1079]: Pan-African Remote Learning
+              - blockquote [ref=f4e1095]: “Though distance was an initial barrier to participating in onsite training, PFA's virtual modules, interactive flight simulator sessions, and live masterclasses were immensely practical. The instructors translate complex remote sensing theory into day-to-day farm decisions.”
+            - generic [ref=f4e1097]:
+              - img "Selina Musa" [ref=f4e1099]
+              - generic [ref=f4e1100]:
+                - paragraph [ref=f4e1101]: Selina Musa
+                - paragraph [ref=f4e1102]: Agricultural Consultant & Spatial Analyst · Kenya
+          - generic [ref=f4e1103]:
+            - generic [ref=f4e1104]:
+              - generic [ref=f4e1105]: Promoting Sustainable Practices
+              - blockquote [ref=f4e1121]: “P.A.I.P was an incredible journey that equipped me with the knowledge and skills to navigate the ever-evolving world of precision agriculture technologies. I'm confident that these skills will allow me to make a significant impact on the agricultural industry in Rwanda by promoting sustainable practices and maximizing crop productivity.”
+            - generic [ref=f4e1123]:
+              - img "Thierry Kamugisha" [ref=f4e1125]
+              - generic [ref=f4e1126]:
+                - paragraph [ref=f4e1127]: Thierry Kamugisha
+                - paragraph [ref=f4e1128]: AgriTech Entrepreneur & PAIP Fellow · Rwanda
+          - generic [ref=f4e1129]:
+            - generic [ref=f4e1130]:
+              - generic [ref=f4e1131]: 5 Globally Recognised Certificates
+              - blockquote [ref=f4e1147]: “We had theoretical classes on Drone Technology, Satellite mapping, Artificial Intelligence in Agriculture, Robotics in Agriculture, Corporate Branding and Entrepreneurship for Agric Business owners. I also took courses and got 5 globally recognised certificates and most importantly I connected with like-minded youths who are working together to improve the Agriculture industry. I look forward to seeing the impact PFA will make in the Agriculture industry in Africa.”
+            - generic [ref=f4e1149]:
+              - img "Mahmood Ademoye" [ref=f4e1151]
+              - generic [ref=f4e1152]:
+                - paragraph [ref=f4e1153]: Mahmood Ademoye
+                - paragraph [ref=f4e1154]: PAIP Fellow · Nigeria
+      - generic [ref=f4e1157]:
+        - img "Join Precision Field Academy" [ref=f4e1159]
+        - generic [ref=f4e1161]:
+          - generic [ref=f4e1162]: Work With Precision Field Academy
+          - heading "Ready to Shape the Future of Agriculture?" [level=2] [ref=f4e1163]
+          - paragraph [ref=f4e1164]: Whether you want to build personal technical capabilities, upskill your enterprise farm workforce, or collaborate on Pan-African agricultural innovation, our doors are open.
+          - generic [ref=f4e1165]:
+            - generic [ref=f4e1166]:
+              - generic [ref=f4e1167]:
+                - heading "Train With Us" [level=3] [ref=f4e1172]
+                - paragraph [ref=f4e1173]: Explore our hands-on drone pilot, GIS, precision agriculture, and PAIP cohort pathways.
+              - link [ref=f4e1175] [cursor=pointer]:
+                - /url: /programmes
+            - generic [ref=f4e1179]:
+              - generic [ref=f4e1180]:
+                - heading "Partner With Us" [level=3] [ref=f4e1187]
+                - paragraph [ref=f4e1188]: Collaborate on corporate training, research trials, youth employment, and grant programs.
+              - link [ref=f4e1190] [cursor=pointer]:
+                - /url: /partner
+    - contentinfo [ref=f4e1194]:
+      - generic [ref=f4e1195]:
+        - generic [ref=f4e1196]:
+          - generic [ref=f4e1197]:
+            - link [ref=f4e1198] [cursor=pointer]:
+              - /url: /
+              - img "Precision Field Academy Logo" [ref=f4e1200]
+            - paragraph [ref=f4e1201]: Africa's Leading AgriTech Education & Innovation Platform
+            - paragraph [ref=f4e1202]: Developing the human capacity, skills, and innovation behind Africa's agricultural transformation through practical, applied education.
+            - generic [ref=f4e1203]:
+              - generic [ref=f4e1204]: 13, Kosoko Street, Adjacent Alheri Hospital, Ojodu Abiodun Road, Berger, Lagos, Nigeria
+              - link "+234 912 873 4678" [ref=f4e1212] [cursor=pointer]:
+                - /url: tel:+234 912 873 4678
+              - link "info@precisionfieldacademy.com" [ref=f4e1217] [cursor=pointer]:
+                - /url: mailto:info@precisionfieldacademy.com
+          - generic [ref=f4e1218]:
+            - paragraph [ref=f4e1219]: Flagship & Courses
+            - list [ref=f4e1220]:
+              - listitem [ref=f4e1221]:
+                - link "PAIP Innovation Cohort Cohort 4" [ref=f4e1222] [cursor=pointer]:
+                  - /url: /paip#apply
+                  - generic [ref=f4e1223]: PAIP Innovation Cohort
+                  - generic [ref=f4e1224]: Cohort 4
+              - listitem [ref=f4e1225]:
+                - link "PFA LMS (Self-Paced) Portal" [ref=f4e1226] [cursor=pointer]:
+                  - /url: /learn
+                  - generic [ref=f4e1227]: PFA LMS (Self-Paced)
+                  - generic [ref=f4e1228]: Portal
+              - listitem [ref=f4e1229]:
+                - link "Find My Fit (Skills Quiz)" [ref=f4e1230] [cursor=pointer]:
+                  - /url: /find-my-fit
+              - listitem [ref=f4e1235]:
+                - link "Basic Drone Pilot" [ref=f4e1236] [cursor=pointer]:
+                  - /url: /programmes/basic-drone-pilot-competency
+              - listitem [ref=f4e1237]:
+                - link "Agri Spray Drone Pilot" [ref=f4e1238] [cursor=pointer]:
+                  - /url: /programmes/agricultural-drone-pilot-course
+              - listitem [ref=f4e1239]:
+                - link "Phyto-Mapping & NDVI" [ref=f4e1240] [cursor=pointer]:
+                  - /url: /programmes/phyto-mapping-masterclass
+              - listitem [ref=f4e1241]:
+                - link "Land Mapping & RTK" [ref=f4e1242] [cursor=pointer]:
+                  - /url: /programmes/land-mapping-rtk-surveying
+              - listitem [ref=f4e1243]:
+                - link "GIS Professional Pathway →" [ref=f4e1244] [cursor=pointer]:
+                  - /url: /programmes/gis-advanced
+              - listitem [ref=f4e1245]:
+                - link "Basic GIS Course" [ref=f4e1246] [cursor=pointer]:
+                  - /url: /programmes/basic-gis-course
+          - generic [ref=f4e1247]:
+            - paragraph [ref=f4e1248]: Academy & Ecosystem
+            - list [ref=f4e1249]:
+              - listitem [ref=f4e1250]:
+                - link "Impact & Field Case Studies" [ref=f4e1251] [cursor=pointer]:
+                  - /url: /impact
+              - listitem [ref=f4e1252]:
+                - link "Resources & Research" [ref=f4e1253] [cursor=pointer]:
+                  - /url: /insights
+              - listitem [ref=f4e1254]:
+                - link "About the Academy" [ref=f4e1255] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f4e1256]:
+                - link "Institutional Partnerships" [ref=f4e1257] [cursor=pointer]:
+                  - /url: /contact?intent=partner
+              - listitem [ref=f4e1258]:
+                - link "Contact & Bookings" [ref=f4e1259] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=f4e1260]:
+            - paragraph [ref=f4e1261]: Field Intelligence
+            - paragraph [ref=f4e1262]: Join 50,000+ agronomists, operators, and researchers receiving our monthly precision agriculture briefing.
+            - generic [ref=f4e1263]:
+              - generic [ref=f4e1264]:
+                - textbox "Enter your email" [ref=f4e1265]
+                - button "Subscribe" [ref=f4e1266] [cursor=pointer]
+              - paragraph [ref=f4e1270]: No spam. Unsubscribe anytime.
+        - generic [ref=f4e1271]:
+          - generic [ref=f4e1272]: © 2026 Precision Field Academy. Building the Talent Powering the Future of Agriculture.
+          - generic [ref=f4e1273]:
+            - link "Privacy Policy" [ref=f4e1274] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=f4e1275] [cursor=pointer]:
+              - /url: /terms
+            - link "About" [ref=f4e1276] [cursor=pointer]:
+              - /url: /about
+            - link "Partnerships" [ref=f4e1277] [cursor=pointer]:
+              - /url: /contact?intent=partner
+            - link "Contact" [ref=f4e1278] [cursor=pointer]:
+              - /url: /contact
+    - complementary "WhatsApp Quick Support" [ref=f4e1279]:
+      - link "Chat with Precision Field Academy on WhatsApp" [ref=f4e1280] [cursor=pointer]:
+        - /url: https://wa.me/2349128734678?text=Hello%20PFA%2C%20I'd%20like%20to%20enquire%20about...
+        - generic [ref=f4e1281]: Chat with us on WhatsApp
+  - alert [ref=f4e1284]
