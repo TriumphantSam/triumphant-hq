@@ -99,7 +99,6 @@ body {
   background: var(--bg-dark);
   color: var(--text-primary);
   font-family: var(--font-sans), "Segoe UI", sans-serif;
-  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -197,6 +196,12 @@ main {
 .section-shell + .section-shell {
   padding-top: 0;
 }
+
+.home-page .section-shell { padding-block: clamp(3.5rem, 6vw, 5.5rem); }
+.home-page .section-heading h2 { color: inherit; }
+.home-page .testimonial-slide p { color: #fff; }
+.home-page .testimonial-slide footer p { color: #dbeafe; }
+.home-page .testimonial-stage { border-color: rgba(255,255,255,0.18); }
 
 .section-muted {
   width: 100%;

@@ -183,6 +183,7 @@ export default function PageReader() {
     }
 
     if (
+        pathname === '/' ||
         pathname.startsWith('/parent-home-routine') ||
         pathname.startsWith('/digital-product') ||
         pathname.startsWith('/digital-forge/funnel/') ||

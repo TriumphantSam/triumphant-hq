@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import JsonLd from "@/components/seo/JsonLd";
 import TrackedLink from "@/components/portfolio/TrackedLink";
 import { whatsappLink } from "@/lib/contact";
@@ -74,7 +75,7 @@ export default function PortfolioPage() {
   ];
 
   return (
-    <main className="bg-[var(--tint)]">
+    <div className="bg-[var(--tint)]">
       <JsonLd data={structuredData} />
       <section className="relative overflow-hidden bg-[var(--navy)] text-white">
         <div className="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-blue-500/15 blur-3xl" />
@@ -153,12 +154,14 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      <section className="bg-white px-5 py-10 text-center lg:px-8"><p className="text-sm text-slate-600">Want a closer look at the decisions behind selected projects?</p><Link href="/work" className="mt-2 inline-flex min-h-11 items-center font-bold text-blue-700 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-blue-700">Read our case studies →</Link></section>
+
       <section className="bg-[var(--navy)] px-5 py-18 text-white sm:py-22 lg:px-8">
         <div className="mx-auto flex max-w-[1240px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div><p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">Let&apos;s talk</p><h2 className="font-display mt-4 max-w-2xl text-[clamp(2.2rem,4vw,3.7rem)] font-bold leading-tight tracking-[-0.045em]">Ready to get more enquiries from your website?</h2><p className="mt-4 max-w-xl leading-7 text-slate-200">Tell us what you sell and where you want to grow. We’ll help you find the right starting point.</p></div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row"><TrackedLink href={whatsappUrl} event="portfolio_whatsapp_click" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--wa)] px-6 py-3 font-bold text-[#062315] transition hover:bg-[#16a34a] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Chat on WhatsApp ↗</TrackedLink><a href={`mailto:${siteIdentity.email}?subject=${encodeURIComponent("Website project enquiry")}`} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/40 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Send an email</a></div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
