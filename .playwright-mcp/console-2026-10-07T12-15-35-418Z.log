@@ -1,0 +1,4 @@
+[    4458ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://res.cloudinary.com/dfom0nnnc/video/upload/v1777292837/0425_nf1jre.mp4:0
+[    6439ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://res.cloudinary.com/dfom0nnnc/video/upload/v1777292837/0425_nf1jre.mp4:0
+[    7218ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ https://www.iaprecision.com/:0
+[    8657ms] [LOG] SW registered: https://www.iaprecision.com/ @ :3

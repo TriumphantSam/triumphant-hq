@@ -1,0 +1,400 @@
+- generic [active] [ref=f3e1]:
+  - link "Skip to content" [ref=f3e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - link "Echitech Engineering Services Logo ECHITECH Engineering Services" [ref=f3e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e6]:
+          - img "Echitech Engineering Services Logo" [ref=f3e8]
+          - generic [ref=f3e9]:
+            - generic [ref=f3e10]: ECHITECH
+            - generic [ref=f3e11]: Engineering Services
+      - button "Open menu" [ref=f3e12]
+  - main [ref=f3e14]:
+    - generic [ref=f3e17]:
+      - generic [ref=f3e18]:
+        - generic [ref=f3e19]: Echitech Engineering Services • Lagos, Nigeria
+        - heading "Engineering, safety, and environmental work for serious sites." [level=1] [ref=f3e22]
+        - paragraph [ref=f3e23]: Echitech installs fire systems, trains people, supplies PPE and manpower, and runs QHSSE so projects in Lagos stay compliant.
+        - generic [ref=f3e24]:
+          - link "Talk about a project" [ref=f3e25] [cursor=pointer]:
+            - /url: /contact
+          - link "See services" [ref=f3e29] [cursor=pointer]:
+            - /url: /services
+        - generic [ref=f3e31]:
+          - generic [ref=f3e32]: Engineering (EPCI)
+          - generic [ref=f3e37]: QHSSE Training
+          - generic [ref=f3e42]: Environmental Solutions
+      - generic [ref=f3e50]:
+        - generic "Echitech field operations video" [ref=f3e51]
+        - img "Echitech field operations" [ref=f3e52]
+        - generic [ref=f3e53]: Site Footage
+        - button "Play video" [ref=f3e56]
+        - generic [ref=f3e60]:
+          - generic [ref=f3e61]:
+            - generic [ref=f3e62]: Field Operations • Lagos
+            - paragraph [ref=f3e63]: EPCI, Scaffolding & Site Safety Management
+          - generic [ref=f3e64]:
+            - button "Play video" [ref=f3e65]
+            - button "Unmute video" [ref=f3e68]
+            - button "Enter fullscreen" [ref=f3e73]
+    - generic [ref=f3e82]:
+      - generic [ref=f3e87]:
+        - heading "Engineering (EPCI)" [level=3] [ref=f3e88]
+        - paragraph [ref=f3e89]: Fire Systems • Scaffolding • Inspections
+      - generic [ref=f3e95]:
+        - heading "QHSSE Training" [level=3] [ref=f3e96]
+        - paragraph [ref=f3e97]: Accredited Syllabuses • Manpower Supply
+      - generic [ref=f3e103]:
+        - heading "Environmental Services" [level=3] [ref=f3e104]
+        - paragraph [ref=f3e105]: Effluent Treatment • Waste Management
+    - generic [ref=f3e107]:
+      - generic [ref=f3e108]:
+        - generic [ref=f3e109]:
+          - generic [ref=f3e110]: Solutions & Technical Capabilities
+          - heading "Integrated engineering and compliance for industry." [level=2] [ref=f3e111]
+          - paragraph [ref=f3e112]: Twelve dedicated services delivered to recognized statutory and engineering standards across Lagos and Nigeria.
+        - link "Explore all services hub" [ref=f3e113] [cursor=pointer]:
+          - /url: /services
+      - generic [ref=f3e117]:
+        - button "All 12 Disciplines" [pressed] [ref=f3e118] [cursor=pointer]
+        - button "Engineering (EPCI)" [ref=f3e119] [cursor=pointer]
+        - button "Training & Safety (QHSSE)" [ref=f3e120] [cursor=pointer]
+        - button "Environmental Solutions" [ref=f3e121] [cursor=pointer]
+      - generic [ref=f3e122]:
+        - link "Fire detection, alarms, and suppression in Lagos Engineering (EPCI) Licensed & Certified Fire detection, alarms, and suppression in Lagos Certified fire alarm, detection, and automatic suppression installations. View service specifications" [ref=f3e123] [cursor=pointer]:
+          - /url: /services/fire-detection
+          - generic [ref=f3e124]:
+            - generic [ref=f3e125]:
+              - img "Fire detection, alarms, and suppression in Lagos" [ref=f3e126]
+              - generic [ref=f3e128]: Engineering (EPCI)
+              - generic [ref=f3e129]: Licensed & Certified
+            - generic [ref=f3e130]:
+              - heading "Fire detection, alarms, and suppression in Lagos" [level=3] [ref=f3e131]
+              - paragraph [ref=f3e132]: Certified fire alarm, detection, and automatic suppression installations.
+          - generic [ref=f3e133]: View service specifications
+        - link "QHSSE training in Lagos Training and safety (QHSSE) QHSSE training in Lagos Professional and accredited occupational health, safety, and environmental training. View service specifications" [ref=f3e137] [cursor=pointer]:
+          - /url: /services/qhsse-training
+          - generic [ref=f3e138]:
+            - generic [ref=f3e139]:
+              - img "QHSSE training in Lagos" [ref=f3e140]
+              - generic [ref=f3e142]: Training and safety (QHSSE)
+            - generic [ref=f3e143]:
+              - heading "QHSSE training in Lagos" [level=3] [ref=f3e144]
+              - paragraph [ref=f3e145]: Professional and accredited occupational health, safety, and environmental training.
+          - generic [ref=f3e146]: View service specifications
+        - link "Third-party plant and lifting equipment inspection in Lagos Engineering (EPCI) Third-party plant and lifting equipment inspection in Lagos Third-party equipment statutory inspection, proof testing, and certified plant leasing. View service specifications" [ref=f3e150] [cursor=pointer]:
+          - /url: /services/inspection-and-leasing
+          - generic [ref=f3e151]:
+            - generic [ref=f3e152]:
+              - img "Third-party plant and lifting equipment inspection in Lagos" [ref=f3e153]
+              - generic [ref=f3e155]: Engineering (EPCI)
+            - generic [ref=f3e156]:
+              - heading "Third-party plant and lifting equipment inspection in Lagos" [level=3] [ref=f3e157]
+              - paragraph [ref=f3e158]: Third-party equipment statutory inspection, proof testing, and certified plant leasing.
+          - generic [ref=f3e159]: View service specifications
+        - link "HSE consultancy, audits, and ISO support in Lagos Training and safety (QHSSE) HSE consultancy, audits, and ISO support in Lagos Strategic QHSSE management systems, hazard auditing, and statutory compliance advisory. View service specifications" [ref=f3e163] [cursor=pointer]:
+          - /url: /services/consultancy
+          - generic [ref=f3e164]:
+            - generic [ref=f3e165]:
+              - img "HSE consultancy, audits, and ISO support in Lagos" [ref=f3e166]
+              - generic [ref=f3e168]: Training and safety (QHSSE)
+            - generic [ref=f3e169]:
+              - heading "HSE consultancy, audits, and ISO support in Lagos" [level=3] [ref=f3e170]
+              - paragraph [ref=f3e171]: Strategic QHSSE management systems, hazard auditing, and statutory compliance advisory.
+          - generic [ref=f3e172]: View service specifications
+        - link "HSE manpower supply in Lagos Training and safety (QHSSE) HSE manpower supply in Lagos Deployment of qualified, verified safety officers and HSE managers. View service specifications" [ref=f3e176] [cursor=pointer]:
+          - /url: /services/hse-manpower
+          - generic [ref=f3e177]:
+            - generic [ref=f3e178]:
+              - img "HSE manpower supply in Lagos" [ref=f3e179]
+              - generic [ref=f3e181]: Training and safety (QHSSE)
+            - generic [ref=f3e182]:
+              - heading "HSE manpower supply in Lagos" [level=3] [ref=f3e183]
+              - paragraph [ref=f3e184]: Deployment of qualified, verified safety officers and HSE managers.
+          - generic [ref=f3e185]: View service specifications
+        - link "Project safety supervision and HSE monitoring in Lagos Engineering (EPCI) Project safety supervision and HSE monitoring in Lagos End-to-end site safety management, hazard mitigation, and contractor safety governance. View service specifications" [ref=f3e189] [cursor=pointer]:
+          - /url: /services/project-safety
+          - generic [ref=f3e190]:
+            - generic [ref=f3e191]:
+              - img "Project safety supervision and HSE monitoring in Lagos" [ref=f3e192]
+              - generic [ref=f3e194]: Engineering (EPCI)
+            - generic [ref=f3e195]:
+              - heading "Project safety supervision and HSE monitoring in Lagos" [level=3] [ref=f3e196]
+              - paragraph [ref=f3e197]: End-to-end site safety management, hazard mitigation, and contractor safety governance.
+          - generic [ref=f3e198]: View service specifications
+        - link "Warehouse floor marking and segregation in Lagos Engineering (EPCI) OSHA 1910.22 Compliant Warehouse floor marking and segregation in Lagos Warehouse floor marking, pedestrian segregation, and OSHA 1910.22 walkway demarcation. View service specifications" [ref=f3e202] [cursor=pointer]:
+          - /url: /services/floor-marking
+          - generic [ref=f3e203]:
+            - generic [ref=f3e204]:
+              - img "Warehouse floor marking and segregation in Lagos" [ref=f3e205]
+              - generic [ref=f3e207]: Engineering (EPCI)
+              - generic [ref=f3e208]: OSHA 1910.22 Compliant
+            - generic [ref=f3e209]:
+              - heading "Warehouse floor marking and segregation in Lagos" [level=3] [ref=f3e210]
+              - paragraph [ref=f3e211]: Warehouse floor marking, pedestrian segregation, and OSHA 1910.22 walkway demarcation.
+          - generic [ref=f3e212]: View service specifications
+        - link "PPE supply in Lagos Training and safety (QHSSE) PPE supply in Lagos Certified personal protective equipment (PPE) and industrial safety supplies. View service specifications" [ref=f3e216] [cursor=pointer]:
+          - /url: /services/ppe
+          - generic [ref=f3e217]:
+            - generic [ref=f3e218]:
+              - img "PPE supply in Lagos" [ref=f3e219]
+              - generic [ref=f3e221]: Training and safety (QHSSE)
+            - generic [ref=f3e222]:
+              - heading "PPE supply in Lagos" [level=3] [ref=f3e223]
+              - paragraph [ref=f3e224]: Certified personal protective equipment (PPE) and industrial safety supplies.
+          - generic [ref=f3e225]: View service specifications
+        - link "Warehouse rack inspection and certification in Lagos Engineering (EPCI) Warehouse rack inspection and certification in Lagos Structural warehouse pallet rack inspections and safe working load audits. View service specifications" [ref=f3e229] [cursor=pointer]:
+          - /url: /services/rack-inspection
+          - generic [ref=f3e230]:
+            - generic [ref=f3e231]:
+              - img "Warehouse rack inspection and certification in Lagos" [ref=f3e232]
+              - generic [ref=f3e234]: Engineering (EPCI)
+            - generic [ref=f3e235]:
+              - heading "Warehouse rack inspection and certification in Lagos" [level=3] [ref=f3e236]
+              - paragraph [ref=f3e237]: Structural warehouse pallet rack inspections and safe working load audits.
+          - generic [ref=f3e238]: View service specifications
+        - link "Manned security services in Lagos Engineering (EPCI) Manned security services in Lagos Physical site security, manned guarding, and industrial perimeter access control. View service specifications" [ref=f3e242] [cursor=pointer]:
+          - /url: /services/security
+          - generic [ref=f3e243]:
+            - generic [ref=f3e244]:
+              - img "Manned security services in Lagos" [ref=f3e245]
+              - generic [ref=f3e247]: Engineering (EPCI)
+            - generic [ref=f3e248]:
+              - heading "Manned security services in Lagos" [level=3] [ref=f3e249]
+              - paragraph [ref=f3e250]: Physical site security, manned guarding, and industrial perimeter access control.
+          - generic [ref=f3e251]: View service specifications
+        - link "Environmental and waste management in Lagos Environmental solutions Environmental and waste management in Lagos Industrial effluent treatment, hazardous waste management, and environmental compliance. View service specifications" [ref=f3e255] [cursor=pointer]:
+          - /url: /services/environment
+          - generic [ref=f3e256]:
+            - generic [ref=f3e257]:
+              - img "Environmental and waste management in Lagos" [ref=f3e258]
+              - generic [ref=f3e260]: Environmental solutions
+            - generic [ref=f3e261]:
+              - heading "Environmental and waste management in Lagos" [level=3] [ref=f3e262]
+              - paragraph [ref=f3e263]: Industrial effluent treatment, hazardous waste management, and environmental compliance.
+          - generic [ref=f3e264]: View service specifications
+        - link "Scaffolding rental, erection, and inspection in Lagos Engineering (EPCI) Scaffolding rental, erection, and inspection in Lagos Certified scaffolding rental, erection, dismantling, and statutory safety inspections. View service specifications" [ref=f3e268] [cursor=pointer]:
+          - /url: /services/scaffolding
+          - generic [ref=f3e269]:
+            - generic [ref=f3e270]:
+              - img "Scaffolding rental, erection, and inspection in Lagos" [ref=f3e271]
+              - generic [ref=f3e273]: Engineering (EPCI)
+            - generic [ref=f3e274]:
+              - heading "Scaffolding rental, erection, and inspection in Lagos" [level=3] [ref=f3e275]
+              - paragraph [ref=f3e276]: Certified scaffolding rental, erection, dismantling, and statutory safety inspections.
+          - generic [ref=f3e277]: View service specifications
+    - generic [ref=f3e282]:
+      - generic [ref=f3e283]:
+        - generic [ref=f3e284]: Why Echitech • How We Deliver
+        - heading "Built on operational integrity and clear commitments." [level=2] [ref=f3e285]
+        - paragraph [ref=f3e286]: Five core principles governing how we survey, price, schedule, and execute site work across Nigeria.
+      - generic [ref=f3e287]:
+        - generic [ref=f3e288]:
+          - generic: "01"
+          - generic [ref=f3e290]:
+            - generic [ref=f3e292]: Principle 01
+            - heading "Quality without compromise" [level=3] [ref=f3e293]
+            - paragraph [ref=f3e294]: We adhere strictly to certified engineering codes and zero-tolerance safety policies on every installation, audit, and facility deployment.
+        - generic [ref=f3e295]:
+          - generic: "02"
+          - generic [ref=f3e297]:
+            - generic [ref=f3e299]: Principle 02
+            - heading "We do what we say" [level=3] [ref=f3e300]
+            - paragraph [ref=f3e301]: Clear scopes, accountable site supervisors, and transparent execution. When we commit to a site standard or milestone, we deliver it as planned.
+        - generic [ref=f3e302]:
+          - generic: "03"
+          - generic [ref=f3e304]:
+            - generic [ref=f3e306]: Principle 03
+            - heading "Pricing that fits the organisation" [level=3] [ref=f3e307]
+            - paragraph [ref=f3e308]: Tailored engineering and compliance packages structured to fit the exact operational size, complexity, and risk profile of your facility.
+        - generic [ref=f3e309]:
+          - generic: "04"
+          - generic [ref=f3e311]:
+            - generic [ref=f3e313]: Principle 04
+            - heading "Work delivered to agreed schedule" [level=3] [ref=f3e314]
+            - paragraph [ref=f3e315]: Disciplined project tracking and rapid mobilization across Lagos ensure your facility upgrades, certifications, and inspections complete on time.
+        - generic [ref=f3e316]:
+          - generic: "05"
+          - generic [ref=f3e318]:
+            - generic [ref=f3e320]: Principle 05
+            - heading "Standards we can point at" [level=3] [ref=f3e321]
+            - paragraph [ref=f3e322]: Every recommendation references concrete statutory frameworks—from OSHA 1910.22 on warehouse floor marking to accredited safety syllabuses and certified fire suppression codes.
+    - generic [ref=f3e326]:
+      - generic [ref=f3e327]:
+        - generic [ref=f3e328]: Featured Capacity Program
+        - heading "2026 QHSSE Training Calendar" [level=2] [ref=f3e332]
+        - paragraph [ref=f3e333]: Open 2026 courses for site and corporate teams. Dates and mode — physical, virtual, or both — are in the calendar.
+        - generic [ref=f3e334]:
+          - generic [ref=f3e335]: HSE Level 1, HSE Level 2, and HSE Level 3
+          - generic [ref=f3e340]: Fire Safety Level 1, Level 2, and Level 3
+          - generic [ref=f3e345]: Emergency First Aid and First Aid at Work
+          - generic [ref=f3e350]: Permit to Work and Electrical Safety
+          - generic [ref=f3e355]: Food Safety, Process Safety, and Confined Space
+        - generic [ref=f3e360]:
+          - link "View 2026 Calendar & Register" [ref=f3e361] [cursor=pointer]:
+            - /url: /training
+          - link "Download Schedule" [ref=f3e365] [cursor=pointer]:
+            - /url: /training#download
+      - generic [ref=f3e371]:
+        - img "2026 QHSSE Training Calendar by Echitech" [ref=f3e372]
+        - generic [ref=f3e374]:
+          - generic [ref=f3e375]: ECHITECH // ACADEMY 2026
+          - generic [ref=f3e376]: Registration Open
+    - generic [ref=f3e378]:
+      - generic [ref=f3e379]:
+        - generic [ref=f3e380]: Industries & Facilities
+        - heading "Who we serve across Lagos and Nigeria." [level=2] [ref=f3e381]
+        - paragraph [ref=f3e382]: Tailored engineering installations, safety management, and compliance audits for mission-critical facilities and high-risk environments.
+      - generic [ref=f3e383]:
+        - generic [ref=f3e384]:
+          - heading "Commercial Buildings" [level=3] [ref=f3e390]
+          - paragraph [ref=f3e391]: Corporate headquarters, multi-tenant offices, and high-occupancy commercial complexes requiring active fire protection, statutory audits, and emergency response planning.
+        - generic [ref=f3e392]:
+          - heading "Warehouses & Logistics Hubs" [level=3] [ref=f3e397]
+          - paragraph [ref=f3e398]: Distribution facilities requiring OSHA 1910.22 floor demarcation, pedestrian segregation, pallet rack safety inspections, and high-bay sprinkler management.
+        - generic [ref=f3e399]:
+          - heading "Educational Institutions & Schools" [level=3] [ref=f3e404]
+          - paragraph [ref=f3e405]: Campuses, technical colleges, and private schools needing certified life safety audits, evacuation drill training, and compliant fire alarm systems.
+        - generic [ref=f3e406]:
+          - heading "Construction Sites & Civil Works" [level=3] [ref=f3e413]
+          - paragraph [ref=f3e414]: Heavy civil infrastructure and building developments needing full-time HSE manpower, scaffolding inspection, lifting gear certification, and site safety management.
+        - generic [ref=f3e415]:
+          - heading "Data Rooms & Tech Infrastructure" [level=3] [ref=f3e420]
+          - paragraph [ref=f3e421]: Mission-critical server halls and telecom facilities requiring waterless clean agent gas suppression (FM-200 / NOVEC), VESDA smoke detection, and clean room environmental controls.
+        - generic [ref=f3e422]:
+          - heading "Industrial & Manufacturing Plants" [level=3] [ref=f3e426]
+          - paragraph [ref=f3e427]: Food and beverage processors, chemical manufacturers, and assembly plants requiring effluent treatment, hazardous waste disposal, machine guarding, and worker PPE.
+      - generic [ref=f3e428]:
+        - img "Warehouses, construction sites, and industrial plants served by Echitech" [ref=f3e429]
+        - generic [ref=f3e431]:
+          - generic [ref=f3e432]: Field Deployments • Rigorous Compliance
+          - generic [ref=f3e433]: Zero compromise on facility safety standards
+    - generic [ref=f3e436]:
+      - generic:
+        - img "Talk about a project with Echitech Engineering Services"
+      - generic [ref=f3e437]:
+        - generic [ref=f3e438]: Project Mobilization • Lagos & Nationwide
+        - heading "Ready to safeguard your site with certified engineering?" [level=2] [ref=f3e441]
+        - paragraph [ref=f3e442]: Speak directly with our engineering and QHSSE teams regarding fire suppression, statutory inspections, floor markings, or staff safety certification.
+        - generic [ref=f3e443]:
+          - link "Talk about a project" [ref=f3e444] [cursor=pointer]:
+            - /url: /contact
+          - link "Browse all services" [ref=f3e448] [cursor=pointer]:
+            - /url: /services
+        - generic [ref=f3e450]:
+          - 'link "Call: 0811 278 8874" [ref=f3e451] [cursor=pointer]':
+            - /url: tel:+2348112788874
+          - 'link "Email: info@echitech.com" [ref=f3e455] [cursor=pointer]':
+            - /url: mailto:info@echitech.com
+          - generic [ref=f3e460]: "Office: Ogba, Lagos"
+  - contentinfo [ref=f3e461]:
+    - generic [ref=f3e462]:
+      - generic [ref=f3e463]:
+        - generic [ref=f3e464]:
+          - link "Echitech Engineering Services Logo ECHITECH Engineering Services" [ref=f3e465] [cursor=pointer]:
+            - /url: /
+            - generic [ref=f3e466]:
+              - img "Echitech Engineering Services Logo" [ref=f3e468]
+              - generic [ref=f3e469]:
+                - generic [ref=f3e470]: ECHITECH
+                - generic [ref=f3e471]: Engineering Services
+          - paragraph [ref=f3e472]: Echitech Engineering Services
+          - paragraph [ref=f3e473]: Echitech installs fire systems, trains people, supplies PPE and manpower, and runs QHSSE so projects in Lagos stay compliant.
+          - generic [ref=f3e474]:
+            - generic [ref=f3e475]: 16 Ladipo Banjo, Oke-ira, Ogba, Lagos, off Mobil Junction
+            - link "0811 278 8874 (+234 811 278 8874)" [ref=f3e483] [cursor=pointer]:
+              - /url: tel:+2348112788874
+            - generic [ref=f3e488]:
+              - link "info@echitech.com" [ref=f3e489] [cursor=pointer]:
+                - /url: mailto:info@echitech.com
+              - generic [ref=f3e490]: •
+              - link "tayo@echitech.com" [ref=f3e491] [cursor=pointer]:
+                - /url: mailto:tayo@echitech.com
+            - generic [ref=f3e492]: Monday to Friday, 8:00am to 5:00pm
+        - generic [ref=f3e497]:
+          - paragraph [ref=f3e498]: Engineering (EPCI)
+          - list [ref=f3e499]:
+            - listitem [ref=f3e500]:
+              - link "Fire Detection & Suppression" [ref=f3e501] [cursor=pointer]:
+                - /url: /services/fire-detection
+            - listitem [ref=f3e502]:
+              - link "Equipment Inspection & Leasing" [ref=f3e503] [cursor=pointer]:
+                - /url: /services/inspection-and-leasing
+            - listitem [ref=f3e504]:
+              - link "Project Safety Management" [ref=f3e505] [cursor=pointer]:
+                - /url: /services/project-safety
+            - listitem [ref=f3e506]:
+              - link "Floor Marking (OSHA 1910.22)" [ref=f3e507] [cursor=pointer]:
+                - /url: /services/floor-marking
+            - listitem [ref=f3e508]:
+              - link "Rack Inspection" [ref=f3e509] [cursor=pointer]:
+                - /url: /services/rack-inspection
+            - listitem [ref=f3e510]:
+              - link "Scaffolding Rental" [ref=f3e511] [cursor=pointer]:
+                - /url: /services/scaffolding
+        - generic [ref=f3e512]:
+          - paragraph [ref=f3e513]: Safety & Environment
+          - list [ref=f3e514]:
+            - listitem [ref=f3e515]:
+              - link "QHSSE Training" [ref=f3e516] [cursor=pointer]:
+                - /url: /services/qhsse-training
+            - listitem [ref=f3e517]:
+              - link "2026 Training Calendar New" [ref=f3e518] [cursor=pointer]:
+                - /url: /training
+                - generic [ref=f3e519]: 2026 Training Calendar
+                - generic [ref=f3e520]: New
+            - listitem [ref=f3e521]:
+              - link "QHSSE Consultancy & Audits" [ref=f3e522] [cursor=pointer]:
+                - /url: /services/consultancy
+            - listitem [ref=f3e523]:
+              - link "HSE Manpower Supply" [ref=f3e524] [cursor=pointer]:
+                - /url: /services/hse-manpower
+            - listitem [ref=f3e525]:
+              - link "Safety Equipment & PPE" [ref=f3e526] [cursor=pointer]:
+                - /url: /services/ppe
+            - listitem [ref=f3e527]:
+              - link "Site Security Services" [ref=f3e528] [cursor=pointer]:
+                - /url: /services/security
+            - listitem [ref=f3e529]:
+              - link "Environmental & Waste Management" [ref=f3e530] [cursor=pointer]:
+                - /url: /services/environment
+        - generic [ref=f3e531]:
+          - paragraph [ref=f3e532]: Company & Standards
+          - list [ref=f3e533]:
+            - listitem [ref=f3e534]:
+              - link "About Echitech" [ref=f3e535] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=f3e536]:
+              - link "News & Projects" [ref=f3e537] [cursor=pointer]:
+                - /url: /news
+            - listitem [ref=f3e538]:
+              - link "All 12 Services" [ref=f3e539] [cursor=pointer]:
+                - /url: /services
+            - listitem [ref=f3e540]:
+              - link "Contact & Office" [ref=f3e541] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=f3e542]:
+              - link "Privacy Policy" [ref=f3e543] [cursor=pointer]:
+                - /url: /privacy
+            - listitem [ref=f3e544]:
+              - link "Terms of Service" [ref=f3e545] [cursor=pointer]:
+                - /url: /terms
+          - generic [ref=f3e547]:
+            - generic [ref=f3e548]: Compliant Operations
+            - text: Structured safety management, certified equipment, and licensed fire system installations in Lagos, Nigeria.
+      - generic [ref=f3e549]:
+        - paragraph [ref=f3e550]: © 2026 Echitech Engineering Services. All rights reserved.
+        - generic [ref=f3e551]:
+          - link "Privacy" [ref=f3e552] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms" [ref=f3e553] [cursor=pointer]:
+            - /url: /terms
+          - link "Office Map" [ref=f3e554] [cursor=pointer]:
+            - /url: /contact
+  - complementary "WhatsApp" [ref=f3e555]:
+    - link "Chat with Echitech on WhatsApp, 0811 278 8874" [ref=f3e556] [cursor=pointer]:
+      - /url: https://wa.me/2348112788874
+      - generic [ref=f3e560]: WhatsApp
+  - alert [ref=f3e561]

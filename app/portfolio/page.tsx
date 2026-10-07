@@ -75,7 +75,7 @@ export default function PortfolioPage() {
   ];
 
   return (
-    <div className="bg-[var(--tint)]">
+    <div className="portfolio-page bg-[var(--tint)]" style={{ marginTop: -88 }}>
       <JsonLd data={structuredData} />
       <section className="relative overflow-hidden bg-[var(--navy)] text-white">
         <div className="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-blue-500/15 blur-3xl" />

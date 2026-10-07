@@ -1,0 +1,572 @@
+- generic [active] [ref=f1e1]:
+  - alert [ref=f1e2]
+  - banner:
+    - navigation [ref=f1e4]:
+      - link [ref=f1e6] [cursor=pointer]:
+        - /url: /
+        - img "Integrated Aerial Precision (IAPrecision) logo" [ref=f1e7]
+      - generic [ref=f1e9] [cursor=pointer]
+    - navigation [ref=f1e11]:
+      - generic [ref=f1e13] [cursor=pointer]
+      - list [ref=f1e17]:
+        - listitem [ref=f1e18]:
+          - link "Home" [ref=f1e19] [cursor=pointer]:
+            - /url: /
+        - listitem [ref=f1e20]:
+          - link "About" [ref=f1e21] [cursor=pointer]:
+            - /url: /about
+        - listitem [ref=f1e22]:
+          - link "Services" [ref=f1e23] [cursor=pointer]:
+            - /url: /services
+        - listitem [ref=f1e24]:
+          - link "Resources" [ref=f1e25] [cursor=pointer]:
+            - /url: /resources
+        - listitem [ref=f1e26]:
+          - link "Case Studies" [ref=f1e27] [cursor=pointer]:
+            - /url: /case-studies
+        - listitem [ref=f1e28]:
+          - link "Blog" [ref=f1e29] [cursor=pointer]:
+            - /url: /blog
+        - listitem [ref=f1e30]:
+          - link "PAAP" [ref=f1e31] [cursor=pointer]:
+            - /url: /paap
+        - listitem [ref=f1e32]:
+          - link "Events" [ref=f1e33] [cursor=pointer]:
+            - /url: /events
+        - listitem [ref=f1e34]:
+          - link "Products" [ref=f1e35] [cursor=pointer]:
+            - /url: /products
+        - listitem [ref=f1e36]:
+          - link "Request Demo" [ref=f1e37] [cursor=pointer]:
+            - /url: /request-demo
+        - listitem [ref=f1e38]:
+          - link "Contact" [ref=f1e39] [cursor=pointer]:
+            - /url: /contact
+        - listitem [ref=f1e40]:
+          - button "Toggle theme" [ref=f1e41] [cursor=pointer]
+  - main [ref=f1e44]:
+    - generic [ref=f1e45]:
+      - generic [ref=f1e46]:
+        - img "IA Precision team surveying farmland" [ref=f1e49]
+        - generic [ref=f1e50]:
+          - generic [ref=f1e52]:
+            - generic [ref=f1e53]: Official DJI Agriculture Dealer - West Africa
+            - heading "Modernizing Agriculture Across Africa" [level=1] [ref=f1e55]:
+              - generic [ref=f1e56]: Modernizing Agriculture
+              - generic [ref=f1e57]: Across Africa
+            - generic [ref=f1e58]:
+              - link [ref=f1e59] [cursor=pointer]:
+                - /url: /services?intent=hire
+                - button "Hire Drone Services" [ref=f1e60]
+              - link [ref=f1e63] [cursor=pointer]:
+                - /url: /products?intent=buy
+                - button "Buy or Service a Drone" [ref=f1e64]
+          - generic [ref=f1e67]:
+            - button "Go to slide 1" [ref=f1e68] [cursor=pointer]
+            - button "Go to slide 2" [ref=f1e70] [cursor=pointer]
+            - button "Go to slide 3" [ref=f1e71] [cursor=pointer]
+            - button "Go to slide 4" [ref=f1e72] [cursor=pointer]
+            - button "Go to slide 5" [ref=f1e73] [cursor=pointer]
+            - button "Go to slide 6" [ref=f1e74] [cursor=pointer]
+      - generic [ref=f1e75]:
+        - generic [ref=f1e76]:
+          - heading "Our Partners & Clients" [level=2] [ref=f1e77]
+          - paragraph [ref=f1e78]: Proudly working with industry leaders to revolutionize agriculture in Nigeria.
+        - generic [ref=f1e80]:
+          - generic [ref=f1e82]:
+            - img "Integrated Aerial Precision partner logo 1" [ref=f1e87]
+            - img "Integrated Aerial Precision partner logo 2" [ref=f1e92]
+            - img "Integrated Aerial Precision partner logo 3" [ref=f1e97]
+            - img "Integrated Aerial Precision partner logo 4" [ref=f1e102]
+            - img "Integrated Aerial Precision partner logo 5" [ref=f1e107]
+            - img "Integrated Aerial Precision partner logo 6" [ref=f1e112]
+            - img "Integrated Aerial Precision partner logo 7" [ref=f1e117]
+            - img "Integrated Aerial Precision partner logo 8" [ref=f1e122]
+            - img "Integrated Aerial Precision partner logo 9" [ref=f1e127]
+            - img "Integrated Aerial Precision partner logo 10" [ref=f1e132]
+            - img "Integrated Aerial Precision partner logo 11" [ref=f1e137]
+            - img "Integrated Aerial Precision partner logo 12" [ref=f1e142]
+            - img "Integrated Aerial Precision partner logo 13" [ref=f1e147]
+            - img "Integrated Aerial Precision partner logo 14" [ref=f1e152]
+            - img "Integrated Aerial Precision partner logo 15" [ref=f1e157]
+            - img "Integrated Aerial Precision partner logo 16" [ref=f1e162]
+            - img "Integrated Aerial Precision partner logo 17" [ref=f1e167]
+            - img "Integrated Aerial Precision partner logo 18" [ref=f1e172]
+            - img "Integrated Aerial Precision partner logo 19" [ref=f1e177]
+            - img "Integrated Aerial Precision partner logo 20" [ref=f1e182]
+            - img "Integrated Aerial Precision partner logo 21" [ref=f1e187]
+            - img "Integrated Aerial Precision partner logo 22" [ref=f1e192]
+            - img "Integrated Aerial Precision partner logo 23" [ref=f1e197]
+          - generic [ref=f1e198]:
+            - img "Integrated Aerial Precision partner logo 1" [ref=f1e203]
+            - img "Integrated Aerial Precision partner logo 2" [ref=f1e208]
+            - img "Integrated Aerial Precision partner logo 3" [ref=f1e213]
+            - img "Integrated Aerial Precision partner logo 4" [ref=f1e218]
+            - img "Integrated Aerial Precision partner logo 5" [ref=f1e223]
+            - img "Integrated Aerial Precision partner logo 6" [ref=f1e228]
+            - img "Integrated Aerial Precision partner logo 7" [ref=f1e233]
+            - img "Integrated Aerial Precision partner logo 8" [ref=f1e238]
+            - img "Integrated Aerial Precision partner logo 9" [ref=f1e243]
+            - img "Integrated Aerial Precision partner logo 10" [ref=f1e248]
+            - img "Integrated Aerial Precision partner logo 11" [ref=f1e253]
+            - img "Integrated Aerial Precision partner logo 12" [ref=f1e258]
+            - img "Integrated Aerial Precision partner logo 13" [ref=f1e263]
+            - img "Integrated Aerial Precision partner logo 14" [ref=f1e268]
+            - img "Integrated Aerial Precision partner logo 15" [ref=f1e273]
+            - img "Integrated Aerial Precision partner logo 16" [ref=f1e278]
+            - img "Integrated Aerial Precision partner logo 17" [ref=f1e283]
+            - img "Integrated Aerial Precision partner logo 18" [ref=f1e288]
+            - img "Integrated Aerial Precision partner logo 19" [ref=f1e293]
+            - img "Integrated Aerial Precision partner logo 20" [ref=f1e298]
+            - img "Integrated Aerial Precision partner logo 21" [ref=f1e303]
+            - img "Integrated Aerial Precision partner logo 22" [ref=f1e308]
+            - img "Integrated Aerial Precision partner logo 23" [ref=f1e313]
+      - generic [ref=f1e316]:
+        - heading "How we do it" [level=2] [ref=f1e317]
+        - generic [ref=f1e319]:
+          - generic [ref=f1e320]:
+            - generic: "01"
+            - generic [ref=f1e321]:
+              - heading "Precision Field Data" [level=3] [ref=f1e323]
+              - paragraph [ref=f1e324]: We don't just guess; we know. Leveraging smart technology to provide the precise data needed for modern agricultural excellence and sustainable scaling.
+          - generic [ref=f1e325]:
+            - generic: "02"
+            - generic [ref=f1e326]:
+              - heading "Aerial Data Collection" [level=3] [ref=f1e328]
+              - paragraph [ref=f1e329]: We take to the skies to capture high-resolution clarity. Our diverse array of sensors maps every inch of your farm, revealing what the naked eye misses.
+          - generic [ref=f1e330]:
+            - generic: "03"
+            - generic [ref=f1e331]:
+              - heading "Actionable Insights" [level=3] [ref=f1e333]
+              - paragraph [ref=f1e334]: Raw data becomes a practical advantage. Our processing helps highlight nutrient deficiencies, pest threats, and crop health issues earlier in the season.
+          - generic [ref=f1e335]:
+            - generic: "04"
+            - generic [ref=f1e336]:
+              - heading "Targeted Action" [level=3] [ref=f1e338]
+              - paragraph [ref=f1e339]: Knowledge is potential; action is power. Our drones don't just watch—they act. Precise spraying and monitoring turn insights into higher yields.
+      - generic [ref=f1e341]:
+        - generic [ref=f1e342]:
+          - generic [ref=f1e343]:
+            - generic [ref=f1e344]: Precision Agricultural Intelligence
+            - heading "Our Core Solutions" [level=2] [ref=f1e348]
+            - paragraph [ref=f1e349]: Leveraging advanced autonomous drone hardware, multispectral sensor telemetry, and agronomic AI to maximize farm profitability, conserve inputs, and scale agricultural yields across Nigeria.
+          - link "Explore All Capabilities" [ref=f1e351] [cursor=pointer]:
+            - /url: /services
+        - generic [ref=f1e356]:
+          - button "All Solutions" [ref=f1e357] [cursor=pointer]
+          - button "Spraying & Nutrition" [ref=f1e358] [cursor=pointer]
+          - button "Broadcasting & Spreading" [ref=f1e359] [cursor=pointer]
+          - button "Mapping & Survey" [ref=f1e360] [cursor=pointer]
+          - button "Crop Health & AI" [ref=f1e361] [cursor=pointer]
+          - button "Inspection & Media" [ref=f1e362] [cursor=pointer]
+        - generic [ref=f1e363]:
+          - generic [ref=f1e364]:
+            - generic [ref=f1e365]:
+              - img "Precision Drone Spraying" [ref=f1e366]
+              - generic:
+                - generic: Crop Protection & Nutrition
+                - generic: Flagship Service
+              - generic [ref=f1e368]: Ultra-Low Volume Foliar & Chemical Application
+            - generic [ref=f1e375]:
+              - generic [ref=f1e376]:
+                - heading "Precision Drone Spraying" [level=3] [ref=f1e377]
+                - paragraph [ref=f1e378]: Autonomous centimetre-precision spraying with intelligent droplet atomization. Designed to help reduce pesticide run-off and water use (often cited around 90% versus conventional boom spraying, depending on crop and setup), and to avoid crop trampling.
+                - generic [ref=f1e379]:
+                  - generic [ref=f1e380]:
+                    - generic [ref=f1e381]: Up to ~90%
+                    - generic [ref=f1e382]: Water Saved
+                  - generic [ref=f1e383]:
+                    - generic [ref=f1e384]: Around 30–40%
+                    - generic [ref=f1e385]: Chemical Cut
+                  - generic [ref=f1e386]:
+                    - generic [ref=f1e387]: 50+ Ha/day
+                    - generic [ref=f1e388]: Daily Coverage
+                - generic [ref=f1e389]:
+                  - generic [ref=f1e390]: Ultra-Low Volume (ULV)
+                  - generic [ref=f1e395]: Zero Soil Compaction
+                  - generic [ref=f1e400]: Spot & Variable Rate Application
+              - generic [ref=f1e405]:
+                - link "View Solution Details" [ref=f1e406] [cursor=pointer]:
+                  - /url: /services?intent=spraying
+                - link "Go to Precision Drone Spraying" [ref=f1e410] [cursor=pointer]:
+                  - /url: /services?intent=spraying
+          - generic [ref=f1e413]:
+            - generic [ref=f1e414]:
+              - img "Targeted Drone Broadcasting Operation" [ref=f1e415]
+              - generic:
+                - generic: Seeding & Solid Spreading
+                - generic: High Throughput
+              - generic [ref=f1e417]: High-Speed Granular Fertilizer & Seed Dispersal
+            - generic [ref=f1e430]:
+              - generic [ref=f1e431]:
+                - heading "Targeted Drone Broadcasting Operation" [level=3] [ref=f1e432]
+                - paragraph [ref=f1e433]: Rapid, uniform broadcasting of pre-germinated rice seeds, granular NPK/Urea fertilizer, cover crops, and pasture seeds with up to 40 kg/min high-flow payload delivery.
+                - generic [ref=f1e434]:
+                  - generic [ref=f1e435]:
+                    - generic [ref=f1e436]: 10x Faster
+                    - generic [ref=f1e437]: Seeding Speed
+                  - generic [ref=f1e438]:
+                    - generic [ref=f1e439]: 40 kg/min
+                    - generic [ref=f1e440]: Discharge Flow
+                  - generic [ref=f1e441]:
+                    - generic [ref=f1e442]: Up to ~98% Even
+                    - generic [ref=f1e443]: Spread Consistency
+                - generic [ref=f1e444]:
+                  - generic [ref=f1e445]: Paddy Rice Seeding
+                  - generic [ref=f1e450]: Granular Topdressing
+                  - generic [ref=f1e455]: Cover Crop & Pasture Sowing
+              - generic [ref=f1e460]:
+                - link "View Solution Details" [ref=f1e461] [cursor=pointer]:
+                  - /url: /services?intent=broadcasting
+                - link "Go to Targeted Drone Broadcasting Operation" [ref=f1e465] [cursor=pointer]:
+                  - /url: /services?intent=broadcasting
+          - generic [ref=f1e468]:
+            - generic [ref=f1e469]:
+              - img "Farm Mapping & 3D Survey" [ref=f1e470]
+              - generic:
+                - generic: Geospatial & Topography
+                - generic: Survey Grade
+              - generic [ref=f1e472]: Centimeter-Accurate Orthomosaics & DEM Elevation
+            - generic [ref=f1e478]:
+              - generic [ref=f1e479]:
+                - heading "Farm Mapping & 3D Survey" [level=3] [ref=f1e480]
+                - paragraph [ref=f1e481]: Sub-centimeter aerial photogrammetry generating high-density 2D orthomosaic maps, Digital Elevation Models (DEM), and contour profiles for drainage, layout design, and legal boundary titling.
+                - generic [ref=f1e482]:
+                  - generic [ref=f1e483]:
+                    - generic [ref=f1e484]: < 2.5 cm/px
+                    - generic [ref=f1e485]: Ground Resolution
+                  - generic [ref=f1e486]:
+                    - generic [ref=f1e487]: 300+ Ha/day
+                    - generic [ref=f1e488]: Survey Capacity
+                  - generic [ref=f1e489]:
+                    - generic [ref=f1e490]: 2D / 3D DEM
+                    - generic [ref=f1e491]: Terrain Models
+                - generic [ref=f1e492]:
+                  - generic [ref=f1e493]: Digital Elevation Models (DEM)
+                  - generic [ref=f1e498]: Drainage & Slope Analysis
+                  - generic [ref=f1e503]: Precision GIS Integration
+              - generic [ref=f1e508]:
+                - link "View Solution Details" [ref=f1e509] [cursor=pointer]:
+                  - /url: /services?intent=mapping
+                - link "Go to Farm Mapping & 3D Survey" [ref=f1e513] [cursor=pointer]:
+                  - /url: /services?intent=mapping
+          - generic [ref=f1e516]:
+            - generic [ref=f1e517]:
+              - img "Crop Health Monitoring & Scouting" [ref=f1e518]
+              - generic:
+                - generic: Multispectral Analytics
+                - generic: AI Diagnostic
+              - generic [ref=f1e520]: NDVI / NDRE Diagnostics & AI Stand Count
+            - generic [ref=f1e526]:
+              - generic [ref=f1e527]:
+                - heading "Crop Health Monitoring & Scouting" [level=3] [ref=f1e528]
+                - paragraph [ref=f1e529]: Multi-band spectral sensors identify early nutrient deficiencies, irrigation stress, weed patches, and fungal threats 7 to 14 days before visible to human scouts.
+                - generic [ref=f1e530]:
+                  - generic [ref=f1e531]:
+                    - generic [ref=f1e532]: 7-14 Days
+                    - generic [ref=f1e533]: Early Detection
+                  - generic [ref=f1e534]:
+                    - generic [ref=f1e535]: NDVI / NDRE
+                    - generic [ref=f1e536]: Spectral Indices
+                  - generic [ref=f1e537]:
+                    - generic [ref=f1e538]: Up to ~98.5%
+                    - generic [ref=f1e539]: Stand Count Accuracy
+                - generic [ref=f1e540]:
+                  - generic [ref=f1e541]: Multispectral Heatmaps
+                  - generic [ref=f1e546]: Plant Emergence Counting
+                  - generic [ref=f1e551]: Zonal Prescription Maps
+              - generic [ref=f1e556]:
+                - link "View Solution Details" [ref=f1e557] [cursor=pointer]:
+                  - /url: /services?intent=scouting
+                - link "Go to Crop Health Monitoring & Scouting" [ref=f1e561] [cursor=pointer]:
+                  - /url: /services?intent=scouting
+          - generic [ref=f1e564]:
+            - generic [ref=f1e565]:
+              - img "Agricultural Asset Inspection" [ref=f1e566]
+              - generic:
+                - generic: Infrastructure & Audits
+                - generic: Thermal & RGB
+              - generic [ref=f1e568]: Thermal & Optical Infrastructure Auditing
+            - generic [ref=f1e575]:
+              - generic [ref=f1e576]:
+                - heading "Agricultural Asset Inspection" [level=3] [ref=f1e577]
+                - paragraph [ref=f1e578]: Comprehensive aerial inspections of solar-powered borehole pivots, farm perimeter fencing, storage silos, and remote crop canopies with high-magnification optical and thermal sensors.
+                - generic [ref=f1e579]:
+                  - generic [ref=f1e580]:
+                    - generic [ref=f1e581]: 5x Faster
+                    - generic [ref=f1e582]: Inspection Speed
+                  - generic [ref=f1e583]:
+                    - generic [ref=f1e584]: Thermal + RGB
+                    - generic [ref=f1e585]: Hazard Detection
+                  - generic [ref=f1e586]:
+                    - generic [ref=f1e587]: 65%
+                    - generic [ref=f1e588]: Downtime Cut
+                - generic [ref=f1e589]:
+                  - generic [ref=f1e590]: Irrigation Pivot Auditing
+                  - generic [ref=f1e595]: Perimeter & Fence Security
+                  - generic [ref=f1e600]: Canopy Structural Health
+              - generic [ref=f1e605]:
+                - link "View Solution Details" [ref=f1e606] [cursor=pointer]:
+                  - /url: /services?intent=inspection
+                - link "Go to Agricultural Asset Inspection" [ref=f1e610] [cursor=pointer]:
+                  - /url: /services?intent=inspection
+          - generic [ref=f1e613]:
+            - generic [ref=f1e614]:
+              - img "Cinematic Aerial Filming" [ref=f1e615]
+              - generic:
+                - generic: Media & Documentation
+                - generic: 4K Cinematic
+              - generic [ref=f1e617]: 4K Ultra-HD Visuals for Agribusiness Marketing
+            - generic [ref=f1e624]:
+              - generic [ref=f1e625]:
+                - heading "Cinematic Aerial Filming" [level=3] [ref=f1e626]
+                - paragraph [ref=f1e627]: Stunning 4K ultra-high-definition aerial videography and photography crafted for corporate agribusiness reporting, donor project documentation, and investor showcases.
+                - generic [ref=f1e628]:
+                  - generic [ref=f1e629]:
+                    - generic [ref=f1e630]: 4K / 60 FPS
+                    - generic [ref=f1e631]: Video Fidelity
+                  - generic [ref=f1e632]:
+                    - generic [ref=f1e633]: 10-bit D-Log
+                    - generic [ref=f1e634]: Color Dynamic
+                  - generic [ref=f1e635]:
+                    - generic [ref=f1e636]: 24-48 Hours
+                    - generic [ref=f1e637]: Delivery Time
+                - generic [ref=f1e638]:
+                  - generic [ref=f1e639]: Agro-marketing Documentaries
+                  - generic [ref=f1e644]: Investor Presentations
+                  - generic [ref=f1e649]: Milestone Field Archives
+              - generic [ref=f1e654]:
+                - link "View Solution Details" [ref=f1e655] [cursor=pointer]:
+                  - /url: /services?intent=filming
+                - link "Go to Cinematic Aerial Filming" [ref=f1e659] [cursor=pointer]:
+                  - /url: /services?intent=filming
+        - generic [ref=f1e662]:
+          - generic [ref=f1e663]:
+            - generic [ref=f1e664]: Tailored Agronomic Deployment
+            - heading "Need a Custom Operation for Your Farm or Outgrower Scheme?" [level=3] [ref=f1e667]
+            - paragraph [ref=f1e668]: Whether managing a 10-hectare commercial farm or a 10,000-hectare agricultural cluster, our flight crews and agronomists deliver turnkey drone spraying, mapping, and crop intelligence.
+          - generic [ref=f1e669]:
+            - link "Book a Drone Demo" [ref=f1e670] [cursor=pointer]:
+              - /url: /request-demo
+            - link "Consult an Agronomist" [ref=f1e671] [cursor=pointer]:
+              - /url: /contact
+      - generic [ref=f1e675]:
+        - generic [ref=f1e676]:
+          - paragraph [ref=f1e677]: 0+
+          - paragraph [ref=f1e678]: Ha Sprayed
+        - generic [ref=f1e679]:
+          - paragraph [ref=f1e680]: 0+
+          - paragraph [ref=f1e681]: Ha Mapped
+        - generic [ref=f1e682]:
+          - paragraph [ref=f1e683]: 0+
+          - paragraph [ref=f1e684]: Flight Hours
+      - generic [ref=f1e686]:
+        - generic [ref=f1e687]:
+          - generic [ref=f1e688]:
+            - generic [ref=f1e689]: Proven Impact & Case Studies
+            - heading "Real-World Results in Agriculture" [level=2] [ref=f1e691]
+            - paragraph [ref=f1e692]: Explore how our precision agricultural drone solutions solve critical crop challenges, cut chemical waste, and increase yields across Nigeria.
+          - link "Explore All Case Studies" [ref=f1e694] [cursor=pointer]:
+            - /url: /case-studies
+        - generic [ref=f1e698]:
+          - link "T50 Agras Drone Spraying Dunsfield Farms, Imashayi, Ogun State, Nigeria 10 Hectares Mapped & Sprayed in Under 3 Hours Combatting Fall Armyworm with Aerial Precision When a severe fall armyworm infestation threatened 10 hectares of maize, we deployed the Mavic 3 Multispectral drone to map the damage extent and used targeted aerial spraying to prevent catastrophic yield loss for Dunsfield Farms Read Case Study Success Story" [ref=f1e700] [cursor=pointer]:
+            - /url: /case-studies/combatting-fall-armyworm-with-aerial-precision
+            - generic [ref=f1e701]:
+              - img "T50 Agras Drone Spraying" [ref=f1e702]
+              - generic [ref=f1e704]: Dunsfield Farms, Imashayi, Ogun State, Nigeria
+              - generic [ref=f1e705]:
+                - generic [ref=f1e706]: 10 Hectares
+                - generic [ref=f1e707]: Mapped & Sprayed in Under 3 Hours
+            - generic [ref=f1e708]:
+              - generic [ref=f1e709]:
+                - heading "Combatting Fall Armyworm with Aerial Precision" [level=3] [ref=f1e710]
+                - paragraph [ref=f1e711]: When a severe fall armyworm infestation threatened 10 hectares of maize, we deployed the Mavic 3 Multispectral drone to map the damage extent and used targeted aerial spraying to prevent catastrophic yield loss for Dunsfield Farms
+              - generic [ref=f1e712]:
+                - generic [ref=f1e713]: Read Case Study
+                - generic [ref=f1e716]: Success Story
+          - link "iaprecision logo DunsField Farms, Imashayi, Ogun State 6.53 hectares mapped in 30 Minutes Transforming Maize Farming with Drone-Based Plant Counting By using high-resolution drones and AI analysis, we provided a precise plant count for a 5-hectare maize farm, revealing a significant under-population of 20,484 plants/ha and delivering an immediate action plan to mitigate yield loss Read Case Study Success Story" [ref=f1e718] [cursor=pointer]:
+            - /url: /case-studies/maize-plant-counting-using-drones
+            - generic [ref=f1e719]:
+              - img "iaprecision logo" [ref=f1e720]
+              - generic [ref=f1e722]: DunsField Farms, Imashayi, Ogun State
+              - generic [ref=f1e723]:
+                - generic [ref=f1e724]: "6.53"
+                - generic [ref=f1e725]: hectares mapped in 30 Minutes
+            - generic [ref=f1e726]:
+              - generic [ref=f1e727]:
+                - heading "Transforming Maize Farming with Drone-Based Plant Counting" [level=3] [ref=f1e728]
+                - paragraph [ref=f1e729]: By using high-resolution drones and AI analysis, we provided a precise plant count for a 5-hectare maize farm, revealing a significant under-population of 20,484 plants/ha and delivering an immediate action plan to mitigate yield loss
+              - generic [ref=f1e730]:
+                - generic [ref=f1e731]: Read Case Study
+                - generic [ref=f1e734]: Success Story
+          - link "iaprecision team member and farmers Fartherland 120ha Sprayed using precision drone technology. How Drones Are Improving Rice Broadcasting With Precision Planting in Nigeria Rice seed broadcasting time reduced by 95% using the DJI Agras T50, delivering faster, more precise, and more efficient field establishment. Read Case Study Success Story" [ref=f1e736] [cursor=pointer]:
+            - /url: /case-studies/drones-are-improving-rice-broadcasting-with-precision-planting-in-nigeria
+            - generic [ref=f1e737]:
+              - img "iaprecision team member and farmers" [ref=f1e738]
+              - generic [ref=f1e740]: Fartherland
+              - generic [ref=f1e741]:
+                - generic [ref=f1e742]: 120ha
+                - generic [ref=f1e743]: Sprayed using precision drone technology.
+            - generic [ref=f1e744]:
+              - generic [ref=f1e745]:
+                - heading "How Drones Are Improving Rice Broadcasting With Precision Planting in Nigeria" [level=3] [ref=f1e746]
+                - paragraph [ref=f1e747]: Rice seed broadcasting time reduced by 95% using the DJI Agras T50, delivering faster, more precise, and more efficient field establishment.
+              - generic [ref=f1e748]:
+                - generic [ref=f1e749]: Read Case Study
+                - generic [ref=f1e752]: Success Story
+        - generic [ref=f1e753]:
+          - paragraph [ref=f1e754]: Want to see how we can optimize your farm or commercial project?
+          - generic [ref=f1e755]:
+            - link "See all case studies →" [ref=f1e756] [cursor=pointer]:
+              - /url: /case-studies
+            - link "Book a Drone Demo" [ref=f1e757] [cursor=pointer]:
+              - /url: /request-demo
+      - generic [ref=f1e760]:
+        - heading "What Our Clients Say" [level=2] [ref=f1e761]
+        - generic [ref=f1e763]:
+          - generic [ref=f1e764]:
+            - generic [ref=f1e765]: “
+            - paragraph [ref=f1e767]: "\" “Integrated Aerial Precision are helping us with their advanced cutting edge drone technology to help us attain precision agriculture at Soilless Farm Lab.” \""
+            - generic [ref=f1e769]:
+              - heading "Farmer Samson Ogbole" [level=3] [ref=f1e770]
+              - paragraph
+          - generic [ref=f1e771]:
+            - generic [ref=f1e772]: “
+            - paragraph [ref=f1e774]: "\" “Collaborating with Integrated Aerial Precision not only helped us achieve a successful project leaving our valued client impressed but also solidified the remarkable potential of drone technology in precision agriculture.” \""
+            - generic [ref=f1e776]:
+              - heading "Okosubide Mozimo" [level=3] [ref=f1e777]
+              - paragraph [ref=f1e778]: ARCO Worldwide Services
+          - generic [ref=f1e779]:
+            - generic [ref=f1e780]: “
+            - paragraph [ref=f1e782]: "\" “Their team of experts have helped us optimize our farming practices, making our operations more sustainable and profitable.” \""
+            - generic [ref=f1e784]:
+              - heading [level=3]
+              - paragraph [ref=f1e785]: Dangote Sugar Refinery, Numan
+      - generic [ref=f1e790]:
+        - generic [ref=f1e791]: STAY AHEAD OF THE CURVE
+        - heading "Join the Drone Revolution" [level=2] [ref=f1e792]
+        - paragraph [ref=f1e793]: Get exclusive insights on precision agriculture, drone technology, and sustainable farming delivered straight to your inbox.
+        - generic [ref=f1e795]:
+          - textbox "Enter your email address" [ref=f1e796]
+          - button "Subscribe" [ref=f1e797] [cursor=pointer]
+      - generic [ref=f1e798]:
+        - generic [ref=f1e799]:
+          - heading "Recognized By" [level=2] [ref=f1e800]
+          - paragraph [ref=f1e801]: Honored to be acknowledged by leading global and local organizations.
+        - generic [ref=f1e803]:
+          - generic [ref=f1e805]:
+            - img "Recognized by logo 1" [ref=f1e810]
+            - img "Recognized by logo 2" [ref=f1e815]
+            - img "Recognized by logo 3" [ref=f1e820]
+            - img "Recognized by logo 4" [ref=f1e825]
+            - img "Recognized by logo 5" [ref=f1e830]
+            - img "Recognized by logo 6" [ref=f1e835]
+            - img "Recognized by logo 7" [ref=f1e840]
+            - img "Recognized by logo 8" [ref=f1e845]
+            - img "Recognized by logo 9" [ref=f1e850]
+            - img "Recognized by logo 10" [ref=f1e855]
+            - img "Recognized by logo 11" [ref=f1e860]
+            - img "Recognized by logo 12" [ref=f1e865]
+            - img "Recognized by logo 13" [ref=f1e870]
+            - img "Recognized by logo 14" [ref=f1e875]
+            - img "Recognized by logo 15" [ref=f1e880]
+            - img "Recognized by logo 16" [ref=f1e885]
+            - img "Recognized by logo 17" [ref=f1e890]
+            - img "Recognized by logo 18" [ref=f1e895]
+            - img "Recognized by logo 19" [ref=f1e900]
+          - generic [ref=f1e901]:
+            - img "Recognized by logo 1" [ref=f1e906]
+            - img "Recognized by logo 2" [ref=f1e911]
+            - img "Recognized by logo 3" [ref=f1e916]
+            - img "Recognized by logo 4" [ref=f1e921]
+            - img "Recognized by logo 5" [ref=f1e926]
+            - img "Recognized by logo 6" [ref=f1e931]
+            - img "Recognized by logo 7" [ref=f1e936]
+            - img "Recognized by logo 8" [ref=f1e941]
+            - img "Recognized by logo 9" [ref=f1e946]
+            - img "Recognized by logo 10" [ref=f1e951]
+            - img "Recognized by logo 11" [ref=f1e956]
+            - img "Recognized by logo 12" [ref=f1e961]
+            - img "Recognized by logo 13" [ref=f1e966]
+            - img "Recognized by logo 14" [ref=f1e971]
+            - img "Recognized by logo 15" [ref=f1e976]
+            - img "Recognized by logo 16" [ref=f1e981]
+            - img "Recognized by logo 17" [ref=f1e986]
+            - img "Recognized by logo 18" [ref=f1e991]
+            - img "Recognized by logo 19" [ref=f1e996]
+  - generic [ref=f1e998]:
+    - generic [ref=f1e999]:
+      - generic [ref=f1e1001]:
+        - img "Integrated Aerial Precision (IAPrecision) logo" [ref=f1e1002]
+        - generic [ref=f1e1003]: RC1913292
+        - generic [ref=f1e1004]: 13, Alhaji Kosoko Street, Ojodu-Berger, Berger Lagos
+        - generic [ref=f1e1005]: info@iaprecision.com
+        - generic [ref=f1e1006]: "+2348085070112"
+        - generic [ref=f1e1007]:
+          - link [ref=f1e1008] [cursor=pointer]:
+            - /url: https://www.facebook.com/IAPrecision/
+          - link [ref=f1e1011] [cursor=pointer]:
+            - /url: "https://www.linkedin.com/company/integrated-aerial-precision/?originalSubdomain=ng "
+          - link [ref=f1e1016] [cursor=pointer]:
+            - /url: "https://www.instagram.com/iaprecisionhq/ "
+          - link [ref=f1e1020] [cursor=pointer]:
+            - /url: https://www.youtube.com/channel/UCLXrQPuXNZNZ6v1h-0Z4TlA
+          - link [ref=f1e1024] [cursor=pointer]:
+            - /url: https://x.com/IAPrecisionHQ
+      - generic [ref=f1e1028]:
+        - heading "Browse" [level=2] [ref=f1e1029]
+        - link "About Us" [ref=f1e1030] [cursor=pointer]:
+          - /url: /about
+        - link "Services" [ref=f1e1031] [cursor=pointer]:
+          - /url: /services
+        - link "Blog" [ref=f1e1032] [cursor=pointer]:
+          - /url: /blog
+        - link "Resources" [ref=f1e1033] [cursor=pointer]:
+          - /url: /resources
+        - link "Products" [ref=f1e1034] [cursor=pointer]:
+          - /url: /products
+        - link "Case Studies" [ref=f1e1036] [cursor=pointer]:
+          - /url: /case-studies
+        - link "Events" [ref=f1e1037] [cursor=pointer]:
+          - /url: /events
+        - link "Contact" [ref=f1e1039] [cursor=pointer]:
+          - /url: /contact
+        - link "Refund Policy" [ref=f1e1040] [cursor=pointer]:
+          - /url: /refund-policy
+        - link "Privacy Policy" [ref=f1e1041] [cursor=pointer]:
+          - /url: /privacy-policy
+        - link "Terms and Conditions" [ref=f1e1042] [cursor=pointer]:
+          - /url: /terms-and-conditions
+      - generic [ref=f1e1044]:
+        - heading "Services" [level=2] [ref=f1e1045]
+        - link "Precision Drone Spraying" [ref=f1e1046] [cursor=pointer]:
+          - /url: /services?intent=spraying
+        - link "Targeted Drone Broadcasting Operation" [ref=f1e1047] [cursor=pointer]:
+          - /url: /services?intent=broadcasting
+        - link "Farm Mapping And Survey" [ref=f1e1048] [cursor=pointer]:
+          - /url: /services?intent=mapping
+        - link "Crop Monitoring and Scouting" [ref=f1e1049] [cursor=pointer]:
+          - /url: /services?intent=scouting
+        - link "Agricultural Asset Inspection" [ref=f1e1050] [cursor=pointer]:
+          - /url: /services?intent=inspection
+        - link "Aerial Filming" [ref=f1e1051] [cursor=pointer]:
+          - /url: /services?intent=filming
+    - generic [ref=f1e1052]:
+      - generic [ref=f1e1053]: Copyright © 2026 Integrated Aerial Precision Ltd. All rights reserved.
+      - generic [ref=f1e1054]:
+        - link "About Us" [ref=f1e1055] [cursor=pointer]:
+          - /url: /about
+        - generic [ref=f1e1056]: ·
+        - link "Refund Policy" [ref=f1e1057] [cursor=pointer]:
+          - /url: /refund-policy
+        - generic [ref=f1e1058]: ·
+        - link "Privacy Policy" [ref=f1e1059] [cursor=pointer]:
+          - /url: /privacy-policy
+        - generic [ref=f1e1060]: ·
+        - link "Terms & Conditions" [ref=f1e1061] [cursor=pointer]:
+          - /url: /terms-and-conditions
+        - generic [ref=f1e1062]: ·
+        - link "Contact" [ref=f1e1063] [cursor=pointer]:
+          - /url: /contact
+  - region "Notifications Alt+T"
+  - generic [aria-hidden] [ref=f1e1064] [cursor=pointer]

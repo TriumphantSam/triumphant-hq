@@ -89,10 +89,9 @@
   50% { opacity: 1; }
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  a, button, input, select, textarea { font: inherit; }
 }
 
 body {
@@ -125,7 +124,6 @@ body {
   background: var(--accent-color);
 }
 
-a, button, input, select, textarea { font: inherit; }
 a, button { -webkit-tap-highlight-color: transparent; }
 button, [role="button"] { cursor: pointer; }
 
@@ -202,6 +200,8 @@ main {
 .home-page .testimonial-slide p { color: #fff; }
 .home-page .testimonial-slide footer p { color: #dbeafe; }
 .home-page .testimonial-stage { border-color: rgba(255,255,255,0.18); }
+.home-hero h1, .home-hero p { margin-left: 0 !important; margin-right: 0 !important; }
+body:has(#mobile-navigation[aria-hidden="false"]) #whatsapp-chat-widget { display: none !important; }
 
 .section-muted {
   width: 100%;

@@ -1,0 +1,12 @@
+[   34483ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   35017ms] [LOG] [HMR] connected @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   45607ms] [ERROR] Failed to load resource: net::ERR_NETWORK_CHANGED @ https://us.i.posthog.com/e/?ip=0&_=1791376721531&ver=1.369.3&compression=gzip-js:0
+[   45915ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   45986ms] [LOG] [Fast Refresh] done in 172ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   58427ms] [ERROR] Failed to load resource: net::ERR_NETWORK_CHANGED @ https://k6-e4e4123be8e54363900a90353991ca93.ecs.us-west-1.on.aws/events?cee=no:0
+[   58897ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   59755ms] [LOG] [Fast Refresh] done in 959ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   60036ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   60042ms] [LOG] [Fast Refresh] done in 110ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   88558ms] [LOG] [Fast Refresh] rebuilding @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   89009ms] [LOG] [Fast Refresh] done in 553ms @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297

@@ -17,6 +17,8 @@ export default function WhatsAppWidget() {
       : whatsappLink("Hi Triumphant HQ, I'd like to discuss a project with your agency.");
 
   if (
+    pathname === "/" ||
+    pathname === "/portfolio" ||
     pathname.startsWith("/parent-home-routine") ||
     pathname.startsWith("/digital-forge/funnel/") ||
     pathname.startsWith("/invoices")
@@ -81,7 +83,7 @@ export default function WhatsAppWidget() {
           width: 58,
           height: 58,
           borderRadius: "50%",
-          background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+          background: "var(--wa)",
           boxShadow: hovered
             ? "0 8px 32px rgba(37,211,102,0.55)"
             : "0 4px 20px rgba(37,211,102,0.38)",

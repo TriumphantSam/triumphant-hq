@@ -28,7 +28,7 @@ const wa = whatsappLink("Hi Triumphant Tech, I saw your website and I'd like a w
 
 export default function Home() {
   return (
-    <div className="home-page min-h-screen">
+    <div className="home-page min-h-screen" style={{ marginTop: -88 }}>
       <Hero />
 
       <section className="bg-white py-16 sm:py-20" aria-labelledby="portfolio-preview-title">
