@@ -5,15 +5,23 @@
    ======================================== */
 
 :root {
-  --accent-color: #075ee5;
-  --accent-hover: #004bc2;
+  --navy: #0b1630;
+  --navy-2: #0f1e3d;
+  --white: #ffffff;
+  --tint: #eef3ff;
+  --brand: #0a5cff;
+  --body: #334155;
+  --wa: #22c55e;
+  --amber: #f5a524;
+  --accent-color: var(--brand);
+  --accent-hover: #084bd1;
   --secondary-color: #1a8fd4;
   --bg-dark: #fafbfd;
   --bg-darker: #f2f5fa;
   --surface: #ffffff;
   --surface-muted: #f4f7fb;
-  --text-primary: #0a1220;
-  --text-secondary: #4a5568;
+  --text-primary: var(--navy);
+  --text-secondary: var(--body);
   --text-muted: #6b778c;
   --glass-bg: rgba(255, 255, 255, 0.82);
   --glass-border: rgba(15, 23, 42, 0.09);
@@ -32,6 +40,13 @@
   --color-foreground: var(--text-primary);
   --color-accent: var(--accent-color);
   --color-secondary: var(--secondary-color);
+  --color-navy: var(--navy);
+  --color-navy-2: var(--navy-2);
+  --color-tint: var(--tint);
+  --color-brand: var(--brand);
+  --color-wa: var(--wa);
+  --color-amber: var(--amber);
+  --color-body: var(--body);
 }
 
 @keyframes float-slow {

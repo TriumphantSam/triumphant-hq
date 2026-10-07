@@ -74,16 +74,16 @@ export default function PortfolioPage() {
   ];
 
   return (
-    <main className="bg-[#fafbfd]">
+    <main className="bg-[var(--tint)]">
       <JsonLd data={structuredData} />
-      <section className="relative overflow-hidden bg-[#0a1730] text-white">
+      <section className="relative overflow-hidden bg-[var(--navy)] text-white">
         <div className="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-blue-500/15 blur-3xl" />
         <div className="mx-auto max-w-[1240px] px-5 pb-18 pt-24 sm:pb-24 sm:pt-32 lg:px-8">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">Triumphant Tech · Our portfolio</p>
           <h1 className="font-display mt-6 max-w-4xl text-[clamp(2.7rem,6vw,5.4rem)] font-bold leading-[1.04] tracking-[-0.055em]">Websites built to win trust and bring in enquiries.</h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">See live work across Nigerian healthcare, agriculture, education and community organisations. We also build WhatsApp and AI automation that helps you respond and follow up.</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <TrackedLink href={whatsappUrl} event="portfolio_whatsapp_click" className="inline-flex min-h-13 items-center justify-center rounded-xl bg-[#2ed174] px-6 py-3 font-bold text-[#062315] transition hover:bg-[#58e58f] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Chat with us on WhatsApp <span aria-hidden="true" className="ml-2">↗</span></TrackedLink>
+            <TrackedLink href={whatsappUrl} event="portfolio_whatsapp_click" className="inline-flex min-h-13 items-center justify-center rounded-xl bg-[var(--wa)] px-6 py-3 font-bold text-[#062315] transition hover:bg-[#16a34a] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Chat with us on WhatsApp <span aria-hidden="true" className="ml-2">↗</span></TrackedLink>
             <a href="#projects" className="inline-flex min-h-13 items-center justify-center rounded-xl border border-white/35 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">See our work ↓</a>
           </div>
         </div>
@@ -153,10 +153,10 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      <section className="bg-[#0a1730] px-5 py-18 text-white sm:py-22 lg:px-8">
+      <section className="bg-[var(--navy)] px-5 py-18 text-white sm:py-22 lg:px-8">
         <div className="mx-auto flex max-w-[1240px] flex-col gap-8 md:flex-row md:items-end md:justify-between">
           <div><p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">Let&apos;s talk</p><h2 className="font-display mt-4 max-w-2xl text-[clamp(2.2rem,4vw,3.7rem)] font-bold leading-tight tracking-[-0.045em]">Ready to get more enquiries from your website?</h2><p className="mt-4 max-w-xl leading-7 text-slate-200">Tell us what you sell and where you want to grow. We’ll help you find the right starting point.</p></div>
-          <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row"><TrackedLink href={whatsappUrl} event="portfolio_whatsapp_click" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[#2ed174] px-6 py-3 font-bold text-[#062315] transition hover:bg-[#58e58f] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Chat on WhatsApp ↗</TrackedLink><a href={`mailto:${siteIdentity.email}?subject=${encodeURIComponent("Website project enquiry")}`} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/40 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Send an email</a></div>
+          <div className="flex shrink-0 flex-col gap-3 sm:flex-row md:flex-col lg:flex-row"><TrackedLink href={whatsappUrl} event="portfolio_whatsapp_click" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-[var(--wa)] px-6 py-3 font-bold text-[#062315] transition hover:bg-[#16a34a] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Chat on WhatsApp ↗</TrackedLink><a href={`mailto:${siteIdentity.email}?subject=${encodeURIComponent("Website project enquiry")}`} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/40 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Send an email</a></div>
         </div>
       </section>
     </main>
