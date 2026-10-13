@@ -7,7 +7,7 @@ import { whatsappLink } from "@/lib/contact";
 import { buildPageMetadata, SITE_URL, siteIdentity } from "@/lib/seo";
 
 const title = "Portfolio | Triumphant Tech, Website & AI Automation Agency in Ibadan";
-const description = "Explore five live websites by Triumphant Tech in Ibadan. See our work for healthcare, agriculture, education and communities, then chat about your project.";
+const description = "Explore six live websites by Triumphant Tech in Ibadan. See our work for healthcare, agriculture, agribusiness, education and communities, then chat about your project.";
 const ogImage = `${SITE_URL}/og/portfolio.png`;
 
 export const metadata: Metadata = {
@@ -15,12 +15,18 @@ export const metadata: Metadata = {
   openGraph: {
     title, description, url: `${SITE_URL}/portfolio`, siteName: siteIdentity.brandName,
     locale: "en_NG", type: "website",
-    images: [{ url: ogImage, width: 1200, height: 630, alt: "Triumphant Tech portfolio featuring five live websites" }],
+    images: [{ url: ogImage, width: 1200, height: 630, alt: "Triumphant Tech portfolio featuring six live websites" }],
   },
   twitter: { card: "summary_large_image", title, description, images: [ogImage] },
 };
 
 const projects = [
+  {
+    name: "Tradepatnas", slug: "tradepatnas", industry: "Integrated agribusiness · Ogun State",
+    url: "https://tradepatnas.com",
+    summary: "An integrated commercial agribusiness website for staple crops, poultry, aquaculture, and livestock. Designed to connect institutional buyers and off-takers with farm-gate produce booking and transparent operations.",
+    features: ["Enterprise operations hub", "Produce booking portal", "Zero-waste circular model", "Farm management desk"],
+  },
   {
     name: "Metropolitan Family Hospital", slug: "metropolitan-family-hospital", industry: "Healthcare · Akobo, Ibadan",
     url: "https://www.metropolitanfamilyhospital.com/",
@@ -82,7 +88,7 @@ export default function PortfolioPage() {
         <div className="mx-auto max-w-[1240px] px-5 pb-18 pt-24 sm:pb-24 sm:pt-32 lg:px-8">
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">Triumphant Tech · Our portfolio</p>
           <h1 className="font-display mt-6 max-w-4xl text-[clamp(2.7rem,6vw,5.4rem)] font-bold leading-[1.04] tracking-[-0.055em]">Websites built to win trust and bring in enquiries.</h1>
-          <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">See live work across Nigerian healthcare, agriculture, education and community organisations. We also build WhatsApp and AI automation that helps you respond and follow up.</p>
+          <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg">See live work across Nigerian healthcare, agriculture, agribusiness, education and community organisations. We also build WhatsApp and AI automation that helps you respond and follow up.</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <TrackedLink href={whatsappUrl} event="portfolio_whatsapp_click" className="inline-flex min-h-13 items-center justify-center rounded-xl bg-[var(--wa)] px-6 py-3 font-bold text-[#062315] transition hover:bg-[#16a34a] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">Chat with us on WhatsApp <span aria-hidden="true" className="ml-2">↗</span></TrackedLink>
             <a href="#projects" className="inline-flex min-h-13 items-center justify-center rounded-xl border border-white/35 px-6 py-3 font-bold text-white transition hover:bg-white/10 focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white">See our work ↓</a>
@@ -92,7 +98,7 @@ export default function PortfolioPage() {
 
       <section aria-label="About Triumphant Tech" className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1240px] flex-wrap gap-x-8 gap-y-3 px-5 py-5 text-sm font-semibold text-slate-700 lg:px-8">
-          <span>Based in Ibadan</span><span>Since 2017</span><span>Websites · apps · SEO · AI automation</span><span>5 live projects below</span>
+          <span>Based in Ibadan</span><span>Since 2017</span><span>Websites · apps · SEO · AI automation</span><span>6 live projects below</span>
         </div>
       </section>
 
