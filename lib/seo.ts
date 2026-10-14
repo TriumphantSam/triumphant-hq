@@ -27,15 +27,16 @@ export const siteIdentity = {
   },
   foundingYear: 2017,
   /**
-   * Public profiles that are already linked from this site.
-   * Do not add Facebook, X, LinkedIn, YouTube or Crunchbase until those URLs are on a page.
+   * Public profiles supplied by the owner and linked from the footer and contact page.
+   * LinkedIn, YouTube and Crunchbase stay off until a real URL is supplied.
    */
-  sameAs: [
-    "https://share.google/RLZXJGOCCI82sx8tx",
-    "https://www.instagram.com/triumphant_tech/",
-  ] as string[],
-  mapsUrl:
-    "https://www.google.com/maps/search/?api=1&query=Basorun+Rd,+Ibadan+211107,+Oyo",
+  profiles: [
+    { label: "X", href: "https://x.com/Triumphanttech" },
+    { label: "Instagram", href: "https://www.instagram.com/triumphant_tech/" },
+    { label: "Facebook", href: "https://www.facebook.com/triumphanttech" },
+    { label: "Google Maps", href: "https://maps.app.goo.gl/jaoU53B394QCti8q9" },
+  ],
+  mapsUrl: "https://maps.app.goo.gl/jaoU53B394QCti8q9",
   openingHours: [
     {
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -446,6 +447,11 @@ export const defaultKeywords = [
   "digital support Ibadan",
 ];
 
+/** Share crop of the cinematic hero. 1200×630 matches the usual social card ratio. */
+const DEFAULT_OG_IMAGE = "/images/og-agency-hero-cinematic.jpg";
+const DEFAULT_OG_WIDTH = 1200;
+const DEFAULT_OG_HEIGHT = 630;
+
 type BuildMetadataInput = {
   title: string;
   description: string;
@@ -453,6 +459,8 @@ type BuildMetadataInput = {
   keywords?: string[];
   noIndex?: boolean;
   ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
 };
 
 export function buildPageMetadata({
@@ -461,7 +469,9 @@ export function buildPageMetadata({
   path,
   keywords = [],
   noIndex = false,
-  ogImage = "/images/agency-hero-cinematic.png",
+  ogImage = DEFAULT_OG_IMAGE,
+  ogImageWidth,
+  ogImageHeight,
 }: BuildMetadataInput): Metadata {
   const url = absoluteCanonicalUrl(path);
   const mergedKeywords = [
@@ -480,7 +490,13 @@ export function buildPageMetadata({
       siteName: siteIdentity.brandName,
       locale: "en_NG",
       type: "website",
-      images: [{ url: ogImage, width: 1920, height: 1080, alt: title }],
+      images: [
+        ogImage === DEFAULT_OG_IMAGE
+          ? { url: ogImage, width: DEFAULT_OG_WIDTH, height: DEFAULT_OG_HEIGHT, alt: title }
+          : ogImageWidth && ogImageHeight
+            ? { url: ogImage, width: ogImageWidth, height: ogImageHeight, alt: title }
+            : { url: ogImage, alt: title },
+      ],
     },
     twitter: {
       card: "summary_large_image",
@@ -516,7 +532,7 @@ export function organizationJsonLd() {
       addressCountry: siteIdentity.addressCountry,
     },
     areaServed: serviceAreas.map((area) => area.name),
-    sameAs: siteIdentity.sameAs,
+    sameAs: siteIdentity.profiles.map((profile) => profile.href),
   };
 }
 
@@ -544,8 +560,10 @@ export function localBusinessJsonLd() {
     foundingDate: String(siteIdentity.foundingYear),
     founder: {
       "@type": "Person",
+      "@id": `${SITE_URL}/#founder`,
       name: "Adeyemi Olayemi",
       jobTitle: "Founder",
+      url: `${SITE_URL}/about`,
     },
     hasMap: siteIdentity.mapsUrl,
     address: {
@@ -576,7 +594,7 @@ export function localBusinessJsonLd() {
       "NIN enrolment support",
       "BVN support",
     ],
-    sameAs: siteIdentity.sameAs,
+    sameAs: siteIdentity.profiles.map((profile) => profile.href),
     parentOrganization: { "@id": `${SITE_URL}/#organization` },
   };
 
@@ -594,6 +612,7 @@ export function localBusinessJsonLd() {
 }
 
 export function websiteJsonLd() {
+  // No SearchAction: the site has no search results URL. Category filters are not search.
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -706,20 +725,21 @@ export function articleJsonLd(input: {
     dateModified: input.dateModified || input.datePublished,
     author: {
       "@type": "Person",
+      "@id": `${SITE_URL}/#founder`,
       name: "Adeyemi Olayemi",
       jobTitle: "Founder",
-      worksFor: {
-        "@type": "Organization",
-        name: siteIdentity.legalName,
-        url: SITE_URL,
-      },
+      url: `${SITE_URL}/about`,
+      worksFor: { "@id": `${SITE_URL}/#organization` },
     },
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
       name: siteIdentity.brandName,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/brand-logo.png`,
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: {
@@ -728,6 +748,292 @@ export function articleJsonLd(input: {
     },
     inLanguage: "en-NG",
   };
+}
+
+/** Pixel sizes measured from the files. Omit width/height when a file is not in this map. */
+const CONTENT_IMAGE_DIMENSIONS: Record<string, { width: number; height: number }> = {
+  "/images/adeyemi-olayemi.png": { width: 1024, height: 763 },
+  "/images/services-studio.png": { width: 1536, height: 1024 },
+  "/images/service-websites.png": { width: 1536, height: 1024 },
+  "/images/service-apps.png": { width: 1536, height: 1024 },
+  "/images/service-seo.png": { width: 1536, height: 1024 },
+  "/images/service-automation.png": { width: 1536, height: 1024 },
+  "/images/clients/integrated-aerial-precision.png": { width: 1024, height: 614 },
+  "/images/clients/dr-seyi-absolute-wellness.png": { width: 200, height: 200 },
+  "/brand-logo.png": { width: 512, height: 512 },
+};
+
+export function imageObjectJsonLd(input: { src: string; caption: string; id?: string }) {
+  const src = input.src.startsWith("http") ? input.src : input.src.startsWith("/") ? input.src : `/${input.src}`;
+  const data: Record<string, unknown> = {
+    "@type": "ImageObject",
+    url: src.startsWith("http") ? src : `${SITE_URL}${src}`,
+    caption: input.caption,
+  };
+  if (input.id) data["@id"] = input.id;
+  const dimensions = CONTENT_IMAGE_DIMENSIONS[src];
+  if (dimensions) {
+    data.width = dimensions.width;
+    data.height = dimensions.height;
+  }
+  return data;
+}
+
+function graphNode(node: Record<string, unknown>) {
+  const rest = { ...node };
+  delete rest["@context"];
+  return rest;
+}
+
+export function collectionPageJsonLd(input: {
+  path: string;
+  name: string;
+  description: string;
+  listName: string;
+  items: Array<{ name: string; path: string }>;
+  pageType?: string | string[];
+  breadcrumbs?: Array<{ name: string; path: string }>;
+}) {
+  const url = absoluteCanonicalUrl(input.path);
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": input.pageType ?? "CollectionPage",
+      "@id": `${url}#webpage`,
+      name: input.name,
+      description: input.description,
+      url,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      inLanguage: "en-NG",
+      mainEntity: { "@id": `${url}#list` },
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${url}#list`,
+      name: input.listName,
+      itemListElement: input.items.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        url: absoluteCanonicalUrl(item.path),
+      })),
+    },
+  ];
+
+  if (input.breadcrumbs && input.breadcrumbs.length > 0) {
+    graph.push({
+      ...graphNode(breadcrumbJsonLd(input.breadcrumbs)),
+      "@id": `${url}#breadcrumb`,
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
+}
+
+export function aboutPageJsonLd() {
+  const url = absoluteCanonicalUrl("/about");
+  const imageId = `${url}#founder-image`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${url}#webpage`,
+        name: "About Triumphant HQ",
+        url,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        about: { "@id": `${SITE_URL}/#founder` },
+        mainEntity: { "@id": `${SITE_URL}/#founder` },
+        primaryImageOfPage: { "@id": imageId },
+        inLanguage: "en-NG",
+      },
+      {
+        "@type": "Person",
+        "@id": `${SITE_URL}/#founder`,
+        name: "Adeyemi Olayemi",
+        jobTitle: "Founder",
+        url,
+        image: { "@id": imageId },
+        worksFor: { "@id": `${SITE_URL}/#organization` },
+      },
+      {
+        ...imageObjectJsonLd({
+          src: "/images/adeyemi-olayemi.png",
+          caption: "Adeyemi Olayemi, founder of Triumphant HQ",
+          id: imageId,
+        }),
+      },
+    ],
+  };
+}
+
+export function founderPersonJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/founder#person`,
+    name: "Adeyemi Olayemi",
+    jobTitle: "Founder",
+    url: `${SITE_URL}/founder`,
+    image: `${SITE_URL}/images/founder/adeyemi-olayemi.jpg`,
+    description:
+      "Founder of Triumphant Technological Services (TriumphantTech), an Ibadan studio for websites, custom applications, SEO and AI automation.",
+    worksFor: { "@id": `${SITE_URL}/#organization` },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Ibadan",
+      addressRegion: "Oyo",
+      addressCountry: "NG",
+    },
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "Federal University of Agriculture, Abeokuta",
+    },
+    knowsAbout: [
+      "Technical SEO",
+      "Web development",
+      "Next.js",
+      "AI automation",
+      "WhatsApp automation",
+      "Digital marketing",
+      "AI model evaluation",
+      "IT support",
+    ],
+    sameAs: [
+      "https://www.linkedin.com/in/adeyemi-olayemi-73a7b1158/",
+      "https://github.com/TriumphantSam",
+    ],
+  };
+}
+
+export function contactPageJsonLd() {
+  const url = absoluteCanonicalUrl("/contact");
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "@id": `${url}#webpage`,
+        name: "Tell us what the business needs to achieve.",
+        url,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        about: { "@id": `${SITE_URL}/#localbusiness` },
+        mainEntity: { "@id": `${url}#contactpoint` },
+        inLanguage: "en-NG",
+      },
+      {
+        "@type": "ContactPoint",
+        "@id": `${url}#contactpoint`,
+        telephone: siteIdentity.phoneE164,
+        email: siteIdentity.email,
+        contactType: "customer service",
+        areaServed: siteIdentity.addressCountry,
+        availableLanguage: ["en"],
+        url,
+      },
+    ],
+  };
+}
+
+export function productOfferJsonLd(input: {
+  slug: string;
+  name: string;
+  description: string;
+  priceNgn: number;
+  breadcrumbs: Array<{ name: string; path: string }>;
+}) {
+  const url = absoluteCanonicalUrl(`/digital-forge/products/${input.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": `${url}#product`,
+        name: input.name,
+        description: input.description,
+        brand: { "@id": `${SITE_URL}/#organization` },
+        offers: {
+          "@type": "Offer",
+          price: String(input.priceNgn),
+          priceCurrency: "NGN",
+          availability: "https://schema.org/InStock",
+          url,
+          seller: { "@id": `${SITE_URL}/#organization` },
+        },
+      },
+      {
+        ...graphNode(breadcrumbJsonLd(input.breadcrumbs)),
+        "@id": `${url}#breadcrumb`,
+      },
+    ],
+  };
+}
+
+export function caseStudyJsonLd(input: {
+  slug: string;
+  name: string;
+  client: string;
+  description: string;
+  imageSrc: string;
+  imageCaption: string;
+  dateModified?: string;
+  clientUrl?: string;
+}) {
+  const url = absoluteCanonicalUrl(`/work/${input.slug}`);
+  const about: Record<string, unknown> = {
+    "@type": "Organization",
+    name: input.client,
+  };
+  if (input.clientUrl) about.url = input.clientUrl;
+
+  const work: Record<string, unknown> = {
+    "@type": "CreativeWork",
+    "@id": `${url}#work`,
+    name: input.name,
+    description: input.description,
+    url,
+    creator: { "@id": `${SITE_URL}/#organization` },
+    about,
+    image: imageObjectJsonLd({
+      src: input.imageSrc,
+      caption: input.imageCaption,
+    }),
+    inLanguage: "en-NG",
+  };
+  if (input.dateModified) work.dateModified = input.dateModified;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      work,
+      {
+        ...graphNode(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Work", path: "/work" },
+            { name: input.client, path: `/work/${input.slug}` },
+          ]),
+        ),
+        "@id": `${url}#breadcrumb`,
+      },
+    ],
+  };
+}
+
+/** First absolute http(s) URL with a real hostname, if the visible copy contains exactly one. */
+export function soleVisibleHttpUrl(texts: Array<string | undefined>) {
+  const found = new Set<string>();
+  const pattern = /https?:\/\/[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s)]*)?/gi;
+  for (const text of texts) {
+    if (!text) continue;
+    for (const match of text.match(pattern) ?? []) {
+      found.add(match.replace(/[.,;:]+$/, ""));
+    }
+  }
+  if (found.size !== 1) return undefined;
+  return [...found][0];
 }
 
 export const formattedNapAddress = [

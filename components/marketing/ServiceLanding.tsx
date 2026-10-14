@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { AgencyService } from "@/lib/services";
 import { projectEnquiryUrl } from "@/lib/services";
 import { serviceFaqs, serviceLeadMagnets } from "@/lib/faqs";
-import { serviceJsonLd } from "@/lib/seo";
+import { SITE_URL, imageObjectJsonLd, serviceJsonLd } from "@/lib/seo";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import JsonLd from "@/components/seo/JsonLd";
 import CTABand from "./CTABand";
@@ -37,12 +37,22 @@ export default function ServiceLanding({
   return (
     <div>
       <JsonLd
-        data={serviceJsonLd({
-          name: service.shortTitle,
-          description: intro || service.description,
-          path,
-          serviceType: service.shortTitle,
-        })}
+        data={[
+          serviceJsonLd({
+            name: service.shortTitle,
+            description: intro || service.description,
+            path,
+            serviceType: service.shortTitle,
+          }),
+          {
+            "@context": "https://schema.org",
+            ...imageObjectJsonLd({
+              src: service.image,
+              caption: service.imageAlt,
+              id: `${SITE_URL}${path}#image`,
+            }),
+          },
+        ]}
       />
       <Breadcrumbs
         items={[

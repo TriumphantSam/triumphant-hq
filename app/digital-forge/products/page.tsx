@@ -1,7 +1,8 @@
 import Link from "next/link";
+import JsonLd from "@/components/seo/JsonLd";
 import { getForgeProducts } from "@/lib/digital-forge";
 import { formatOfferPrice, resolveLaunchBundleOffer } from "@/lib/digital-forge-offers";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, collectionPageJsonLd } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
   title: "Digital Forge Products | Triumphant HQ",
@@ -72,6 +73,27 @@ export default async function DigitalForgeProductsPage() {
 
   return (
     <div className="min-h-screen pb-24">
+      <JsonLd
+        data={collectionPageJsonLd({
+          path: "/digital-forge/products",
+          name: "Product Library",
+          description:
+            "AI playbooks, workflow systems, and creator tools. Every bundle ships with a guide, prompt pack, checklist, and bonus stack — ready to use on day one.",
+          listName: "Digital Forge products",
+          items: [
+            { name: "Digital Product Seller Launch Bundle", path: "/digital-product" },
+            ...forgeProducts.map((product) => ({
+              name: product.title,
+              path: `/digital-forge/products/${product.slug}`,
+            })),
+          ],
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Digital Forge", path: "/digital-forge" },
+            { name: "Product Library", path: "/digital-forge/products" },
+          ],
+        })}
+      />
 
       {/* ─── HEADER ─── */}
       <section

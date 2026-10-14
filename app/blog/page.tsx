@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getAllPosts } from '@/lib/blog';
 import Link from 'next/link';
-import { buildPageMetadata } from '@/lib/seo';
+import JsonLd from '@/components/seo/JsonLd';
+import { buildPageMetadata, collectionPageJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Insights & Guides | Triumphant HQ Blog",
@@ -39,6 +40,21 @@ export default async function BlogPage({
 
     return (
         <div className="min-h-screen">
+            <JsonLd
+                data={collectionPageJsonLd({
+                    path: "/blog",
+                    name: "Practical articles that turn interest into action",
+                    description:
+                        "Useful breakdowns, local examples, and implementation notes built around the Digital Forge products and the real problems founders, creators, and operators face.",
+                    listName: "Blog",
+                    pageType: ["Blog", "CollectionPage"],
+                    items: posts.map((post) => ({ name: post.title, path: `/blog/${post.slug}` })),
+                    breadcrumbs: [
+                        { name: "Home", path: "/" },
+                        { name: "Blog", path: "/blog" },
+                    ],
+                })}
+            />
             <section
                 className="max-w-screen-xl mx-auto px-6 sm:px-10 lg:px-16"
                 style={{ paddingTop: '8rem', paddingBottom: '3rem', textAlign: 'center' }}

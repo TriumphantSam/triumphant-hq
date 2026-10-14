@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CTABand from "@/components/marketing/CTABand";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
-import { buildPageMetadata, locationPages, siteIdentity } from "@/lib/seo";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildPageMetadata, collectionPageJsonLd, locationPages, siteIdentity } from "@/lib/seo";
 import { whatsappNumber } from "@/lib/services";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -23,6 +24,18 @@ export const metadata: Metadata = buildPageMetadata({
 export default function LocationsHubPage() {
   return (
     <div>
+      <JsonLd
+        data={collectionPageJsonLd({
+          path: "/locations",
+          name: "Ibadan first. Southwestern Nigeria covered. Nationwide delivery.",
+          description: `Based at ${siteIdentity.streetAddress}, ${siteIdentity.addressLocality}, we serve neighbourhoods across the city, Oyo State, Osun State and remote clients throughout Nigeria.`,
+          listName: "Service areas",
+          items: locationPages.map((location) => ({
+            name: location.name,
+            path: `/locations/${location.slug}`,
+          })),
+        })}
+      />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },
@@ -33,7 +46,16 @@ export default function LocationsHubPage() {
         <p className="eyebrow">Service areas</p>
         <h1>Ibadan first. Southwestern Nigeria covered. Nationwide delivery.</h1>
         <p>
-          Based at {siteIdentity.streetAddress}, {siteIdentity.addressLocality}, we serve neighbourhoods across the city,
+          Based at{" "}
+          <a
+            href={siteIdentity.mapsUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-[var(--accent-color)]"
+          >
+            {siteIdentity.streetAddress}, {siteIdentity.addressLocality}
+          </a>
+          , we serve neighbourhoods across the city,
           Oyo State, Osun State and remote clients throughout Nigeria.
         </p>
       </header>

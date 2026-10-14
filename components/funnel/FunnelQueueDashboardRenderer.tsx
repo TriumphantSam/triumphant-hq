@@ -45,7 +45,6 @@ async function runFunnelActionRequest(funnel: FunnelPayload, action: BuilderActi
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       slug: funnel.slug,
-      recordId: funnel.airtableRecordId,
       action,
       notes,
       currentFunnel: funnel,

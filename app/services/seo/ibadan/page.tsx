@@ -7,7 +7,7 @@ import LeadMagnetBand from "@/components/marketing/LeadMagnetBand";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import JsonLd from "@/components/seo/JsonLd";
 import { ibadanSeoFaqs, serviceLeadMagnets } from "@/lib/faqs";
-import { buildPageMetadata, serviceJsonLd, webPageJsonLd } from "@/lib/seo";
+import { SITE_URL, buildPageMetadata, imageObjectJsonLd, serviceJsonLd, webPageJsonLd } from "@/lib/seo";
 import { projectEnquiryUrl, whatsappNumber } from "@/lib/services";
 
 const path = "/services/seo/ibadan";
@@ -61,6 +61,14 @@ export default function IbadanSeoPage() {
             ],
             offerNames: offers,
           }),
+          {
+            "@context": "https://schema.org",
+            ...imageObjectJsonLd({
+              src: "/images/service-seo.png",
+              caption: "Laptop on a desk showing abstract search analytics in soft blue light",
+              id: `${SITE_URL}${path}#image`,
+            }),
+          },
         ]}
       />
       <Breadcrumbs

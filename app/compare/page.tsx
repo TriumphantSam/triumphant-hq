@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CTABand from "@/components/marketing/CTABand";
+import JsonLd from "@/components/seo/JsonLd";
 import { comparisons } from "@/lib/compare-industries";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, collectionPageJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Agency vs Freelancer Guides | Triumphant HQ",
@@ -15,6 +16,20 @@ export const metadata: Metadata = buildPageMetadata({
 export default function CompareIndexPage() {
   return (
     <div>
+      <JsonLd
+        data={collectionPageJsonLd({
+          path: "/compare",
+          name: "Choose a delivery model with clear eyes.",
+          description:
+            "High-intent decisions deserve frameworks—not rival bashing. These guides help you match the work to the right operating model.",
+          listName: "Comparison guides",
+          items: comparisons.map((page) => ({ name: page.title, path: `/compare/${page.slug}` })),
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Comparison guides", path: "/compare" },
+          ],
+        })}
+      />
       <header className="page-hero">
         <p className="eyebrow">Comparison guides</p>
         <h1>Choose a delivery model with clear eyes.</h1>

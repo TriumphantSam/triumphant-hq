@@ -184,7 +184,6 @@ async function runBuilderActionRequest(product: ForgeProduct, action: BuilderAct
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       slug: product.slug,
-      recordId: product.airtableRecordId,
       action,
       notes,
       currentProduct: product,
@@ -400,7 +399,7 @@ function ProductDetailDrawer({ product, onClose, onAction, actionPending }: { pr
           <p style={{ color: "#64748b", fontSize: "0.67rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Publishing State</p>
           <StatusRow ok={has(product.headline) && has(product.deliverables)} label="Website payload present" />
           <StatusRow ok={product.status === "published"} label={`Website status: ${product.status ?? "draft"}`} />
-          <StatusRow ok={block.websiteSyncStatus === "synced" || block.websiteSyncStatus === "success"} label={`Airtable sync: ${block.websiteSyncStatus ?? "pending"}`} />
+          <StatusRow ok={block.websiteSyncStatus === "synced" || block.websiteSyncStatus === "success"} label={`Website sync: ${block.websiteSyncStatus ?? "pending"}`} />
           <StatusRow ok={product.status === "published" && getPageScore(product) >= 5} label="Live eligible" />
           {publishedAt && (
             <p style={{ color: "#64748b", fontSize: "0.72rem", marginTop: "0.5rem" }}>
@@ -545,7 +544,7 @@ function QueueProductCard({ product, onSelect, onQuickAction, actionPending }: {
         </MiniPanel>
         <MiniPanel title="Publish">
           <StatusRow ok={product.status === "published"} label={product.status ?? "draft"} />
-          <StatusRow ok={block.websiteSyncStatus === "synced" || block.websiteSyncStatus === "success"} label="Airtable" />
+          <StatusRow ok={block.websiteSyncStatus === "synced" || block.websiteSyncStatus === "success"} label="Sync" />
           <StatusRow ok={has(r.bundlePdfPath)} label="PDF" />
         </MiniPanel>
         <MiniPanel title="Distrib.">

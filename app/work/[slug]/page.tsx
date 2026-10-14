@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CTABand from "@/components/marketing/CTABand";
 import NextStepPanel from "@/components/marketing/NextStepPanel";
+import JsonLd from "@/components/seo/JsonLd";
 import { caseStudies, getCaseStudy } from "@/lib/case-studies";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, caseStudyJsonLd, soleVisibleHttpUrl } from "@/lib/seo";
 
 export function generateStaticParams() {
   return caseStudies.map((study) => ({ slug: study.slug }));
@@ -32,8 +33,27 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const study = getCaseStudy(slug);
   if (!study) notFound();
 
+  const clientUrl = soleVisibleHttpUrl([
+    study.problem,
+    study.solution,
+    study.outcome,
+    ...(study.narrative?.flatMap((section) => section.paragraphs) ?? []),
+  ]);
+
   return (
     <div>
+      <JsonLd
+        data={caseStudyJsonLd({
+          slug: study.slug,
+          name: study.title,
+          client: study.client,
+          description: study.summary,
+          imageSrc: study.logo,
+          imageCaption: `${study.client} logo`,
+          dateModified: study.updated,
+          clientUrl,
+        })}
+      />
       <header className="page-hero">
         <p className="eyebrow">Case study</p>
         <div className="relative mt-8 flex h-14 items-center">

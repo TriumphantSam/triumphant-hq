@@ -102,7 +102,15 @@ export default function IbadanTechAgencyPage() {
           </p>
           <p>
             Triumphant HQ has operated from Ibadan since {siteIdentity.foundingYear}. Our office NAP is{" "}
-            <strong className="font-semibold text-slate-900">{formattedNapAddress}</strong>. We serve neighbourhoods
+            <a
+              href={siteIdentity.mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="font-semibold text-slate-900"
+            >
+              {formattedNapAddress}
+            </a>
+            . We serve neighbourhoods
             across the city (including Akobo and Bashorun), Oyo State, Osun State, and remote clients nationwide.
           </p>
         </Reveal>
