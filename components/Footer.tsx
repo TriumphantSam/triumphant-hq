@@ -32,6 +32,7 @@ const columns = [
     title: 'Company',
     links: [
       { label: 'About', href: '/about' },
+      { label: 'Founder', href: '/founder' },
       { label: 'Work', href: '/work' },
       { label: 'Portfolio', href: '/portfolio' },
       { label: 'NIN/BVN desk', href: '/nin-bvn-desk' },

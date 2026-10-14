@@ -37,6 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry("/services/seo", 0.95, "monthly"),
     entry("/services/automation", 0.85, "monthly"),
     entry("/about", 0.7, "yearly"),
+    entry("/founder", 0.7, "yearly"),
     entry("/work", 0.85, "monthly"),
     entry("/portfolio", 0.85, "monthly"),
     entry("/nin-bvn-desk", 0.8, "monthly"),

@@ -51,6 +51,7 @@ const staticRoutes = {
   "/services/seo": ["app/services/seo/page.tsx"],
   "/services/automation": ["app/services/automation/page.tsx"],
   "/about": ["app/about/page.tsx"],
+  "/founder": ["app/founder/page.tsx"],
   "/work": ["app/work/page.tsx"],
   "/portfolio": ["app/portfolio/page.tsx"],
   "/nin-bvn-desk": ["app/nin-bvn-desk/page.tsx"],

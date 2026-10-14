@@ -869,6 +869,45 @@ export function aboutPageJsonLd() {
   };
 }
 
+export function founderPersonJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/founder#person`,
+    name: "Adeyemi Olayemi",
+    jobTitle: "Founder",
+    url: `${SITE_URL}/founder`,
+    image: `${SITE_URL}/images/founder/adeyemi-olayemi.jpg`,
+    description:
+      "Founder of Triumphant Technological Services (TriumphantTech), an Ibadan studio for websites, custom applications, SEO and AI automation.",
+    worksFor: { "@id": `${SITE_URL}/#organization` },
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Ibadan",
+      addressRegion: "Oyo",
+      addressCountry: "NG",
+    },
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "Federal University of Agriculture, Abeokuta",
+    },
+    knowsAbout: [
+      "Technical SEO",
+      "Web development",
+      "Next.js",
+      "AI automation",
+      "WhatsApp automation",
+      "Digital marketing",
+      "AI model evaluation",
+      "IT support",
+    ],
+    sameAs: [
+      "https://www.linkedin.com/in/adeyemi-olayemi-73a7b1158/",
+      "https://github.com/TriumphantSam",
+    ],
+  };
+}
+
 export function contactPageJsonLd() {
   const url = absoluteCanonicalUrl("/contact");
   return {
