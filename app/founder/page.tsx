@@ -183,7 +183,7 @@ function FounderPortrait() {
   if (!portraitExists()) {
     return (
       <div
-        className="grid aspect-[4/5] place-items-center bg-[var(--navy)] text-white sm:max-w-md lg:max-w-none"
+        className="grid w-full aspect-[4/5] place-items-center bg-[var(--navy)] text-white sm:max-w-md lg:max-w-none"
         role="img"
         aria-label={PORTRAIT_ALT}
       >
@@ -195,7 +195,7 @@ function FounderPortrait() {
   }
 
   return (
-    <div className="relative aspect-[4/5] overflow-hidden bg-slate-100 sm:max-w-md lg:max-w-none">
+    <div className="relative w-full aspect-[4/5] overflow-hidden bg-slate-100 sm:max-w-md lg:max-w-none">
       <Image
         src={PORTRAIT_SRC}
         alt={PORTRAIT_ALT}
