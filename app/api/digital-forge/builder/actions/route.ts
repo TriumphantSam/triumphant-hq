@@ -2,9 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
 
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
-const AIRTABLE_PRODUCTS_TABLE = process.env.AIRTABLE_PRODUCTS_TABLE ?? "Products";
 const GENERATED_FORGE_DIR = path.join(process.cwd(), "content", "digital-forge", "generated");
 const GENERATED_FUNNELS_DIR = path.join(process.cwd(), "content", "digital-forge", "funnels");
 const REVIEWER_FALLBACK = process.env.BUILDER_USER ?? "builder";
@@ -28,7 +25,6 @@ type ForgePublishing = {
 };
 
 type ForgeProduct = {
-  airtableRecordId?: string;
   slug: string;
   title: string;
   status?: "draft" | "published";
@@ -37,7 +33,6 @@ type ForgeProduct = {
 };
 
 type FunnelPayload = {
-  airtableRecordId?: string;
   slug: string;
   status: "draft" | "needs_review" | "approved" | "published" | "archived";
   funnelType: string;
@@ -172,70 +167,11 @@ function applyFunnelAction(funnel: FunnelPayload, action: BuilderAction, notes?:
   };
 }
 
-function extractUnknownFieldName(detail: string): string | null {
-  try {
-    const parsed = JSON.parse(detail);
-    const message = parsed.error?.message || "";
-    const match = message.match(/Unknown field name: "([^"]+)"/i) || message.match(/Unknown field name: '([^']+)'/i);
-    return match?.[1] ?? null;
-  } catch {
-    const backupMatch = detail.match(/Unknown field name: \\?['"]([^\\'"]+)\\?['"]/i);
-    return backupMatch?.[1] ?? null;
-  }
-}
-
-async function patchAirtableProduct(recordId: string, product: ForgeProduct): Promise<void> {
-  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) return;
-  const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_PRODUCTS_TABLE)}/${recordId}`;
-  const publishing = product.publishing ?? {};
-  const fields: Record<string, string> = {
-    "Website Status": product.status ?? "draft",
-    "Queue Status": publishing.queueStatus ?? "draft",
-    "Website Sync Status": publishing.websiteSyncStatus ?? "pending",
-    "Distribution Status": publishing.distributionStatus ?? "pending",
-    "Review Status": publishing.reviewStatus ?? "not_reviewed",
-    "Reviewer": publishing.reviewer ?? "",
-    "Reviewed At": publishing.reviewedAt ?? "",
-    "Approval Notes": publishing.approvalNotes ?? "",
-    "Revision Notes": publishing.revisionNotes ?? "",
-    "Launch Status": publishing.launchStatus ?? "not_started",
-    "Published At": publishing.publishedAt ?? "",
-    "Last Distribution Attempt At": publishing.lastDistributionAttemptAt ?? "",
-    "Last Website Sync At": publishing.lastWebsiteSyncAt ?? "",
-    "Website Payload JSON": JSON.stringify(product),
-  };
-
-  while (true) {
-    const response = await fetch(endpoint, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ fields }),
-    });
-
-    if (response.ok) {
-      return;
-    }
-
-    const detail = await response.text();
-    const missingField = extractUnknownFieldName(detail);
-    if (response.status === 422 && missingField && missingField in fields) {
-      delete fields[missingField];
-      continue;
-    }
-
-    throw new Error(`Airtable update failed: ${response.status} ${detail}`);
-  }
-}
-
 export async function POST(request: NextRequest) {
   try {
     const payload = await request.json();
     const slug = typeof payload.slug === "string" ? payload.slug.trim() : "";
     const action = payload.action as BuilderAction;
-    const recordId = typeof payload.recordId === "string" ? payload.recordId.trim() : "";
     const notes = typeof payload.notes === "string" ? payload.notes : null;
     const currentProduct = payload.currentProduct && typeof payload.currentProduct === "object"
       ? (payload.currentProduct as ForgeProduct)
@@ -279,11 +215,7 @@ export async function POST(request: NextRequest) {
     const current = currentProduct ?? readJsonFile<ForgeProduct>(filePath) ?? { slug, title: slug, status: "draft", publishing: {} };
     const updated = applyProductAction(current, action, notes);
 
-    if (recordId) {
-      await patchAirtableProduct(recordId, updated);
-    }
-
-    if (!recordId && canWriteLocalFile(filePath)) {
+    if (canWriteLocalFile(filePath)) {
       try {
         writeJsonFile(filePath, updated);
       } catch (error) {

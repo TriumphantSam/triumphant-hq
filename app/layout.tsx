@@ -63,9 +63,9 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/images/agency-hero-cinematic.png",
-        width: 1920,
-        height: 1080,
+        url: "/images/og-agency-hero-cinematic.jpg",
+        width: 1200,
+        height: 630,
         alt: "Triumphant HQ — technology and growth agency in Ibadan",
       },
     ],
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
     description:
       "Websites, SEO, apps and automation from Ibadan—plus local NIN and BVN support.",
-    images: ["/images/agency-hero-cinematic.png"],
+    images: ["/images/og-agency-hero-cinematic.jpg"],
   },
   robots: {
     index: true,

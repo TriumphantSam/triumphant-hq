@@ -114,7 +114,16 @@ export default function LocalSupportExperience() {
         <div className="grid gap-8 border-y border-slate-200 py-10 sm:grid-cols-3">
           <div>
             <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Visit us</p>
-            <p className="mt-3 text-[1.02rem] leading-7 text-slate-700">{formattedNapAddress}</p>
+            <p className="mt-3 text-[1.02rem] leading-7 text-slate-700">
+              <a
+                href={siteIdentity.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="transition hover:text-[var(--accent-color)]"
+              >
+                {formattedNapAddress}
+              </a>
+            </p>
             <Link href="/locations" className="mt-3 inline-block text-sm font-medium text-[var(--accent-color)] hover:text-[var(--accent-hover)]">
               Service areas →
             </Link>

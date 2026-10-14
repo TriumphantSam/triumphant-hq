@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
   // vercel.json and proxy.ts so we can emit HTTP 301. Next.js `redirects()`
   // only offers 307/308 for host rules.
   //
-  // The sitemap route re-executes on Vercel because it fetches Digital Forge
-  // products. Node file tracing does not follow process.cwd() + "content/blog",
+  // The sitemap route re-executes on Vercel because it reads in-repo Digital
+  // Forge product JSON. Node file tracing does not follow process.cwd() + "content/blog",
   // so the markdown directory can be missing at runtime and getAllPosts()
   // returns []. Including the files here is a backstop; the sitemap also
   // imports content/blog-index.json, which is bundled with the function.

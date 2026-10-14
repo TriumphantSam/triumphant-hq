@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import ProfileLinks from "@/components/ProfileLinks";
 import ContactForm from "@/components/marketing/ContactForm";
 import FaqSection from "@/components/marketing/FaqSection";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLd from "@/components/seo/JsonLd";
 import { contactFaqs } from "@/lib/faqs";
-import { buildPageMetadata, formattedNapAddress, siteIdentity } from "@/lib/seo";
+import { buildPageMetadata, contactPageJsonLd, formattedNapAddress, siteIdentity } from "@/lib/seo";
 import { whatsappNumber } from "@/lib/services";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -21,6 +23,7 @@ export const metadata: Metadata = buildPageMetadata({
 export default function ContactPage() {
   return (
     <div>
+      <JsonLd data={contactPageJsonLd()} />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },
@@ -41,7 +44,19 @@ export default function ContactPage() {
         <div className="grid gap-8 border-y border-slate-200 py-10 sm:grid-cols-3">
           <div>
             <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Visit</p>
-            <p className="mt-3 text-[1.02rem] leading-7 text-slate-700">{formattedNapAddress}</p>
+            <p className="mt-3 text-[1.02rem] leading-7 text-slate-700">
+              <a
+                href={siteIdentity.mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="transition hover:text-[var(--accent-color)]"
+              >
+                {formattedNapAddress}
+              </a>
+            </p>
+            <p className="mt-3 text-[0.95rem] font-medium leading-7">
+              <ProfileLinks linkClassName="text-[var(--accent-color)] transition hover:text-[var(--accent-hover)]" />
+            </p>
           </div>
           <div>
             <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[var(--accent-color)]">Email</p>

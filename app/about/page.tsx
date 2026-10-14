@@ -6,8 +6,9 @@ import ClientLogos from "@/components/marketing/ClientLogos";
 import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceIcon from "@/components/marketing/ServiceIcon";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLd from "@/components/seo/JsonLd";
 import { projectEnquiryUrl, agencyServices } from "@/lib/services";
-import { buildPageMetadata } from "@/lib/seo";
+import { aboutPageJsonLd, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "About Triumphant HQ | Triumphant Technological Services",
@@ -39,6 +40,7 @@ const timeline = [
 export default function AboutPage() {
   return (
     <div>
+      <JsonLd data={aboutPageJsonLd()} />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },
@@ -72,6 +74,12 @@ export default function AboutPage() {
             <h2 className="font-display mt-5 text-[clamp(2rem,4vw,3.1rem)] font-bold leading-[1.08] tracking-[-0.045em] text-slate-950">
               Hi, I&apos;m Adeyemi Olayemi.
             </h2>
+            <p>
+              <Link className="text-link !mt-5 !pt-0" href="/founder">
+                Founder
+                <span aria-hidden="true">→</span>
+              </Link>
+            </p>
             <div className="mt-7 space-y-5 text-[1.05rem] leading-8 text-slate-600">
               <p>
                 I spend my days at the intersection of technical website management, search engine optimization and
