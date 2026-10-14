@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
+import Turnstile from '@/components/automation/Turnstile';
 
 export default function SeoSnapshotPage() {
   const router = useRouter();
@@ -10,6 +11,9 @@ export default function SeoSnapshotPage() {
   const [step, setStep] = useState<'idle' | 'loading' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [form, setForm] = useState({ websiteUrl: '', name: '', email: '', businessType: '' });
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [consentMarketing, setConsentMarketing] = useState(false);
+  const [verificationAttempt, setVerificationAttempt] = useState(0);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -23,7 +27,7 @@ export default function SeoSnapshotPage() {
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm(f => ({ ...f, [k]: e.target.value }));
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!form.websiteUrl || !form.name || !form.email.includes('@')) {
       setErrorMsg('Please fill in all required fields correctly.');
@@ -36,10 +40,11 @@ export default function SeoSnapshotPage() {
       const res = await fetch('/api/seo/quick-audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken, consentMarketing, companyWebsite: new FormData(e.currentTarget).get('companyWebsite') }),
       });
       const data: Record<string, unknown> = await res.json();
       if (!res.ok) {
+        setTurnstileToken(''); setVerificationAttempt(value => value + 1);
         setStep('error');
         setErrorMsg((data.error as string) || 'Something went wrong. Please try again.');
         return;
@@ -48,24 +53,26 @@ export default function SeoSnapshotPage() {
         sessionStorage.setItem('trium_seo_result', JSON.stringify(data));
         router.push('/seo-snapshot/results');
       } else {
+        setTurnstileToken(''); setVerificationAttempt(value => value + 1);
         setStep('error');
         setErrorMsg((data.error as string) || 'Something went wrong. Please try again.');
       }
     } catch {
+      setTurnstileToken(''); setVerificationAttempt(value => value + 1);
       setStep('idle');
       setErrorMsg('Network error — please check your connection and try again.');
     }
   };
 
   const STATS = [
-    { value: '68%', label: 'of businesses are invisible to AI search engines right now' },
-    { value: '3×', label: 'more traffic from sites that pass AI citation checks' },
-    { value: '90s', label: 'is all it takes to get your full visibility snapshot' },
+    { value: '17', label: 'technical checks on your homepage and crawl files' },
+    { value: 'HTML', label: 'findings based on the page your server returns' },
+    { value: 'Free', label: 'a practical starting point for a deeper SEO review' },
   ];
 
   const WHAT_YOU_GET = [
     'Your current SEO Visibility Score out of 100',
-    'The exact blockers stopping Google and AI tools from ranking you',
+    'Measured technical checks on the HTML your homepage returns',
     'Quick-win fixes you can implement this week — free',
     'A clear next step with no pressure or obligation',
   ];
@@ -145,7 +152,7 @@ export default function SeoSnapshotPage() {
                   margin: '0 auto 0.9rem',
                 }}
               >
-                AI-powered search has changed everything. Millions of businesses are invisible to ChatGPT, Google&apos;s AI Overviews, and Perplexity — not because their product is bad, but because their site fails simple technical checks.
+                Start with your website’s technical foundations. Check headings, metadata, mobile setup and crawl files, then use the findings to plan a deeper review.
               </p>
               <p
                 style={{
@@ -553,6 +560,10 @@ export default function SeoSnapshotPage() {
                   </div>
                 </div>
 
+                <p className="text-sm text-slate-600">We use your details to respond to this enquiry. <a href="/privacy-policy" className="underline">Privacy policy</a></p>
+                <label className="flex items-start gap-3 text-sm text-slate-600"><input type="checkbox" checked={consentMarketing} onChange={e => setConsentMarketing(e.target.checked)} className="mt-1" />Email me occasional tips and offers. Optional; you can unsubscribe.</label>
+                <div aria-hidden="true" className="hidden"><label>Leave blank<input name="companyWebsite" tabIndex={-1} autoComplete="off" /></label></div>
+                <Turnstile key={verificationAttempt} onToken={setTurnstileToken} />
                 {errorMsg && (
                   <div style={{ padding: '0.9rem 1rem', borderRadius: 12, background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)', color: '#f87171', fontSize: '0.9rem', display: 'flex', gap: '0.7rem', alignItems: 'center' }}>
                     <span style={{ flexShrink: 0 }}>⚠</span>

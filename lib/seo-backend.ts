@@ -40,6 +40,7 @@ export async function proxySeoBackend<T>(path: string, payload?: unknown, method
     headers: payload ? { 'Content-Type': 'application/json' } : undefined,
     body: payload ? JSON.stringify(payload) : undefined,
     cache: 'no-store',
+    signal: AbortSignal.timeout(8000),
   });
 
   const text = await response.text();

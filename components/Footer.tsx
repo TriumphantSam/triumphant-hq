@@ -21,6 +21,7 @@ const columns = [
     title: 'Resources',
     links: [
       { label: 'Resources Hub', href: '/resources' },
+      { label: 'Automation Lab', href: '/automation-lab' },
       { label: 'Digital Forge', href: '/digital-forge' },
       { label: 'Products', href: '/digital-forge/products' },
       { label: 'Free Training', href: '/digital-forge/training' },

@@ -284,6 +284,7 @@ export default function PrivacyPolicyPage() {
                     {/* ─── MAIN CONTENT ─── */}
                     <main>
                         <PolicySection id="who-we-are" icon="🏢" title="Who We Are">
+                            <p>Automation Lab enquiries may be stored by Cloudflare D1 or Airtable. When connected, Google Sheets mirrors enquiries and Resend sends enquiry replies and owner alerts. Vercel hosts the website; Meta processes WhatsApp conversations. Marketing consent is optional and separate from responding to your enquiry. Automation Lab records in D1 are retained for up to 12 months; mirrored and provider copies are managed separately. For access, correction, withdrawal of consent or deletion, contact admin@triumphantech.com or visit our <a href="/data-deletion" className="underline">data deletion page</a>. Planned payment, SMS and AI demos are not enabled merely by viewing the lab.</p>
                             <p>
                                 At <strong style={{ color: 'var(--accent-color)' }}>Triumphant Technological Services</strong> (also trading as <strong>Triumphanttech</strong>), the privacy of our visitors and clients is a top priority. This Privacy Policy outlines the types of personal information we collect and how we use, store, and protect that information.
                             </p>

@@ -8,6 +8,7 @@ import {
   type ChecklistMagnet,
 } from "@/lib/lead-magnets";
 import { projectEnquiryUrl } from "@/lib/services";
+import Turnstile from "@/components/automation/Turnstile";
 
 export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
   const [answers, setAnswers] = useState<Record<string, boolean | null>>(
@@ -18,6 +19,9 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
   const [name, setName] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [verificationAttempt, setVerificationAttempt] = useState(0);
 
   const { score, answered, total } = useMemo(
     () => scoreChecklist(answers, magnet.questions),
@@ -37,17 +41,23 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSaveLead = async (event: React.FormEvent) => {
+  const handleSaveLead = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!email.includes("@") || !name.trim()) return;
     setSaving(true);
+    setSaveError("");
     try {
-      await fetch("/api/contact-lead", {
+      const response = await fetch("/api/contact-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
           email: email.trim(),
+          source: "scorecard",
+          turnstileToken,
+          companyWebsite: new FormData(event.currentTarget).get(
+            "companyWebsite",
+          ),
           service: `${magnet.eyebrow} · Score ${score}`,
           message: [
             `Lead magnet: ${magnet.slug}`,
@@ -55,13 +65,26 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
             `Band summary: ${band.summary}`,
             "",
             "Answers:",
-            ...magnet.questions.map((q) => `- ${q.prompt}: ${answers[q.id] ? "Yes" : "No"}`),
+            ...magnet.questions.map(
+              (q) => `- ${q.prompt}: ${answers[q.id] ? "Yes" : "No"}`,
+            ),
           ].join("\n"),
         }),
       });
+      const result = await response.json();
+      if (!response.ok || !result.ok)
+        throw new Error(
+          result.error || "Your results could not be saved. Please try again.",
+        );
       setSaved(true);
-    } catch {
-      setSaved(true);
+    } catch (error) {
+      setTurnstileToken("");
+      setVerificationAttempt((value) => value + 1);
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "Your results could not be saved. Please try again.",
+      );
     } finally {
       setSaving(false);
     }
@@ -73,21 +96,30 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
         <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
           <div>
             <p className="eyebrow">Your result</p>
-            <p className="font-mono mt-6 text-sm font-bold tracking-[0.14em] text-blue-600">{band.label}</p>
+            <p className="font-mono mt-6 text-sm font-bold tracking-[0.14em] text-blue-600">
+              {band.label}
+            </p>
             <h2 className="font-display mt-3 text-[clamp(2.4rem,6vw,4.5rem)] font-bold tracking-[-0.05em] text-slate-950">
               {score}
               <span className="text-[0.45em] text-slate-400"> / 100</span>
             </h2>
-            <p className="mt-6 max-w-xl text-[1.08rem] leading-8 text-slate-600">{band.summary}</p>
+            <p className="mt-6 max-w-xl text-[1.08rem] leading-8 text-slate-600">
+              {band.summary}
+            </p>
             <p className="mt-5 max-w-xl border-l border-blue-200/80 pl-5 text-[1.02rem] leading-8 text-slate-700">
-              <span className="font-semibold text-slate-950">Recommended next step: </span>
+              <span className="font-semibold text-slate-950">
+                Recommended next step:{" "}
+              </span>
               {band.nextStep}
             </p>
             <div className="button-row mt-10">
               <a className="button button-primary" href={projectEnquiryUrl}>
                 Send a project brief
               </a>
-              <Link className="button button-secondary" href={magnet.relatedServiceHref}>
+              <Link
+                className="button button-secondary"
+                href={magnet.relatedServiceHref}
+              >
                 Explore {magnet.relatedService}
               </Link>
             </div>
@@ -106,11 +138,13 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
               Email me this score and a practical next-step note.
             </h3>
             <p className="mt-3 text-[0.98rem] leading-7 text-slate-600">
-              We will follow up with a concise interpretation—no spam, no automated pitch sequence.
+              We will follow up with a concise interpretation—no spam, no
+              automated pitch sequence.
             </p>
             {saved ? (
               <p className="mt-8 text-[1.02rem] font-medium text-slate-950">
-                Saved. If useful, book a call and we will walk through the priorities together.
+                Saved. If useful, book a call and we will walk through the
+                priorities together.
               </p>
             ) : (
               <form className="mt-8 grid gap-4" onSubmit={handleSaveLead}>
@@ -135,9 +169,32 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
                     placeholder="you@company.com"
                   />
                 </label>
-                <button className="button button-primary mt-2" disabled={saving} type="submit">
+                <button
+                  className="button button-primary mt-2"
+                  disabled={saving}
+                  type="submit"
+                >
                   {saving ? "Saving…" : "Send my results"}
                 </button>
+                <div aria-hidden="true" className="hidden">
+                  <label>
+                    Leave blank
+                    <input
+                      name="companyWebsite"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </label>
+                </div>
+                <Turnstile
+                  key={verificationAttempt}
+                  onToken={setTurnstileToken}
+                />
+                {saveError && (
+                  <p role="alert" className="text-sm text-red-700">
+                    {saveError}
+                  </p>
+                )}
               </form>
             )}
           </div>
@@ -162,11 +219,16 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
 
       <ol className="grid gap-0 border-t border-slate-200">
         {magnet.questions.map((question, index) => (
-          <li key={question.id} className="grid gap-4 border-b border-slate-200 py-7 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-8">
+          <li
+            key={question.id}
+            className="grid gap-4 border-b border-slate-200 py-7 sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-8"
+          >
             <span className="font-mono text-xs font-bold tracking-[0.14em] text-blue-600">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <p className="text-[1.05rem] font-medium leading-7 text-slate-950">{question.prompt}</p>
+            <p className="text-[1.05rem] font-medium leading-7 text-slate-950">
+              {question.prompt}
+            </p>
             <div className="flex gap-2">
               <button
                 type="button"
@@ -196,7 +258,9 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
       </ol>
 
       <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-slate-500">Answer every question for an accurate score.</p>
+        <p className="text-sm text-slate-500">
+          Answer every question for an accurate score.
+        </p>
         <button
           type="button"
           className="button button-primary disabled:cursor-not-allowed disabled:opacity-40"

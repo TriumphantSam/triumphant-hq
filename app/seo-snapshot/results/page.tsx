@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import posthog from 'posthog-js';
 
@@ -13,35 +13,59 @@ interface SeoResult {
   opportunities: string[];
   leadId: string;
   rootUrl?: string;
+  leadStored?: boolean;
+  checks?: { id: string; passed: boolean | null; detail: string }[];
   cta?: { headline: string; description: string; primaryLabel: string; primaryUrl?: string; secondaryLabel: string; secondaryUrl?: string };
   bookingLinks?: { triage?: string; strategy?: string; implementation?: string };
 }
 
 const DEFAULT_BOOKING_URL = process.env.NEXT_PUBLIC_SEO_BOOKING_URL || 'https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call';
 
+const subscribeToSnapshot = (callback: () => void) => {
+  window.addEventListener('storage', callback);
+  return () => window.removeEventListener('storage', callback);
+};
+const readSnapshot = () => {
+  try { return sessionStorage.getItem('trium_seo_result'); } catch { return null; }
+};
+const serverSnapshot = () => null;
+function parseSnapshot(raw: string | null): SeoResult | null {
+  if (!raw) return null;
+  try {
+    const data = JSON.parse(raw) as SeoResult;
+    return data && typeof data.domain === 'string' && Number.isFinite(data.quickScore)
+      && Array.isArray(data.visibleIssues) && Array.isArray(data.opportunities) ? data : null;
+  } catch { return null; }
+}
+
 export default function SeoResultsPage() {
   const router = useRouter();
-  const [result, setResult] = useState<SeoResult | null>(null);
+  const rawResult = useSyncExternalStore(subscribeToSnapshot, readSnapshot, serverSnapshot);
+  const result = useMemo(() => parseSnapshot(rawResult), [rawResult]);
   const [requesting, setRequesting] = useState(false);
   const [booking, setBooking] = useState(false);
+  const [requestError, setRequestError] = useState('');
 
   useEffect(() => {
-    const raw = sessionStorage.getItem('trium_seo_result');
-    if (!raw) { router.push('/seo-snapshot'); return; }
-    setResult(JSON.parse(raw) as SeoResult);
-  }, [router]);
+    if (!parseSnapshot(readSnapshot())) router.replace('/seo-snapshot');
+  }, [router, rawResult]);
 
   const handleRequestAudit = async () => {
-    if (!result?.leadId) return;
+    if (!result?.leadId) { router.push('/contact?service=seo'); return; }
     setRequesting(true);
+    setRequestError('');
     try {
-      await fetch('/api/seo/request-full-audit', {
+      const response = await fetch('/api/seo/request-full-audit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ leadId: result.leadId, websiteUrl: result.rootUrl || result.domain }),
       });
-    } finally {
+      if (!response.ok) throw new Error('We could not record this request. Please use the contact form or WhatsApp.');
       router.push('/seo-snapshot/thank-you');
+    } catch (error) {
+      setRequestError(error instanceof Error ? error.message : 'Please try again.');
+    } finally {
+      setRequesting(false);
     }
   };
 
@@ -83,10 +107,10 @@ export default function SeoResultsPage() {
   const scoreLabel = score >= 70 ? 'Good' : score >= 40 ? 'Needs Work' : 'Critical';
   const scoreRingClass = score >= 70 ? 'stroke-green-500' : score >= 40 ? 'stroke-amber-400' : 'stroke-red-500';
   const scoreMessage = score >= 70
-    ? 'Your site has a solid foundation. A few targeted fixes will push you into the top tier for AI-powered search.'
+    ? 'Most measured homepage checks passed. Validate indexing and visitor experience with a deeper audit.'
     : score >= 40
-      ? 'Your site is performing below its potential. Several key issues are costing you visibility every day.'
-      : 'Your site has critical blockers that are significantly limiting your visibility in both Google and AI search.';
+      ? 'Several measured checks need attention. Use the findings below to prioritise a review.'
+      : 'Many measured checks need attention. This score alone does not establish search rankings or lost traffic.';
 
   const r = 52;
   const circ = 2 * Math.PI * r;
@@ -506,6 +530,7 @@ export default function SeoResultsPage() {
                 >
                   {requesting ? 'Sending…' : cta.secondaryLabel}
                 </button>
+                {requestError && <p role="alert" className="mt-4 text-sm text-red-700">{requestError} <a href="/contact" className="underline">Contact us</a></p>}
                 <a
                   href="/contact"
                   id="results-build-for-you-cta"

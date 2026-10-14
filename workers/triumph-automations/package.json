@@ -1,0 +1,22 @@
+{
+  "name": "triumph-automations",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --env staging",
+    "check": "tsc --noEmit",
+    "test": "tsx --test src/security.test.ts src/leads.test.ts google-sheets/sync.test.mjs",
+    "deploy:staging": "wrangler deploy --env staging",
+    "migrate:local": "wrangler d1 migrations apply triumph_db_staging --local --env staging"
+  },
+  "dependencies": {
+    "hono": "^4.10.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261013.1",
+    "wrangler": "^4.0.0",
+    "typescript": "^5.9.0",
+    "tsx": "^4.23.0",
+    "@types/node": "^22.0.0"
+  }
+}

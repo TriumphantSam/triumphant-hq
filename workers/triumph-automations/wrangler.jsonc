@@ -1,0 +1,43 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "triumph-automations",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-13",
+  "workers_dev": false,
+  "env": {
+    "production": {
+      "name": "triumph-automations-production",
+      "workers_dev": true,
+      "vars": {
+        "ENVIRONMENT": "production",
+        "OWNER_EMAIL": "admin@triumphantech.com",
+        "EMAIL_FROM": "TriumphantTech <hello@notify.triumphantech.com>",
+      },
+      "d1_databases": [{
+        "binding": "DB",
+        "database_name": "triumph_db",
+        "database_id": "72f0af83-6643-426d-ac2e-c7b99e96fe0f",
+        "migrations_dir": "migrations",
+      }],
+      "triggers": { "crons": ["* * * * *"] },
+    },
+    "staging": {
+      "name": "triumph-automations-staging",
+      "workers_dev": true,
+      "vars": {
+        "ENVIRONMENT": "staging",
+        "OWNER_EMAIL": "admin@triumphantech.com",
+        "EMAIL_FROM": "TriumphantTech <hello@notify.triumphantech.com>",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "triumph_db_staging",
+          "database_id": "97244bca-414e-4cd1-b1d2-492f9c0b5c5f",
+          "migrations_dir": "migrations",
+        },
+      ],
+      "triggers": { "crons": ["* * * * *"] },
+    },
+  },
+}

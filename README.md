@@ -2,6 +2,9 @@
 
 Modern website for Triumphant HQ built with Next.js 16 + Tailwind CSS v4.
 
+Automation Lab implementation, current readiness, WhatsApp deployment audit,
+and staging setup: [docs/automation-lab.md](docs/automation-lab.md).
+
 ## 🚀 Getting Started
 
 First, install dependencies:

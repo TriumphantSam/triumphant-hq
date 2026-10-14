@@ -1,72 +1,71 @@
 import { NextResponse } from "next/server";
-
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
-const AIRTABLE_CONTACT_LEADS_TABLE = process.env.AIRTABLE_CONTACT_LEADS_TABLE ?? "Contact Leads";
-
-type ContactLeadPayload = {
-  name: string;
-  email: string;
-  service: string;
-  message: string;
-};
-
-async function pushContactLeadToAirtable(payload: ContactLeadPayload) {
-  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) return false;
-
-  const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_CONTACT_LEADS_TABLE)}`;
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields: {
-            Name: payload.name,
-            Email: payload.email,
-            Service: payload.service,
-            Message: payload.message,
-            Source: "contact_form",
-            CapturedAt: new Date().toISOString(),
-          },
-        },
-      ],
-    }),
-  });
-
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(`Airtable contact lead capture failed: ${response.status} ${detail}`);
-  }
-
-  return true;
-}
+import { captureLead } from "@/lib/lead-capture";
+import {
+  readPublicForm,
+  field,
+  validateLead,
+  FormError,
+} from "@/lib/public-form-guard";
 
 export async function POST(request: Request) {
+  let validated = false;
   try {
-    const body = (await request.json()) as Partial<ContactLeadPayload>;
-    const name = typeof body.name === "string" ? body.name.trim() : "";
-    const email = typeof body.email === "string" ? body.email.trim() : "";
-    const service = typeof body.service === "string" ? body.service.trim() : "";
-    const message = typeof body.message === "string" ? body.message.trim() : "";
+    const body = await readPublicForm(request);
+    const name = field(body, "name", 121),
+      email = field(body, "email", 255),
+      service = field(body, "service", 120),
+      message = field(body, "message", 8000);
+    validateLead(name, email);
 
     if (!name || !email.includes("@") || !message) {
-      return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields." },
+        { status: 400 },
+      );
     }
+    validated = true;
 
-    let storedInAirtable = false;
-    try {
-      storedInAirtable = await pushContactLeadToAirtable({ name, email, service, message });
-    } catch (error) {
-      console.error("[Contact Lead] Airtable lead capture failed", error);
-    }
-
-    return NextResponse.json({ ok: true, storedInAirtable });
-  } catch {
-    return NextResponse.json({ error: "Failed to process contact lead." }, { status: 500 });
+    const lead = await captureLead({
+      name,
+      email,
+      service,
+      message,
+      source: ["scorecard", "web_form", "automation_lab"].includes(
+        String(body.source),
+      )
+        ? String(body.source)
+        : "web_form",
+      phone: field(body, "phone", 30),
+      consentMarketing: body.consentMarketing === true,
+    });
+    if (!lead.stored)
+      return NextResponse.json(
+        {
+          ok: false,
+          deliveryFallbackAllowed: true,
+          error:
+            "Online enquiries are temporarily unavailable. Please contact us on WhatsApp.",
+        },
+        { status: 503 },
+      );
+    return NextResponse.json({
+      ok: true,
+      stored: true,
+      leadId: lead.leadId,
+      storedInAirtable: lead.destination === "airtable",
+      deliveriesQueued: lead.destination === "worker",
+    });
+  } catch (error) {
+    return NextResponse.json(
+      {
+        ok: false,
+        deliveryFallbackAllowed: validated,
+        error:
+          error instanceof FormError
+            ? error.message
+            : "Your enquiry could not be saved. Please try again or contact us on WhatsApp.",
+      },
+      { status: error instanceof FormError ? error.status : 503 },
+    );
   }
 }
-

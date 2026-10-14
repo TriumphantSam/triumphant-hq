@@ -6,12 +6,21 @@ import Image from "next/image";
 import Link from "next/link";
 import posthog from "posthog-js";
 import { agencyServices, whatsappNumber } from "@/lib/services";
+import Turnstile from "@/components/automation/Turnstile";
 
 const serviceLabels: Record<string, string> = Object.fromEntries(
   agencyServices.map((service) => [service.slug, service.shortTitle]),
 );
 
-const initialForm = { name: "", email: "", company: "", service: "", budget: "", timeline: "", message: "" };
+const initialForm = {
+  name: "",
+  email: "",
+  company: "",
+  service: "",
+  budget: "",
+  timeline: "",
+  message: "",
+};
 
 const expectations = [
   {
@@ -36,6 +45,8 @@ export default function ContactForm() {
   const [formData, setFormData] = useState(initialForm);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [verificationAttempt, setVerificationAttempt] = useState(0);
 
   const projectMessage = [
     formData.company ? `Company: ${formData.company}` : "",
@@ -47,7 +58,7 @@ export default function ContactForm() {
     .filter(Boolean)
     .join("\n");
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSending(true);
     setError("");
@@ -58,34 +69,62 @@ export default function ContactForm() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          service: serviceLabels[formData.service] || formData.service || "Not specified",
+          turnstileToken,
+          companyWebsite: new FormData(event.currentTarget).get(
+            "companyWebsite",
+          ),
+          service:
+            serviceLabels[formData.service] ||
+            formData.service ||
+            "Not specified",
           message: projectMessage,
         }),
       });
-      const emailRequest = fetch("https://api.emailjs.com/api/v1.0/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          service_id: "service_fgz42ok",
-          template_id: "template_2bilwne",
-          user_id: "TCsiAiLBlJkqHpCn5",
-          template_params: {
-            from_name: formData.name,
-            reply_to: formData.email,
-            service: serviceLabels[formData.service] || formData.service || "Not specified",
-            message: projectMessage,
-          },
-        }),
+      const emailRequest = leadRequest.then(async (leadResponse) => {
+        const lead = await leadResponse.clone().json();
+        if (!leadResponse.ok && !lead.deliveryFallbackAllowed)
+          return leadResponse;
+        if (lead.deliveriesQueued) return new Response(null, { status: 204 });
+        return fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: "service_fgz42ok",
+            template_id: "template_2bilwne",
+            user_id: "TCsiAiLBlJkqHpCn5",
+            template_params: {
+              from_name: formData.name,
+              reply_to: formData.email,
+              service:
+                serviceLabels[formData.service] ||
+                formData.service ||
+                "Not specified",
+              message: projectMessage,
+            },
+          }),
+        });
       });
-      const [leadResult, emailResult] = await Promise.allSettled([leadRequest, emailRequest]);
+      const [leadResult, emailResult] = await Promise.allSettled([
+        leadRequest,
+        emailRequest,
+      ]);
       let storedInAirtable = false;
       if (leadResult.status === "fulfilled" && leadResult.value.ok) {
-        const leadPayload = (await leadResult.value.json().catch(() => ({}))) as { storedInAirtable?: boolean };
-        storedInAirtable = leadPayload.storedInAirtable === true;
+        const leadPayload = (await leadResult.value
+          .json()
+          .catch(() => ({}))) as {
+          stored?: boolean;
+          storedInAirtable?: boolean;
+        };
+        storedInAirtable =
+          leadPayload.stored === true || leadPayload.storedInAirtable === true;
       }
-      const emailSent = emailResult.status === "fulfilled" && emailResult.value.ok;
+      const emailSent =
+        emailResult.status === "fulfilled" && emailResult.value.ok;
       if (!storedInAirtable && !emailSent) {
-        throw new Error("We could not send your enquiry. Please try again or use WhatsApp.");
+        throw new Error(
+          "We could not send your enquiry. Please try again or use WhatsApp.",
+        );
       }
 
       try {
@@ -97,7 +136,13 @@ export default function ContactForm() {
       }
       router.push("/contact/thank-you");
     } catch (submissionError) {
-      setError(submissionError instanceof Error ? submissionError.message : "Failed to send. Please try again.");
+      setTurnstileToken("");
+      setVerificationAttempt((value) => value + 1);
+      setError(
+        submissionError instanceof Error
+          ? submissionError.message
+          : "Failed to send. Please try again.",
+      );
       setSending(false);
     }
   };
@@ -108,7 +153,8 @@ export default function ContactForm() {
 
   const fieldClass =
     "mt-2.5 w-full rounded-xl border border-slate-200/90 bg-slate-50/50 px-4 py-3.5 text-[0.95rem] text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100";
-  const labelClass = "block text-[0.7rem] font-bold uppercase tracking-[0.12em] text-slate-500";
+  const labelClass =
+    "block text-[0.7rem] font-bold uppercase tracking-[0.12em] text-slate-500";
 
   return (
     <>
@@ -138,8 +184,9 @@ export default function ContactForm() {
               A useful first conversation starts with context.
             </h2>
             <p className="mt-6 max-w-md text-[1.02rem] leading-8 text-slate-600">
-              You do not need a complete specification. A clear description of the problem, the desired outcome and your
-              timing is enough for us to recommend the next step.
+              You do not need a complete specification. A clear description of
+              the problem, the desired outcome and your timing is enough for us
+              to recommend the next step.
             </p>
 
             <div className="mt-12 grid gap-8 border-l border-blue-200/80 pl-6 sm:pl-8">
@@ -151,7 +198,9 @@ export default function ContactForm() {
                   <h3 className="font-display mt-2 text-[1.1rem] font-bold tracking-[-0.02em] text-slate-950">
                     {item.title}
                   </h3>
-                  <p className="mt-1.5 max-w-sm text-[0.95rem] leading-7 text-slate-500">{item.copy}</p>
+                  <p className="mt-1.5 max-w-sm text-[0.95rem] leading-7 text-slate-500">
+                    {item.copy}
+                  </p>
                 </div>
               ))}
             </div>
@@ -189,7 +238,9 @@ export default function ContactForm() {
               </div>
 
               {error ? (
-                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3.5 text-sm text-red-700">{error}</div>
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3.5 text-sm text-red-700">
+                  {error}
+                </div>
               ) : null}
 
               <div className="grid gap-6 sm:grid-cols-2">
@@ -289,9 +340,29 @@ export default function ContactForm() {
               </label>
 
               <div className="pt-1">
-                <button className="button button-primary w-full sm:w-auto" disabled={sending} type="submit">
+                <div aria-hidden="true" className="hidden">
+                  <label>
+                    Leave blank
+                    <input
+                      name="companyWebsite"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </label>
+                </div>
+                <Turnstile
+                  key={verificationAttempt}
+                  onToken={setTurnstileToken}
+                />
+                <button
+                  className="button button-primary w-full sm:w-auto"
+                  disabled={sending}
+                  type="submit"
+                >
                   {sending ? "Sending enquiry…" : "Send project enquiry"}
-                  <span className="button-arrow" aria-hidden="true">→</span>
+                  <span className="button-arrow" aria-hidden="true">
+                    →
+                  </span>
                 </button>
               </div>
             </form>
