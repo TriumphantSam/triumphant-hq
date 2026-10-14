@@ -10,7 +10,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 const whatsappHref =
-  "https://wa.me/2348107711190?text=Hi%20Adeyemi%2C%20I%20have%20a%20product%20idea%20I%20want%20reviewed.%20Here%20it%20is%3A%20";
+  "https://wa.me/2349090090910?text=Hi%20Adeyemi%2C%20I%20have%20a%20product%20idea%20I%20want%20reviewed.%20Here%20it%20is%3A%20";
 
 const PAIN_POINTS = [
   "The buyer is unclear",

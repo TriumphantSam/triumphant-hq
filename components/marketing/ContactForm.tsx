@@ -216,7 +216,7 @@ export default function ContactForm() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  WhatsApp · +234 810 771 1190
+                  WhatsApp · +234 909 009 0910
                 </a>
                 <a
                   className="font-medium text-slate-600 transition hover:text-blue-700"

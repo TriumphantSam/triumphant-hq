@@ -15,7 +15,7 @@ export const siteIdentity = {
   email: "admin@triumphantech.com",
   phoneDisplay: "+234 810 771 1190",
   phoneE164: "+2348107711190",
-  whatsapp: "2348107711190",
+  whatsapp: "2349090090910",
   streetAddress: "Basorun Rd",
   addressLocality: "Ibadan",
   addressRegion: "Oyo State",

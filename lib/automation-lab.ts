@@ -7,14 +7,14 @@ export const automationDemos = [
     description:
       "Welcome a prospect, answer product questions and offer a clear next step inside WhatsApp.",
     audience: "Shops · farms · service businesses",
-    status: "Service menu connected",
+    status: "Number connection pending",
     action: "Explore the WhatsApp flow",
     steps: [
       "Send LAB to open the service menu.",
       "Try SERVICES, PRICES, ORDER or BOOK.",
       "Send HUMAN for our team, or STOP to stop bot replies.",
     ],
-    note: "Send LAB for the service menu. HUMAN queues a private owner alert and pauses bot replies for 24 hours; RESUME restarts sooner. GIS returns to the existing handbook offer. Booking opens our calendar, and orders open the existing checkout. Proactive follow-ups are not enabled.",
+    note: "Our dedicated business WhatsApp number is +234 909 009 0910. Automated replies are awaiting its Meta API connection. Once activated, LAB opens the service menu; HUMAN requests our team, STOP stops replies and RESUME restarts them. Proactive follow-ups are not enabled.",
   },
   {
     slug: "booking",

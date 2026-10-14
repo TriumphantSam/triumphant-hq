@@ -51,7 +51,7 @@ const STARTER_STEPS = [
 ];
 
 const whatsappHref =
-  "https://wa.me/2348107711190?text=Hi%20Adeyemi%2C%20I%20am%20interested%20in%20the%20Digital%20Forge%20Starter%20System.%20I%20want%20to%20know%20if%20it%20fits%20me.";
+  "https://wa.me/2349090090910?text=Hi%20Adeyemi%2C%20I%20am%20interested%20in%20the%20Digital%20Forge%20Starter%20System.%20I%20want%20to%20know%20if%20it%20fits%20me.";
 
 const FOR_WHO = [
   { title: "Professionals", body: "Ready for a side hustle that actually fits your schedule constraints — no fantasy income claims, just a real operating method." },

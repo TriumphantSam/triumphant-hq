@@ -91,7 +91,7 @@ export const agencyServices: AgencyService[] = [
 ];
 
 export const projectEnquiryUrl = "/contact";
-export const whatsappNumber = "2348107711190";
+export const whatsappNumber = "2349090090910";
 export const launchBundleWhatsappNumber = "447478036301";
 
 export function getAgencyService(slug: string) {
