@@ -293,7 +293,7 @@ bookingRoutes.post("/manage", async (c) => {
         ).bind(`${booking.id}:${kind}`, booking.id, kind, now),
       ),
       c.env.DB.prepare(
-        "UPDATE leads SET need=?,updated_at=?,sheet_synced=0,status='lost' WHERE id=?",
+        "UPDATE leads SET need=?,updated_at=?,sheet_synced=0 WHERE id=?",
       ).bind(`Cancelled consultation: ${booking.slot_start}`, now, booking.id),
       c.env.DB.prepare(
         "UPDATE outbox SET state='pending',next_attempt_at=? WHERE lead_id=? AND kind='sheet'",

@@ -226,6 +226,11 @@ test("booking capacity is atomic, retries are idempotent and management requires
     2,
   );
   assert.equal(
+    sql.prepare("SELECT status FROM leads WHERE id=?").get(result.booking.id)!
+      .status,
+    "new",
+  );
+  assert.equal(
     (
       await request("/v1/bookings/create", {
         ...input,
