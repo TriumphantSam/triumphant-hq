@@ -4,6 +4,7 @@ import { automationDemos } from "@/lib/automation-lab";
 import { whatsappLink } from "@/lib/contact";
 import LeadDemo from "@/components/automation/LeadDemo";
 import BookingDemo from "@/components/automation/BookingDemo";
+import AdminDemo from "@/components/automation/AdminDemo";
 export function generateStaticParams() {
   return automationDemos.map((d) => ({ demo: d.slug }));
 }
@@ -61,6 +62,8 @@ export default async function DemoPage({
           <LeadDemo />
         ) : demo === "booking" ? (
           <BookingDemo />
+        ) : demo === "admin" ? (
+          <AdminDemo />
         ) : (
           <div className="lab-panel">
             <h2>

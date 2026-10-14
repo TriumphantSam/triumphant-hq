@@ -8,6 +8,7 @@ import { drainOutbox } from "./delivery";
 import { bookingSlots, drainBookingOutbox } from "./bookings";
 import { drainBookingMessages, notificationPhone } from "./booking-messages";
 import type { Env } from "./types";
+import { reportWindow } from "./reports";
 
 function setup() {
   const sql = new DatabaseSync(":memory:");
@@ -105,6 +106,64 @@ const enquiry = {
   message: "A test enquiry",
   source: "automation_lab",
 };
+
+test("private reports use exclusive Lagos day boundaries and reject invalid periods", () => {
+  assert.deepEqual(reportWindow("2026-10-14", 1), {
+    start: "2026-10-13T23:00:00.000Z",
+    end: "2026-10-14T23:00:00.000Z",
+    date: "2026-10-14",
+    days: 1,
+    timezone: "Africa/Lagos",
+  });
+  assert.equal(reportWindow("2026-10-14", 7).start, "2026-10-07T23:00:00.000Z");
+  for (const date of ["2026-02-30", "2026-13-01", "yesterday"])
+    assert.throws(() => reportWindow(date, 1));
+  assert.throws(() => reportWindow("2026-10-14", 30));
+});
+
+test("reports count the requested period without exposing customer fields or inventing payments", async () => {
+  const { sql, request, env } = setup();
+  const insert = sql.prepare(
+    "INSERT INTO leads(id,created_at,updated_at,source,name,email,need,sheet_synced) VALUES(?,?,?,'test','Private Person','private@example.com','Private enquiry',?)",
+  );
+  for (const [id, time, synced] of [
+    ["before", "2026-10-13T22:59:59.000Z", 1],
+    ["start", "2026-10-13T23:00:00.000Z", 1],
+    ["inside", "2026-10-14T22:59:59.000Z", 0],
+    ["end", "2026-10-14T23:00:00.000Z", 1],
+  ] as const)
+    insert.run(id, time, time, synced);
+  sql.exec(
+    "INSERT INTO outbox(id,lead_id,kind,state,next_attempt_at) VALUES('sheet','inside','sheet','failed','2026-10-14'),('reply','inside','reply_email','failed','2026-10-14')",
+  );
+  const result = await request("/v1/reports/summary", {
+    date: "2026-10-14",
+    days: 1,
+  });
+  assert.equal(result.status, 200);
+  const body = (await result.json()) as Record<string, unknown>;
+  assert.equal(body.leadsCreated, 2);
+  assert.equal(body.leadsAwaitingSheetSync, 1);
+  assert.equal(body.emailJobsFailed, 1);
+  assert.equal(body.payments, null);
+  assert.equal(body.stock, null);
+  assert.equal(JSON.stringify(body).includes("private@example.com"), false);
+  assert.equal(JSON.stringify(body).includes("Private Person"), false);
+  const unauthenticated = await worker.fetch(
+    new Request("https://worker.example/v1/reports/summary", {
+      method: "POST",
+      body: JSON.stringify({ date: "2026-10-14", days: 1 }),
+    }),
+    env,
+    {} as ExecutionContext,
+  );
+  assert.equal(unauthenticated.status, 401);
+  const invalid = await request("/v1/reports/summary", {
+    date: "2026-02-30",
+    days: 1,
+  });
+  assert.equal(invalid.status, 400);
+});
 const smsSettings = {
   BOOKING_ENABLED: "true",
   BOOKING_SMS_ENABLED: "true",

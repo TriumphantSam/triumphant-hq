@@ -112,14 +112,14 @@ export const automationDemos = [
     description:
       "Bring leads, bookings, payments and stock into a daily operational report.",
     audience: "Owners · operators · small teams",
-    status: "Sample workflow",
-    action: "Explore the reporting flow",
+    status: "Interactive sample dashboard",
+    action: "Try the reporting demo",
     steps: [
-      "Review a daily operational summary.",
-      "Check stock alerts that need action.",
-      "Approve social drafts before publishing.",
+      "Review a clearly labelled sample report.",
+      "Record sample sales to trigger a stock alert.",
+      "Download the report and try draft approval without publishing.",
     ],
-    note: "Live reports need connected business data. Social drafts always need owner approval. No sample numbers are presented as business results.",
+    note: "This public dashboard uses fictional sample data. A private report endpoint reads real leads and bookings; automated owner delivery and a signed-in admin workspace are not enabled yet. Payment and stock reporting await those integrations. Draft approval in this demo publishes nothing.",
   },
 ] as const;
 export type DemoSlug = (typeof automationDemos)[number]["slug"];

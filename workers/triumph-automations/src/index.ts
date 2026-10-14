@@ -4,6 +4,7 @@ import { drainOutbox } from "./delivery";
 import type { Env } from "./types";
 import { bookingRoutes, drainBookingOutbox } from "./bookings";
 import { drainBookingMessages, messageChannels } from "./booking-messages";
+import { privateReport, reportWindow } from "./reports";
 
 const app = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
 app.use("/v1/*", async (c, next) => {
@@ -75,6 +76,20 @@ app.get("/v1/health", (c) =>
   }),
 );
 app.route("/v1/bookings", bookingRoutes);
+// Internal only: signed requests, no public Next.js proxy and no customer fields.
+app.post("/v1/reports/summary", async (c) => {
+  let input;
+  try {
+    input = JSON.parse(c.get("raw"));
+    reportWindow(input.date, input.days);
+  } catch {
+    return c.json(
+      { error: "Use a valid YYYY-MM-DD date and days 1 or 7." },
+      400,
+    );
+  }
+  return c.json(await privateReport(c.env, input.date, input.days));
+});
 app.post("/v1/whatsapp/notification-optout", async (c) => {
   let input;
   try {
