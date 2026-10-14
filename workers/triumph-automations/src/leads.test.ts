@@ -6,6 +6,7 @@ import worker from "./index";
 import { hmac } from "./security";
 import { drainOutbox } from "./delivery";
 import { bookingSlots, drainBookingOutbox } from "./bookings";
+import { drainBookingMessages, notificationPhone } from "./booking-messages";
 import type { Env } from "./types";
 
 function setup() {
@@ -22,7 +23,14 @@ function setup() {
       "utf8",
     ),
   );
+  sql.exec(
+    readFileSync(
+      new URL("../migrations/0003_booking_messages.sql", import.meta.url),
+      "utf8",
+    ),
+  );
   const prepare = (query: string) => {
+    // All supported migrations run against the same SQLite engine as D1.
     let args: (string | number | null)[] = [];
     const statement = {
       bind(...values: (string | number | null)[]) {
@@ -97,6 +105,295 @@ const enquiry = {
   message: "A test enquiry",
   source: "automation_lab",
 };
+const smsSettings = {
+  BOOKING_ENABLED: "true",
+  BOOKING_SMS_ENABLED: "true",
+  TERMII_API_KEY: "test-only-key",
+  TERMII_API_BASE: "https://api.ng.termii.com",
+  TERMII_SENDER_ID: "TriumphTec",
+  TERMII_DND_APPROVED: "true",
+};
+test("phone send quotas defer work and a clear 429 rejection can retry safely", async () => {
+  const { sql, env, request } = setup();
+  Object.assign(env, smsSettings, { BOOKING_SMS_DAILY_LIMIT: "1" });
+  for (let i = 0; i < 2; i++)
+    await request("/v1/bookings/create", {
+      ...enquiry,
+      start: bookingSlots()[i].start,
+      phone: "09090090910",
+      smsOptIn: true,
+      requestId: crypto.randomUUID(),
+    });
+  const original = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls++;
+    return new Response("private-provider-body", { status: 429 });
+  };
+  try {
+    await drainBookingMessages(env);
+    assert.equal(calls, 1);
+    assert.equal(
+      sql
+        .prepare(
+          "SELECT count(*) n FROM booking_messages WHERE last_error='daily_limit'",
+        )
+        .get()!.n,
+      1,
+    );
+    assert.equal(
+      sql
+        .prepare(
+          "SELECT attempts FROM booking_messages WHERE last_error='daily_limit'",
+        )
+        .get()!.attempts,
+      0,
+    );
+    env.BOOKING_SMS_DAILY_LIMIT = "50";
+    sql.exec(
+      "UPDATE booking_messages SET next_attempt_at='2000-01-01' WHERE kind='confirmation'",
+    );
+    globalThis.fetch = async () => {
+      calls++;
+      return Response.json({ message_id: `test-${calls}` });
+    };
+    await drainBookingMessages(env);
+    await drainBookingMessages(env);
+    assert.equal(calls, 3);
+    assert.equal(
+      sql
+        .prepare(
+          "SELECT count(*) n FROM booking_messages WHERE state='accepted'",
+        )
+        .get()!.n,
+      2,
+    );
+  } finally {
+    globalThis.fetch = original;
+    sql.close();
+  }
+});
+test("phone channels require readiness and explicit consent, without changing legacy recovery", async () => {
+  assert.equal(notificationPhone("09090090910"), "2349090090910");
+  assert.equal(notificationPhone("+234 909 009 0910"), "2349090090910");
+  assert.equal(notificationPhone("0909invalid"), null);
+  const { sql, env, request } = setup();
+  env.BOOKING_ENABLED = "true";
+  const input = {
+    ...enquiry,
+    start: bookingSlots()[0].start,
+    requestId: crypto.randomUUID(),
+    phone: "09090090910",
+    smsOptIn: true,
+  };
+  assert.equal((await request("/v1/bookings/create", input)).status, 400);
+  assert.equal(sql.prepare("SELECT count(*) n FROM bookings").get()!.n, 0);
+  Object.assign(env, smsSettings);
+  assert.equal(
+    (await request("/v1/bookings/create", { ...input, phone: "invalid" }))
+      .status,
+    400,
+  );
+  const data = (await (await request("/v1/bookings/create", input)).json()) as {
+    booking: { id: string };
+    code: string;
+  };
+  const row = sql.prepare("SELECT * FROM bookings").get()!;
+  assert.equal(row.phone, "2349090090910");
+  assert.equal(row.sms_opt_in, 1);
+  assert.equal(row.whatsapp_opt_in, 0);
+  assert.ok(row.notification_consent_at);
+  assert.equal(
+    sql.prepare("SELECT count(*) n FROM booking_messages").get()!.n,
+    3,
+  );
+  assert.equal(
+    (await request("/v1/bookings/recover", { ...input, smsOptIn: false }))
+      .status,
+    404,
+  );
+  const fetchBefore = globalThis.fetch,
+    sends: Record<string, unknown>[] = [];
+  globalThis.fetch = async (_url, options) => {
+    sends.push(JSON.parse(String(options?.body)));
+    return Response.json({ message_id: "sms-test-1" });
+  };
+  try {
+    await drainBookingMessages(env);
+    await drainBookingMessages(env);
+    assert.equal(sends.length, 1);
+    assert.equal(sends[0].channel, "dnd");
+    assert.equal(sends[0].to, "2349090090910");
+    assert.ok(String(sends[0].sms).length <= 160);
+    assert.ok(!String(sends[0].sms).includes(data.code));
+    assert.equal(
+      sql
+        .prepare("SELECT state FROM booking_messages WHERE kind='confirmation'")
+        .get()!.state,
+      "accepted",
+    );
+    await request("/v1/bookings/manage", {
+      ...data.booking,
+      code: data.code,
+      action: "notifications_off",
+    });
+    assert.equal(
+      sql.prepare("SELECT status,sms_opt_in FROM bookings").get()!.status,
+      "confirmed",
+    );
+    assert.equal(
+      sql.prepare("SELECT sms_opt_in FROM bookings").get()!.sms_opt_in,
+      0,
+    );
+    assert.equal(
+      sql
+        .prepare(
+          "SELECT count(*) n FROM booking_messages WHERE state='cancelled'",
+        )
+        .get()!.n,
+      2,
+    );
+  } finally {
+    globalThis.fetch = fetchBefore;
+    sql.close();
+  }
+});
+test("ambiguous sends and expired sender leases cannot replay a possibly accepted message", async () => {
+  const { sql, env, request } = setup();
+  Object.assign(env, smsSettings);
+  const data = (await (
+    await request("/v1/bookings/create", {
+      ...enquiry,
+      start: bookingSlots()[0].start,
+      phone: "+2349090090910",
+      smsOptIn: true,
+      requestId: crypto.randomUUID(),
+    })
+  ).json()) as { booking: { id: string }; code: string };
+  const original = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls++;
+    throw new Error("private-provider-data");
+  };
+  try {
+    await drainBookingMessages(env);
+    await drainBookingMessages(env);
+    assert.equal(calls, 1);
+    assert.equal(
+      sql
+        .prepare(
+          "SELECT state,last_error FROM booking_messages WHERE kind='confirmation'",
+        )
+        .get()!.state,
+      "unknown",
+    );
+    sql.exec(
+      "UPDATE booking_messages SET state='sending',lease_until='2000-01-01' WHERE kind='reminder_24h'",
+    );
+    await drainBookingMessages(env);
+    assert.equal(calls, 1);
+    assert.equal(
+      sql
+        .prepare("SELECT state FROM booking_messages WHERE kind='reminder_24h'")
+        .get()!.state,
+      "unknown",
+    );
+    await request("/v1/bookings/manage", {
+      ...data.booking,
+      code: data.code,
+      action: "cancel",
+    });
+    assert.equal(
+      sql
+        .prepare("SELECT state FROM booking_messages WHERE kind='reminder_2h'")
+        .get()!.state,
+      "cancelled",
+    );
+  } finally {
+    globalThis.fetch = original;
+    sql.close();
+  }
+});
+test("WhatsApp sender verification rejects the UK number and STOP is signed and scoped", async () => {
+  const { sql, env, request } = setup();
+  Object.assign(env, {
+    BOOKING_ENABLED: "true",
+    BOOKING_WHATSAPP_ENABLED: "true",
+    BOOKING_WA_ACCESS_TOKEN: "test-token",
+    BOOKING_WA_PHONE_NUMBER_ID: "1092109073976406",
+    BOOKING_WA_GRAPH_VERSION: "v23.0",
+    BOOKING_WA_CONFIRMATION_TEMPLATE: "booking_confirmed",
+    BOOKING_WA_REMINDER_TEMPLATE: "booking_reminder",
+    BOOKING_WA_CANCELLATION_TEMPLATE: "booking_cancelled",
+    WHATSAPP_BRIDGE_SECRET: "test-bridge",
+  });
+  const data = (await (
+    await request("/v1/bookings/create", {
+      ...enquiry,
+      start: bookingSlots()[0].start,
+      phone: "09090090910",
+      whatsappOptIn: true,
+      requestId: crypto.randomUUID(),
+    })
+  ).json()) as { booking: { id: string }; code: string };
+  const original = globalThis.fetch;
+  const sends: Record<string, unknown>[] = [];
+  globalThis.fetch = async () =>
+    Response.json({ display_phone_number: "+44 7478 036301" });
+  try {
+    await drainBookingMessages(env);
+    assert.equal(
+      sql
+        .prepare(
+          "SELECT attempts FROM booking_messages WHERE kind='confirmation'",
+        )
+        .get()!.attempts,
+      0,
+    );
+    globalThis.fetch = async (_url, options) => {
+      if (!options?.body)
+        return Response.json({ display_phone_number: "+234 909 009 0910" });
+      sends.push(JSON.parse(String(options.body)));
+      return Response.json({ messages: [{ id: "wamid.test" }] });
+    };
+    await drainBookingMessages(env);
+    assert.equal(sends.length, 1);
+    assert.equal(sends[0].type, "template");
+    assert.equal(sends[0].to, "2349090090910");
+    assert.ok(!JSON.stringify(sends).includes(data.code));
+    assert.equal(
+      (
+        await request("/v1/whatsapp/notification-optout", {
+          phone: "2349090090910",
+        })
+      ).status,
+      401,
+    );
+    assert.equal(
+      (
+        await request(
+          "/v1/whatsapp/notification-optout",
+          { phone: "2349090090910" },
+          crypto.randomUUID(),
+          env.WHATSAPP_BRIDGE_SECRET,
+        )
+      ).status,
+      200,
+    );
+    assert.equal(
+      sql.prepare("SELECT whatsapp_opt_in FROM bookings").get()!
+        .whatsapp_opt_in,
+      0,
+    );
+    sql.exec("UPDATE booking_messages SET next_attempt_at='2000-01-01'");
+    await drainBookingMessages(env);
+    assert.equal(sends.length, 1);
+  } finally {
+    globalThis.fetch = original;
+    sql.close();
+  }
+});
 test("consultation schedule follows Lagos weekdays, buffer and minimum notice", () => {
   const now = Date.parse("2026-10-16T08:59:00Z"),
     slots = bookingSlots(now);

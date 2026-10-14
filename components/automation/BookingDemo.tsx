@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Turnstile from "./Turnstile";
 type Slot = { start: string; end: string };
 type Reservation = { id: string; start: string; end: string; status: string };
-type Delivery = { kind: string; state: string };
+type Delivery = { kind: string; state: string; channel?: string };
 const deliveryLabels: Record<string, string> = {
   confirmation: "Your confirmation",
   owner_confirmation: "Team notification",
@@ -40,6 +40,7 @@ export default function BookingDemo() {
     [loading, setLoading] = useState(true),
     [start, setStart] = useState(""),
     [day, setDay] = useState("");
+  const [channels, setChannels] = useState({ sms: false, whatsapp: false });
   const [booking, setBooking] = useState<Reservation | null>(null),
     [code, setCode] = useState(""),
     [deliveries, setDeliveries] = useState<Delivery[]>([]);
@@ -56,6 +57,8 @@ export default function BookingDemo() {
     request("/api/automation/bookings")
       .then((data) => {
         if (!stopped) setSlots(data.slots);
+        if (!stopped)
+          setChannels(data.channels || { sms: false, whatsapp: false });
       })
       .catch((error) => {
         if (!stopped) setError(error.message);
@@ -108,6 +111,8 @@ export default function BookingDemo() {
       name: form.get("name"),
       email: form.get("email"),
       phone: form.get("phone"),
+      smsOptIn: form.get("smsOptIn") === "on",
+      whatsappOptIn: form.get("whatsappOptIn") === "on",
       start,
     };
     const fingerprint = JSON.stringify(details),
@@ -195,6 +200,7 @@ export default function BookingDemo() {
     }
   }
   function calendar() {
+    // Calendar exports contain no private management credentials.
     if (!booking) return;
     const stamp = (value: string) =>
       value.replace(/[-:]/g, "").replace(/\.\d{3}/, "");
@@ -283,10 +289,20 @@ export default function BookingDemo() {
               ),
             )
             .map((d) => (
-              <div className="lab-result-row" key={d.kind}>
-                <span>{deliveryLabels[d.kind]}</span>
+              <div
+                className="lab-result-row"
+                key={`${d.channel || "email"}:${d.kind}`}
+              >
+                <span>
+                  {d.channel && d.channel !== "email"
+                    ? `${d.channel.toUpperCase()}: `
+                    : ""}
+                  {deliveryLabels[d.kind]}
+                </span>
                 <strong>
-                  {d.state === "sent" ? "Provider accepted" : d.state}
+                  {d.state === "sent" || d.state === "accepted"
+                    ? "Provider accepted"
+                    : d.state}
                 </strong>
               </div>
             ))}
@@ -297,6 +313,35 @@ export default function BookingDemo() {
           </p>
           {booking.status !== "cancelled" && (
             <form className="lab-form" onSubmit={cancel}>
+              {deliveries.some((d) => d.channel && d.channel !== "email") && (
+                <button
+                  type="button"
+                  className="lab-link secondary"
+                  disabled={busy}
+                  onClick={async () => {
+                    if (!booking) return;
+                    setBusy(true);
+                    setError("");
+                    try {
+                      const data = await request(
+                        "/api/automation/bookings/manage",
+                        { action: "notifications_off", id: booking.id, code },
+                      );
+                      setDeliveries(data.deliveries);
+                    } catch (error) {
+                      setError(
+                        error instanceof Error
+                          ? error.message
+                          : "Please try again.",
+                      );
+                    } finally {
+                      setBusy(false);
+                    }
+                  }}
+                >
+                  Stop phone notifications
+                </button>
+              )}
               <Turnstile key={attempt} onToken={setToken} />
               <label className="lab-consent">
                 <input type="checkbox" required />I want to cancel this
@@ -388,6 +433,32 @@ export default function BookingDemo() {
                 aria-label="Leave this blank"
               />
             </div>
+            <fieldset>
+              <legend className="lab-note">Optional phone notifications</legend>
+              <label className="lab-consent">
+                <input
+                  type="checkbox"
+                  name="whatsappOptIn"
+                  disabled={!channels.whatsapp}
+                />
+                Send my booking updates on WhatsApp
+                {!channels.whatsapp && " — number connection pending"}.
+              </label>
+              <label className="lab-consent">
+                <input
+                  type="checkbox"
+                  name="smsOptIn"
+                  disabled={!channels.sms}
+                />
+                Send my booking updates by SMS
+                {!channels.sms && " — provider connection pending"}.
+              </label>
+              <p className="lab-note">
+                These choices cover this appointment only. They do not subscribe
+                you to marketing. Phone notifications need your mobile number
+                and can be stopped from your booking management page.
+              </p>
+            </fieldset>
             <p className="lab-note">
               This is a real appointment. We use your details for the
               consultation, confirmation and reminders.{" "}
@@ -405,13 +476,14 @@ export default function BookingDemo() {
             <form className="lab-form" onSubmit={manage}>
               <label>
                 Booking reference
-                <input name="id" required maxLength={36} />
+                <input name="id" required maxLength={36} autoComplete="off" />
               </label>
               <label>
                 Private management code
                 <input
                   name="code"
                   type="password"
+                  autoComplete="new-password"
                   required
                   maxLength={64}
                   className="ph-mask"

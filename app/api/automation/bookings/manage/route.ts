@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     if (
       !input ||
       Array.isArray(input) ||
-      !["status", "cancel"].includes(input.action)
+      !["status", "cancel", "notifications_off"].includes(input.action)
     )
       throw new FormError("Invalid booking action.");
     if (input.action === "cancel")

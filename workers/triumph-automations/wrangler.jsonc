@@ -11,6 +11,8 @@
       "vars": {
         "ENVIRONMENT": "production",
         "BOOKING_ENABLED": "true",
+        "BOOKING_SMS_ENABLED": "false",
+        "BOOKING_WHATSAPP_ENABLED": "false",
         "OWNER_EMAIL": "admin@triumphantech.com",
         "EMAIL_FROM": "TriumphantTech <hello@notify.triumphantech.com>",
       },
@@ -28,6 +30,8 @@
       "vars": {
         "ENVIRONMENT": "staging",
         "BOOKING_ENABLED": "true",
+        "BOOKING_SMS_ENABLED": "false",
+        "BOOKING_WHATSAPP_ENABLED": "false",
         "OWNER_EMAIL": "admin@triumphantech.com",
         "EMAIL_FROM": "TriumphantTech <hello@notify.triumphantech.com>",
       },

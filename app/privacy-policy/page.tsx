@@ -120,7 +120,7 @@ export default function PrivacyPolicyPage() {
                         {[
                             { label: 'Effective Date', value: '2019' },
                             { label: 'Jurisdiction', value: 'Global Standards (incl. GDPR)' },
-                            { label: 'Last Updated', value: 'March 2026' },
+                            { label: 'Last Updated', value: 'October 2026' },
                         ].map((tag) => (
                             <div
                                 key={tag.label}
@@ -403,6 +403,7 @@ export default function PrivacyPolicyPage() {
                         </PolicySection>
 
                         <PolicySection id="data-sharing" icon="🔗" title="Data Sharing and Third Parties">
+                            <p>Automation Lab bookings are stored in Cloudflare D1, mirrored to Google Sheets, and use Resend for confirmations and reminders. If you choose WhatsApp or SMS updates after those channels are activated, Meta or Termii respectively receives the phone number and appointment details needed to send them. These appointment choices are separate from marketing consent. You can stop phone notifications from your private booking management page; WhatsApp STOP also stops pending WhatsApp booking messages. Email remains available for appointment updates.</p>
                             <p>
                                 Triumphant Technological Services does not sell or trade users&apos; personal information. However, we may share limited data with trusted partners who assist in operating our services — such as payment processors, analytics providers, or regulatory bodies — under strict confidentiality agreements.
                             </p>

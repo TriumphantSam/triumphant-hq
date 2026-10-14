@@ -1,6 +1,11 @@
 import { Hono } from "hono";
 import { hmac } from "./security";
 import type { Env } from "./types";
+import {
+  messageChannels,
+  messageJobs,
+  notificationPhone,
+} from "./booking-messages";
 
 const DAY = 86400000,
   HOUR = 3600000;
@@ -14,6 +19,8 @@ type Booking = {
   slot_start: string;
   slot_end: string;
   status: string;
+  whatsapp_opt_in: number;
+  sms_opt_in: number;
 };
 type BookingJob = {
   id: string;
@@ -52,7 +59,20 @@ function bookingInput(raw: string) {
   const name = typeof input.name === "string" ? input.name.trim() : "";
   const email =
     typeof input.email === "string" ? input.email.trim().toLowerCase() : "";
-  const phone = typeof input.phone === "string" ? input.phone.trim() : "";
+  let phone = typeof input.phone === "string" ? input.phone.trim() : "";
+  const whatsappOptIn = input.whatsappOptIn === true,
+    smsOptIn = input.smsOptIn === true;
+  if (
+    (input.whatsappOptIn !== undefined &&
+      typeof input.whatsappOptIn !== "boolean") ||
+    (input.smsOptIn !== undefined && typeof input.smsOptIn !== "boolean")
+  )
+    return null;
+  if (whatsappOptIn || smsOptIn) {
+    const normalized = notificationPhone(phone);
+    if (!normalized) return null;
+    phone = normalized;
+  }
   if (
     !name ||
     name.length > 120 ||
@@ -64,7 +84,15 @@ function bookingInput(raw: string) {
     typeof input.start !== "string"
   )
     return null;
-  return { name, email, phone, requestId: input.requestId, start: input.start };
+  return {
+    name,
+    email,
+    phone,
+    requestId: input.requestId,
+    start: input.start,
+    whatsappOptIn,
+    smsOptIn,
+  };
 }
 const fingerprintFor = (
   env: Env,
@@ -72,7 +100,18 @@ const fingerprintFor = (
 ) =>
   hmac(
     env.AUTOMATION_HMAC_SECRET,
-    JSON.stringify([input.name, input.email, input.phone, input.start]),
+    JSON.stringify(
+      input.whatsappOptIn || input.smsOptIn
+        ? [
+            input.name,
+            input.email,
+            input.phone,
+            input.start,
+            input.whatsappOptIn,
+            input.smsOptIn,
+          ]
+        : [input.name, input.email, input.phone, input.start],
+    ),
   );
 async function authorised(env: Env, input: Record<string, unknown>) {
   if (
@@ -110,6 +149,7 @@ bookingRoutes.get("/slots", async (c) => {
   return c.json({
     slots: bookingSlots().filter((s) => !taken.has(s.start)),
     timezone: "Africa/Lagos",
+    channels: messageChannels(c.env),
   });
 });
 bookingRoutes.post("/recover", async (c) => {
@@ -148,6 +188,18 @@ bookingRoutes.post("/create", async (c) => {
       400,
     );
   const { name, email, phone } = input;
+  const channels = messageChannels(c.env);
+  if (
+    (input.whatsappOptIn && !channels.whatsapp) ||
+    (input.smsOptIn && !channels.sms)
+  )
+    return c.json(
+      {
+        error:
+          "That reminder channel is not connected. Please use email for now.",
+      },
+      400,
+    );
   const fingerprint = await fingerprintFor(c.env, input);
   const existing = await c.env.DB.prepare(
     "SELECT * FROM bookings WHERE request_id=?",
@@ -184,7 +236,7 @@ bookingRoutes.post("/create", async (c) => {
   try {
     await c.env.DB.batch([
       c.env.DB.prepare(
-        "INSERT INTO bookings(id,request_id,fingerprint,created_at,slot_start,slot_end,name,email,phone) VALUES(?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO bookings(id,request_id,fingerprint,created_at,slot_start,slot_end,name,email,phone,whatsapp_opt_in,sms_opt_in,notification_consent_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
       ).bind(
         id,
         input.requestId,
@@ -195,6 +247,9 @@ bookingRoutes.post("/create", async (c) => {
         name,
         email,
         phone,
+        input.whatsappOptIn ? 1 : 0,
+        input.smsOptIn ? 1 : 0,
+        input.whatsappOptIn || input.smsOptIn ? now : null,
       ),
       c.env.DB.prepare(
         "INSERT INTO leads(id,created_at,updated_at,source,name,email,phone,service,need) VALUES(?,?,?,'booking',?,?,?,'Automation consultation',?)",
@@ -224,6 +279,19 @@ bookingRoutes.post("/create", async (c) => {
               ).toISOString()
             : now,
         ),
+      ),
+      ...messageJobs(
+        c.env,
+        {
+          id,
+          name,
+          phone,
+          slot_start: slot.start,
+          status: "confirmed",
+          sms_opt_in: input.smsOptIn ? 1 : 0,
+          whatsapp_opt_in: input.whatsappOptIn ? 1 : 0,
+        },
+        now,
       ),
     ]);
   } catch {
@@ -287,6 +355,10 @@ bookingRoutes.post("/manage", async (c) => {
       c.env.DB.prepare(
         "UPDATE booking_outbox SET state='cancelled',lease_until=NULL WHERE booking_id=? AND kind IN ('reminder_24h','reminder_2h','confirmation','owner_confirmation') AND state IN ('pending','failed')",
       ).bind(booking.id),
+      c.env.DB.prepare(
+        "UPDATE booking_messages SET state='cancelled',lease_until=NULL WHERE booking_id=? AND kind<>'cancellation' AND state IN ('pending','failed')",
+      ).bind(booking.id),
+      ...messageJobs(c.env, booking, now, true),
       ...["cancellation", "owner_cancellation"].map((kind) =>
         c.env.DB.prepare(
           "INSERT INTO booking_outbox(id,booking_id,kind,next_attempt_at) VALUES(?,?,?,?) ON CONFLICT(booking_id,kind) DO NOTHING",
@@ -300,12 +372,21 @@ bookingRoutes.post("/manage", async (c) => {
       ).bind(now, booking.id),
     ]);
     booking.status = "cancelled";
+  } else if (input.action === "notifications_off") {
+    await c.env.DB.batch([
+      c.env.DB.prepare(
+        "UPDATE bookings SET sms_opt_in=0,whatsapp_opt_in=0 WHERE id=?",
+      ).bind(booking.id),
+      c.env.DB.prepare(
+        "UPDATE booking_messages SET state='cancelled' WHERE booking_id=? AND state IN ('pending','failed')",
+      ).bind(booking.id),
+    ]);
   } else if (input.action !== "status")
     return c.json({ error: "Invalid action." }, 400);
   const deliveries = await c.env.DB.prepare(
-    "SELECT kind,state FROM booking_outbox WHERE booking_id=?",
+    "SELECT kind,state,'email' AS channel FROM booking_outbox WHERE booking_id=? UNION ALL SELECT kind,state,channel FROM booking_messages WHERE booking_id=?",
   )
-    .bind(booking.id)
+    .bind(booking.id, booking.id)
     .all();
   return c.json({
     booking: {

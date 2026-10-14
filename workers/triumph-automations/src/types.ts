@@ -11,6 +11,21 @@ export type Env = {
   SHEETS_SYNC_SECRET?: string;
   WHATSAPP_BRIDGE_SECRET?: string;
   BOOKING_ENABLED?: string;
+  BOOKING_SMS_ENABLED?: string;
+  TERMII_API_KEY?: string;
+  TERMII_API_BASE?: string;
+  TERMII_SENDER_ID?: string;
+  TERMII_DND_APPROVED?: string;
+  BOOKING_WHATSAPP_ENABLED?: string;
+  BOOKING_SMS_DAILY_LIMIT?: string;
+  BOOKING_WA_DAILY_LIMIT?: string;
+  BOOKING_WA_ACCESS_TOKEN?: string;
+  BOOKING_WA_PHONE_NUMBER_ID?: string;
+  BOOKING_WA_GRAPH_VERSION?: string;
+  BOOKING_WA_TEMPLATE_LANGUAGE?: string;
+  BOOKING_WA_CONFIRMATION_TEMPLATE?: string;
+  BOOKING_WA_REMINDER_TEMPLATE?: string;
+  BOOKING_WA_CANCELLATION_TEMPLATE?: string;
 };
 export type Lead = {
   id: string;

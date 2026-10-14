@@ -3,6 +3,7 @@ import { verifySignedRequest } from "./security";
 import { drainOutbox } from "./delivery";
 import type { Env } from "./types";
 import { bookingRoutes, drainBookingOutbox } from "./bookings";
+import { drainBookingMessages, messageChannels } from "./booking-messages";
 
 const app = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
 app.use("/v1/*", async (c, next) => {
@@ -40,7 +41,7 @@ app.use("/v1/*", async (c, next) => {
         ? c.env.SHEETS_SYNC_SECRET || ""
         : c.req.path.startsWith("/v1/whatsapp/")
           ? c.env.WHATSAPP_BRIDGE_SECRET || ""
-        : c.env.AUTOMATION_HMAC_SECRET,
+          : c.env.AUTOMATION_HMAC_SECRET,
     ))
   )
     return c.json({ error: "Unauthorized" }, 401);
@@ -60,6 +61,7 @@ app.get("/v1/health", (c) =>
     ok: true,
     leadCapture: true,
     bookingEnabled: c.env.BOOKING_ENABLED === "true",
+    bookingChannels: messageChannels(c.env),
     sheetConfigured: Boolean(
       c.env.SHEETS_SYNC_SECRET ||
       (c.env.LEADS_SHEET_ID &&
@@ -73,27 +75,98 @@ app.get("/v1/health", (c) =>
   }),
 );
 app.route("/v1/bookings", bookingRoutes);
+app.post("/v1/whatsapp/notification-optout", async (c) => {
+  let input;
+  try {
+    input = JSON.parse(c.get("raw"));
+  } catch {
+    return c.json({ error: "Invalid request." }, 400);
+  }
+  if (
+    !input ||
+    typeof input.phone !== "string" ||
+    !/^[1-9]\d{7,14}$/.test(input.phone)
+  )
+    return c.json({ error: "Invalid phone." }, 400);
+  await c.env.DB.batch([
+    c.env.DB.prepare(
+      "UPDATE bookings SET whatsapp_opt_in=0 WHERE phone=?",
+    ).bind(input.phone),
+    c.env.DB.prepare(
+      "UPDATE booking_messages SET state='cancelled' WHERE channel='whatsapp' AND state IN ('pending','failed') AND booking_id IN (SELECT id FROM bookings WHERE phone=?)",
+    ).bind(input.phone),
+  ]);
+  return c.json({ ok: true });
+});
 app.post("/v1/whatsapp/handoff", async (c) => {
   let input: Record<string, unknown>;
-  try { input = JSON.parse(c.get("raw")); } catch { return c.json({ error: "Invalid request." }, 400); }
-  if (!input || typeof input.phone !== "string" || !/^\d{7,15}$/.test(input.phone) ||
-      typeof input.messageId !== "string" || !/^[A-Za-z0-9._=+\/-]{1,256}$/.test(input.messageId))
+  try {
+    input = JSON.parse(c.get("raw"));
+  } catch {
     return c.json({ error: "Invalid request." }, 400);
-  for (const [field, limit] of [["name", 80], ["email", 254], ["service", 80], ["need", 1000]] as const) {
-    if (input[field] !== undefined && (typeof input[field] !== "string" || (input[field] as string).length > limit))
+  }
+  if (
+    !input ||
+    typeof input.phone !== "string" ||
+    !/^\d{7,15}$/.test(input.phone) ||
+    typeof input.messageId !== "string" ||
+    !/^[A-Za-z0-9._=+\/-]{1,256}$/.test(input.messageId)
+  )
+    return c.json({ error: "Invalid request." }, 400);
+  for (const [field, limit] of [
+    ["name", 80],
+    ["email", 254],
+    ["service", 80],
+    ["need", 1000],
+  ] as const) {
+    if (
+      input[field] !== undefined &&
+      (typeof input[field] !== "string" ||
+        (input[field] as string).length > limit)
+    )
       return c.json({ error: "Invalid request." }, 400);
   }
-  const name = String(input.name || "").trim(), email = String(input.email || "").trim();
-  const service = String(input.service || "").trim(), need = String(input.need || "").trim();
-  if ((email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ||
-      ((name || email || service || need) && (name.length < 2 || need.length < 10 || !["Website", "Seo", "Automation"].includes(service))))
+  const name = String(input.name || "").trim(),
+    email = String(input.email || "").trim();
+  const service = String(input.service || "").trim(),
+    need = String(input.need || "").trim();
+  if (
+    (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ||
+    ((name || email || service || need) &&
+      (name.length < 2 ||
+        need.length < 10 ||
+        !["Website", "Seo", "Automation"].includes(service)))
+  )
     return c.json({ error: "Invalid request." }, 400);
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input.messageId));
-  const id = "wa-" + [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(input.messageId),
+  );
+  const id =
+    "wa-" +
+    [...new Uint8Array(digest)]
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
   const now = new Date().toISOString();
   await c.env.DB.batch([
-    c.env.DB.prepare("INSERT INTO leads(id,created_at,updated_at,source,name,email,phone,service,need) VALUES(?,?,?,'whatsapp',?,?,?,?,?) ON CONFLICT(id) DO NOTHING").bind(id, now, now, name || "WhatsApp contact", email, input.phone, service || "Human handoff", need || "A WhatsApp contact requested a human. Reply through the business WhatsApp conversation; bot replies are paused for 24 hours."),
-    ...(["sheet", "owner_email"] as const).map(kind => c.env.DB.prepare("INSERT INTO outbox(id,lead_id,kind,next_attempt_at) VALUES(?,?,?,?) ON CONFLICT(lead_id,kind) DO NOTHING").bind(`${id}:${kind}`, id, kind, now)),
+    c.env.DB.prepare(
+      "INSERT INTO leads(id,created_at,updated_at,source,name,email,phone,service,need) VALUES(?,?,?,'whatsapp',?,?,?,?,?) ON CONFLICT(id) DO NOTHING",
+    ).bind(
+      id,
+      now,
+      now,
+      name || "WhatsApp contact",
+      email,
+      input.phone,
+      service || "Human handoff",
+      need ||
+        "A WhatsApp contact requested a human. Reply through the business WhatsApp conversation; bot replies are paused for 24 hours.",
+    ),
+    ...(["sheet", "owner_email"] as const).map((kind) =>
+      c.env.DB.prepare(
+        "INSERT INTO outbox(id,lead_id,kind,next_attempt_at) VALUES(?,?,?,?) ON CONFLICT(lead_id,kind) DO NOTHING",
+      ).bind(`${id}:${kind}`, id, kind, now),
+    ),
   ]);
   return c.json({ ok: true, reference: id });
 });
@@ -104,12 +177,18 @@ app.post("/v1/form-admission", async (c) => {
   } catch {
     return c.json({ error: "Invalid request." }, 400);
   }
-  if (!input || typeof input.ipKey !== "string" || !/^[a-f0-9]{64}$/.test(input.ipKey))
+  if (
+    !input ||
+    typeof input.ipKey !== "string" ||
+    !/^[a-f0-9]{64}$/.test(input.ipKey)
+  )
     return c.json({ error: "Invalid request." }, 400);
   const now = Date.now();
   const result = await c.env.DB.prepare(
     "INSERT INTO rate_limits(key,count,expires_at) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN rate_limits.expires_at<=? THEN 1 ELSE rate_limits.count+1 END,expires_at=CASE WHEN rate_limits.expires_at<=? THEN excluded.expires_at ELSE rate_limits.expires_at END RETURNING count",
-  ).bind(`ip:${input.ipKey}`, now + 3600000, now, now).first<{ count: number }>();
+  )
+    .bind(`ip:${input.ipKey}`, now + 3600000, now, now)
+    .first<{ count: number }>();
   return c.json({ allowed: Boolean(result && result.count <= 5) });
 });
 app.post("/v1/leads", async (c) => {
@@ -266,6 +345,7 @@ export default {
   async scheduled(_controller: ScheduledController, env: Env) {
     await drainOutbox(env);
     await drainBookingOutbox(env);
+    await drainBookingMessages(env);
     await env.DB.batch([
       env.DB.prepare("DELETE FROM request_nonces WHERE expires_at<?").bind(
         Date.now(),
@@ -279,7 +359,9 @@ export default {
       env.DB.prepare("DELETE FROM events WHERE created_at<?").bind(
         new Date(Date.now() - 365 * 86400000).toISOString(),
       ),
-      env.DB.prepare("DELETE FROM bookings WHERE created_at<?").bind(new Date(Date.now() - 365 * 86400000).toISOString()),
+      env.DB.prepare("DELETE FROM bookings WHERE created_at<?").bind(
+        new Date(Date.now() - 365 * 86400000).toISOString(),
+      ),
     ]);
   },
 } satisfies ExportedHandler<Env>;

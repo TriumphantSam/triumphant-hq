@@ -37,6 +37,8 @@ export async function POST(request: Request) {
       phone: input.phone,
       start: input.start,
       requestId: input.requestId,
+      whatsappOptIn: input.whatsappOptIn,
+      smsOptIn: input.smsOptIn,
     });
     return Response.json(result, {
       status: 201,
