@@ -2,9 +2,10 @@ import Link from "next/link";
 import Script from "next/script";
 import { notFound } from "next/navigation";
 import { getForgeProduct, getForgeProductSlugs } from "@/lib/digital-forge";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, productOfferJsonLd } from "@/lib/seo";
 import { resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 import CurrencyPrice from "@/components/CurrencyPrice";
+import JsonLd, { serializeJsonLd } from "@/components/seo/JsonLd";
 
 export const revalidate = 300;
 
@@ -98,8 +99,9 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
   };
 
   const primaryHref = getCheckoutHref(slug);
-  const priceDisplay = formatPrice(product.priceNgn);
-  const usdDisplay = resolveUsdPriceLabel(slug, "product", product.priceNgn ?? DEFAULT_PRICE_NGN);
+  const priceNgn = product.priceNgn ?? DEFAULT_PRICE_NGN;
+  const priceDisplay = formatPrice(priceNgn);
+  const usdDisplay = resolveUsdPriceLabel(slug, "product", priceNgn);
   const parsedBonuses = product.bonuses
     .map(parseBonusItem)
     .filter(Boolean) as { asset: string; role: string; perceived_value: string }[];
@@ -123,9 +125,23 @@ export default async function DigitalForgeProductDetailPage({ params }: PageProp
       <Script id={`meta-pixel-viewcontent-${product.slug}`}>
         {`if (typeof fbq !== 'undefined') fbq('track', 'ViewContent');`}
       </Script>
+      <JsonLd
+        data={productOfferJsonLd({
+          slug: product.slug,
+          name: product.title,
+          description: product.seo?.metaDescription || product.promise || product.title,
+          priceNgn,
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Digital Forge", path: "/digital-forge" },
+            { name: "Product Library", path: "/digital-forge/products" },
+            { name: product.title, path: `/digital-forge/products/${product.slug}` },
+          ],
+        })}
+      />
       {faqSchema.mainEntity.length > 0 ? (
         <Script id={`faq-schema-${product.slug}`} type="application/ld+json">
-          {JSON.stringify(faqSchema)}
+          {serializeJsonLd(faqSchema)}
         </Script>
       ) : null}
 

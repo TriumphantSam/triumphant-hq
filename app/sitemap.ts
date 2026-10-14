@@ -2,63 +2,24 @@ import { MetadataRoute } from "next";
 import { getForgeProducts } from "@/lib/digital-forge";
 import { caseStudies } from "@/lib/case-studies";
 import { getBlogSitemapEntries } from "@/lib/blog";
+import { contentLastModified, isoDay } from "@/lib/content-lastmod";
 import { locationPages, SITE_URL } from "@/lib/seo";
 
 /**
- * Stable lastmod values. `new Date()` made every entry look freshly edited on each request.
- * Pages revised in the October 2026 SEO pass use that date. Untouched pages use the
- * 11 August 2026 entity revision recorded in public/llms-full.txt.
+ * lastmod comes from lib/sitemap-lastmod.json (git date of the content file,
+ * or the case study `updated` field when several studies share one file).
+ * It is not the build time. Paths with no recorded edit omit lastmod.
  */
-const SEO_PASS = "2026-10-06";
-const PRIOR_REVISION = "2026-08-11";
-
-const revised = new Set([
-  "/",
-  "/services",
-  "/services/seo",
-  "/services/seo/ibadan",
-  "/services/websites",
-  "/about",
-  "/work",
-  "/contact",
-  "/website-scorecard",
-  "/automation-checklist",
-  "/app-readiness",
-  "/resources",
-  "/ibadan-tech-agency",
-  "/locations",
-  "/locations/nigeria",
-  "/locations/ibadan",
-  "/locations/akobo",
-  "/locations/bashorun",
-  "/locations/bodija",
-  "/locations/challenge",
-  "/locations/ojoo",
-  "/locations/oyo",
-  "/locations/osogbo",
-  "/locations/ife",
-  "/blog",
-  "/digital-forge",
-  "/digital-forge/products",
-  "/digital-forge/resources",
-  "/digital-forge/training",
-  "/digital-forge/system",
-  "/digital-forge/course",
-  "/digital-forge/course/access",
-  "/digital-forge/course/waitlist",
-  "/digital-forge/review",
-  "/digital-product",
-]);
-
 function entry(
   path: string,
   priority: number,
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
   lastModified?: string,
 ): MetadataRoute.Sitemap[number] {
+  const day = lastModified || contentLastModified(path);
   return {
     url: path === "/" ? SITE_URL : `${SITE_URL}${path}`,
-    lastModified: lastModified ?? (revised.has(path) ? SEO_PASS : PRIOR_REVISION),
+    ...(day ? { lastModified: day } : {}),
     changeFrequency,
     priority,
   };
@@ -77,11 +38,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entry("/services/automation", 0.85, "monthly"),
     entry("/about", 0.7, "yearly"),
     entry("/work", 0.85, "monthly"),
-    entry("/portfolio", 0.85, "monthly", "2026-10-13"),
-    entry("/nin-bvn-desk", 0.8, "monthly", "2026-10-07"),
-    entry("/shop", 0.8, "monthly", "2026-10-07"),
+    entry("/portfolio", 0.85, "monthly"),
+    entry("/nin-bvn-desk", 0.8, "monthly"),
+    entry("/shop", 0.8, "monthly"),
     ...caseStudies.map((study) =>
-      entry(`/work/${study.slug}`, 0.8, "monthly", study.updated),
+      entry(`/work/${study.slug}`, 0.8, "monthly", contentLastModified(`/work/${study.slug}`) || study.updated),
     ),
     entry("/contact", 0.8, "yearly"),
     entry("/ongoing-support", 0.75, "monthly"),
@@ -126,11 +87,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   const productRoutes: MetadataRoute.Sitemap = forgeProducts.map((product) =>
-    entry(`/digital-forge/products/${product.slug}`, 0.4, "weekly", PRIOR_REVISION),
+    entry(
+      `/digital-forge/products/${product.slug}`,
+      0.4,
+      "weekly",
+      contentLastModified(`/digital-forge/products/${product.slug}`) ||
+        isoDay(product.publishing?.publishedAt),
+    ),
   );
 
   const blogRoutes: MetadataRoute.Sitemap = blogPosts.map((post) =>
-    entry(`/blog/${post.slug}`, 0.72, "monthly", post.updated || post.date || PRIOR_REVISION),
+    entry(
+      `/blog/${post.slug}`,
+      0.72,
+      "monthly",
+      contentLastModified(`/blog/${post.slug}`) || post.updated || post.date,
+    ),
   );
 
   return [...staticRoutes, ...productRoutes, ...blogRoutes];

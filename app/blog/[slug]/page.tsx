@@ -4,7 +4,8 @@ import { resolveBlogCta } from '@/lib/blog-cta';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import NextStepPanel from '@/components/marketing/NextStepPanel';
-import JsonLd from '@/components/seo/JsonLd';
+import JsonLd, { serializeJsonLd } from '@/components/seo/JsonLd';
+import { articleDateModified, contentLastModified } from '@/lib/content-lastmod';
 import { articleJsonLd, buildPageMetadata } from '@/lib/seo';
 
 export async function generateStaticParams() {
@@ -176,13 +177,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     description: post.excerpt || post.title,
                     path: `/blog/${post.slug}`,
                     datePublished: post.date,
-                    dateModified: post.updated || post.date,
+                    dateModified: articleDateModified(post.date, post.updated, contentLastModified(`/blog/${post.slug}`)),
                 })}
             />
             {faqSchema ? (
                 <script
                     type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                    dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
                 />
             ) : null}
 

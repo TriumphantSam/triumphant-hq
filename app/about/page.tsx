@@ -6,8 +6,9 @@ import ClientLogos from "@/components/marketing/ClientLogos";
 import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceIcon from "@/components/marketing/ServiceIcon";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLd from "@/components/seo/JsonLd";
 import { projectEnquiryUrl, agencyServices } from "@/lib/services";
-import { buildPageMetadata } from "@/lib/seo";
+import { aboutPageJsonLd, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "About Triumphant HQ | Triumphant Technological Services",
@@ -39,6 +40,7 @@ const timeline = [
 export default function AboutPage() {
   return (
     <div>
+      <JsonLd data={aboutPageJsonLd()} />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },

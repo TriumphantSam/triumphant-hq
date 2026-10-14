@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import ContactForm from "@/components/marketing/ContactForm";
 import FaqSection from "@/components/marketing/FaqSection";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLd from "@/components/seo/JsonLd";
 import { contactFaqs } from "@/lib/faqs";
-import { buildPageMetadata, formattedNapAddress, siteIdentity } from "@/lib/seo";
+import { buildPageMetadata, contactPageJsonLd, formattedNapAddress, siteIdentity } from "@/lib/seo";
 import { whatsappNumber } from "@/lib/services";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -21,6 +22,7 @@ export const metadata: Metadata = buildPageMetadata({
 export default function ContactPage() {
   return (
     <div>
+      <JsonLd data={contactPageJsonLd()} />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },

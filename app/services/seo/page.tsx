@@ -7,7 +7,7 @@ import LeadMagnetBand from "@/components/marketing/LeadMagnetBand";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
 import JsonLd from "@/components/seo/JsonLd";
 import { serviceFaqs, serviceLeadMagnets } from "@/lib/faqs";
-import { buildPageMetadata, serviceJsonLd, webPageJsonLd } from "@/lib/seo";
+import { SITE_URL, buildPageMetadata, imageObjectJsonLd, serviceJsonLd, webPageJsonLd } from "@/lib/seo";
 import { getAgencyService, projectEnquiryUrl, whatsappNumber } from "@/lib/services";
 
 const service = getAgencyService("seo")!;
@@ -58,6 +58,14 @@ export default function NigeriaSeoPage() {
             areaServed: [{ "@type": "Country", name: "Nigeria" }],
             offerNames: offers,
           }),
+          {
+            "@context": "https://schema.org",
+            ...imageObjectJsonLd({
+              src: service.image,
+              caption: service.imageAlt,
+              id: `${SITE_URL}${path}#image`,
+            }),
+          },
         ]}
       />
       <Breadcrumbs

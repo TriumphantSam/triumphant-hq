@@ -28,6 +28,8 @@ export const siteIdentity = {
   foundingYear: 2017,
   /**
    * Public profiles that are already linked from this site.
+   * The Google entry is the share.google short link already published in llms.txt.
+   * Do not replace it until a full Google Business Profile / Maps URL is known.
    * Do not add Facebook, X, LinkedIn, YouTube or Crunchbase until those URLs are on a page.
    */
   sameAs: [
@@ -544,8 +546,10 @@ export function localBusinessJsonLd() {
     foundingDate: String(siteIdentity.foundingYear),
     founder: {
       "@type": "Person",
+      "@id": `${SITE_URL}/#founder`,
       name: "Adeyemi Olayemi",
       jobTitle: "Founder",
+      url: `${SITE_URL}/about`,
     },
     hasMap: siteIdentity.mapsUrl,
     address: {
@@ -594,6 +598,7 @@ export function localBusinessJsonLd() {
 }
 
 export function websiteJsonLd() {
+  // No SearchAction: the site has no search results URL. Category filters are not search.
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -706,20 +711,21 @@ export function articleJsonLd(input: {
     dateModified: input.dateModified || input.datePublished,
     author: {
       "@type": "Person",
+      "@id": `${SITE_URL}/#founder`,
       name: "Adeyemi Olayemi",
       jobTitle: "Founder",
-      worksFor: {
-        "@type": "Organization",
-        name: siteIdentity.legalName,
-        url: SITE_URL,
-      },
+      url: `${SITE_URL}/about`,
+      worksFor: { "@id": `${SITE_URL}/#organization` },
     },
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
       name: siteIdentity.brandName,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/brand-logo.png`,
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: {
@@ -728,6 +734,253 @@ export function articleJsonLd(input: {
     },
     inLanguage: "en-NG",
   };
+}
+
+/** Pixel sizes measured from the files. Omit width/height when a file is not in this map. */
+const CONTENT_IMAGE_DIMENSIONS: Record<string, { width: number; height: number }> = {
+  "/images/adeyemi-olayemi.png": { width: 1024, height: 763 },
+  "/images/services-studio.png": { width: 1536, height: 1024 },
+  "/images/service-websites.png": { width: 1536, height: 1024 },
+  "/images/service-apps.png": { width: 1536, height: 1024 },
+  "/images/service-seo.png": { width: 1536, height: 1024 },
+  "/images/service-automation.png": { width: 1536, height: 1024 },
+  "/images/clients/integrated-aerial-precision.png": { width: 1024, height: 614 },
+  "/images/clients/dr-seyi-absolute-wellness.png": { width: 200, height: 200 },
+  "/brand-logo.png": { width: 512, height: 512 },
+};
+
+export function imageObjectJsonLd(input: { src: string; caption: string; id?: string }) {
+  const src = input.src.startsWith("http") ? input.src : input.src.startsWith("/") ? input.src : `/${input.src}`;
+  const data: Record<string, unknown> = {
+    "@type": "ImageObject",
+    url: src.startsWith("http") ? src : `${SITE_URL}${src}`,
+    caption: input.caption,
+  };
+  if (input.id) data["@id"] = input.id;
+  const dimensions = CONTENT_IMAGE_DIMENSIONS[src];
+  if (dimensions) {
+    data.width = dimensions.width;
+    data.height = dimensions.height;
+  }
+  return data;
+}
+
+function graphNode(node: Record<string, unknown>) {
+  const rest = { ...node };
+  delete rest["@context"];
+  return rest;
+}
+
+export function collectionPageJsonLd(input: {
+  path: string;
+  name: string;
+  description: string;
+  listName: string;
+  items: Array<{ name: string; path: string }>;
+  pageType?: string | string[];
+  breadcrumbs?: Array<{ name: string; path: string }>;
+}) {
+  const url = absoluteCanonicalUrl(input.path);
+  const graph: Record<string, unknown>[] = [
+    {
+      "@type": input.pageType ?? "CollectionPage",
+      "@id": `${url}#webpage`,
+      name: input.name,
+      description: input.description,
+      url,
+      isPartOf: { "@id": `${SITE_URL}/#website` },
+      inLanguage: "en-NG",
+      mainEntity: { "@id": `${url}#list` },
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${url}#list`,
+      name: input.listName,
+      itemListElement: input.items.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        url: absoluteCanonicalUrl(item.path),
+      })),
+    },
+  ];
+
+  if (input.breadcrumbs && input.breadcrumbs.length > 0) {
+    graph.push({
+      ...graphNode(breadcrumbJsonLd(input.breadcrumbs)),
+      "@id": `${url}#breadcrumb`,
+    });
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph,
+  };
+}
+
+export function aboutPageJsonLd() {
+  const url = absoluteCanonicalUrl("/about");
+  const imageId = `${url}#founder-image`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "AboutPage",
+        "@id": `${url}#webpage`,
+        name: "About Triumphant HQ",
+        url,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        about: { "@id": `${SITE_URL}/#founder` },
+        mainEntity: { "@id": `${SITE_URL}/#founder` },
+        primaryImageOfPage: { "@id": imageId },
+        inLanguage: "en-NG",
+      },
+      {
+        "@type": "Person",
+        "@id": `${SITE_URL}/#founder`,
+        name: "Adeyemi Olayemi",
+        jobTitle: "Founder",
+        url,
+        image: { "@id": imageId },
+        worksFor: { "@id": `${SITE_URL}/#organization` },
+      },
+      {
+        ...imageObjectJsonLd({
+          src: "/images/adeyemi-olayemi.png",
+          caption: "Adeyemi Olayemi, founder of Triumphant HQ",
+          id: imageId,
+        }),
+      },
+    ],
+  };
+}
+
+export function contactPageJsonLd() {
+  const url = absoluteCanonicalUrl("/contact");
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ContactPage",
+        "@id": `${url}#webpage`,
+        name: "Tell us what the business needs to achieve.",
+        url,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        about: { "@id": `${SITE_URL}/#localbusiness` },
+        mainEntity: { "@id": `${url}#contactpoint` },
+        inLanguage: "en-NG",
+      },
+      {
+        "@type": "ContactPoint",
+        "@id": `${url}#contactpoint`,
+        telephone: siteIdentity.phoneE164,
+        email: siteIdentity.email,
+        contactType: "customer service",
+        areaServed: siteIdentity.addressCountry,
+        availableLanguage: ["en"],
+        url,
+      },
+    ],
+  };
+}
+
+export function productOfferJsonLd(input: {
+  slug: string;
+  name: string;
+  description: string;
+  priceNgn: number;
+  breadcrumbs: Array<{ name: string; path: string }>;
+}) {
+  const url = absoluteCanonicalUrl(`/digital-forge/products/${input.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Product",
+        "@id": `${url}#product`,
+        name: input.name,
+        description: input.description,
+        brand: { "@id": `${SITE_URL}/#organization` },
+        offers: {
+          "@type": "Offer",
+          price: String(input.priceNgn),
+          priceCurrency: "NGN",
+          availability: "https://schema.org/InStock",
+          url,
+          seller: { "@id": `${SITE_URL}/#organization` },
+        },
+      },
+      {
+        ...graphNode(breadcrumbJsonLd(input.breadcrumbs)),
+        "@id": `${url}#breadcrumb`,
+      },
+    ],
+  };
+}
+
+export function caseStudyJsonLd(input: {
+  slug: string;
+  name: string;
+  client: string;
+  description: string;
+  imageSrc: string;
+  imageCaption: string;
+  dateModified?: string;
+  clientUrl?: string;
+}) {
+  const url = absoluteCanonicalUrl(`/work/${input.slug}`);
+  const about: Record<string, unknown> = {
+    "@type": "Organization",
+    name: input.client,
+  };
+  if (input.clientUrl) about.url = input.clientUrl;
+
+  const work: Record<string, unknown> = {
+    "@type": "CreativeWork",
+    "@id": `${url}#work`,
+    name: input.name,
+    description: input.description,
+    url,
+    creator: { "@id": `${SITE_URL}/#organization` },
+    about,
+    image: imageObjectJsonLd({
+      src: input.imageSrc,
+      caption: input.imageCaption,
+    }),
+    inLanguage: "en-NG",
+  };
+  if (input.dateModified) work.dateModified = input.dateModified;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      work,
+      {
+        ...graphNode(
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Work", path: "/work" },
+            { name: input.client, path: `/work/${input.slug}` },
+          ]),
+        ),
+        "@id": `${url}#breadcrumb`,
+      },
+    ],
+  };
+}
+
+/** First absolute http(s) URL with a real hostname, if the visible copy contains exactly one. */
+export function soleVisibleHttpUrl(texts: Array<string | undefined>) {
+  const found = new Set<string>();
+  const pattern = /https?:\/\/[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s)]*)?/gi;
+  for (const text of texts) {
+    if (!text) continue;
+    for (const match of text.match(pattern) ?? []) {
+      found.add(match.replace(/[.,;:]+$/, ""));
+    }
+  }
+  if (found.size !== 1) return undefined;
+  return [...found][0];
 }
 
 export const formattedNapAddress = [

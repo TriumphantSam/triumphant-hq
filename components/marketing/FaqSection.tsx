@@ -1,4 +1,5 @@
 import type { FaqItem } from "@/lib/faqs";
+import { serializeJsonLd } from "@/components/seo/JsonLd";
 import FaqAccordion from "./FaqAccordion";
 
 export default function FaqSection({
@@ -27,7 +28,7 @@ export default function FaqSection({
 
   return (
     <section className="section-shell">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(schema) }} />
       <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
         <div>
           <p className="eyebrow">{eyebrow}</p>

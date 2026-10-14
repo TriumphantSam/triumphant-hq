@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CTABand from "@/components/marketing/CTABand";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
-import { buildPageMetadata, locationPages, siteIdentity } from "@/lib/seo";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildPageMetadata, collectionPageJsonLd, locationPages, siteIdentity } from "@/lib/seo";
 import { whatsappNumber } from "@/lib/services";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -23,6 +24,18 @@ export const metadata: Metadata = buildPageMetadata({
 export default function LocationsHubPage() {
   return (
     <div>
+      <JsonLd
+        data={collectionPageJsonLd({
+          path: "/locations",
+          name: "Ibadan first. Southwestern Nigeria covered. Nationwide delivery.",
+          description: `Based at ${siteIdentity.streetAddress}, ${siteIdentity.addressLocality}, we serve neighbourhoods across the city, Oyo State, Osun State and remote clients throughout Nigeria.`,
+          listName: "Service areas",
+          items: locationPages.map((location) => ({
+            name: location.name,
+            path: `/locations/${location.slug}`,
+          })),
+        })}
+      />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },

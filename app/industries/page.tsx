@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import CTABand from "@/components/marketing/CTABand";
+import JsonLd from "@/components/seo/JsonLd";
 import { industries } from "@/lib/compare-industries";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, collectionPageJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Industries We Serve | Triumphant HQ Ibadan",
@@ -15,6 +16,20 @@ export const metadata: Metadata = buildPageMetadata({
 export default function IndustriesPage() {
   return (
     <div>
+      <JsonLd
+        data={collectionPageJsonLd({
+          path: "/industries",
+          name: "Sector-aware delivery for problems that look different on the ground.",
+          description:
+            "The disciplines stay consistent. The emphasis shifts—credibility for firms, activation for SaaS, visibility and response speed for local services.",
+          listName: "Industries",
+          items: industries.map((page) => ({ name: page.title, path: `/industries/${page.slug}` })),
+          breadcrumbs: [
+            { name: "Home", path: "/" },
+            { name: "Industries", path: "/industries" },
+          ],
+        })}
+      />
       <header className="page-hero">
         <p className="eyebrow">Industries</p>
         <h1>Sector-aware delivery for problems that look different on the ground.</h1>

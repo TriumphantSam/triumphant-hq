@@ -8,8 +8,9 @@ import SectionHeader from "@/components/marketing/SectionHeader";
 import ServiceCard from "@/components/marketing/ServiceCard";
 import Testimonials from "@/components/Testimonials";
 import Breadcrumbs from "@/components/seo/Breadcrumbs";
+import JsonLd from "@/components/seo/JsonLd";
 import { agencyServices, projectEnquiryUrl } from "@/lib/services";
-import { buildPageMetadata } from "@/lib/seo";
+import { SITE_URL, buildPageMetadata, imageObjectJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Technology & Growth Services in Ibadan | Triumphant HQ",
@@ -26,6 +27,16 @@ export const metadata: Metadata = buildPageMetadata({
 export default function ServicesPage() {
   return (
     <div>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          ...imageObjectJsonLd({
+            src: "/images/services-studio.png",
+            caption: "Contemporary agency studio with monitors and soft architectural light",
+            id: `${SITE_URL}/services#image`,
+          }),
+        }}
+      />
       <Breadcrumbs
         items={[
           { name: "Home", path: "/" },
