@@ -103,6 +103,18 @@ test("WhatsApp handoff is idempotent, scoped and queues no customer email", asyn
   assert.equal((await request("/v1/whatsapp/handoff", { ...input, phone: "bad" }, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 400);
   sql.close();
 });
+test("qualified WhatsApp enquiries preserve details without marketing consent", async () => {
+  const { sql, env, request } = setup();
+  env.WHATSAPP_BRIDGE_SECRET = "test-bridge-only";
+  const input = { phone: "2348000000000", messageId: "wamid.qualified", name: "Adéyemi", email: "test@example.com", service: "Automation", need: "Automate the incoming enquiries for my business" };
+  assert.equal((await request("/v1/whatsapp/handoff", input, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 200);
+  const row = sql.prepare("SELECT name,email,service,need,consent_marketing FROM leads").get()!;
+  assert.equal(row.name, input.name); assert.equal(row.email, input.email);
+  assert.equal(row.need, input.need); assert.equal(row.consent_marketing, 0);
+  assert.equal((await request("/v1/whatsapp/handoff", {...input, messageId:"bad.email", email:"invalid"}, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 400);
+  assert.equal(sql.prepare("SELECT count(*) AS n FROM leads").get()!.n, 1);
+  sql.close();
+});
 test("distributed IP admission is shared across requests and resets only after expiry", async () => {
   const { sql, request } = setup();
   const ipKey = "a".repeat(64);

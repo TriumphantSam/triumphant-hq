@@ -76,11 +76,20 @@ app.post("/v1/whatsapp/handoff", async (c) => {
   if (!input || typeof input.phone !== "string" || !/^\d{7,15}$/.test(input.phone) ||
       typeof input.messageId !== "string" || !/^[A-Za-z0-9._=+\/-]{1,256}$/.test(input.messageId))
     return c.json({ error: "Invalid request." }, 400);
+  for (const [field, limit] of [["name", 80], ["email", 254], ["service", 80], ["need", 1000]] as const) {
+    if (input[field] !== undefined && (typeof input[field] !== "string" || (input[field] as string).length > limit))
+      return c.json({ error: "Invalid request." }, 400);
+  }
+  const name = String(input.name || "").trim(), email = String(input.email || "").trim();
+  const service = String(input.service || "").trim(), need = String(input.need || "").trim();
+  if ((email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ||
+      ((name || email || service || need) && (name.length < 2 || need.length < 10 || !["Website", "Seo", "Automation"].includes(service))))
+    return c.json({ error: "Invalid request." }, 400);
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input.messageId));
   const id = "wa-" + [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
   const now = new Date().toISOString();
   await c.env.DB.batch([
-    c.env.DB.prepare("INSERT INTO leads(id,created_at,updated_at,source,name,email,phone,service,need) VALUES(?,?,?,'whatsapp','WhatsApp contact','',?,'Human handoff','A WhatsApp contact requested a human. Reply through the business WhatsApp conversation; bot replies are paused for 24 hours.') ON CONFLICT(id) DO NOTHING").bind(id, now, now, input.phone),
+    c.env.DB.prepare("INSERT INTO leads(id,created_at,updated_at,source,name,email,phone,service,need) VALUES(?,?,?,'whatsapp',?,?,?,?,?) ON CONFLICT(id) DO NOTHING").bind(id, now, now, name || "WhatsApp contact", email, input.phone, service || "Human handoff", need || "A WhatsApp contact requested a human. Reply through the business WhatsApp conversation; bot replies are paused for 24 hours."),
     ...(["sheet", "owner_email"] as const).map(kind => c.env.DB.prepare("INSERT INTO outbox(id,lead_id,kind,next_attempt_at) VALUES(?,?,?,?) ON CONFLICT(lead_id,kind) DO NOTHING").bind(`${id}:${kind}`, id, kind, now)),
   ]);
   return c.json({ ok: true, reference: id });
