@@ -9,6 +9,7 @@ export type Env = {
   GOOGLE_SA_PRIVATE_KEY?: string;
   LEADS_SHEET_ID?: string;
   SHEETS_SYNC_SECRET?: string;
+  WHATSAPP_BRIDGE_SECRET?: string;
 };
 export type Lead = {
   id: string;

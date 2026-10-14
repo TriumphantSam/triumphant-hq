@@ -37,6 +37,8 @@ app.use("/v1/*", async (c, next) => {
       raw,
       c.req.path.startsWith("/v1/sheets/")
         ? c.env.SHEETS_SYNC_SECRET || ""
+        : c.req.path.startsWith("/v1/whatsapp/")
+          ? c.env.WHATSAPP_BRIDGE_SECRET || ""
         : c.env.AUTOMATION_HMAC_SECRET,
     ))
   )
@@ -68,6 +70,21 @@ app.get("/v1/health", (c) =>
     ),
   }),
 );
+app.post("/v1/whatsapp/handoff", async (c) => {
+  let input: Record<string, unknown>;
+  try { input = JSON.parse(c.get("raw")); } catch { return c.json({ error: "Invalid request." }, 400); }
+  if (!input || typeof input.phone !== "string" || !/^\d{7,15}$/.test(input.phone) ||
+      typeof input.messageId !== "string" || !/^[A-Za-z0-9._=+\/-]{1,256}$/.test(input.messageId))
+    return c.json({ error: "Invalid request." }, 400);
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input.messageId));
+  const id = "wa-" + [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
+  const now = new Date().toISOString();
+  await c.env.DB.batch([
+    c.env.DB.prepare("INSERT INTO leads(id,created_at,updated_at,source,name,email,phone,service,need) VALUES(?,?,?,'whatsapp','WhatsApp contact','',?,'Human handoff','A WhatsApp contact requested a human. Reply through the business WhatsApp conversation; bot replies are paused for 24 hours.') ON CONFLICT(id) DO NOTHING").bind(id, now, now, input.phone),
+    ...(["sheet", "owner_email"] as const).map(kind => c.env.DB.prepare("INSERT INTO outbox(id,lead_id,kind,next_attempt_at) VALUES(?,?,?,?) ON CONFLICT(lead_id,kind) DO NOTHING").bind(`${id}:${kind}`, id, kind, now)),
+  ]);
+  return c.json({ ok: true, reference: id });
+});
 app.post("/v1/form-admission", async (c) => {
   let input: { ipKey?: string };
   try {

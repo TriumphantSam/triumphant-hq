@@ -101,12 +101,12 @@ async function sendEmail(env: Env, job: Job, lead: Lead) {
     body: JSON.stringify({
       from: env.EMAIL_FROM,
       to: [owner ? env.OWNER_EMAIL : lead.email],
-      reply_to: owner ? lead.email : env.OWNER_EMAIL,
+      reply_to: owner ? lead.email || env.OWNER_EMAIL : env.OWNER_EMAIL,
       subject: owner
         ? "New TriumphantTech enquiry"
         : "We received your TriumphantTech enquiry",
       text: owner
-        ? `Name: ${lead.name}\nEmail: ${lead.email}\nService: ${lead.service}\n${lead.need}\nReference: ${lead.id}`
+        ? `Name: ${lead.name}\nEmail: ${lead.email || "Not provided"}\nPhone: ${lead.phone || "Not provided"}\nService: ${lead.service}\n${lead.need}\nReference: ${lead.id}`
         : `Hi ${lead.name},\n\nWe received your enquiry about ${lead.service || "our services"}. We will review it and reply with a practical next step.\n\nReference: ${lead.id}\nTriumphantTech\nadmin@triumphantech.com\n+234 810 771 1190`,
     }),
   });

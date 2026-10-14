@@ -90,6 +90,19 @@ const enquiry = {
   message: "A test enquiry",
   source: "automation_lab",
 };
+test("WhatsApp handoff is idempotent, scoped and queues no customer email", async () => {
+  const { sql, env, request } = setup();
+  env.WHATSAPP_BRIDGE_SECRET = "test-bridge-only";
+  const input = { phone: "2348000000000", messageId: "wamid.test-handoff" };
+  assert.equal((await request("/v1/whatsapp/handoff", input)).status, 401);
+  for (let i = 0; i < 2; i++) assert.equal((await request("/v1/whatsapp/handoff", input, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 200);
+  assert.equal(sql.prepare("SELECT count(*) AS n FROM leads").get()!.n, 1);
+  assert.deepEqual(sql.prepare("SELECT kind FROM outbox ORDER BY kind").all().map(r => r.kind), ["owner_email", "sheet"]);
+  assert.equal(sql.prepare("SELECT email FROM leads").get()!.email, "");
+  assert.equal((await request("/v1/leads", enquiry, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 401);
+  assert.equal((await request("/v1/whatsapp/handoff", { ...input, phone: "bad" }, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 400);
+  sql.close();
+});
 test("distributed IP admission is shared across requests and resets only after expiry", async () => {
   const { sql, request } = setup();
   const ipKey = "a".repeat(64);

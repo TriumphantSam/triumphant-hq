@@ -7,14 +7,14 @@ export const automationDemos = [
     description:
       "Welcome a prospect, answer product questions and offer a clear next step inside WhatsApp.",
     audience: "Shops · farms · service businesses",
-    status: "Existing product bot",
+    status: "Service menu connected",
     action: "Explore the WhatsApp flow",
     steps: [
-      "Open the business WhatsApp conversation.",
-      "Ask about the current product offer.",
-      "See the reply and the next step.",
+      "Send LAB to open the service menu.",
+      "Try SERVICES, PRICES, ORDER or BOOK.",
+      "Send HUMAN for our team, or STOP to stop bot replies.",
     ],
-    note: "The existing WhatsApp bot serves the GIS Field Handbook offer. The new service menu, catalogue, booking and consent-based follow-ups are pending integration.",
+    note: "Send LAB for the service menu. HUMAN queues a private owner alert and pauses bot replies for 24 hours; RESUME restarts sooner. GIS returns to the existing handbook offer. Booking opens our calendar, and orders open the existing checkout. Proactive follow-ups are not enabled.",
   },
   {
     slug: "booking",

@@ -65,7 +65,7 @@ export default async function DemoPage({
           <div className="lab-panel">
             <h2>
               {demo === "whatsapp"
-                ? "Our existing WhatsApp flow"
+                ? "Try the WhatsApp service menu"
                 : demo === "booking"
                   ? "Choose a time to talk"
                   : "Preparing this flow"}
@@ -75,7 +75,7 @@ export default async function DemoPage({
               <a
                 className="lab-link mt-6"
                 href={whatsappLink(
-                  "Hi, I would like to learn about your current offer.",
+                  "LAB",
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
