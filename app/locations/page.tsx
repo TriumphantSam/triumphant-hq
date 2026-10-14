@@ -46,7 +46,16 @@ export default function LocationsHubPage() {
         <p className="eyebrow">Service areas</p>
         <h1>Ibadan first. Southwestern Nigeria covered. Nationwide delivery.</h1>
         <p>
-          Based at {siteIdentity.streetAddress}, {siteIdentity.addressLocality}, we serve neighbourhoods across the city,
+          Based at{" "}
+          <a
+            href={siteIdentity.mapsUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-[var(--accent-color)]"
+          >
+            {siteIdentity.streetAddress}, {siteIdentity.addressLocality}
+          </a>
+          , we serve neighbourhoods across the city,
           Oyo State, Osun State and remote clients throughout Nigeria.
         </p>
       </header>

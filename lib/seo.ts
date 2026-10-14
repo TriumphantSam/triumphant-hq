@@ -27,17 +27,16 @@ export const siteIdentity = {
   },
   foundingYear: 2017,
   /**
-   * Public profiles that are already linked from this site.
-   * The Google entry is the share.google short link already published in llms.txt.
-   * Do not replace it until a full Google Business Profile / Maps URL is known.
-   * Do not add Facebook, X, LinkedIn, YouTube or Crunchbase until those URLs are on a page.
+   * Public profiles supplied by the owner and linked from the footer and contact page.
+   * LinkedIn, YouTube and Crunchbase stay off until a real URL is supplied.
    */
-  sameAs: [
-    "https://share.google/RLZXJGOCCI82sx8tx",
-    "https://www.instagram.com/triumphant_tech/",
-  ] as string[],
-  mapsUrl:
-    "https://www.google.com/maps/search/?api=1&query=Basorun+Rd,+Ibadan+211107,+Oyo",
+  profiles: [
+    { label: "X", href: "https://x.com/Triumphanttech" },
+    { label: "Instagram", href: "https://www.instagram.com/triumphant_tech/" },
+    { label: "Facebook", href: "https://www.facebook.com/triumphanttech" },
+    { label: "Google Maps", href: "https://maps.app.goo.gl/jaoU53B394QCti8q9" },
+  ],
+  mapsUrl: "https://maps.app.goo.gl/jaoU53B394QCti8q9",
   openingHours: [
     {
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -518,7 +517,7 @@ export function organizationJsonLd() {
       addressCountry: siteIdentity.addressCountry,
     },
     areaServed: serviceAreas.map((area) => area.name),
-    sameAs: siteIdentity.sameAs,
+    sameAs: siteIdentity.profiles.map((profile) => profile.href),
   };
 }
 
@@ -580,7 +579,7 @@ export function localBusinessJsonLd() {
       "NIN enrolment support",
       "BVN support",
     ],
-    sameAs: siteIdentity.sameAs,
+    sameAs: siteIdentity.profiles.map((profile) => profile.href),
     parentOrganization: { "@id": `${SITE_URL}/#organization` },
   };
 

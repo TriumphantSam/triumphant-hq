@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { agencyServices, projectEnquiryUrl, whatsappNumber } from '@/lib/services';
+import ProfileLinks from '@/components/ProfileLinks';
 import { formattedNapAddress, siteIdentity } from '@/lib/seo';
 
 const columns = [
@@ -86,7 +87,16 @@ export default function Footer() {
 
             <address className="site-footer-nap flex w-full flex-col gap-1 not-italic text-[0.92rem] leading-6 text-slate-600">
               <p className="font-semibold text-slate-950">{siteIdentity.legalName}</p>
-              <p>{formattedNapAddress}</p>
+              <p>
+                <a
+                  href={siteIdentity.mapsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="transition-colors hover:text-slate-950"
+                >
+                  {formattedNapAddress}
+                </a>
+              </p>
               <p className="pt-2">
                 <a href={`mailto:${siteIdentity.email}`} className="transition-colors hover:text-slate-950">
                   {siteIdentity.email}
@@ -105,6 +115,9 @@ export default function Footer() {
                 >
                   WhatsApp
                 </a>
+              </p>
+              <p className="pt-2">
+                <ProfileLinks linkClassName="transition-colors hover:text-slate-950" />
               </p>
               <p className="pt-2">
                 <Link href="/locations" className="font-medium text-[var(--accent-color)] transition-colors hover:text-[var(--accent-hover)]">

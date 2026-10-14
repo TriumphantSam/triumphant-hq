@@ -62,7 +62,7 @@ const staticRoutes = {
   "/app-readiness": ["app/app-readiness/page.tsx"],
   "/seo-snapshot": ["app/seo-snapshot/page.tsx"],
   "/resources": ["app/resources/page.tsx"],
-  "/local-support": ["app/local-support/page.tsx"],
+  "/local-support": ["app/local-support/page.tsx", "components/marketing/LocalSupportExperience.tsx"],
   "/ibadan-tech-agency": ["app/ibadan-tech-agency/page.tsx"],
   "/services/websites/ibadan": ["app/services/[service]/[location]/page.tsx", "lib/seo.ts"],
   "/services/seo/ibadan": ["app/services/seo/ibadan/page.tsx"],
