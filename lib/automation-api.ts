@@ -4,6 +4,14 @@ export const automationConfigured = () =>
   Boolean(
     process.env.AUTOMATION_API_BASE && process.env.AUTOMATION_HMAC_SECRET,
   );
+export class AutomationError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+  ) {
+    super(message);
+  }
+}
 export async function automationRequest<T>(
   path: string,
   payload?: unknown,
@@ -36,10 +44,11 @@ export async function automationRequest<T>(
   });
   const data = await response.json();
   if (!response.ok)
-    throw new Error(
+    throw new AutomationError(
       typeof data.error === "string"
         ? data.error
         : "Automation service is temporarily unavailable.",
+      response.status,
     );
   return data as T;
 }

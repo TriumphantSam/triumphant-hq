@@ -24,14 +24,14 @@ export const automationDemos = [
     description:
       "Let customers choose a time, confirm the appointment and receive timely reminders.",
     audience: "Clinics · salons · schools · gyms",
-    status: "Existing booking link",
+    status: "Booking & email reminders",
     action: "Explore booking",
     steps: [
-      "Open the existing booking calendar.",
+      "Choose a free 30-minute automation consultation in Lagos time.",
       "Choose an available time.",
-      "Review the provider’s confirmation.",
+      "Receive email confirmation and reminders; manage or cancel your appointment.",
     ],
-    note: "Audit calls currently use Cal.com. Native appointment capacity, SMS and WhatsApp reminders are not connected yet.",
+    note: "Real consultation bookings: weekdays 10am–4pm WAT, 15-minute buffer, 24 hours’ notice. Email reminders run 24 hours and 2 hours before the call. SMS and WhatsApp reminders are awaiting connection. SEO audit calls keep their existing calendar.",
   },
   {
     slug: "lead-capture",

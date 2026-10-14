@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { automationDemos } from "@/lib/automation-lab";
 import { whatsappLink } from "@/lib/contact";
 import LeadDemo from "@/components/automation/LeadDemo";
+import BookingDemo from "@/components/automation/BookingDemo";
 export function generateStaticParams() {
   return automationDemos.map((d) => ({ demo: d.slug }));
 }
@@ -23,9 +24,6 @@ export default async function DemoPage({
   const { demo } = await params,
     item = automationDemos.find((d) => d.slug === demo);
   if (!item) notFound();
-  const booking =
-    process.env.NEXT_PUBLIC_SEO_BOOKING_URL ||
-    "https://cal.com/adeyemi-olayemi-vqvyj4/30-min-seo-strategy-call";
   return (
     <>
       <header className="lab-hero">
@@ -61,6 +59,8 @@ export default async function DemoPage({
         </div>
         {demo === "lead-capture" ? (
           <LeadDemo />
+        ) : demo === "booking" ? (
+          <BookingDemo />
         ) : (
           <div className="lab-panel">
             <h2>
@@ -74,23 +74,11 @@ export default async function DemoPage({
             {demo === "whatsapp" && (
               <a
                 className="lab-link mt-6"
-                href={whatsappLink(
-                  "LAB",
-                )}
+                href={whatsappLink("LAB")}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Open WhatsApp →
-              </a>
-            )}
-            {demo === "booking" && (
-              <a
-                className="lab-link mt-6"
-                href={booking}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Open booking calendar →
               </a>
             )}
             {!["whatsapp", "booking"].includes(demo) && (

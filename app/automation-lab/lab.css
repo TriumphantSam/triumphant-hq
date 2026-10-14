@@ -358,6 +358,88 @@
   opacity: 0.55;
   cursor: wait;
 }
+.lab-slot-fieldset {
+  border: 0;
+  min-width: 0;
+}
+.lab-slot-fieldset legend {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.lab-slot-day {
+  margin-bottom: 18px;
+}
+.lab-slot-day > p {
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.lab-slot-day select {
+  display: block;
+  width: 100%;
+  border: 1px solid #cbd7e4;
+  border-radius: 7px;
+  padding: 12px;
+  margin: 8px 0 16px;
+  background: #fafcff;
+  color: #14253b;
+}
+.lab-slots {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+.lab-form .lab-slot {
+  position: relative;
+  cursor: pointer;
+}
+.lab-form .lab-slot input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  min-height: 1px;
+  padding: 0;
+}
+.lab-slot span {
+  display: block;
+  padding: 11px 4px;
+  border: 1px solid #cbd7e4;
+  border-radius: 7px;
+  text-align: center;
+  font-size: 12px;
+}
+.lab-slot input:checked + span {
+  background: #075ee5;
+  color: white;
+  border-color: #075ee5;
+}
+.lab-slot input:focus-visible + span {
+  outline: 3px solid #9bc1fa;
+  outline-offset: 2px;
+}
+.lab-manage {
+  margin-top: 30px;
+  border-top: 1px solid #dce4ee;
+  padding-top: 20px;
+}
+.lab-manage summary {
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.lab-private-code input {
+  width: 100%;
+  font-size: 12px;
+  border: 1px solid #cbd7e4;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 7px;
+}
+@media (max-width: 480px) {
+  .lab-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 .lab-back {
   font-size: 13px;
   color: var(--lab-blue);

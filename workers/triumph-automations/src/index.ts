@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { verifySignedRequest } from "./security";
 import { drainOutbox } from "./delivery";
 import type { Env } from "./types";
+import { bookingRoutes, drainBookingOutbox } from "./bookings";
 
 const app = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
 app.use("/v1/*", async (c, next) => {
@@ -58,6 +59,7 @@ app.get("/v1/health", (c) =>
   c.json({
     ok: true,
     leadCapture: true,
+    bookingEnabled: c.env.BOOKING_ENABLED === "true",
     sheetConfigured: Boolean(
       c.env.SHEETS_SYNC_SECRET ||
       (c.env.LEADS_SHEET_ID &&
@@ -70,6 +72,7 @@ app.get("/v1/health", (c) =>
     ),
   }),
 );
+app.route("/v1/bookings", bookingRoutes);
 app.post("/v1/whatsapp/handoff", async (c) => {
   let input: Record<string, unknown>;
   try { input = JSON.parse(c.get("raw")); } catch { return c.json({ error: "Invalid request." }, 400); }
@@ -223,7 +226,7 @@ app.post("/v1/sheets/ack", async (c) => {
     input.rows.some(
       (row) =>
         !row ||
-        !/^[a-f0-9-]{36}$/.test(row.id) ||
+        !/^(?:[a-f0-9-]{36}|wa-[a-f0-9]{64})$/.test(row.id) ||
         typeof row.updatedAt !== "string" ||
         row.updatedAt.length > 30,
     )
@@ -262,6 +265,7 @@ export default {
   fetch: app.fetch,
   async scheduled(_controller: ScheduledController, env: Env) {
     await drainOutbox(env);
+    await drainBookingOutbox(env);
     await env.DB.batch([
       env.DB.prepare("DELETE FROM request_nonces WHERE expires_at<?").bind(
         Date.now(),
@@ -275,6 +279,7 @@ export default {
       env.DB.prepare("DELETE FROM events WHERE created_at<?").bind(
         new Date(Date.now() - 365 * 86400000).toISOString(),
       ),
+      env.DB.prepare("DELETE FROM bookings WHERE created_at<?").bind(new Date(Date.now() - 365 * 86400000).toISOString()),
     ]);
   },
 } satisfies ExportedHandler<Env>;

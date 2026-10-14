@@ -10,6 +10,7 @@
       "workers_dev": true,
       "vars": {
         "ENVIRONMENT": "production",
+        "BOOKING_ENABLED": "true",
         "OWNER_EMAIL": "admin@triumphantech.com",
         "EMAIL_FROM": "TriumphantTech <hello@notify.triumphantech.com>",
       },
@@ -26,6 +27,7 @@
       "workers_dev": true,
       "vars": {
         "ENVIRONMENT": "staging",
+        "BOOKING_ENABLED": "true",
         "OWNER_EMAIL": "admin@triumphantech.com",
         "EMAIL_FROM": "TriumphantTech <hello@notify.triumphantech.com>",
       },

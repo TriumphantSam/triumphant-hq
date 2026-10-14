@@ -10,6 +10,7 @@ export type Env = {
   LEADS_SHEET_ID?: string;
   SHEETS_SYNC_SECRET?: string;
   WHATSAPP_BRIDGE_SECRET?: string;
+  BOOKING_ENABLED?: string;
 };
 export type Lead = {
   id: string;

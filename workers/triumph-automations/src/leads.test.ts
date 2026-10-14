@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 import worker from "./index";
 import { hmac } from "./security";
 import { drainOutbox } from "./delivery";
+import { bookingSlots, drainBookingOutbox } from "./bookings";
 import type { Env } from "./types";
 
 function setup() {
@@ -12,6 +13,12 @@ function setup() {
   sql.exec(
     readFileSync(
       new URL("../migrations/0001_leads.sql", import.meta.url),
+      "utf8",
+    ),
+  );
+  sql.exec(
+    readFileSync(
+      new URL("../migrations/0002_bookings.sql", import.meta.url),
       "utf8",
     ),
   );
@@ -90,44 +97,343 @@ const enquiry = {
   message: "A test enquiry",
   source: "automation_lab",
 };
+test("consultation schedule follows Lagos weekdays, buffer and minimum notice", () => {
+  const now = Date.parse("2026-10-16T08:59:00Z"),
+    slots = bookingSlots(now);
+  assert.ok(slots.length > 0);
+  for (const slot of slots) {
+    const start = Date.parse(slot.start),
+      local = new Date(start + 3600000);
+    assert.ok(start >= now + 86400000);
+    assert.ok(local.getUTCDay() >= 1 && local.getUTCDay() <= 5);
+    assert.ok(local.getUTCHours() >= 10 && local.getUTCHours() < 16);
+    assert.equal(Date.parse(slot.end) - start, 1800000);
+  }
+  const monday = slots.filter((s) => s.start.startsWith("2026-10-19"));
+  assert.equal(monday.length, 8);
+  assert.equal(
+    Date.parse(monday[1].start) - Date.parse(monday[0].start),
+    2700000,
+  );
+});
+test("booking capacity is atomic, retries are idempotent and management requires its code", async () => {
+  const { sql, env, request } = setup();
+  env.BOOKING_ENABLED = "true";
+  const input = {
+    name: "Test Person",
+    email: "test@example.com",
+    phone: "",
+    start: bookingSlots()[0].start,
+    requestId: crypto.randomUUID(),
+  };
+  const results = await Promise.all([
+    request("/v1/bookings/create", input),
+    request("/v1/bookings/create", {
+      ...input,
+      requestId: crypto.randomUUID(),
+      email: "other@example.com",
+    }),
+  ]);
+  assert.deepEqual(results.map((r) => r.status).sort(), [201, 409]);
+  const result = (await results.find((r) => r.status === 201)!.json()) as {
+    booking: { id: string };
+    code: string;
+  };
+  assert.equal(sql.prepare("SELECT count(*) n FROM bookings").get()!.n, 1);
+  assert.equal(sql.prepare("SELECT count(*) n FROM leads").get()!.n, 1);
+  assert.equal(
+    sql.prepare("SELECT count(*) n FROM booking_outbox").get()!.n,
+    4,
+  );
+  const saved = sql.prepare("SELECT request_id,email FROM bookings").get()!;
+  const retryInput = {
+    ...input,
+    requestId: saved.request_id,
+    email: saved.email,
+  };
+  const retry = await request("/v1/bookings/create", retryInput);
+  assert.equal(retry.status, 200);
+  assert.equal(((await retry.json()) as { code: string }).code, result.code);
+  assert.equal(
+    (await request("/v1/bookings/create", { ...retryInput, name: "Different" }))
+      .status,
+    409,
+  );
+  assert.equal(
+    (
+      await request("/v1/bookings/manage", {
+        id: result.booking.id,
+        code: "a".repeat(64),
+        action: "status",
+      })
+    ).status,
+    404,
+  );
+  for (let i = 0; i < 2; i++)
+    assert.equal(
+      (
+        await request("/v1/bookings/manage", {
+          id: result.booking.id,
+          code: result.code,
+          action: "cancel",
+        })
+      ).status,
+      200,
+    );
+  assert.equal(
+    sql
+      .prepare(
+        "SELECT count(*) n FROM booking_outbox WHERE kind LIKE '%cancellation'",
+      )
+      .get()!.n,
+    2,
+  );
+  assert.equal(
+    sql
+      .prepare(
+        "SELECT count(*) n FROM booking_outbox WHERE kind LIKE 'reminder%' AND state='cancelled'",
+      )
+      .get()!.n,
+    2,
+  );
+  assert.equal(
+    (
+      await request("/v1/bookings/create", {
+        ...input,
+        requestId: crypto.randomUUID(),
+      })
+    ).status,
+    201,
+  );
+  assert.equal(
+    (
+      await request("/v1/bookings/create", {
+        ...input,
+        start: new Date().toISOString(),
+        requestId: crypto.randomUUID(),
+      })
+    ).status,
+    400,
+  );
+  sql.close();
+});
+test("booking emails retry privately, reuse provider idempotency keys and suppress cancelled reminders", async () => {
+  const { sql, env, request } = setup();
+  Object.assign(env, {
+    BOOKING_ENABLED: "true",
+    RESEND_API_KEY: "test-only",
+    EMAIL_FROM: "test@example.com",
+    OWNER_EMAIL: "owner@example.com",
+  });
+  const result = (await (
+    await request("/v1/bookings/create", {
+      name: "Test Person",
+      email: "test@example.com",
+      start: bookingSlots()[0].start,
+      requestId: crypto.randomUUID(),
+    })
+  ).json()) as { booking: { id: string }; code: string };
+  const originalFetch = globalThis.fetch,
+    messages: { headers: Headers; body: { to: string[]; text: string } }[] = [];
+  globalThis.fetch = async (_url, options) => {
+    messages.push({
+      headers: new Headers(options?.headers),
+      body: JSON.parse(String(options?.body)),
+    });
+    return new Response("private-provider-body", { status: 429 });
+  };
+  try {
+    await drainBookingOutbox(env);
+    assert.equal(messages.length, 2);
+    assert.equal(
+      sql
+        .prepare(
+          "SELECT last_error FROM booking_outbox WHERE kind='confirmation'",
+        )
+        .get()!.last_error,
+      "email_provider_failed_429",
+    );
+    sql.exec(
+      "UPDATE booking_outbox SET next_attempt_at='2000-01-01T00:00:00.000Z' WHERE state='pending'",
+    );
+    globalThis.fetch = async (_url, options) => {
+      messages.push({
+        headers: new Headers(options?.headers),
+        body: JSON.parse(String(options?.body)),
+      });
+      return new Response("{}", { status: 200 });
+    };
+    await drainBookingOutbox(env);
+    await drainBookingOutbox(env);
+    assert.equal(messages.length, 6);
+    assert.equal(
+      messages[0].headers.get("Idempotency-Key"),
+      messages[2].headers.get("Idempotency-Key"),
+    );
+    assert.ok(
+      messages
+        .filter((m) => m.body.to[0] === "test@example.com")
+        .every((m) => m.body.text.includes(result.code)),
+    );
+    assert.ok(
+      messages
+        .filter((m) => m.body.to[0] === "owner@example.com")
+        .every((m) => !m.body.text.includes(result.code)),
+    );
+    await request("/v1/bookings/manage", {
+      ...result.booking,
+      code: result.code,
+      action: "cancel",
+    });
+    await drainBookingOutbox(env);
+    await drainBookingOutbox(env);
+    assert.equal(messages.length, 8);
+  } finally {
+    globalThis.fetch = originalFetch;
+    sql.close();
+  }
+});
 test("WhatsApp handoff is idempotent, scoped and queues no customer email", async () => {
   const { sql, env, request } = setup();
   env.WHATSAPP_BRIDGE_SECRET = "test-bridge-only";
   const input = { phone: "2348000000000", messageId: "wamid.test-handoff" };
   assert.equal((await request("/v1/whatsapp/handoff", input)).status, 401);
-  for (let i = 0; i < 2; i++) assert.equal((await request("/v1/whatsapp/handoff", input, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 200);
+  for (let i = 0; i < 2; i++)
+    assert.equal(
+      (
+        await request(
+          "/v1/whatsapp/handoff",
+          input,
+          crypto.randomUUID(),
+          env.WHATSAPP_BRIDGE_SECRET,
+        )
+      ).status,
+      200,
+    );
   assert.equal(sql.prepare("SELECT count(*) AS n FROM leads").get()!.n, 1);
-  assert.deepEqual(sql.prepare("SELECT kind FROM outbox ORDER BY kind").all().map(r => r.kind), ["owner_email", "sheet"]);
+  assert.deepEqual(
+    sql
+      .prepare("SELECT kind FROM outbox ORDER BY kind")
+      .all()
+      .map((r) => r.kind),
+    ["owner_email", "sheet"],
+  );
   assert.equal(sql.prepare("SELECT email FROM leads").get()!.email, "");
-  assert.equal((await request("/v1/leads", enquiry, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 401);
-  assert.equal((await request("/v1/whatsapp/handoff", { ...input, phone: "bad" }, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 400);
+  assert.equal(
+    (
+      await request(
+        "/v1/leads",
+        enquiry,
+        crypto.randomUUID(),
+        env.WHATSAPP_BRIDGE_SECRET,
+      )
+    ).status,
+    401,
+  );
+  assert.equal(
+    (
+      await request(
+        "/v1/whatsapp/handoff",
+        { ...input, phone: "bad" },
+        crypto.randomUUID(),
+        env.WHATSAPP_BRIDGE_SECRET,
+      )
+    ).status,
+    400,
+  );
   sql.close();
 });
 test("qualified WhatsApp enquiries preserve details without marketing consent", async () => {
   const { sql, env, request } = setup();
   env.WHATSAPP_BRIDGE_SECRET = "test-bridge-only";
-  const input = { phone: "2348000000000", messageId: "wamid.qualified", name: "Adéyemi", email: "test@example.com", service: "Automation", need: "Automate the incoming enquiries for my business" };
-  assert.equal((await request("/v1/whatsapp/handoff", input, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 200);
-  const row = sql.prepare("SELECT name,email,service,need,consent_marketing FROM leads").get()!;
-  assert.equal(row.name, input.name); assert.equal(row.email, input.email);
-  assert.equal(row.need, input.need); assert.equal(row.consent_marketing, 0);
-  assert.equal((await request("/v1/whatsapp/handoff", {...input, messageId:"bad.email", email:"invalid"}, crypto.randomUUID(), env.WHATSAPP_BRIDGE_SECRET)).status, 400);
+  const input = {
+    phone: "2348000000000",
+    messageId: "wamid.qualified",
+    name: "Adéyemi",
+    email: "test@example.com",
+    service: "Automation",
+    need: "Automate the incoming enquiries for my business",
+  };
+  assert.equal(
+    (
+      await request(
+        "/v1/whatsapp/handoff",
+        input,
+        crypto.randomUUID(),
+        env.WHATSAPP_BRIDGE_SECRET,
+      )
+    ).status,
+    200,
+  );
+  const row = sql
+    .prepare("SELECT name,email,service,need,consent_marketing FROM leads")
+    .get()!;
+  assert.equal(row.name, input.name);
+  assert.equal(row.email, input.email);
+  assert.equal(row.need, input.need);
+  assert.equal(row.consent_marketing, 0);
+  assert.equal(
+    (
+      await request(
+        "/v1/whatsapp/handoff",
+        { ...input, messageId: "bad.email", email: "invalid" },
+        crypto.randomUUID(),
+        env.WHATSAPP_BRIDGE_SECRET,
+      )
+    ).status,
+    400,
+  );
   assert.equal(sql.prepare("SELECT count(*) AS n FROM leads").get()!.n, 1);
+  sql.close();
+});
+test("the bound Sheet acknowledges WhatsApp references after mirroring", async () => {
+  const { sql, env, request } = setup();
+  env.WHATSAPP_BRIDGE_SECRET = "test-bridge-only";
+  env.SHEETS_SYNC_SECRET = "test-sheet-only";
+  await request(
+    "/v1/whatsapp/handoff",
+    { phone: "2348000000000", messageId: "wamid.sheet" },
+    crypto.randomUUID(),
+    env.WHATSAPP_BRIDGE_SECRET,
+  );
+  const row = sql.prepare("SELECT id,updated_at FROM leads").get()!;
+  assert.match(String(row.id), /^wa-[a-f0-9]{64}$/);
+  const ack = await request(
+    "/v1/sheets/ack",
+    { rows: [{ id: row.id, updatedAt: row.updated_at }] },
+    crypto.randomUUID(),
+    env.SHEETS_SYNC_SECRET,
+  );
+  assert.equal(ack.status, 200);
+  assert.equal(
+    ((await ack.json()) as { acknowledged: number }).acknowledged,
+    1,
+  );
+  assert.equal(
+    sql.prepare("SELECT sheet_synced FROM leads").get()!.sheet_synced,
+    1,
+  );
   sql.close();
 });
 test("distributed IP admission is shared across requests and resets only after expiry", async () => {
   const { sql, request } = setup();
   const ipKey = "a".repeat(64);
-  for (let i=0; i<6; i++) {
+  for (let i = 0; i < 6; i++) {
     const response = await request("/v1/form-admission", { ipKey });
     assert.equal(response.status, 200);
-    assert.equal(((await response.json()) as { allowed: boolean }).allowed, i<5);
+    assert.equal(
+      ((await response.json()) as { allowed: boolean }).allowed,
+      i < 5,
+    );
   }
   assert.equal(sql.prepare("SELECT count FROM rate_limits").get()!.count, 6);
   sql.prepare("UPDATE rate_limits SET expires_at=0").run();
   const reset = await request("/v1/form-admission", { ipKey });
   assert.equal(((await reset.json()) as { allowed: boolean }).allowed, true);
-  assert.equal((await request("/v1/form-admission", {ipKey:"not-an-ip-hash"})).status,400);
+  assert.equal(
+    (await request("/v1/form-admission", { ipKey: "not-an-ip-hash" })).status,
+    400,
+  );
   sql.close();
 });
 test("lead capture merges a recent duplicate and creates only three durable jobs", async () => {
@@ -150,15 +456,31 @@ test("lead capture merges a recent duplicate and creates only three durable jobs
   sql.close();
 });
 test("a merged enquiry refreshes the Sheet without resending accepted email jobs", async () => {
-  const {sql,request}=setup();
-  await request("/v1/leads",enquiry);
+  const { sql, request } = setup();
+  await request("/v1/leads", enquiry);
   sql.prepare("UPDATE outbox SET state='sent'").run();
   sql.prepare("UPDATE leads SET sheet_synced=1").run();
-  await request("/v1/leads",{...enquiry,message:"Updated after the first sync"});
-  assert.equal(sql.prepare("SELECT count(*) AS n FROM outbox").get()!.n,3);
-  assert.equal(sql.prepare("SELECT sheet_synced FROM leads").get()!.sheet_synced,0);
-  assert.equal(sql.prepare("SELECT state FROM outbox WHERE kind='sheet'").get()!.state,"pending");
-  assert.equal(sql.prepare("SELECT count(*) AS n FROM outbox WHERE kind<>'sheet' AND state='sent'").get()!.n,2);
+  await request("/v1/leads", {
+    ...enquiry,
+    message: "Updated after the first sync",
+  });
+  assert.equal(sql.prepare("SELECT count(*) AS n FROM outbox").get()!.n, 3);
+  assert.equal(
+    sql.prepare("SELECT sheet_synced FROM leads").get()!.sheet_synced,
+    0,
+  );
+  assert.equal(
+    sql.prepare("SELECT state FROM outbox WHERE kind='sheet'").get()!.state,
+    "pending",
+  );
+  assert.equal(
+    sql
+      .prepare(
+        "SELECT count(*) AS n FROM outbox WHERE kind<>'sheet' AND state='sent'",
+      )
+      .get()!.n,
+    2,
+  );
   sql.close();
 });
 test("expired duplicate creates a new enquiry; replayed nonce is rejected", async () => {
@@ -209,10 +531,13 @@ test("email rejections retain only HTTP status, never provider response contents
   env.OWNER_EMAIL = "owner@example.com";
   await request("/v1/leads", enquiry);
   const originalFetch = globalThis.fetch;
-  globalThis.fetch = async () => new Response("Sensitive provider response", { status: 401 });
+  globalThis.fetch = async () =>
+    new Response("Sensitive provider response", { status: 401 });
   try {
     await drainOutbox(env);
-    const jobs = sql.prepare("SELECT state,last_error FROM outbox WHERE kind<>'sheet'").all();
+    const jobs = sql
+      .prepare("SELECT state,last_error FROM outbox WHERE kind<>'sheet'")
+      .all();
     assert.equal(jobs.length, 2);
     for (const job of jobs) {
       assert.equal(job.state, "pending");
