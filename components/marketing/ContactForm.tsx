@@ -52,16 +52,6 @@ export default function ContactForm() {
     setSending(true);
     setError("");
     try {
-      const leadRequest = fetch("/api/contact-lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          service: serviceLabels[formData.service] || formData.service || "Not specified",
-          message: projectMessage,
-        }),
-      });
       const emailRequest = fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,14 +67,8 @@ export default function ContactForm() {
           },
         }),
       });
-      const [leadResult, emailResult] = await Promise.allSettled([leadRequest, emailRequest]);
-      let storedInAirtable = false;
-      if (leadResult.status === "fulfilled" && leadResult.value.ok) {
-        const leadPayload = (await leadResult.value.json().catch(() => ({}))) as { storedInAirtable?: boolean };
-        storedInAirtable = leadPayload.storedInAirtable === true;
-      }
-      const emailSent = emailResult.status === "fulfilled" && emailResult.value.ok;
-      if (!storedInAirtable && !emailSent) {
+      const emailResult = await emailRequest;
+      if (!emailResult.ok) {
         throw new Error("We could not send your enquiry. Please try again or use WhatsApp.");
       }
 

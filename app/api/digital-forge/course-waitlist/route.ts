@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
 
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
-const AIRTABLE_COURSE_WAITLIST_TABLE = process.env.AIRTABLE_COURSE_WAITLIST_TABLE ?? "Course Waitlist";
-
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID ?? "";
 const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? "";
@@ -18,46 +14,6 @@ type WaitlistPayload = {
   helpTopic: string;
   note?: string;
 };
-
-async function pushWaitlistToAirtable(payload: WaitlistPayload) {
-  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) {
-    return false;
-  }
-
-  const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_COURSE_WAITLIST_TABLE)}`;
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields: {
-            Name: payload.name,
-            Email: payload.email,
-            WhatsApp: payload.whatsapp || "",
-            "Preferred Access Path": payload.accessPath,
-            "Main Help Topic": payload.helpTopic,
-            Note: payload.note || "",
-            Source: "digital_forge_course_waitlist",
-            Page: "/digital-forge/course/waitlist",
-            Status: "new",
-            CapturedAt: new Date().toISOString(),
-          },
-        },
-      ],
-    }),
-  });
-
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(`Airtable waitlist capture failed: ${response.status} ${detail}`);
-  }
-
-  return true;
-}
 
 async function sendWaitlistEmail(payload: WaitlistPayload) {
   if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
@@ -119,14 +75,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    let storedInAirtable = false;
     let sentNotificationEmail = false;
-
-    try {
-      storedInAirtable = await pushWaitlistToAirtable(payload);
-    } catch (error) {
-      console.error("[Digital Forge Course Waitlist] Airtable capture failed", error);
-    }
 
     try {
       sentNotificationEmail = await sendWaitlistEmail(payload);
@@ -134,13 +83,12 @@ export async function POST(request: Request) {
       console.error("[Digital Forge Course Waitlist] Email notification failed", error);
     }
 
-    if (!storedInAirtable && !sentNotificationEmail) {
+    if (!sentNotificationEmail) {
       return NextResponse.json({ error: "Failed to capture waitlist entry" }, { status: 500 });
     }
 
     return NextResponse.json({
       success: true,
-      storedInAirtable,
       sentNotificationEmail,
       message: "Joined waitlist successfully.",
     });

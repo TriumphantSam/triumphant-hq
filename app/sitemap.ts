@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { getForgeProducts } from "@/lib/digital-forge";
 import { caseStudies } from "@/lib/case-studies";
 import { getBlogSitemapEntries } from "@/lib/blog";
-import { contentLastModified, isoDay } from "@/lib/content-lastmod";
+import { contentLastModified } from "@/lib/content-lastmod";
 import { locationPages, SITE_URL } from "@/lib/seo";
 
 /**
@@ -91,8 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       `/digital-forge/products/${product.slug}`,
       0.4,
       "weekly",
-      contentLastModified(`/digital-forge/products/${product.slug}`) ||
-        isoDay(product.publishing?.publishedAt),
+      contentLastModified(`/digital-forge/products/${product.slug}`),
     ),
   );
 

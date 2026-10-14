@@ -2,9 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { NextRequest, NextResponse } from 'next/server';
 
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? '';
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? '';
-const AIRTABLE_FUNNEL_LEADS_TABLE = process.env.AIRTABLE_FUNNEL_LEADS_TABLE ?? 'Funnel Leads';
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? '';
 const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID ?? '';
 const EMAILJS_TEMPLATE_ID_CONFIRMATION = process.env.EMAILJS_TEMPLATE_ID_CONFIRMATION ?? EMAILJS_TEMPLATE_ID;
@@ -51,40 +48,13 @@ function readLocalFunnel(slug: string): FunnelPayload | null {
   }
 }
 
-async function fetchFunnelLeads(slug: string): Promise<FunnelLead[]> {
-  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) {
-    return [];
-  }
-
-  const params = new URLSearchParams();
-  params.set('maxRecords', '100');
-  params.set('filterByFormula', `{Slug}='${slug.replace(/'/g, "\\'")}'`);
-  const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_FUNNEL_LEADS_TABLE)}?${params.toString()}`;
-
-  const response = await fetch(endpoint, {
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-    },
-    cache: 'no-store',
-  });
-
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(`Airtable lead fetch failed: ${response.status} ${detail}`);
-  }
-
-  const data = (await response.json()) as { records?: Array<{ id: string; fields?: Record<string, unknown> }> };
-  return (data.records ?? [])
-    .map((record) => {
-      const fields = record.fields ?? {};
-      return {
-        id: record.id,
-        name: typeof fields['Name'] === 'string' ? fields['Name'] : 'there',
-        email: typeof fields['Email'] === 'string' ? fields['Email'] : '',
-        slug: typeof fields['Slug'] === 'string' ? fields['Slug'] : slug,
-      } as FunnelLead;
-    })
-    .filter((lead) => lead.email);
+function leadsFromEmails(slug: string, emails: string[]): FunnelLead[] {
+  return emails.map((email) => ({
+    id: email,
+    name: 'there',
+    email,
+    slug,
+  }));
 }
 
 async function sendEmailJsTemplate(template: FunnelEmailTemplate, payload: {
@@ -154,13 +124,10 @@ export async function POST(request: NextRequest) {
     const trainingUrl = `${EMAILJS_TRAINING_BASE_URL}/${slug}/training`;
     const offerUrl = `${EMAILJS_TRAINING_BASE_URL}/${slug}/offer`;
 
-    const leads = await fetchFunnelLeads(slug);
-    const recipients = requestedEmails.length > 0
-      ? leads.filter((lead) => requestedEmails.includes(lead.email.toLowerCase()))
-      : leads;
+    const recipients = leadsFromEmails(slug, requestedEmails);
 
     if (recipients.length === 0) {
-      return NextResponse.json({ error: 'no matching leads found' }, { status: 404 });
+      return NextResponse.json({ error: 'no recipient emails were provided' }, { status: 404 });
     }
 
     const results: Array<{ email: string; ok: boolean; error?: string }> = [];

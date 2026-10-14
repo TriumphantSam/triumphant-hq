@@ -7,8 +7,6 @@ import { resolveUsdPriceLabel } from "@/lib/digital-forge-offers";
 import CurrencyPrice from "@/components/CurrencyPrice";
 import JsonLd, { serializeJsonLd } from "@/components/seo/JsonLd";
 
-export const revalidate = 300;
-
 type PageProps = {
   params: Promise<{ slug: string }>;
 };

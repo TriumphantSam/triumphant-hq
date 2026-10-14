@@ -52,9 +52,8 @@ function parseStringOverrides(raw: string): Record<string, string> {
 
 /**
  * Resolves a delivery URL for a given slug.
- * Tries an exact match first, then falls back to a prefix match.
- * This handles cases where Airtable truncates long slugs differently
- * than what is stored in the override map.
+ * Tries an exact match first, then falls back to a prefix match
+ * when a slug and an override key differ by a truncated ending.
  */
 export function resolveDeliveryUrl(slug: string, fallback?: string): string | undefined {
   // 1. Exact match

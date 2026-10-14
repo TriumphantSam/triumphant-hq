@@ -42,21 +42,27 @@ export default function ChecklistTool({ magnet }: { magnet: ChecklistMagnet }) {
     if (!email.includes("@") || !name.trim()) return;
     setSaving(true);
     try {
-      await fetch("/api/contact-lead", {
+      const message = [
+        `Lead magnet: ${magnet.slug}`,
+        `Score: ${score}/100 (${band.label})`,
+        `Band summary: ${band.summary}`,
+        "",
+        "Answers:",
+        ...magnet.questions.map((q) => `- ${q.prompt}: ${answers[q.id] ? "Yes" : "No"}`),
+      ].join("\n");
+      await fetch("https://api.emailjs.com/api/v1.0/email/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          service: `${magnet.eyebrow} · Score ${score}`,
-          message: [
-            `Lead magnet: ${magnet.slug}`,
-            `Score: ${score}/100 (${band.label})`,
-            `Band summary: ${band.summary}`,
-            "",
-            "Answers:",
-            ...magnet.questions.map((q) => `- ${q.prompt}: ${answers[q.id] ? "Yes" : "No"}`),
-          ].join("\n"),
+          service_id: "service_fgz42ok",
+          template_id: "template_2bilwne",
+          user_id: "TCsiAiLBlJkqHpCn5",
+          template_params: {
+            from_name: name.trim(),
+            reply_to: email.trim(),
+            service: `${magnet.eyebrow} · Score ${score}`,
+            message,
+          },
         }),
       });
       setSaved(true);

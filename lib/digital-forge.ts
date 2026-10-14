@@ -26,7 +26,6 @@ export type ForgePublishing = {
 };
 
 export type ForgeProduct = {
-  airtableRecordId?: string;
   status?: "draft" | "published";
   publishing?: ForgePublishing;
   generationProfile?: string;
@@ -98,14 +97,8 @@ export type FunnelPayload = {
   emails: { confirmation: Record<string, unknown>; reminders: unknown[]; followUps: unknown[] };
   channels: { telegramReminder: string; whatsappReminder: string };
   review: { status: string; notes: string; approvedBy: string; approvedAt: string };
-  // UI extended elements (derived or optional)
-  airtableRecordId?: string;
 };
 
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? "";
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? "";
-const AIRTABLE_PRODUCTS_TABLE = process.env.AIRTABLE_PRODUCTS_TABLE ?? "Products";
-const AIRTABLE_FORGE_REVALIDATE_SECONDS = Number(process.env.AIRTABLE_FORGE_REVALIDATE_SECONDS ?? "300");
 const GENERATED_FORGE_DIR = path.join(process.cwd(), "content", "digital-forge", "generated");
 const GENERATED_FUNNELS_DIR = path.join(process.cwd(), "content", "digital-forge", "funnels");
 
@@ -359,17 +352,6 @@ function loadAllGeneratedForgeProducts(): ForgeProduct[] {
   return products;
 }
 
-function mergeForgeProducts(seedProducts: ForgeProduct[], generatedProducts: ForgeProduct[]): ForgeProduct[] {
-  const merged = new Map<string, ForgeProduct>();
-  for (const product of seedProducts) {
-    merged.set(product.slug, product);
-  }
-  for (const product of generatedProducts) {
-    merged.set(product.slug, product);
-  }
-  return Array.from(merged.values());
-}
-
 function normalizeForgeProduct(product: ForgeProduct): ForgeProduct {
   return {
     ...product,
@@ -388,140 +370,9 @@ function normalizeForgeProduct(product: ForgeProduct): ForgeProduct {
   };
 }
 
-function firstString(value: unknown): string {
-  return typeof value === "string" ? value : "";
-}
-
-function mergeAirtableFieldsIntoProduct(product: ForgeProduct, fields: Record<string, unknown>, recordId: string): ForgeProduct {
-  const publishing = {
-    ...(product.publishing ?? {}),
-    queueStatus: firstString(fields["Queue Status"]) || product.publishing?.queueStatus,
-    websiteSyncStatus: firstString(fields["Website Sync Status"]) || product.publishing?.websiteSyncStatus,
-    distributionStatus: firstString(fields["Distribution Status"]) || product.publishing?.distributionStatus,
-    reviewStatus: firstString(fields["Review Status"]) || product.publishing?.reviewStatus,
-    reviewer: firstString(fields["Reviewer"]) || product.publishing?.reviewer,
-    reviewedAt: firstString(fields["Reviewed At"]) || product.publishing?.reviewedAt,
-    approvalNotes: firstString(fields["Approval Notes"]) || product.publishing?.approvalNotes,
-    revisionNotes: firstString(fields["Revision Notes"]) || product.publishing?.revisionNotes,
-    launchStatus: firstString(fields["Launch Status"]) || product.publishing?.launchStatus,
-    publishedAt: firstString(fields["Published At"]) || product.publishing?.publishedAt,
-    lastDistributionAttemptAt: firstString(fields["Last Distribution Attempt At"]) || product.publishing?.lastDistributionAttemptAt,
-    lastWebsiteSyncAt: firstString(fields["Last Website Sync At"]) || product.publishing?.lastWebsiteSyncAt,
-  } as ForgePublishing;
-
-  const status = firstString(fields["Website Status"]) || product.status || "draft";
-  return normalizeForgeProduct({
-    ...product,
-    airtableRecordId: recordId,
-    status: status as ForgeProduct["status"],
-    publishing,
-  });
-}
-
-function fallbackProductFromAirtableFields(fields: Record<string, unknown>, recordId: string): ForgeProduct | null {
-  const slug = firstString(fields["Slug"]);
-  const title = firstString(fields["Title"]);
-  if (!slug || !title) {
-    return null;
-  }
-  return normalizeForgeProduct({
-    airtableRecordId: recordId,
-    slug,
-    title,
-    category: firstString(fields["Category"]) || "Digital Products",
-    promise: firstString(fields["Promise"]),
-    format: firstString(fields["Format"]) || "Digital Forge bundle",
-    cta: firstString(fields["CTA"]) || "Review this product",
-    audience: firstString(fields["Audience"]),
-    outcome: firstString(fields["Outcome"]),
-    includes: [],
-    pricing: firstString(fields["Pricing"]) || "Digital Forge bundle",
-    headline: firstString(fields["Headline"]),
-    subheadline: firstString(fields["Subheadline"]),
-    problem: firstString(fields["Problem"]),
-    approach: firstString(fields["Approach"]),
-    idealFor: [],
-    deliverables: [],
-    bonuses: [],
-    proofPoints: [],
-    faq: [],
-    primaryAction: "Review this product",
-    secondaryAction: "View free resources",
-    status: (firstString(fields["Website Status"]) || "draft") as ForgeProduct["status"],
-    publishing: {
-      queueStatus: firstString(fields["Queue Status"]) || "draft",
-      websiteSyncStatus: firstString(fields["Website Sync Status"]) || "pending",
-      distributionStatus: firstString(fields["Distribution Status"]) || "pending",
-      reviewStatus: firstString(fields["Review Status"]) || "not_reviewed",
-      reviewer: firstString(fields["Reviewer"]),
-      reviewedAt: firstString(fields["Reviewed At"]),
-      approvalNotes: firstString(fields["Approval Notes"]),
-      revisionNotes: firstString(fields["Revision Notes"]),
-      launchStatus: firstString(fields["Launch Status"]) || "not_started",
-      publishedAt: firstString(fields["Published At"]),
-    },
-  });
-}
-
-async function fetchAirtableForgeProducts({ publishedOnly = false }: { publishedOnly?: boolean } = {}): Promise<ForgeProduct[]> {
-  if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) {
-    return [];
-  }
-
-  const params = new URLSearchParams();
-  params.set("maxRecords", "100");
-  if (publishedOnly) {
-    params.set("filterByFormula", "{Website Status}='published'");
-  }
-  params.set("sort[0][field]", "Title");
-  params.set("sort[0][direction]", "asc");
-
-  const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_PRODUCTS_TABLE)}?${params.toString()}`;
-  try {
-    const response = await fetch(endpoint, {
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-      },
-      next: { revalidate: AIRTABLE_FORGE_REVALIDATE_SECONDS },
-    });
-    if (!response.ok) {
-      return [];
-    }
-    const data = (await response.json()) as { records?: Array<{ id: string; fields?: Record<string, unknown> }> };
-    const items: ForgeProduct[] = [];
-    for (const record of data.records ?? []) {
-      const fields = record.fields ?? {};
-      const payloadRaw = fields["Website Payload JSON"];
-      if (typeof payloadRaw === "string" && payloadRaw.trim()) {
-        try {
-          const parsed = JSON.parse(payloadRaw) as ForgeProduct;
-          if (parsed?.slug && parsed?.title) {
-            items.push(mergeAirtableFieldsIntoProduct(parsed, fields, record.id));
-            continue;
-          }
-        } catch {
-        }
-      }
-
-      const fallback = fallbackProductFromAirtableFields(fields, record.id);
-      if (fallback) {
-        items.push(fallback);
-      }
-    }
-    return items;
-  } catch {
-    return [];
-  }
-}
-
 // ─── Public storefront loaders ────────────────────────────────────
 
 export async function getForgeProducts(): Promise<ForgeProduct[]> {
-  const airtableProducts = await fetchAirtableForgeProducts({ publishedOnly: true });
-  if (airtableProducts.length > 0) {
-    return airtableProducts.map(normalizeForgeProduct);
-  }
-
   return loadGeneratedForgeProducts().map(normalizeForgeProduct);
 }
 
@@ -539,9 +390,7 @@ export async function getForgeProductSlugs(): Promise<string[]> {
 // Used exclusively by /digital-forge/builder — never by the public storefront.
 
 export async function getForgeBuilderProducts(): Promise<ForgeProduct[]> {
-  const generated = loadAllGeneratedForgeProducts();
-  const airtable = await fetchAirtableForgeProducts({ publishedOnly: false });
-  return mergeForgeProducts(generated, airtable).map(normalizeForgeProduct);
+  return loadAllGeneratedForgeProducts().map(normalizeForgeProduct);
 }
 
 // ─── Funnel Loaders ───────────────────────────────────────────────
@@ -573,7 +422,6 @@ function loadGeneratedForgeFunnels(): FunnelPayload[] {
 }
 
 export async function getForgeFunnels(): Promise<FunnelPayload[]> {
-  // In v1, there's no Airtable merge for Funnels yet. Reading local only.
   return loadGeneratedForgeFunnels().filter(
     (f) => f.status === "published" || process.env.NODE_ENV === "development"
   );

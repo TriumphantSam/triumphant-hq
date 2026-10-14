@@ -447,6 +447,11 @@ export const defaultKeywords = [
   "digital support Ibadan",
 ];
 
+/** Share crop of the cinematic hero. 1200×630 matches the usual social card ratio. */
+const DEFAULT_OG_IMAGE = "/images/og-agency-hero-cinematic.jpg";
+const DEFAULT_OG_WIDTH = 1200;
+const DEFAULT_OG_HEIGHT = 630;
+
 type BuildMetadataInput = {
   title: string;
   description: string;
@@ -454,6 +459,8 @@ type BuildMetadataInput = {
   keywords?: string[];
   noIndex?: boolean;
   ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
 };
 
 export function buildPageMetadata({
@@ -462,7 +469,9 @@ export function buildPageMetadata({
   path,
   keywords = [],
   noIndex = false,
-  ogImage = "/images/agency-hero-cinematic.png",
+  ogImage = DEFAULT_OG_IMAGE,
+  ogImageWidth,
+  ogImageHeight,
 }: BuildMetadataInput): Metadata {
   const url = absoluteCanonicalUrl(path);
   const mergedKeywords = [
@@ -481,7 +490,13 @@ export function buildPageMetadata({
       siteName: siteIdentity.brandName,
       locale: "en_NG",
       type: "website",
-      images: [{ url: ogImage, width: 1920, height: 1080, alt: title }],
+      images: [
+        ogImage === DEFAULT_OG_IMAGE
+          ? { url: ogImage, width: DEFAULT_OG_WIDTH, height: DEFAULT_OG_HEIGHT, alt: title }
+          : ogImageWidth && ogImageHeight
+            ? { url: ogImage, width: ogImageWidth, height: ogImageHeight, alt: title }
+            : { url: ogImage, alt: title },
+      ],
     },
     twitter: {
       card: "summary_large_image",

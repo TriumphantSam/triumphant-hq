@@ -1,11 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { NextResponse } from 'next/server';
-import { scheduleFollowUpEmail } from '@/lib/follow-up-emails';
 
-const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID ?? '';
-const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY ?? '';
-const AIRTABLE_FUNNEL_LEADS_TABLE = process.env.AIRTABLE_FUNNEL_LEADS_TABLE ?? 'Funnel Leads';
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? '';
 const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID ?? '';
 const EMAILJS_TEMPLATE_ID_CONFIRMATION = process.env.EMAILJS_TEMPLATE_ID_CONFIRMATION ?? EMAILJS_TEMPLATE_ID;
@@ -35,41 +31,6 @@ function readLocalFunnel(slug: string): FunnelPayload | null {
     } catch {
         return null;
     }
-}
-
-async function pushLeadToAirtable(lead: { slug: string; name: string; email: string }) {
-    if (!AIRTABLE_BASE_ID || !AIRTABLE_API_KEY) {
-        return false;
-    }
-
-    const endpoint = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_FUNNEL_LEADS_TABLE)}`;
-    const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            records: [
-                {
-                    fields: {
-                        Slug: lead.slug,
-                        Name: lead.name,
-                        Email: lead.email,
-                        Source: 'digital_forge_funnel',
-                        CapturedAt: new Date().toISOString(),
-                    },
-                },
-            ],
-        }),
-    });
-
-    if (!response.ok) {
-        const detail = await response.text();
-        throw new Error(`Airtable lead capture failed: ${response.status} ${detail}`);
-    }
-
-    return true;
 }
 
 type FunnelEmailTemplate = 'confirmation' | 'starting_soon' | 'replay';
@@ -135,20 +96,12 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        const lead = { slug, name, email };
         const funnel = readLocalFunnel(slug);
         const trainingTitle = funnel?.training?.title || funnel?.campaignName || 'Digital Forge Training';
         const trainingUrl = `${EMAILJS_TRAINING_BASE_URL}/${slug}/training`;
         const offerUrl = `${EMAILJS_TRAINING_BASE_URL}/${slug}/offer`;
 
-        let storedInAirtable = false;
         let sentConfirmationEmail = false;
-
-        try {
-            storedInAirtable = await pushLeadToAirtable(lead);
-        } catch (error) {
-            console.error('[Funnel Engine] Airtable lead capture failed', error);
-        }
 
         try {
             sentConfirmationEmail = await sendEmailJsTemplate('confirmation',{
@@ -163,38 +116,11 @@ export async function POST(request: Request) {
             console.error('[Funnel Engine] EmailJS confirmation failed', error);
         }
 
-        const day3 = new Date();
-        day3.setDate(day3.getDate() + 3);
-        const day7 = new Date();
-        day7.setDate(day7.getDate() + 7);
-
-        await scheduleFollowUpEmail({
-            name,
-            email,
-            templateKey: 'funnel_day3',
-            sequence: 'funnel_nurture',
-            source: 'digital_forge_funnel',
-            leadId: slug,
-            scheduledAt: day3,
-            metadata: { training_title: trainingTitle, training_url: trainingUrl, offer_url: offerUrl },
-        });
-        await scheduleFollowUpEmail({
-            name,
-            email,
-            templateKey: 'funnel_day7',
-            sequence: 'funnel_nurture',
-            source: 'digital_forge_funnel',
-            leadId: slug,
-            scheduledAt: day7,
-            metadata: { training_title: trainingTitle, training_url: trainingUrl, offer_url: offerUrl },
-        });
-
         console.log(`[Funnel Engine] New Lead Captured: ${name} (${email}) for funnel: ${slug}`);
 
         return NextResponse.json({
             success: true,
             message: 'Reserved spot successfully.',
-            storedInAirtable,
             sentConfirmationEmail,
             templates: {
                 confirmation: EMAILJS_TEMPLATE_ID_CONFIRMATION || null,
