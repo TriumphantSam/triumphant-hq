@@ -154,6 +154,35 @@ test("booking capacity is atomic, retries are idempotent and management requires
   const retry = await request("/v1/bookings/create", retryInput);
   assert.equal(retry.status, 200);
   assert.equal(((await retry.json()) as { code: string }).code, result.code);
+  const recovered = await request("/v1/bookings/recover", retryInput);
+  assert.equal(recovered.status, 200);
+  assert.equal(
+    ((await recovered.json()) as { code: string }).code,
+    result.code,
+  );
+  assert.equal(
+    (
+      await request("/v1/bookings/recover", {
+        ...retryInput,
+        email: "wrong@example.com",
+      })
+    ).status,
+    404,
+  );
+  assert.equal(
+    (
+      await request("/v1/bookings/recover", {
+        ...retryInput,
+        requestId: crypto.randomUUID(),
+      })
+    ).status,
+    404,
+  );
+  assert.equal(sql.prepare("SELECT count(*) n FROM bookings").get()!.n, 1);
+  assert.equal(
+    sql.prepare("SELECT count(*) n FROM booking_outbox").get()!.n,
+    4,
+  );
   assert.equal(
     (await request("/v1/bookings/create", { ...retryInput, name: "Different" }))
       .status,

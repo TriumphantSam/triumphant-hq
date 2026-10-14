@@ -126,12 +126,25 @@ export default function BookingDemo() {
       setBooking(data.booking);
       setCode(data.code);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Please try again.");
       try {
-        const data = await request("/api/automation/bookings");
-        setSlots(data.slots);
+        const recovered = await request("/api/automation/bookings/recover", {
+          ...details,
+          requestId,
+        });
+        setBooking(recovered.booking);
+        setCode(recovered.code);
       } catch {
-        /* Retain the current choices for a retry. */
+        setError(
+          error instanceof Error && error.name !== "TimeoutError"
+            ? error.message
+            : "The response took too long. Check your confirmation email before booking again.",
+        );
+        try {
+          const data = await request("/api/automation/bookings");
+          setSlots(data.slots);
+        } catch {
+          /* Keep choices for retry. */
+        }
       }
     } finally {
       setBusy(false);

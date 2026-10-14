@@ -41,6 +41,39 @@ export function bookingSlots(now = Date.now()) {
 }
 const codeFor = (env: Env, id: string) =>
   hmac(env.AUTOMATION_HMAC_SECRET, `booking-management-v1\n${id}`);
+function bookingInput(raw: string) {
+  let input: Record<string, unknown>;
+  try {
+    input = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+  if (!input || Array.isArray(input)) return null;
+  const name = typeof input.name === "string" ? input.name.trim() : "";
+  const email =
+    typeof input.email === "string" ? input.email.trim().toLowerCase() : "";
+  const phone = typeof input.phone === "string" ? input.phone.trim() : "";
+  if (
+    !name ||
+    name.length > 120 ||
+    email.length > 254 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
+    phone.length > 30 ||
+    typeof input.requestId !== "string" ||
+    !/^[a-f0-9-]{36}$/.test(input.requestId) ||
+    typeof input.start !== "string"
+  )
+    return null;
+  return { name, email, phone, requestId: input.requestId, start: input.start };
+}
+const fingerprintFor = (
+  env: Env,
+  input: NonNullable<ReturnType<typeof bookingInput>>,
+) =>
+  hmac(
+    env.AUTOMATION_HMAC_SECRET,
+    JSON.stringify([input.name, input.email, input.phone, input.start]),
+  );
 async function authorised(env: Env, input: Record<string, unknown>) {
   if (
     typeof input.id !== "string" ||
@@ -79,37 +112,43 @@ bookingRoutes.get("/slots", async (c) => {
     timezone: "Africa/Lagos",
   });
 });
-bookingRoutes.post("/create", async (c) => {
-  let input: Record<string, unknown>;
-  try {
-    input = JSON.parse(c.get("raw"));
-  } catch {
-    return c.json({ error: "Invalid booking." }, 400);
-  }
-  if (!input || Array.isArray(input))
-    return c.json({ error: "Invalid booking." }, 400);
-  const name = typeof input.name === "string" ? input.name.trim() : "";
-  const email =
-    typeof input.email === "string" ? input.email.trim().toLowerCase() : "";
-  const phone = typeof input.phone === "string" ? input.phone.trim() : "";
-  if (
-    !name ||
-    name.length > 120 ||
-    email.length > 254 ||
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-    phone.length > 30 ||
-    typeof input.requestId !== "string" ||
-    !/^[a-f0-9-]{36}$/.test(input.requestId) ||
-    typeof input.start !== "string"
+bookingRoutes.post("/recover", async (c) => {
+  const input = bookingInput(c.get("raw"));
+  if (!input) return c.json({ error: "Invalid booking recovery." }, 400);
+  // The private random request ID and exact bound details authorize read-only recovery.
+  // This route cannot create a reservation, change it or queue another email.
+  const existing = await c.env.DB.prepare(
+    "SELECT * FROM bookings WHERE request_id=? AND fingerprint=?",
   )
+    .bind(input.requestId, await fingerprintFor(c.env, input))
+    .first<Booking>();
+  if (!existing)
+    return c.json(
+      {
+        error:
+          "No matching booking was found. Check your confirmation email before booking again.",
+      },
+      404,
+    );
+  return c.json({
+    booking: {
+      id: existing.id,
+      start: existing.slot_start,
+      end: existing.slot_end,
+      status: existing.status,
+    },
+    code: await codeFor(c.env, existing.id),
+  });
+});
+bookingRoutes.post("/create", async (c) => {
+  const input = bookingInput(c.get("raw"));
+  if (!input)
     return c.json(
       { error: "Please include your name, email and a valid time." },
       400,
     );
-  const fingerprint = await hmac(
-    c.env.AUTOMATION_HMAC_SECRET,
-    JSON.stringify([name, email, phone, input.start]),
-  );
+  const { name, email, phone } = input;
+  const fingerprint = await fingerprintFor(c.env, input);
   const existing = await c.env.DB.prepare(
     "SELECT * FROM bookings WHERE request_id=?",
   )

@@ -8,6 +8,8 @@ Free, real 30-minute automation consultations. Approved owner availability: week
 
 Customers receive confirmation and 24-hour / 2-hour reminders. The owner receives confirmation and cancellation alerts. The minute cron leases durable jobs, retries failures and uses provider idempotency keys. Cancelled and expired reminder jobs are suppressed. Cancellation releases capacity and updates the lead mirror. An email already accepted by the provider cannot be recalled.
 
+If a booking response times out after storage, the client attempts read-only recovery using its private random request ID and exact bound details. Recovery cannot create/change a booking or resend email. No capability is put in a URL. Verification failures and token expiry display an explanation and retry control rather than silently disabling the form.
+
 The private management code is derived with a purpose-specific HMAC from the backend signing secret and booking ID. It is never placed in a URL, the Sheet, owner email or logs. Customer emails include manual reference/code entry instructions; the optional `#manage` fragment is constant. Rotating AUTOMATION_HMAC_SECRET invalidates old management codes, so coordinate rotation and reissue codes before doing so. The browser keeps the code only in memory, excludes this panel from analytics autocapture, and masks the code for replay. Calendar downloads contain no private management code or customer contact details.
 
 ## Release and checks
