@@ -87,3 +87,27 @@ and deletion process; suppression digests remain to honour opt-out.
 WhatsApp, Termii SMS, live payments and Instagram messaging remain outside this
 release's activation. Those channels are not enabled by viewing or using these
 demos.
+
+## Production verification on 15 October 2026
+
+- Vercel production build promoted with current founder-page fixes retained.
+- Twelve website tests, thirty-three Worker tests and all twenty real Workers AI
+  golden questions passed. A browser session passed Turnstile and received a
+  sourced SEO answer that explicitly refused guaranteed number-one rankings.
+- One authorised NGN 100 Paystack test checkout was verified paid, including
+  exact reference, amount, currency and test domain. The public receipt rendered
+  correctly without customer contact or card details. Repeated verification
+  retained exactly two jobs: one receipt and one owner alert.
+- Resend accepted those two jobs and the authorised private-feedback owner alert.
+  Inbox delivery is not independently confirmed. No public Google review was posted.
+- The owner confirmed saving the production URL in Paystack's test webhook
+  settings. A real webhook replay remains distinct from the verified callback/API
+  flow; unsigned requests are rejected and signature/replay behavior is tested.
+- Production owner reports are enabled; staging reports, WhatsApp and SMS are off.
+- Provider calls use `redirect: "manual"` and reject non-success responses. The
+  deployed Worker runtime rejected `redirect: "error"`; regression tests cover
+  redirect rejection and reuse of the same email idempotency key on retry.
+
+Owner access is at `/admin`. The generated password is kept outside Git. On the
+owner's Windows machine, `node C:\Users\trium\triumphant-hq\tmp\emit-owner-password.mjs | Set-Clipboard`
+copies it privately for pasting into the login form. Do not put it in chat or docs.
