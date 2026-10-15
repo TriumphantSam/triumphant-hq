@@ -61,14 +61,14 @@ export const automationDemos = [
     description:
       "Answer from approved business information and connect people with a human when needed.",
     audience: "Service teams · schools · online shops",
-    status: "Coming next",
+    status: "AI business assistant",
     action: "Explore the assistant",
     steps: [
       "Ask a question about a service.",
       "Get an answer grounded in approved information.",
       "Request a human conversation.",
     ],
-    note: "The AI assistant needs an approved knowledge base and provider configuration before it can be tried live. Ask us directly on WhatsApp in the meantime.",
+    note: "AI selects relevant facts from our business knowledge base, with links to the source. The server supplies the factual answer text. Ask for our team to send a real enquiry. No fixed project prices or guaranteed rankings are invented.",
   },
   {
     slug: "payments",
@@ -78,14 +78,14 @@ export const automationDemos = [
     description:
       "Confirm a payment with the provider, issue a receipt and track unpaid invoices.",
     audience: "Shops · schools · professional services",
-    status: "Test integration pending",
+    status: "Test checkout",
     action: "Explore payments",
     steps: [
       "Choose the clearly labelled ₦100 test product.",
       "Complete Paystack test checkout.",
       "View a verified receipt.",
     ],
-    note: "Paystack test checkout is not connected. This page collects no payment or card details. The test flow must pass webhook replay and payment verification tests before launch.",
+    note: "This demonstration uses Paystack test mode only. No real money is collected and no product is delivered. Receipts require server verification of the amount, currency, reference and test-mode status. Optional demonstration reminders stop after three sends, opt-out or verified payment. Live billing is not enabled.",
   },
   {
     slug: "reviews",
@@ -95,14 +95,14 @@ export const automationDemos = [
     description:
       "Invite honest reviews after a completed service, with private feedback available to everyone.",
     audience: "Local businesses · clinics · salons",
-    status: "Business profile required",
+    status: "Honest reviews & private feedback",
     action: "Explore reviews",
     steps: [
       "Receive a request after a completed service.",
       "Choose a rating and optional feedback.",
       "Access the same Google review option at every rating.",
     ],
-    note: "A confirmed Google Business Place ID is required. Low ratings will have the same Google review option as high ratings; private feedback is an additional choice.",
+    note: "Every rating has the same Google review option. Private feedback is available to everyone and queues an owner email alert. Explore the controls freely; submit public reviews only for genuine customer experiences. Automatic after-service invitations require recorded permission and a completed service.",
   },
   {
     slug: "admin",
@@ -119,7 +119,7 @@ export const automationDemos = [
       "Record sample sales to trigger a stock alert.",
       "Download the report and try draft approval without publishing.",
     ],
-    note: "This public dashboard uses fictional sample data. A private report endpoint reads real leads and bookings; automated owner delivery and a signed-in admin workspace are not enabled yet. Payment and stock reporting await those integrations. Draft approval in this demo publishes nothing.",
+    note: "This public dashboard uses fictional sample data. A private owner workspace supports real enquiries, bookings and feedback. Live financial and stock reporting require connected business systems. Draft approval never publishes automatically.",
   },
 ] as const;
 export type DemoSlug = (typeof automationDemos)[number]["slug"];

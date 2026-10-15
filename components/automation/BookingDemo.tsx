@@ -113,6 +113,7 @@ export default function BookingDemo() {
       phone: form.get("phone"),
       smsOptIn: form.get("smsOptIn") === "on",
       whatsappOptIn: form.get("whatsappOptIn") === "on",
+      reviewOptIn: form.get("reviewOptIn") === "on",
       start,
     };
     const fingerprint = JSON.stringify(details),
@@ -459,6 +460,11 @@ export default function BookingDemo() {
                 and can be stopped from your booking management page.
               </p>
             </fieldset>
+            <label className="lab-consent">
+              <input type="checkbox" name="reviewOptIn" />
+              Email me one request for honest feedback after this consultation.
+              Optional; at most one request in 90 days.
+            </label>
             <p className="lab-note">
               This is a real appointment. We use your details for the
               consultation, confirmation and reminders.{" "}

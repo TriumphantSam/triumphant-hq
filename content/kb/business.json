@@ -1,0 +1,62 @@
+[
+  {
+    "id": "pricing",
+    "text": "Project pricing depends on scope. We discuss your needs, then share a written proposal with deliverables and a timeline before work begins. No fixed website or SEO price is published here.",
+    "href": "/contact",
+    "keywords": "price cost budget quote website seo"
+  },
+  {
+    "id": "websites",
+    "text": "TriumphantTech builds websites, including Next.js sites, with clear enquiry paths, mobile layouts and technical SEO foundations. Existing sites can also be rebuilt.",
+    "href": "/services/websites",
+    "keywords": "website redesign nextjs mobile"
+  },
+  {
+    "id": "seo",
+    "text": "TriumphantTech offers SEO audits and implementation. We can work remotely with businesses in Lagos and elsewhere in Nigeria. We do not guarantee a number-one ranking.",
+    "href": "/services/seo",
+    "keywords": "seo lagos ranking search google"
+  },
+  {
+    "id": "automation",
+    "text": "Automation services cover enquiries, booking, notifications and connected business workflows. The Automation Lab shows current demos and identifies integrations that are still pending.",
+    "href": "/services/automation",
+    "keywords": "automation workflow crm whatsapp"
+  },
+  {
+    "id": "location",
+    "text": "Triumphant Technological Services is based on Basorun Rd, Ibadan, Oyo State, Nigeria. Agency projects can be delivered remotely.",
+    "href": "/contact",
+    "keywords": "address directions location ibadan remote"
+  },
+  {
+    "id": "booking",
+    "text": "Book a free 30-minute automation consultation. Available hours are weekdays 10am–4pm Lagos time, with 24 hours’ notice and a 15-minute buffer. The booking page shows current availability.",
+    "href": "/automation-lab/booking",
+    "keywords": "book consultation call appointment hours"
+  },
+  {
+    "id": "response",
+    "text": "Project enquiries are reviewed and answered within one business day. Share the problem, desired outcome and timing; a complete brief is not required.",
+    "href": "/contact",
+    "keywords": "response reply brief contact"
+  },
+  {
+    "id": "whatsapp",
+    "text": "The company WhatsApp number is +234 909 009 0910. It is active in the Business app. Automated replies on this number are awaiting the Meta API connection.",
+    "href": "/automation-lab/whatsapp",
+    "keywords": "whatsapp number bot phone"
+  },
+  {
+    "id": "portfolio",
+    "text": "You can review our published work and case studies on the portfolio page. This assistant does not invent clients, testimonials or performance results.",
+    "href": "/portfolio",
+    "keywords": "clients results portfolio work examples"
+  },
+  {
+    "id": "apps",
+    "text": "TriumphantTech builds custom software and applications. We assess the workflow and requirements before proposing a solution.",
+    "href": "/services/app-development",
+    "keywords": "software app custom dashboard"
+  }
+]

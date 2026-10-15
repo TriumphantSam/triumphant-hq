@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       email,
       service,
       message,
-      source: ["scorecard", "web_form", "automation_lab"].includes(
+      source: ["scorecard", "web_form", "automation_lab", "chat"].includes(
         String(body.source),
       )
         ? String(body.source)

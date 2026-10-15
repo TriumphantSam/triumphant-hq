@@ -21,6 +21,7 @@ type Booking = {
   status: string;
   whatsapp_opt_in: number;
   sms_opt_in: number;
+  completed_at: string | null;
 };
 type BookingJob = {
   id: string;
@@ -62,10 +63,12 @@ function bookingInput(raw: string) {
   let phone = typeof input.phone === "string" ? input.phone.trim() : "";
   const whatsappOptIn = input.whatsappOptIn === true,
     smsOptIn = input.smsOptIn === true;
+  const reviewOptIn = input.reviewOptIn === true;
   if (
     (input.whatsappOptIn !== undefined &&
       typeof input.whatsappOptIn !== "boolean") ||
-    (input.smsOptIn !== undefined && typeof input.smsOptIn !== "boolean")
+    (input.smsOptIn !== undefined && typeof input.smsOptIn !== "boolean") ||
+    (input.reviewOptIn !== undefined && typeof input.reviewOptIn !== "boolean")
   )
     return null;
   if (whatsappOptIn || smsOptIn) {
@@ -92,6 +95,7 @@ function bookingInput(raw: string) {
     start: input.start,
     whatsappOptIn,
     smsOptIn,
+    reviewOptIn,
   };
 }
 const fingerprintFor = (
@@ -101,7 +105,7 @@ const fingerprintFor = (
   hmac(
     env.AUTOMATION_HMAC_SECRET,
     JSON.stringify(
-      input.whatsappOptIn || input.smsOptIn
+      input.reviewOptIn
         ? [
             input.name,
             input.email,
@@ -109,8 +113,18 @@ const fingerprintFor = (
             input.start,
             input.whatsappOptIn,
             input.smsOptIn,
+            true,
           ]
-        : [input.name, input.email, input.phone, input.start],
+        : input.whatsappOptIn || input.smsOptIn
+          ? [
+              input.name,
+              input.email,
+              input.phone,
+              input.start,
+              input.whatsappOptIn,
+              input.smsOptIn,
+            ]
+          : [input.name, input.email, input.phone, input.start],
     ),
   );
 async function authorised(env: Env, input: Record<string, unknown>) {
@@ -236,7 +250,7 @@ bookingRoutes.post("/create", async (c) => {
   try {
     await c.env.DB.batch([
       c.env.DB.prepare(
-        "INSERT INTO bookings(id,request_id,fingerprint,created_at,slot_start,slot_end,name,email,phone,whatsapp_opt_in,sms_opt_in,notification_consent_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT INTO bookings(id,request_id,fingerprint,created_at,slot_start,slot_end,name,email,phone,whatsapp_opt_in,sms_opt_in,notification_consent_at,review_opt_in) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
       ).bind(
         id,
         input.requestId,
@@ -250,6 +264,7 @@ bookingRoutes.post("/create", async (c) => {
         input.whatsappOptIn ? 1 : 0,
         input.smsOptIn ? 1 : 0,
         input.whatsappOptIn || input.smsOptIn ? now : null,
+        input.reviewOptIn ? 1 : 0,
       ),
       c.env.DB.prepare(
         "INSERT INTO leads(id,created_at,updated_at,source,name,email,phone,service,need) VALUES(?,?,?,'booking',?,?,?,'Automation consultation',?)",
@@ -347,6 +362,11 @@ bookingRoutes.post("/manage", async (c) => {
       404,
     );
   if (input.action === "cancel") {
+    if (booking.completed_at)
+      return c.json(
+        { error: "This consultation has already been marked complete." },
+        409,
+      );
     const now = new Date().toISOString();
     await c.env.DB.batch([
       c.env.DB.prepare(

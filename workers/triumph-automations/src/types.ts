@@ -1,5 +1,12 @@
 export type Env = {
   DB: D1Database;
+  AI?: Ai;
+  GEMINI_API_KEY?: string;
+  CHAT_PROVIDER?: "gemini" | "workers_ai";
+  CHAT_ENABLED?: string;
+  CHAT_MODEL?: string;
+  PAYSTACK_TEST_SECRET_KEY?: string;
+  REPORTS_EMAIL_ENABLED?: string;
   AUTOMATION_HMAC_SECRET: string;
   ENVIRONMENT: string;
   RESEND_API_KEY?: string;

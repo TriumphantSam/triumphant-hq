@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import Turnstile from "./Turnstile";
 type Capture = { leadId: string; queued: boolean; email: string };
 type Delivery = { kind: string; state: string };
-export default function LeadDemo() {
+export default function LeadDemo({
+  source = "automation_lab",
+}: {
+  source?: "automation_lab" | "chat";
+}) {
   const [capture, setCapture] = useState<Capture | null>(null),
     [deliveries, setDeliveries] = useState<Delivery[]>([]),
     [error, setError] = useState(""),
@@ -52,7 +56,7 @@ export default function LeadDemo() {
           phone: values.get("phone"),
           message: values.get("message"),
           service: "Automation Lab enquiry",
-          source: "automation_lab",
+          source,
           companyWebsite: values.get("companyWebsite"),
           consentMarketing: values.get("consent") === "on",
           turnstileToken: token,

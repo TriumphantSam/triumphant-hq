@@ -149,7 +149,7 @@ export default function AdminDemo() {
       </button>
       <h3>Social drafts need your approval</h3>
       <p className="lab-note">
-        These are editable writing templates based on our service pages, not
+        These are writing templates based on our service pages, not
         AI-generated posts. Approval below is a local demonstration and
         publishes nothing.
       </p>

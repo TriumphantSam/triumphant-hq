@@ -9,6 +9,16 @@ import { bookingSlots, drainBookingOutbox } from "./bookings";
 import { drainBookingMessages, notificationPhone } from "./booking-messages";
 import type { Env } from "./types";
 import { reportWindow } from "./reports";
+import {
+  validPaystackSignature,
+  validTestTransaction,
+  verifyTestInvoice,
+  testPaymentsReady,
+} from "./payments";
+import { groundedAnswer } from "./chat";
+import { createHmac } from "node:crypto";
+import { claimLabJobs } from "./lab-delivery";
+import { completeConsultation, scheduleOwnerReports } from "./admin";
 
 function setup() {
   const sql = new DatabaseSync(":memory:");
@@ -27,6 +37,18 @@ function setup() {
   sql.exec(
     readFileSync(
       new URL("../migrations/0003_booking_messages.sql", import.meta.url),
+      "utf8",
+    ),
+  );
+  sql.exec(
+    readFileSync(
+      new URL("../migrations/0004_lab_flows.sql", import.meta.url),
+      "utf8",
+    ),
+  );
+  sql.exec(
+    readFileSync(
+      new URL("../migrations/0005_delivery_guards.sql", import.meta.url),
       "utf8",
     ),
   );
@@ -100,12 +122,280 @@ function setup() {
   }
   return { sql, env, request };
 }
+test("completed service invitations require permission, respect 90 days and honour opt-out", async () => {
+  const { env, sql, request } = setup();
+  const create = (
+    email: string,
+    opt: number,
+    start = "2026-01-01T09:00:00.000Z",
+    end = "2026-01-01T09:30:00.000Z",
+  ) => {
+    const id = crypto.randomUUID();
+    sql
+      .prepare(
+        "INSERT INTO bookings(id,request_id,fingerprint,created_at,slot_start,slot_end,name,email,review_opt_in) VALUES(?,?,?,'2026-01-01',?,?,'Test customer',?,?)",
+      )
+      .run(id, id, "test", start, end, email, opt);
+    return id;
+  };
+  const first = create("same@example.com", 1);
+  assert.equal((await completeConsultation(env, first)).ok, true);
+  await completeConsultation(env, first);
+  const second = create(
+    "same@example.com",
+    1,
+    "2026-01-02T09:00:00.000Z",
+    "2026-01-02T09:30:00.000Z",
+  );
+  await completeConsultation(env, second);
+  const noConsent = create(
+    "other@example.com",
+    0,
+    "2026-01-03T09:00:00.000Z",
+    "2026-01-03T09:30:00.000Z",
+  );
+  await completeConsultation(env, noConsent);
+  assert.equal(
+    sql.prepare("SELECT COUNT(*) AS count FROM review_invites").get()?.count,
+    1,
+  );
+  const invite = sql.prepare("SELECT id FROM review_invites").get()?.id;
+  assert.equal(
+    (await request("/v1/reviews/invite", { id: invite, action: "stop" }))
+      .status,
+    200,
+  );
+  sql.exec(
+    "UPDATE review_contacts SET last_requested_at='2026-01-01T00:00:00.000Z'",
+  );
+  await completeConsultation(
+    env,
+    create(
+      "same@example.com",
+      1,
+      "2026-01-04T09:00:00.000Z",
+      "2026-01-04T09:30:00.000Z",
+    ),
+  );
+  assert.equal(
+    sql.prepare("SELECT COUNT(*) AS count FROM review_invites").get()?.count,
+    1,
+  );
+  const future = new Date(Date.now() + 86400000).toISOString();
+  assert.equal(
+    (
+      await completeConsultation(
+        env,
+        create(
+          "future@example.com",
+          1,
+          future,
+          new Date(Date.now() + 86400000 + 1800000).toISOString(),
+        ),
+      )
+    ).ok,
+    false,
+  );
+});
+test("owner reports claim one daily job, weekly Monday period, and never publish drafts", async () => {
+  const { env, sql } = setup();
+  await scheduleOwnerReports(env, new Date("2026-10-15T07:10:00Z"));
+  assert.equal(
+    sql.prepare("SELECT COUNT(*) AS count FROM owner_report_jobs").get()?.count,
+    0,
+  );
+  env.REPORTS_EMAIL_ENABLED = "true";
+  await scheduleOwnerReports(env, new Date("2026-10-15T07:10:00Z"));
+  await scheduleOwnerReports(env, new Date("2026-10-15T07:11:00Z"));
+  assert.equal(
+    sql.prepare("SELECT COUNT(*) AS count FROM owner_report_jobs").get()?.count,
+    1,
+  );
+  await scheduleOwnerReports(env, new Date("2026-10-19T07:00:00Z"));
+  assert.equal(
+    sql
+      .prepare(
+        "SELECT COUNT(*) AS count FROM social_drafts WHERE state='draft'",
+      )
+      .get()?.count,
+    3,
+  );
+  const weekly = JSON.parse(
+    String(
+      sql
+        .prepare(
+          "SELECT report FROM owner_report_jobs WHERE id='owner-report:2026-10-18'",
+        )
+        .get()?.report,
+    ),
+  );
+  assert.equal(weekly.window.days, 7);
+});
+test("uncertain email jobs past the provider idempotency window cannot replay",async()=>{
+  const {env,sql}=setup();
+  const created=new Date().toISOString(),old=new Date(Date.now()-25*3600000).toISOString(),id=crypto.randomUUID();
+  sql.prepare("INSERT INTO review_feedback(id,created_at,rating,feedback) VALUES(?,?,5,'test')").run(id,created);
+  sql.prepare("INSERT INTO review_jobs(id,feedback_id,state,next_attempt_at,lease_until,first_attempt_at) VALUES(?,?,'sending',?,?,?)").run(id+":owner",id,old,old,old);
+  assert.equal((await claimLabJobs(env,"review_jobs")).length,0);
+  assert.equal(sql.prepare("SELECT state FROM review_jobs").get()?.state,"unknown");
+});
+test("chat sessions bind to the initiating address digest and stop at twenty attempts",async()=>{
+  const {env,sql,request}=setup();
+  env.CHAT_ENABLED="true";
+  let calls=0;
+  env.AI={run:async()=>{calls++;throw new Error("Provider unavailable");}} as unknown as Ai;
+  const ipKey="a".repeat(64),start=await request("/v1/chat/start",{ipKey});
+  assert.equal(start.status,200);
+  const {token}=await start.json() as {token:string};
+  assert.equal((await request("/v1/chat/message",{token,ipKey:"b".repeat(64),message:"Price?"})).status,429);
+  for(let index=0;index<20;index++)assert.equal((await request("/v1/chat/message",{token,ipKey,message:"Price?"})).status,503);
+  assert.equal((await request("/v1/chat/message",{token,ipKey,message:"Price?"})).status,429);
+  assert.equal(calls,20);assert.equal(sql.prepare("SELECT turns FROM chat_sessions").get()?.turns,20);
+});
 const enquiry = {
   name: "Test Person",
   email: "test@example.com",
   message: "A test enquiry",
   source: "automation_lab",
 };
+test("AI answers only expose selected known facts, source links and safe handoff", () => {
+  assert.equal(groundedAnswer(["invented"]).handoff, true);
+  const answer = groundedAnswer(["pricing", "location", "booking", "websites"]);
+  assert.equal(answer.sources.length, 3);
+  assert.match(answer.answer, /written proposal/);
+  assert.equal(answer.answer.includes("₦"), false);
+  assert.ok(
+    answer.sources.every(
+      (source) => source.href.startsWith("/") && !source.href.startsWith("//"),
+    ),
+  );
+});
+test("test payments reject live credentials and mismatched verification data", async () => {
+  const { env } = setup();
+  env.PAYSTACK_TEST_SECRET_KEY = "sk_live_invalid";
+  assert.equal(testPaymentsReady(env), false);
+  env.PAYSTACK_TEST_SECRET_KEY = "sk_test_fake";
+  assert.equal(testPaymentsReady(env), true);
+  const valid = {
+    reference: "reference",
+    status: "success",
+    amount: 10000,
+    currency: "NGN",
+    domain: "test",
+    id: 123,
+    paid_at: "2026-10-15T09:00:00Z",
+  };
+  assert.equal(validTestTransaction(valid, "reference"), true);
+  for (const invalid of [
+    { ...valid, amount: 100 },
+    { ...valid, currency: "USD" },
+    { ...valid, domain: "live" },
+    { ...valid, status: "failed" },
+    { ...valid, reference: "another" },
+    { ...valid, paid_at: "bad" },
+  ])
+    assert.equal(validTestTransaction(invalid, "reference"), false);
+  const body = '{"event":"charge.success"}',
+    signature = createHmac("sha512", env.PAYSTACK_TEST_SECRET_KEY)
+      .update(body)
+      .digest("hex");
+  assert.equal(
+    await validPaystackSignature(env.PAYSTACK_TEST_SECRET_KEY, body, signature),
+    true,
+  );
+  assert.equal(
+    await validPaystackSignature(
+      env.PAYSTACK_TEST_SECRET_KEY,
+      body + " ",
+      signature,
+    ),
+    false,
+  );
+  assert.equal(
+    await validPaystackSignature("sk_live_fake", body, signature),
+    false,
+  );
+});
+test("verified test payments are idempotent and receipts contain no customer details", async () => {
+  const { env, sql, request } = setup();
+  env.PAYSTACK_TEST_SECRET_KEY = "sk_test_fake";
+  const ref = "thq-test-" + crypto.randomUUID();
+  sql
+    .prepare(
+      "INSERT INTO lab_invoices(id,request_id,fingerprint,email,created_at,amount_kobo,status) VALUES(?,?,?,?,?,10000,'awaiting_payment')",
+    )
+    .run(
+      ref,
+      ref.slice(9),
+      "test",
+      "private@example.com",
+      "2026-10-15T00:00:00Z",
+    );
+  const original = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = async () => {
+    calls++;
+    return Response.json({
+      status: true,
+      data: {
+        reference: ref,
+        status: "success",
+        amount: 10000,
+        currency: "NGN",
+        domain: "test",
+        id: 987,
+        paid_at: "2026-10-15T09:00:00Z",
+      },
+    });
+  };
+  try {
+    await verifyTestInvoice(env, ref);
+    await verifyTestInvoice(env, ref);
+    assert.equal(calls, 1);
+    assert.equal(
+      sql.prepare("SELECT COUNT(*) AS count FROM lab_payment_jobs").get()
+        ?.count,
+      2,
+    );
+    const receipt = await request("/v1/payments/receipt", { reference: ref });
+    assert.equal(receipt.status, 200);
+    const body = await receipt.text();
+    assert.equal(body.includes("private@example.com"), false);
+    assert.match(body, /"mode":"test"/);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+test("review feedback saves once and offers the same Google link at low and high scores", async () => {
+  const { request, sql } = setup();
+  const input = {
+    requestId: crypto.randomUUID(),
+    rating: 1,
+    name: "",
+    email: "",
+    feedback: "Needs improvement",
+  };
+  const low = await request("/v1/reviews/feedback", input);
+  assert.equal(low.status, 200);
+  await request("/v1/reviews/feedback", input);
+  const high = await request("/v1/reviews/feedback", {
+    ...input,
+    requestId: crypto.randomUUID(),
+    rating: 5,
+  });
+  assert.equal(
+    ((await low.json()) as { googleReviewUrl: string }).googleReviewUrl,
+    ((await high.json()) as { googleReviewUrl: string }).googleReviewUrl,
+  );
+  assert.equal(
+    sql.prepare("SELECT COUNT(*) AS count FROM review_jobs").get()?.count,
+    2,
+  );
+  assert.equal(
+    (await request("/v1/reviews/feedback", { ...input, rating: 0 })).status,
+    400,
+  );
+});
 
 test("private reports use exclusive Lagos day boundaries and reject invalid periods", () => {
   assert.deepEqual(reportWindow("2026-10-14", 1), {
