@@ -19,7 +19,7 @@ function syncTriumphLeads() {
     const references = sheet.getLastRow() > 1 ? sheet.getRange(2,1,sheet.getLastRow()-1,1).getDisplayValues().map(row=>row[0]) : [];
     const acknowledged = [];
     for (const lead of leads) {
-      const row = [lead.id,lead.created_at,lead.source,lead.name,lead.email,lead.phone,lead.service,lead.need,lead.consent_marketing ? 'Yes' : 'No','new'].map(triumphCell_);
+      const row = [lead.id,lead.created_at,lead.source,lead.name,lead.email,lead.phone,lead.service,lead.need,lead.consent_marketing ? 'Yes' : 'No',lead.status || 'new'].map(triumphCell_);
       const existing = references.indexOf(lead.id);
       if (existing >= 0) sheet.getRange(existing+2,1,1,10).setValues([row]);
       else {

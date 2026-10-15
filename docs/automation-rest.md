@@ -78,6 +78,14 @@ prepares three weekly writing templates from verified sources, and records
 approval. These templates are not AI-written; no social publishing API exists.
 Weekly template generation runs Mondays during the 08:00 Lagos hour.
 
+Owners can update enquiry status (new, contacted, qualified, won or lost) and
+private notes up to 2,000 characters. A version check rejects stale edits rather
+than overwriting another browser tab. The audit event stores only its type,
+reference and timestamp. Each successful save queues only the existing Sheet
+job; customer and owner acknowledgement jobs are not resent. The bound
+`google-sheets/Code.gs` script must be updated to read `lead.status || 'new'`
+instead of hardcoding `new`. Owner notes are excluded from the Sheet payload.
+
 Daily owner emails are explicitly authorised and enabled in production with
 `REPORTS_EMAIL_ENABLED=true`; staging remains off. They claim one job per date during
 08:00–08:59 WAT, summarising the previous day; Monday uses the previous week.
@@ -110,6 +118,8 @@ demos.
   settings. A real webhook replay remains distinct from the verified callback/API
   flow; unsigned requests are rejected and signature/replay behavior is tested.
 - Production owner reports are enabled; staging reports, WhatsApp and SMS are off.
+- The first scheduled owner report was created at 08:00:09 WAT on 15 October
+  and accepted by Resend with no retry. Inbox delivery is not independently confirmed.
 - Provider calls use `redirect: "manual"` and reject non-success responses. The
   deployed Worker runtime rejected `redirect: "error"`; regression tests cover
   redirect rejection and reuse of the same email idempotency key on retry.

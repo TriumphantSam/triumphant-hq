@@ -68,9 +68,9 @@ app.get("/v1/health", (c) =>
     leadCapture: true,
     bookingEnabled: c.env.BOOKING_ENABLED === "true",
     bookingChannels: messageChannels(c.env),
-    chatConnected: Boolean(c.env.AI && c.env.CHAT_ENABLED==="true"),
+    chatConnected: Boolean(c.env.AI && c.env.CHAT_ENABLED === "true"),
     chatProvider: c.env.CHAT_PROVIDER || "workers_ai",
-    reportsEmailEnabled: c.env.REPORTS_EMAIL_ENABLED==="true",
+    reportsEmailEnabled: c.env.REPORTS_EMAIL_ENABLED === "true",
     sheetConfigured: Boolean(
       c.env.SHEETS_SYNC_SECRET ||
       (c.env.LEADS_SHEET_ID &&
@@ -312,7 +312,7 @@ app.post("/v1/lead-status", async (c) => {
 });
 app.post("/v1/sheets/pull", async (c) => {
   const result = await c.env.DB.prepare(
-    "SELECT l.id,l.created_at,l.updated_at,l.source,l.name,l.email,l.phone,l.service,l.need,l.consent_marketing FROM leads l JOIN outbox o ON o.lead_id=l.id WHERE o.kind='sheet' AND (o.state IN ('pending','failed') OR (o.state='sending' AND o.lease_until<?)) ORDER BY l.created_at LIMIT 20",
+    "SELECT l.id,l.created_at,l.updated_at,l.source,l.name,l.email,l.phone,l.service,l.need,l.consent_marketing,l.status FROM leads l JOIN outbox o ON o.lead_id=l.id WHERE o.kind='sheet' AND (o.state IN ('pending','failed') OR (o.state='sending' AND o.lease_until<?)) ORDER BY l.created_at LIMIT 20",
   )
     .bind(new Date().toISOString())
     .all();

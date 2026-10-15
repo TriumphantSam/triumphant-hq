@@ -8,6 +8,9 @@ import {
 import { automationRequest } from "@/lib/automation-api";
 import AdminLogin from "@/components/automation/AdminLogin";
 import AdminActions from "@/components/automation/AdminActions";
+import LeadManager, {
+  type ManagedLead,
+} from "@/components/automation/LeadManager";
 type Dashboard = {
   report: Record<string, unknown>;
   bookings: {
@@ -19,7 +22,7 @@ type Dashboard = {
     completed_at: string | null;
     review_opt_in: number;
   }[];
-  leads: { id: string; name: string; email: string; service: string }[];
+  leads: ManagedLead[];
   drafts: { id: string; body: string; source: string; state: string }[];
   feedback: { id: string; rating: number; feedback: string; name: string }[];
 };
@@ -53,12 +56,7 @@ async function AdminContent() {
       </pre>
       <h2 className="text-xl font-bold">Recent enquiries</h2>
       {dashboard.leads.map((lead) => (
-        <article className="my-4 rounded border p-4" key={lead.id}>
-          <h3>{lead.name}</h3>
-          <p>
-            {lead.email} · {lead.service}
-          </p>
-        </article>
+        <LeadManager key={lead.id} lead={lead} />
       ))}
       <h2 className="mt-8 text-xl font-bold">Recent consultations</h2>
       <p>

@@ -16,13 +16,15 @@ export async function POST(request: Request) {
   try {
     if (request.headers.get("origin") !== new URL(request.url).origin)
       throw new FormError("Invalid request origin.", 403);
-    const raw = await readBoundedBody(request, 4096);
+    const raw = await readBoundedBody(request, 12288);
     let body;
     try {
       body = JSON.parse(raw);
     } catch {
       throw new FormError("Invalid request.");
     }
+    if (!body || typeof body !== "object" || Array.isArray(body))
+      throw new FormError("Invalid request.");
     const store = await cookies();
     if (body?.action === "login") {
       await readPublicForm(
@@ -53,15 +55,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true });
     }
     if (
-      !["complete_booking", "generate_drafts", "approve_draft"].includes(
-        body.action,
-      )
+      ![
+        "complete_booking",
+        "generate_drafts",
+        "approve_draft",
+        "update_lead",
+      ].includes(body.action)
     )
       throw new FormError("Invalid action.");
     return NextResponse.json(
       await automationRequest("/v1/admin/action", {
         action: body.action,
         id: body.id,
+        ...(body.action === "update_lead"
+          ? {
+              status: body.status,
+              notes: body.notes,
+              updatedAt: body.updatedAt,
+            }
+          : {}),
       }),
     );
   } catch (error) {

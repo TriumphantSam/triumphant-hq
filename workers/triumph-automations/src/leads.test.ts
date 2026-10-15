@@ -232,26 +232,64 @@ test("owner reports claim one daily job, weekly Monday period, and never publish
   );
   assert.equal(weekly.window.days, 7);
 });
-test("uncertain email jobs past the provider idempotency window cannot replay",async()=>{
-  const {env,sql}=setup();
-  const created=new Date().toISOString(),old=new Date(Date.now()-25*3600000).toISOString(),id=crypto.randomUUID();
-  sql.prepare("INSERT INTO review_feedback(id,created_at,rating,feedback) VALUES(?,?,5,'test')").run(id,created);
-  sql.prepare("INSERT INTO review_jobs(id,feedback_id,state,next_attempt_at,lease_until,first_attempt_at) VALUES(?,?,'sending',?,?,?)").run(id+":owner",id,old,old,old);
-  assert.equal((await claimLabJobs(env,"review_jobs")).length,0);
-  assert.equal(sql.prepare("SELECT state FROM review_jobs").get()?.state,"unknown");
+test("uncertain email jobs past the provider idempotency window cannot replay", async () => {
+  const { env, sql } = setup();
+  const created = new Date().toISOString(),
+    old = new Date(Date.now() - 25 * 3600000).toISOString(),
+    id = crypto.randomUUID();
+  sql
+    .prepare(
+      "INSERT INTO review_feedback(id,created_at,rating,feedback) VALUES(?,?,5,'test')",
+    )
+    .run(id, created);
+  sql
+    .prepare(
+      "INSERT INTO review_jobs(id,feedback_id,state,next_attempt_at,lease_until,first_attempt_at) VALUES(?,?,'sending',?,?,?)",
+    )
+    .run(id + ":owner", id, old, old, old);
+  assert.equal((await claimLabJobs(env, "review_jobs")).length, 0);
+  assert.equal(
+    sql.prepare("SELECT state FROM review_jobs").get()?.state,
+    "unknown",
+  );
 });
-test("chat sessions bind to the initiating address digest and stop at twenty attempts",async()=>{
-  const {env,sql,request}=setup();
-  env.CHAT_ENABLED="true";
-  let calls=0;
-  env.AI={run:async()=>{calls++;throw new Error("Provider unavailable");}} as unknown as Ai;
-  const ipKey="a".repeat(64),start=await request("/v1/chat/start",{ipKey});
-  assert.equal(start.status,200);
-  const {token}=await start.json() as {token:string};
-  assert.equal((await request("/v1/chat/message",{token,ipKey:"b".repeat(64),message:"Price?"})).status,429);
-  for(let index=0;index<20;index++)assert.equal((await request("/v1/chat/message",{token,ipKey,message:"Price?"})).status,503);
-  assert.equal((await request("/v1/chat/message",{token,ipKey,message:"Price?"})).status,429);
-  assert.equal(calls,20);assert.equal(sql.prepare("SELECT turns FROM chat_sessions").get()?.turns,20);
+test("chat sessions bind to the initiating address digest and stop at twenty attempts", async () => {
+  const { env, sql, request } = setup();
+  env.CHAT_ENABLED = "true";
+  let calls = 0;
+  env.AI = {
+    run: async () => {
+      calls++;
+      throw new Error("Provider unavailable");
+    },
+  } as unknown as Ai;
+  const ipKey = "a".repeat(64),
+    start = await request("/v1/chat/start", { ipKey });
+  assert.equal(start.status, 200);
+  const { token } = (await start.json()) as { token: string };
+  assert.equal(
+    (
+      await request("/v1/chat/message", {
+        token,
+        ipKey: "b".repeat(64),
+        message: "Price?",
+      })
+    ).status,
+    429,
+  );
+  for (let index = 0; index < 20; index++)
+    assert.equal(
+      (await request("/v1/chat/message", { token, ipKey, message: "Price?" }))
+        .status,
+      503,
+    );
+  assert.equal(
+    (await request("/v1/chat/message", { token, ipKey, message: "Price?" }))
+      .status,
+    429,
+  );
+  assert.equal(calls, 20);
+  assert.equal(sql.prepare("SELECT turns FROM chat_sessions").get()?.turns, 20);
 });
 const enquiry = {
   name: "Test Person",
@@ -406,7 +444,11 @@ test("feedback delivery rejects provider redirects and retries the same idempote
   env.OWNER_EMAIL = "owner@example.com";
   const id = crypto.randomUUID();
   await request("/v1/reviews/feedback", {
-    requestId: id, rating: 4, name: "", email: "", feedback: "Test",
+    requestId: id,
+    rating: 4,
+    name: "",
+    email: "",
+    feedback: "Test",
   });
   const original = globalThis.fetch;
   const keys: string[] = [];
@@ -414,18 +456,119 @@ test("feedback delivery rejects provider redirects and retries the same idempote
     assert.equal(options?.redirect, "manual");
     keys.push(new Headers(options?.headers).get("Idempotency-Key")!);
     return keys.length === 1
-      ? new Response(null, { status: 302, headers: { Location: "https://elsewhere.example" } })
+      ? new Response(null, {
+          status: 302,
+          headers: { Location: "https://elsewhere.example" },
+        })
       : Response.json({ id: "accepted" });
   };
   try {
     await drainReviewJobs(env);
-    assert.equal(sql.prepare("SELECT state FROM review_jobs").get()?.state, "pending");
+    assert.equal(
+      sql.prepare("SELECT state FROM review_jobs").get()?.state,
+      "pending",
+    );
     sql.exec("UPDATE review_jobs SET next_attempt_at='2020-01-01'");
     await drainReviewJobs(env);
-    assert.equal(sql.prepare("SELECT state FROM review_jobs").get()?.state, "sent");
+    assert.equal(
+      sql.prepare("SELECT state FROM review_jobs").get()?.state,
+      "sent",
+    );
     assert.equal(keys.length, 2);
     assert.equal(keys[0], keys[1]);
-  } finally { globalThis.fetch = original; }
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("owner lead updates protect concurrent edits, mirror status without notes, and never resend customer emails", async () => {
+  const { env, request, sql } = setup();
+  const captured = await request("/v1/leads", {
+    name: "Test",
+    email: "test@example.com",
+    message: "Authorised in-memory pipeline test",
+  });
+  const { leadId } = (await captured.json()) as { leadId: string };
+  const original = sql
+    .prepare("SELECT updated_at FROM leads WHERE id=?")
+    .get(leadId)?.updated_at;
+  sql.exec("UPDATE outbox SET state='sent'; UPDATE leads SET sheet_synced=1;");
+  const input = {
+    action: "update_lead",
+    id: leadId,
+    status: "qualified",
+    notes: "Private owner follow-up notes",
+    updatedAt: original,
+  };
+  assert.equal((await request("/v1/admin/action", input)).status, 200);
+  assert.equal(
+    sql.prepare("SELECT status FROM leads WHERE id=?").get(leadId)?.status,
+    "qualified",
+  );
+  assert.equal(
+    sql.prepare("SELECT sheet_synced FROM leads WHERE id=?").get(leadId)
+      ?.sheet_synced,
+    0,
+  );
+  assert.equal(
+    sql
+      .prepare(
+        "SELECT COUNT(*) AS count FROM outbox WHERE kind!='sheet' AND state='sent'",
+      )
+      .get()?.count,
+    2,
+  );
+  assert.equal(
+    sql.prepare("SELECT state FROM outbox WHERE kind='sheet'").get()?.state,
+    "pending",
+  );
+  assert.equal(
+    (await request("/v1/admin/action", { ...input, notes: "Stale overwrite" }))
+      .status,
+    409,
+  );
+  assert.equal(
+    sql.prepare("SELECT owner_notes FROM leads WHERE id=?").get(leadId)
+      ?.owner_notes,
+    input.notes,
+  );
+  assert.equal(
+    sql
+      .prepare("SELECT COUNT(*) AS count FROM events WHERE type='lead_updated'")
+      .get()?.count,
+    1,
+  );
+  env.SHEETS_SYNC_SECRET = "s".repeat(64);
+  const sheet = await request(
+    "/v1/sheets/pull",
+    {},
+    crypto.randomUUID(),
+    env.SHEETS_SYNC_SECRET,
+  );
+  const body = await sheet.text();
+  assert.match(body, /"status":"qualified"/);
+  assert.equal(body.includes(input.notes), false);
+  assert.equal(body.includes("owner_notes"), false);
+  assert.equal(
+    (await request("/v1/admin/action", { ...input, status: "invalid" })).status,
+    400,
+  );
+  assert.equal(
+    (await request("/v1/admin/action", { ...input, notes: "x".repeat(2001) }))
+      .status,
+    400,
+  );
+  assert.equal(
+    (
+      await request(
+        "/v1/admin/action",
+        input,
+        crypto.randomUUID(),
+        env.SHEETS_SYNC_SECRET,
+      )
+    ).status,
+    401,
+  );
 });
 
 test("private reports use exclusive Lagos day boundaries and reject invalid periods", () => {

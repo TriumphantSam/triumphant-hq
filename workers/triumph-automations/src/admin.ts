@@ -98,7 +98,7 @@ adminRoutes.post("/dashboard", async (c) => {
   }
   const [leads, bookings, drafts, feedback] = await Promise.all([
     c.env.DB.prepare(
-      "SELECT id,name,email,service FROM leads ORDER BY created_at DESC LIMIT 20",
+      "SELECT id,name,email,phone,service,need,status,owner_notes,updated_at FROM leads ORDER BY created_at DESC LIMIT 20",
     ).all(),
     c.env.DB.prepare(
       "SELECT id,name,email,slot_start,slot_end,completed_at,review_opt_in FROM bookings WHERE status='confirmed' ORDER BY created_at DESC LIMIT 20",
@@ -125,6 +125,62 @@ adminRoutes.post("/action", async (c) => {
     input = JSON.parse(c.get("raw"));
   } catch {
     return c.json({ error: "Invalid action." }, 400);
+  }
+  if (!input || typeof input !== "object" || Array.isArray(input))
+    return c.json({ error: "Invalid action." }, 400);
+  if (input.action === "update_lead") {
+    if (
+      !/^(?:[a-f0-9-]{36}|wa-[a-f0-9]{64})$/.test(input.id || "") ||
+      !["new", "contacted", "qualified", "won", "lost"].includes(
+        input.status,
+      ) ||
+      typeof input.notes !== "string" ||
+      input.notes.length > 2000 ||
+      typeof input.updatedAt !== "string" ||
+      input.updatedAt.length > 30 ||
+      !Number.isFinite(Date.parse(input.updatedAt))
+    )
+      return c.json(
+        { error: "Provide a valid status and notes up to 2,000 characters." },
+        400,
+      );
+    const now = new Date(
+      Math.max(Date.now(), Date.parse(input.updatedAt) + 1),
+    ).toISOString();
+    const event = crypto.randomUUID();
+    const results = await c.env.DB.batch([
+      c.env.DB.prepare(
+        "INSERT INTO events(id,type,ref_id,created_at) SELECT ?,'lead_updated',id,? FROM leads WHERE id=? AND updated_at=?",
+      ).bind(event, now, input.id, input.updatedAt),
+      c.env.DB.prepare(
+        "UPDATE leads SET status=?,owner_notes=?,updated_at=?,sheet_synced=0 WHERE id=? AND updated_at=? AND EXISTS(SELECT 1 FROM events WHERE id=?) RETURNING updated_at",
+      ).bind(
+        input.status,
+        input.notes.trim(),
+        now,
+        input.id,
+        input.updatedAt,
+        event,
+      ),
+      c.env.DB.prepare(
+        "INSERT INTO outbox(id,lead_id,kind,next_attempt_at) SELECT id || ':sheet',id,'sheet',? FROM leads WHERE id=? AND EXISTS(SELECT 1 FROM events WHERE id=?) ON CONFLICT(lead_id,kind) DO UPDATE SET state='pending',attempts=0,next_attempt_at=excluded.next_attempt_at,lease_until=NULL,sent_at=NULL,last_error=NULL",
+      ).bind(now, input.id, event),
+    ]);
+    if (!results[1].results.length) {
+      const exists = await c.env.DB.prepare("SELECT id FROM leads WHERE id=?")
+        .bind(input.id)
+        .first();
+      return exists
+        ? c.json(
+            {
+              error:
+                "This enquiry changed elsewhere. Copy your notes, refresh and review the latest version before saving.",
+            },
+            409,
+          )
+        : c.json({ error: "Enquiry not found." }, 404);
+    }
+    return c.json({ ok: true, updatedAt: now, sheet: "queued" });
   }
   if (input.action === "generate_drafts") {
     await generateDrafts(c.env);

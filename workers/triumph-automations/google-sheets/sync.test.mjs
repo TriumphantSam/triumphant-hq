@@ -106,4 +106,10 @@ test("bound script upserts rows, neutralizes formulas and retries an acknowledge
   assert.equal(rows[1][0], lead.id);
   assert.equal(rows[1][7].startsWith("'="), true);
   assert.equal(requests.filter((path) => path.endsWith("/ack")).length, 2);
+  lead.status = "qualified";
+  lead.owner_notes = "Private owner notes must not be mirrored";
+  context.syncTriumphLeads();
+  assert.equal(rows.length, 2);
+  assert.equal(rows[1][9], "qualified");
+  assert.equal(JSON.stringify(rows).includes(lead.owner_notes), false);
 });
