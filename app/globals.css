@@ -202,6 +202,77 @@ main {
 .home-page .testimonial-stage { border-color: rgba(255,255,255,0.18); }
 .home-hero h1, .home-hero p { margin-left: 0 !important; margin-right: 0 !important; }
 body:has(#mobile-navigation[aria-hidden="false"]) #whatsapp-chat-widget { display: none !important; }
+body:has(#mobile-navigation[aria-hidden="false"]) #site-ai-assistant { display: none; }
+body:has(#site-ai-dialog[open]) { overflow: hidden; }
+.site-ai-launcher {
+  position: fixed;
+  bottom: calc(10.25rem + env(safe-area-inset-bottom, 0px));
+  right: 1.6rem;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 48px;
+  padding: .7rem 1rem;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  background: #075ee5;
+  color: #fff;
+  font-size: .875rem;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgb(7 94 229 / 25%);
+  cursor: pointer;
+}
+.site-ai-launcher:focus-visible, .site-ai-header button:focus-visible {
+  outline: 3px solid #075ee5;
+  outline-offset: 4px;
+}
+.site-ai-dialog {
+  position: fixed;
+  inset: auto 1rem 1rem auto;
+  width: min(620px, calc(100vw - 2rem));
+  max-height: min(82dvh, 780px);
+  margin: 0;
+  padding: 0;
+  border: 1px solid #dbe3ef;
+  border-radius: 22px;
+  background: #fff;
+  color: #172331;
+  box-shadow: 0 20px 80px rgb(15 23 42 / 25%);
+  overflow: hidden;
+}
+.site-ai-dialog[open] { display: flex; flex-direction: column; }
+.site-ai-dialog::backdrop { background: rgb(15 23 42 / 42%); }
+.site-ai-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+.site-ai-header h2 { margin: 0 0 .35rem; font-size: 1.1rem; font-weight: 700; }
+.site-ai-header a { color: #075ee5; font-size: .8rem; text-decoration: underline; }
+.site-ai-header button {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+.site-ai-content { overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
+.site-ai-content > .lab-panel { padding: 1.5rem; border: 0; border-radius: 0; box-shadow: none; }
+@media (max-width: 480px) {
+  .site-ai-launcher { right: 1rem; }
+  .site-ai-dialog { inset: auto .5rem .5rem; width: calc(100vw - 1rem); max-height: calc(100dvh - 1rem); }
+  .site-ai-header, .site-ai-content > .lab-panel { padding: 1rem; }
+}
+@media print { #site-ai-assistant { display: none; } }
 
 .section-muted {
   width: 100%;

@@ -19,6 +19,12 @@ Sessions bind to a keyed IP digest, expire in 24 hours and allow twenty attempts
 The provider has a shared limit of 100 calls per Lagos day. Output is capped at
 160 tokens with an eight-second timeout and no SDK retries. No transcript is
 stored in D1. The Cloudflare `AI` binding requires no new provider key.
+The site-wide Ask AI launcher lazily loads the same assistant in a native dialog.
+It supports keyboard focus, Escape-to-close and a scrollable mobile panel; it
+does not start an AI session until the visitor passes the existing security check.
+Closing and reopening preserves the conversation while the component stays
+mounted. Private workspaces, receipts and focused checkout/funnel flows omit it.
+
 Gemini is supported as a later provider but its existing key returned HTTP 402.
 No billing plan or prepayment was changed by this work.
 

@@ -6,6 +6,7 @@ import AntigravityBackground from "@/components/AntigravityBackground";
 import Footer from "@/components/Footer";
 import PageReader from "@/components/PageReader";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import SiteAssistant from "@/components/automation/SiteAssistant";
 import JsonLd from "@/components/seo/JsonLd";
 import { PostHogProvider } from "./providers";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -163,6 +164,7 @@ export default function RootLayout({
           <Footer />
           <PageReader />
           <WhatsAppWidget />
+          <SiteAssistant />
         </PostHogProvider>
       </body>
     </html>

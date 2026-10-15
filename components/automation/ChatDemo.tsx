@@ -1,4 +1,5 @@
 "use client";
+import "@/app/automation-lab/lab.css";
 import { useState, useRef } from "react";
 import Link from "next/link";
 import Turnstile from "./Turnstile";
