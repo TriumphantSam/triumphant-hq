@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
+import localFont from 'next/font/local';
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import AntigravityBackground from "@/components/AntigravityBackground";
 import Footer from "@/components/Footer";
 import PageReader from "@/components/PageReader";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import SiteAssistant from "@/components/automation/SiteAssistant";
 import JsonLd from "@/components/seo/JsonLd";
 import { PostHogProvider } from "./providers";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -20,22 +21,25 @@ import {
   websiteJsonLd,
 } from "@/lib/seo";
 
-const syne = Syne({
+const syne = localFont({
+  src: '../node_modules/@fontsource-variable/syne/files/syne-latin-wght-normal.woff2',
   variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: '500 800',
+  display: 'swap',
 });
 
-const dmSans = DM_Sans({
+const dmSans = localFont({
+  src: '../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2',
   variable: "--font-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: '400 700',
+  display: 'swap',
 });
 
-const jetbrains = JetBrains_Mono({
+const jetbrains = localFont({
+  src: '../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2',
   variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["500", "700"],
+  weight: '500 700',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -160,6 +164,7 @@ export default function RootLayout({
           <Footer />
           <PageReader />
           <WhatsAppWidget />
+          <SiteAssistant />
         </PostHogProvider>
       </body>
     </html>

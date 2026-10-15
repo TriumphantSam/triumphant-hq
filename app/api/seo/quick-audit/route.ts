@@ -1,30 +1,64 @@
-import { NextResponse } from 'next/server';
-import { normalizeQuickAuditResponse, proxySeoBackend, type SeoQuickAuditRequest, type SeoQuickAuditResponse } from '@/lib/seo-backend';
+import { NextResponse } from "next/server";
+import {
+  runSeoAudit,
+  AuditTargetError,
+  normalizeAuditUrl,
+} from "@/lib/seo-audit";
+import { captureLead } from "@/lib/lead-capture";
+import {
+  readPublicForm,
+  field,
+  validateLead,
+  FormError,
+} from "@/lib/public-form-guard";
+
+export const runtime = "nodejs";
+export const maxDuration = 30;
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as SeoQuickAuditRequest;
-    const websiteUrl = typeof body.websiteUrl === 'string' ? body.websiteUrl.trim() : '';
-    const name = typeof body.name === 'string' ? body.name.trim() : '';
-    const email = typeof body.email === 'string' ? body.email.trim() : '';
-    const businessType = typeof body.businessType === 'string' ? body.businessType.trim() : '';
-    const notes = typeof body.notes === 'string' ? body.notes.trim() : '';
-
-    if (!websiteUrl || !name || !email.includes('@')) {
-      return NextResponse.json({ ok: false, error: 'Please provide a valid website, name, and email.' }, { status: 400 });
-    }
-
-    const data = await proxySeoBackend<SeoQuickAuditResponse>('/api/seo/quick-audit', {
-      websiteUrl,
+    const body = await readPublicForm(request);
+    const name = field(body, "name", 121),
+      email = field(body, "email", 255),
+      websiteUrl = field(body, "websiteUrl");
+    validateLead(name, email);
+    normalizeAuditUrl(websiteUrl);
+    const leadPromise = captureLead({
       name,
       email,
-      businessType,
-      notes,
-    });
-
-    return NextResponse.json(normalizeQuickAuditResponse(data), { status: 200 });
+      source: "seo_snapshot",
+      service: "SEO snapshot",
+      message: `Website: ${websiteUrl}\nBusiness: ${field(body, "businessType", 120)}\n${field(body, "notes")}`,
+      consentMarketing: body.consentMarketing === true,
+    }).catch(() => ({ stored: false, leadId: "", destination: "none" }));
+    const audit = await runSeoAudit(websiteUrl).catch((error) => ({
+      ok: false as const,
+      error:
+        error instanceof AuditTargetError
+          ? error.message
+          : "We could not reach that website in time. Check the address or ask us for a manual audit.",
+    }));
+    const lead = await leadPromise;
+    return NextResponse.json(
+      { ...audit, leadId: lead.leadId, leadStored: lead.stored },
+      { headers: { "Cache-Control": "no-store" } },
+    );
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to run quick audit';
-    return NextResponse.json({ ok: false, error: message }, { status: 502 });
+    const status =
+      error instanceof FormError
+        ? error.status
+        : error instanceof AuditTargetError
+          ? 400
+          : 503;
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          error instanceof FormError || error instanceof AuditTargetError
+            ? error.message
+            : "The snapshot service is temporarily unavailable. Please try again.",
+      },
+      { status },
+    );
   }
 }

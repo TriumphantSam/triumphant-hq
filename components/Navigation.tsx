@@ -12,6 +12,7 @@ const services = [
   { href: "/ongoing-support", label: "Ongoing Support", description: "Keep your website and systems improving." },
 ];
 const more = [
+  { href: '/automation-lab', label: 'Automation Lab', description: 'Explore practical business workflows.' },
   { href: "/nin-bvn-desk", label: "NIN/BVN desk", description: "Local identity support in Ibadan." },
   { href: "/shop", label: "Shop", description: "Practical digital products and tools." },
   { href: "/blog", label: "Insights", description: "Guides and ideas from our team." },

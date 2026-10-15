@@ -120,7 +120,7 @@ export default function PrivacyPolicyPage() {
                         {[
                             { label: 'Effective Date', value: '2019' },
                             { label: 'Jurisdiction', value: 'Global Standards (incl. GDPR)' },
-                            { label: 'Last Updated', value: 'March 2026' },
+                            { label: 'Last Updated', value: 'October 2026' },
                         ].map((tag) => (
                             <div
                                 key={tag.label}
@@ -284,6 +284,7 @@ export default function PrivacyPolicyPage() {
                     {/* ─── MAIN CONTENT ─── */}
                     <main>
                         <PolicySection id="who-we-are" icon="🏢" title="Who We Are">
+                            <p>Automation Lab enquiries may be stored by Cloudflare D1 or Airtable. Google Sheets mirrors enquiries and Resend sends enquiry replies and owner alerts. Vercel hosts the website. Meta processes WhatsApp conversations when connected. The AI assistant sends your business question and public knowledge-base facts to Cloudflare Workers AI (or Google Gemini if enabled later); chat session identifiers and counters expire after 24 hours, and chat transcripts are not stored in our D1 database. Please do not enter sensitive personal information into chat. Paystack processes test checkout details; we store the email, reference and verified transaction status, never card details. Optional demonstration checkout reminders stop after three sends, verified payment or opt-out. Private review feedback is stored in D1 and emailed to our team. After-service review invitations require separate permission and are limited to one per customer in 90 days; every score receives the same Google review option. Invitations provide a way to stop future requests. Marketing consent is separate from all these choices. Automation Lab records in D1 are retained for up to 12 months; mirrored and provider copies are managed separately. For access, correction, withdrawal of consent or deletion, contact admin@triumphantech.com or visit our <a href="/data-deletion" className="underline">data deletion page</a>.</p>
                             <p>
                                 At <strong style={{ color: 'var(--accent-color)' }}>Triumphant Technological Services</strong> (also trading as <strong>Triumphanttech</strong>), the privacy of our visitors and clients is a top priority. This Privacy Policy outlines the types of personal information we collect and how we use, store, and protect that information.
                             </p>
@@ -402,6 +403,7 @@ export default function PrivacyPolicyPage() {
                         </PolicySection>
 
                         <PolicySection id="data-sharing" icon="🔗" title="Data Sharing and Third Parties">
+                            <p>Automation Lab bookings are stored in Cloudflare D1, mirrored to Google Sheets, and use Resend for confirmations and reminders. If you choose WhatsApp or SMS updates after those channels are activated, Meta or Termii respectively receives the phone number and appointment details needed to send them. These appointment choices are separate from marketing consent. You can stop phone notifications from your private booking management page; WhatsApp STOP also stops pending WhatsApp booking messages. Email remains available for appointment updates.</p>
                             <p>
                                 Triumphant Technological Services does not sell or trade users&apos; personal information. However, we may share limited data with trusted partners who assist in operating our services — such as payment processors, analytics providers, or regulatory bodies — under strict confidentiality agreements.
                             </p>
