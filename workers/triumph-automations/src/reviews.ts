@@ -132,9 +132,12 @@ export async function drainReviewJobs(env: Env) {
           text: `Rating: ${feedback.rating}/5\nName: ${feedback.name || "Not provided"}\nEmail: ${feedback.email || "Not provided"}\nFeedback: ${feedback.feedback || "No written feedback"}\nReference: ${job.feedback_id}\nEvery rating has the same Google review option.`,
         }),
         signal: AbortSignal.timeout(8000),
-        redirect: "error",
+        redirect: "manual",
       });
-      if (!response.ok) throw new Error("Rejected");
+      if (!response.ok) {
+        console.warn("review_email_rejected", { status: response.status });
+        throw new Error("Rejected");
+      }
       await env.DB.prepare(
         "UPDATE review_jobs SET state='sent',lease_until=NULL WHERE id=?",
       )
@@ -201,7 +204,7 @@ export async function drainReviewInvites(env: Env) {
           text: `Thank you for your consultation. You gave permission for one honest feedback request.\nAll ratings are welcome; the same Google review option is available to everyone. Private feedback is optional.\nReview or stop future review invitations: https://triumphantech.com/automation-lab/reviews?request=${invite.id}\nNo incentive is offered.\nQuestions: admin@triumphantech.com`,
         }),
         signal: AbortSignal.timeout(8000),
-        redirect: "error",
+        redirect: "manual",
       });
       if (!response.ok) throw new Error("Rejected");
       await env.DB.prepare(

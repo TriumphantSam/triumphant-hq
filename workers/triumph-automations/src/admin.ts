@@ -204,7 +204,7 @@ export async function drainOwnerReports(env: Env) {
             "\nPrivate owner workspace: https://triumphantech.com/admin\nTest records are included in operational counts; payment totals here are unavailable until live billing is connected.",
         }),
         signal: AbortSignal.timeout(8000),
-        redirect: "error",
+        redirect: "manual",
       });
       if (!response.ok) throw new Error("Rejected");
       await env.DB.prepare(

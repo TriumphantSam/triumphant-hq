@@ -117,7 +117,7 @@ export async function verifiedBusinessSender(env: Env) {
     const response = await fetch(url, {
       headers: { Authorization: `Bearer ${env.BOOKING_WA_ACCESS_TOKEN}` },
       signal: AbortSignal.timeout(8000),
-      redirect: "error",
+      redirect: "manual",
     });
     if (!response.ok) return false;
     const data = (await response.json()) as { display_phone_number?: string };
@@ -166,7 +166,7 @@ export async function sendBookingMessage(
           channel: "dnd",
         }),
         signal: AbortSignal.timeout(8000),
-        redirect: "error",
+        redirect: "manual",
       });
     } else {
       const name =
@@ -202,7 +202,7 @@ export async function sendBookingMessage(
             },
           }),
           signal: AbortSignal.timeout(8000),
-          redirect: "error",
+          redirect: "manual",
         },
       );
     }

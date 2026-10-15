@@ -35,9 +35,23 @@ async function paystack(env: Env, path: string, body?: unknown) {
     },
     body: body ? JSON.stringify(body) : undefined,
     signal: AbortSignal.timeout(7000),
-    redirect: "error",
+    redirect: "manual",
+  }).catch((error: unknown) => {
+    console.warn("paystack_transport_failed", {
+      name: error instanceof Error ? error.name : "unknown",
+      reason: error instanceof Error
+        ? error.message.replace(/https?:\/\/\S+/g, "[provider]").slice(0, 160)
+        : "unknown",
+    });
+    throw error;
   });
-  if (!response.ok) throw new Error("Paystack request failed");
+  if (!response.ok) {
+    console.warn("paystack_request_rejected", {
+      status: response.status,
+      operation: body ? "initialize" : "verify",
+    });
+    throw new Error("Paystack request failed");
+  }
   const result = (await response.json()) as {
     status: boolean;
     data: Record<string, unknown>;
@@ -439,7 +453,7 @@ export async function drainPaymentJobs(env: Env) {
             : `TEST PAYMENT — no real money collected.\nAmount: NGN 100.00\nReference: ${invoice.id}\nPaid: ${new Date(invoice.paid_at!).toLocaleString("en-GB", { timeZone: "Africa/Lagos" })} WAT\nTriumphant Technological Services, Basorun Rd, Ibadan.\nThis is demonstration proof, not a real purchase or tax invoice.\nReceipt: https://triumphantech.com/receipt/${invoice.id}`,
         }),
         signal: AbortSignal.timeout(8000),
-        redirect: "error",
+        redirect: "manual",
       });
       if (!response.ok) throw new Error("Provider rejected");
       await env.DB.prepare(

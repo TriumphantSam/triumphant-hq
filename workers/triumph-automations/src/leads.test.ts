@@ -19,6 +19,7 @@ import { groundedAnswer } from "./chat";
 import { createHmac } from "node:crypto";
 import { claimLabJobs } from "./lab-delivery";
 import { completeConsultation, scheduleOwnerReports } from "./admin";
+import { drainReviewJobs } from "./reviews";
 
 function setup() {
   const sql = new DatabaseSync(":memory:");
@@ -333,7 +334,8 @@ test("verified test payments are idempotent and receipts contain no customer det
     );
   const original = globalThis.fetch;
   let calls = 0;
-  globalThis.fetch = async () => {
+  globalThis.fetch = async (_url, options) => {
+    assert.equal(options?.redirect, "manual");
     calls++;
     return Response.json({
       status: true,
@@ -395,6 +397,35 @@ test("review feedback saves once and offers the same Google link at low and high
     (await request("/v1/reviews/feedback", { ...input, rating: 0 })).status,
     400,
   );
+});
+
+test("feedback delivery rejects provider redirects and retries the same idempotency key", async () => {
+  const { env, request, sql } = setup();
+  env.RESEND_API_KEY = "test-key";
+  env.EMAIL_FROM = "Team <team@example.com>";
+  env.OWNER_EMAIL = "owner@example.com";
+  const id = crypto.randomUUID();
+  await request("/v1/reviews/feedback", {
+    requestId: id, rating: 4, name: "", email: "", feedback: "Test",
+  });
+  const original = globalThis.fetch;
+  const keys: string[] = [];
+  globalThis.fetch = async (_url, options) => {
+    assert.equal(options?.redirect, "manual");
+    keys.push(new Headers(options?.headers).get("Idempotency-Key")!);
+    return keys.length === 1
+      ? new Response(null, { status: 302, headers: { Location: "https://elsewhere.example" } })
+      : Response.json({ id: "accepted" });
+  };
+  try {
+    await drainReviewJobs(env);
+    assert.equal(sql.prepare("SELECT state FROM review_jobs").get()?.state, "pending");
+    sql.exec("UPDATE review_jobs SET next_attempt_at='2020-01-01'");
+    await drainReviewJobs(env);
+    assert.equal(sql.prepare("SELECT state FROM review_jobs").get()?.state, "sent");
+    assert.equal(keys.length, 2);
+    assert.equal(keys[0], keys[1]);
+  } finally { globalThis.fetch = original; }
 });
 
 test("private reports use exclusive Lagos day boundaries and reject invalid periods", () => {
