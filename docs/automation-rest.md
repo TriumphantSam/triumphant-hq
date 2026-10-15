@@ -85,6 +85,11 @@ reference and timestamp. Each successful save queues only the existing Sheet
 job; customer and owner acknowledgement jobs are not resent. The bound
 `google-sheets/Code.gs` script must be updated to read `lead.status || 'new'`
 instead of hardcoding `new`. Owner notes are excluded from the Sheet payload.
+The owner confirmed replacing the script and completing a successful run. A
+synthetic staging enquiry verified persistence, stale-edit rejection and zero
+email jobs. Production HTTP checks verified the signed-in editor, rejection of
+unsigned actions and missing-record handling without changing customer records.
+The current Worker suite passes 34 tests.
 
 Daily owner emails are explicitly authorised and enabled in production with
 `REPORTS_EMAIL_ENABLED=true`; staging remains off. They claim one job per date during
