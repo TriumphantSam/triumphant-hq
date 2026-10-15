@@ -72,8 +72,8 @@ prepares three weekly writing templates from verified sources, and records
 approval. These templates are not AI-written; no social publishing API exists.
 Weekly template generation runs Mondays during the 08:00 Lagos hour.
 
-Daily owner emails remain **off** until explicitly activated with
-`REPORTS_EMAIL_ENABLED=true`. When enabled they claim one job per date during
+Daily owner emails are explicitly authorised and enabled in production with
+`REPORTS_EMAIL_ENABLED=true`; staging remains off. They claim one job per date during
 08:00–08:59 WAT, summarising the previous day; Monday uses the previous week.
 Counts include authorised test records and distinguish disconnected financial
 data from zero revenue. Reports go only to the configured owner email.
