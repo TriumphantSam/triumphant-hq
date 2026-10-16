@@ -6,19 +6,114 @@ import Link from "next/link";
 import { whatsappNumber } from "@/lib/services";
 import { formattedNapAddress, siteIdentity } from "@/lib/seo";
 
-const ninServices = [
-  "New NIN enrolment",
-  "Data modification and corrections",
-  "NIN slip printing",
-  "Portal troubleshooting",
-  "Consultation before you visit an enrolment centre",
+const quickServices = [
+  "NIN Verification",
+  "Recover Lost NIN",
+  "BVN Verification & Card",
+  "IPE Clearance",
+  "Record Not Found Fix",
+  "NIN Validation",
+  "Suspended NIN Fix",
+  "BVN Retrieval",
 ];
 
-const bvnServices = [
-  { title: "BVN enrolment", copy: "Guided support for new Bank Verification Number registration." },
-  { title: "BVN consultation", copy: "Clear advice on requirements, common errors and next steps." },
-  { title: "BVN recovery", copy: "Help retrieving or resolving issues with an existing BVN record." },
-  { title: "BVN card printing", copy: "Practical assistance with BVN card print requests where available." },
+type NinServiceItem = {
+  title: string;
+  copy: string;
+  badge?: string;
+  whatsappMessage: string;
+};
+
+const ninServices: NinServiceItem[] = [
+  {
+    title: "NIN Verification",
+    copy: "Instant verification of your National Identification Number status, authenticity, and demographic matching for banks, immigration, telcos, and official portals.",
+    badge: "Verification",
+    whatsappMessage: "Hello Triumphant HQ — I need NIN verification support.",
+  },
+  {
+    title: "Recover Lost NIN",
+    copy: "Swift, hassle-free retrieval of misplaced or forgotten NIN numbers and slips using your registered phone number, tracking ID, or demographic record.",
+    badge: "Recovery",
+    whatsappMessage: "Hello Triumphant HQ — I need to recover my lost NIN.",
+  },
+  {
+    title: "NIN Validation",
+    copy: "Validating unlinked or pending NIN records across central NIMC servers, JAMB, NIS passport offices, and telecom networks.",
+    badge: "Validation",
+    whatsappMessage: "Hello Triumphant HQ — I need NIN validation support.",
+  },
+  {
+    title: "IPE Clearance",
+    copy: "Fast-track resolution for NIMC backend In-Process Exception (IPE) bottlenecks, unlocking stalled modifications and delayed enrolments.",
+    badge: "IPE Clearance",
+    whatsappMessage: "Hello Triumphant HQ — I need help with IPE clearance for my NIN.",
+  },
+  {
+    title: "Record Not Found",
+    copy: "Expert troubleshooting and resolution when your NIN returns a 'Record Not Found' error on official verification portals or banking apps.",
+    badge: "Error Fix",
+    whatsappMessage: "Hello Triumphant HQ — I am encountering a 'Record Not Found' error on my NIN.",
+  },
+  {
+    title: "Suspended NIN",
+    copy: "Diagnostic assistance, case review, and official escalation to investigate, rectify, and reactivate suspended, locked, or flagged NIN records.",
+    badge: "Reactivation",
+    whatsappMessage: "Hello Triumphant HQ — My NIN is suspended and I need help reactivating it.",
+  },
+  {
+    title: "New NIN Enrolment",
+    copy: "Complete, patient guidance for first-time applicant registrations (both adults and minors) following certified NIMC ID Ecosystem standards.",
+    badge: "Enrolment",
+    whatsappMessage: "Hello Triumphant HQ — I need new NIN enrolment support.",
+  },
+  {
+    title: "Data Modification & Corrections",
+    copy: "Assisting with official updates for name spelling, date of birth, phone number, residential address, or marital status.",
+    badge: "Modification",
+    whatsappMessage: "Hello Triumphant HQ — I need to modify details on my NIN.",
+  },
+  {
+    title: "NIN Slip & Card Printing",
+    copy: "High-resolution regular slips, premium colour NIN slips, and durable plastic identity cards for daily wallet use and official presentation.",
+    badge: "Printing",
+    whatsappMessage: "Hello Triumphant HQ — I need NIN slip or plastic card printing.",
+  },
+  {
+    title: "Portal Troubleshooting & Consultation",
+    copy: "Pre-visit document audits, error diagnosis, and dedicated advice so you never face unexpected rejections or delays.",
+    badge: "Consultation",
+    whatsappMessage: "Hello Triumphant HQ — I need consultation on a NIN portal issue.",
+  },
+];
+
+type BvnServiceItem = {
+  title: string;
+  copy: string;
+  whatsappMessage: string;
+};
+
+const bvnServices: BvnServiceItem[] = [
+  {
+    title: "BVN Verification & Card",
+    copy: "Verify BVN record authenticity across NIBSS and print durable, verified plastic or laminated BVN identity cards.",
+    whatsappMessage: "Hello Triumphant HQ — I need BVN verification and plastic card printing.",
+  },
+  {
+    title: "BVN Retrieval",
+    copy: "Fast, secure recovery of lost, forgotten, or misplaced Bank Verification Numbers without queuing at the bank.",
+    whatsappMessage: "Hello Triumphant HQ — I need BVN retrieval support.",
+  },
+  {
+    title: "BVN Enrolment Assistance",
+    copy: "Guided support for new Bank Verification Number registration requirements, documents, and centre directions.",
+    whatsappMessage: "Hello Triumphant HQ — I need guidance on BVN enrolment.",
+  },
+  {
+    title: "BVN Consultation & Reconciliation",
+    copy: "Clear advice and troubleshooting for name mismatches, date-of-birth conflicts between NIN and BVN, and bank updates.",
+    whatsappMessage: "Hello Triumphant HQ — I need BVN consultation or reconciliation support.",
+  },
 ];
 
 const schools = [
@@ -68,10 +163,9 @@ export default function LocalSupportExperience() {
     <div className="pb-24 lg:pb-0">
       <header className="page-hero !pb-10 !pt-8">
         <p className="eyebrow">Local support desk · Ibadan</p>
-        <h1>NIN enrolment in Ibadan—plus BVN support you can trust</h1>
+        <h1>NIN & BVN services in Ibadan—verification, retrieval & support</h1>
         <p>
-          Certified ID Ecosystem training. Thousands of successful enrolments. WhatsApp-first assistance for Ibadan,
-          Akobo, Bashorun and Oyo State—so you know what to bring before you arrive.
+          Certified ID Ecosystem training. From NIN verification, lost NIN recovery, IPE clearance, validation, and suspended NIN fixes to BVN cards and retrieval—get WhatsApp-first assistance for Ibadan, Akobo, Bashorun, and Oyo State.
         </p>
         <div className="button-row mt-8">
           <a
@@ -90,6 +184,17 @@ export default function LocalSupportExperience() {
           >
             WhatsApp for BVN
           </a>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-2">
+          {quickServices.map((tag) => (
+            <span
+              key={tag}
+              className="inline-flex items-center rounded-full border border-slate-200 bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 shadow-xs"
+            >
+              <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-blue-500" />
+              {tag}
+            </span>
+          ))}
         </div>
       </header>
 
@@ -175,29 +280,48 @@ export default function LocalSupportExperience() {
             <div>
               <p className="eyebrow">Primary service</p>
               <h2 className="font-display mt-5 text-[clamp(2.2rem,4.5vw,3.6rem)] font-bold leading-[1.05] tracking-[-0.045em] text-slate-950">
-                NIN enrolment and NIMC support
+                NIN enrolment, verification & recovery
               </h2>
               <p className="mt-6 max-w-xl text-[1.08rem] leading-8 text-slate-600">
-                This is our flagship local service. From first-time enrolment to modifications, corrections, slip
-                printing and portal issues—we guide people carefully through the process.
+                This is our flagship local service. From first-time enrolment and verification to lost NIN recovery,
+                IPE clearance, &apos;Record Not Found&apos; fixes, validation, and suspended NIN reactivation—we guide you
+                calmly through every NIMC process.
               </p>
 
-              <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+              <div className="mt-8 grid gap-3.5 sm:grid-cols-2">
                 {ninServices.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 border-l border-blue-200/80 pl-4 text-[1.02rem] leading-7 text-slate-700"
+                  <div
+                    key={item.title}
+                    className="flex flex-col justify-between rounded-xl border border-slate-200/90 bg-white p-4 shadow-xs transition hover:border-blue-400 hover:shadow-sm"
                   >
-                    {item}
-                  </li>
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-[0.98rem] font-bold text-slate-950">{item.title}</h3>
+                        {item.badge ? (
+                          <span className="shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-[0.66rem] font-semibold tracking-wide text-blue-700">
+                            {item.badge}
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="mt-1.5 text-xs leading-5 text-slate-600">{item.copy}</p>
+                    </div>
+                    <a
+                      href={wa(item.whatsappMessage)}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-3 inline-flex items-center gap-1 text-[0.78rem] font-semibold text-blue-600 hover:text-blue-800"
+                    >
+                      WhatsApp about this <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
                 ))}
-              </ul>
+              </div>
 
               <div className="mt-10 rounded-[1.25rem] border border-blue-200 bg-blue-50/70 p-6 sm:p-8">
                 <p className="font-mono text-[0.7rem] font-bold tracking-[0.14em] text-blue-700">Track record</p>
                 <p className="mt-3 text-[1.05rem] leading-8 text-slate-700">
                   More than <strong className="text-slate-950">3,000 people</strong> enrolled to date, plus consultation
-                  and support for <strong className="text-slate-950">hundreds of modifications and corrections</strong>.
+                  and support for <strong className="text-slate-950">hundreds of modifications, IPE clearances, and error resolutions</strong>.
                 </p>
                 <a
                   className="button button-primary mt-7"
@@ -267,16 +391,15 @@ export default function LocalSupportExperience() {
             <div>
               <p className="eyebrow">Bank Verification Number</p>
               <h2 className="font-display mt-6 max-w-xl text-[clamp(2.1rem,4.2vw,3.4rem)] font-bold leading-[1.06] tracking-[-0.045em] text-slate-950">
-                BVN help—enrolment to recovery—guided on WhatsApp.
+                BVN verification, card printing & retrieval.
               </h2>
               <p className="mt-6 max-w-lg text-[1.08rem] leading-8 text-slate-600">
-                Tell us what you need. We will confirm requirements and walk you through the next step without the
-                usual confusion.
+                Need to verify your BVN, print a durable plastic card, or retrieve your lost number? Tell us what you need and we will confirm requirements and timing on WhatsApp.
               </p>
               <div className="button-row mt-10">
                 <a
                   className="button button-primary"
-                  href={wa("Hello Triumphant HQ — I need BVN enrolment, recovery or card printing support.")}
+                  href={wa("Hello Triumphant HQ — I need BVN verification, card printing or retrieval support.")}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -286,16 +409,24 @@ export default function LocalSupportExperience() {
               </div>
             </div>
 
-            <div className="grid gap-8 border-l border-blue-200/80 pl-6 sm:pl-8">
+            <div className="grid gap-6 border-l border-blue-200/80 pl-6 sm:pl-8">
               {bvnServices.map((item, index) => (
-                <div key={item.title}>
+                <div key={item.title} className="group">
                   <span className="font-mono text-[0.7rem] font-bold tracking-[0.14em] text-[var(--accent-color)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="font-display mt-2 text-[1.2rem] font-bold tracking-[-0.025em] text-slate-950">
+                  <h3 className="font-display mt-1 text-[1.18rem] font-bold tracking-[-0.025em] text-slate-950">
                     {item.title}
                   </h3>
-                  <p className="mt-2 max-w-sm text-[0.98rem] leading-7 text-slate-600">{item.copy}</p>
+                  <p className="mt-1.5 max-w-sm text-[0.94rem] leading-6 text-slate-600">{item.copy}</p>
+                  <a
+                    href={wa(item.whatsappMessage)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2.5 inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800"
+                  >
+                    WhatsApp about {item.title} <span aria-hidden="true">→</span>
+                  </a>
                 </div>
               ))}
             </div>
@@ -376,7 +507,7 @@ export default function LocalSupportExperience() {
           <div>
             <p className="eyebrow">Check availability</p>
             <h2>Tell us if you need NIN or BVN help.</h2>
-            <p>Send a short WhatsApp message. We will confirm the next step, documents and timing.</p>
+            <p>From verification, IPE clearance, and lost ID recovery to plastic card printing—send a short WhatsApp message and we will confirm the next step.</p>
           </div>
           <div className="button-row lg:justify-end">
             <a className="button button-primary" href={wa("Hello Triumphant HQ — I need NIN support.")} target="_blank" rel="noreferrer">

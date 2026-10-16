@@ -7,12 +7,20 @@ import { localSupportFaqs } from "@/lib/faqs";
 import { buildPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "NIN Enrolment in Ibadan | BVN Support · Triumphant HQ",
+  title: "NIN Enrolment, Verification & Recovery in Ibadan | BVN Support · Triumphant HQ",
   description:
-    "NIN enrolment in Ibadan plus BVN support from Triumphant HQ. WhatsApp-first local desk on Basorun Rd serving Akobo, Bashorun, Bodija and Oyo State.",
+    "NIN enrolment, verification, lost NIN recovery, IPE clearance, validation, suspended NIN fix, and BVN cards/retrieval in Ibadan at Triumphant HQ on Basorun Rd.",
   path: "/local-support",
   keywords: [
     "NIN enrolment Ibadan",
+    "NIN verification",
+    "recover lost NIN",
+    "BVN verification and card",
+    "IPE clearance NIMC",
+    "NIN record not found fix",
+    "NIN validation",
+    "suspended NIN resolution",
+    "BVN retrieval Ibadan",
     "BVN support Ibadan",
     "NIN Akobo",
     "NIN Bashorun",
@@ -25,9 +33,9 @@ export default function LocalSupportPage() {
     <div>
       <JsonLd
         data={serviceJsonLd({
-          name: "Local NIN and BVN Support",
+          name: "Local NIN and BVN Support Desk",
           description:
-            "Certified NIN enrolment, modifications and BVN support in Ibadan, Oyo State, plus school portal and document assistance.",
+            "Certified NIN enrolment, verification, lost NIN recovery, IPE clearance, validation, suspended NIN fix, and BVN card/retrieval support in Ibadan, Oyo State, plus school portal and document assistance.",
           path: "/local-support",
           serviceType: "Local digital identity support",
         })}

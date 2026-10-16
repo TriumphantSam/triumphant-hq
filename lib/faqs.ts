@@ -290,6 +290,26 @@ export const localSupportFaqs: FaqItem[] = [
       "Our growth agency serves clients across Nigeria. The Local Support desk for NIN, BVN and everyday digital tasks is based in Ibadan. Nationwide clients usually engage us for websites, SEO, applications and automation.",
   },
   {
+    question: "Can you help recover a lost NIN or fix a 'Record Not Found' error?",
+    answer:
+      "Yes. If you lost your NIN number or slip, we assist with recovering your record using your registered phone number, tracking ID, or demographic details. If your NIN throws a 'Record Not Found' error when validating with banks, immigration, or telcos, we diagnose the database synchronization and help clear the issue.",
+  },
+  {
+    question: "What is IPE Clearance and can Triumphant HQ help clear it?",
+    answer:
+      "IPE stands for In-Process Exception (or Identity Processing Error), which occurs when an enrolment or data modification is held up at the NIMC backend. We help escalate, track, and clear IPE bottlenecks so your update is approved and your valid slip can be generated.",
+  },
+  {
+    question: "How do I fix a suspended NIN or complete NIN validation?",
+    answer:
+      "If your NIN is suspended or fails validation across official portals (such as immigration, JAMB, or telecom SIM portals), we help review your record, identify duplicate or mismatch triggers, and guide you through the official rectification and reactivation steps.",
+  },
+  {
+    question: "Do you provide BVN verification, retrieval and plastic card printing?",
+    answer:
+      "Yes. We assist with verifying BVN records on NIBSS, retrieving forgotten or misplaced BVNs, and printing durable, verified plastic BVN cards for personal and official use.",
+  },
+  {
     question: "Should I walk in without messaging first?",
     answer:
       "Please WhatsApp first. We confirm availability, what to bring and the right service path—especially for NIN and BVN—so you do not waste a trip.",
