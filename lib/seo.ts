@@ -25,7 +25,7 @@ export const siteIdentity = {
     latitude: 7.3775,
     longitude: 3.947,
   },
-  foundingYear: 2017,
+  foundingYear: 2019,
   /**
    * Public profiles supplied by the owner and linked from the footer and contact page.
    * LinkedIn, YouTube and Crunchbase stay off until a real URL is supplied.
@@ -102,7 +102,7 @@ export const locationPages: LocationPage[] = [
     intro: [
       "Triumphant HQ is an Ibadan-based technology and growth agency. We help businesses grow with websites, SEO, applications and automation—and we run a dedicated local desk for NIN, BVN and essential digital services.",
       "Whether you are in Bodija, Akobo, Bashorun, Challenge, Ojoo or elsewhere in the city, you can reach us for practical support and professional delivery.",
-      "Since 2017 we have combined global-standard digital delivery with local responsiveness—serving organisations across Oyo State, Osun State and clients nationwide from our Basorun Rd base.",
+      "Since 2019 we have combined global-standard digital delivery with local responsiveness—serving organisations across Oyo State, Osun State and clients nationwide from our Basorun Rd base.",
     ],
     localFocus: [
       "NIN enrolment, verification, lost NIN recovery, and slip printing in Ibadan",
@@ -338,7 +338,7 @@ export const locationPages: LocationPage[] = [
       "Nigerian technology agency based in Ibadan: websites, custom apps, SEO and AI automation for businesses nationwide, plus a NIN/BVN desk.",
     h1: "A Nigerian technology partner for ambitious businesses",
     intro: [
-      "Triumphant HQ (Triumphant Technological Services) is a technology agency headquartered on Basorun Rd, Ibadan. We have worked with organisations since 2017. This page is about that national technology practice: websites, custom applications and automation for teams anywhere in Nigeria. Search programmes have their own page, so this one does not try to rank as an SEO company.",
+      "Triumphant HQ (Triumphant Technological Services) is a technology agency headquartered on Basorun Rd, Ibadan. We have worked with organisations since 2019. This page is about that national technology practice: websites, custom applications and automation for teams anywhere in Nigeria. Search programmes have their own page, so this one does not try to rank as an SEO company.",
       "The office is in Ibadan, in the Bashorun area of Oyo State. We do not run branch offices in Lagos, Abuja or Port Harcourt. When a client is outside Ibadan, delivery is remote: a discovery call, a written scope, and WhatsApp for the questions that should not wait for a meeting. Osun State clients in Osogbo and Ile-Ife use the same remote path.",
       "Website work is usually a Next.js build with a clear structure, fast mobile pages and the technical basics search engines need. Application work is for a workflow that spreadsheets and off-the-shelf tools keep breaking. Automation is for repetitive follow-up, handoffs and reporting. We will say when a smaller job is the right one.",
       "Local Support — NIN enrolment, modifications and BVN help — is a separate desk at the same Ibadan address. It is WhatsApp-first and it is not bundled into a software project. Nationwide clients who only need a website, an application or an automation stay on the agency path.",

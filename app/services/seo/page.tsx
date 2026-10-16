@@ -80,7 +80,7 @@ export default function NigeriaSeoPage() {
         <p className="eyebrow">{service.eyebrow}</p>
         <h1>SEO agency in Nigeria for businesses that need search to bring in leads</h1>
         <p>
-          Triumphant HQ is a Nigerian SEO agency based in Ibadan since 2017, delivering search work for businesses
+          Triumphant HQ is a Nigerian SEO agency based in Ibadan since 2019, delivering search work for businesses
           across the country. The headquarters is on Basorun Rd. The clients are not all in Ibadan, and this page is
           not an Ibadan page with the city name swapped out.
         </p>

@@ -13,7 +13,7 @@ import { projectEnquiryUrl, whatsappNumber } from "@/lib/services";
 const path = "/services/seo/ibadan";
 const title = "SEO in Ibadan | SEO Company & Local Experts · Triumphant";
 const description =
-  "SEO company in Ibadan on Basorun Rd since 2017: technical SEO, Google Business Profile, local pages and content for Oyo State businesses. Free snapshot.";
+  "SEO company in Ibadan on Basorun Rd since 2019: technical SEO, Google Business Profile, local pages and content for Oyo State businesses. Free snapshot.";
 
 const offers = [
   "Local SEO and Google Business Profile optimisation",
@@ -85,7 +85,7 @@ export default function IbadanSeoPage() {
         <h1>SEO company in Ibadan for businesses that want to be found on Google</h1>
         <p>
           Triumphant HQ is an Ibadan SEO company on Basorun Rd. Triumphant Technological Services has operated from
-          here since 2017. We help Ibadan and Oyo State businesses fix the technical problems that keep a site out of
+          here since 2019. We help Ibadan and Oyo State businesses fix the technical problems that keep a site out of
           Google, tidy the Google Business Profile so it matches the website, and publish pages that answer the
           searches their customers actually type.
         </p>

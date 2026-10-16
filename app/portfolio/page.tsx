@@ -98,7 +98,7 @@ export default function PortfolioPage() {
 
       <section aria-label="About Triumphant Tech" className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-[1240px] flex-wrap gap-x-8 gap-y-3 px-5 py-5 text-sm font-semibold text-slate-700 lg:px-8">
-          <span>Based in Ibadan</span><span>Since 2017</span><span>Websites · apps · SEO · AI automation</span><span>6 live projects below</span>
+          <span>Based in Ibadan</span><span>Since 2019</span><span>Websites · apps · SEO · AI automation</span><span>6 live projects below</span>
         </div>
       </section>
 

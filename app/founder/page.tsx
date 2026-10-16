@@ -10,7 +10,7 @@ import { buildPageMetadata, founderPersonJsonLd, siteIdentity } from "@/lib/seo"
 
 const title = "Adeyemi Olayemi, Founder of TriumphantTech | Ibadan";
 const description =
-  "Adeyemi Olayemi founded Triumphant Technological Services in Ibadan in 2017. He builds websites, custom apps, SEO and AI automation for Nigerian businesses.";
+  "Adeyemi Olayemi founded Triumphant Technological Services in Ibadan in 2019. He builds websites, custom apps, SEO and AI automation for Nigerian businesses.";
 
 export const metadata: Metadata = buildPageMetadata({
   title,
@@ -56,7 +56,7 @@ const expertise = [
 
 const timeline = [
   ["2013–2016", "Community Manager (Moderator), Nairaland Forum"],
-  ["2017–present", "Founder, Triumphant Technological Services (TriumphantTech), Ibadan"],
+  ["2019–present", "Founder, Triumphant Technological Services (TriumphantTech), Ibadan"],
   ["2019–2024", "Microsoft Answers Community Expert & Expert Advisor (contract), Limitless Technology (UK)"],
   ["2022–2024", "Remote SEO Specialist, Chicago SEO Company (Chicago, US)"],
   ["2023–present", "AI evaluation for Mercor, Appen, TELUS International, OpenTrain AI and Mindrift, 2023–present"],
@@ -262,7 +262,7 @@ export default function FounderPage() {
               University of Agriculture, Abeokuta (FUNAAB), graduating with a CGPA of 4.14 out of 5.00.
             </p>
             <p>
-              In 2017 he started Triumphant Technological Services with one plain rule: make technology useful,
+              In 2019 he started Triumphant Technological Services with one plain rule: make technology useful,
               understandable and dependable for the person relying on it. The business began with essential digital
               support, including help with NIN and BVN services, and grew with what clients needed next. Support led to
               websites. Websites led to search growth. Repetitive manual work led to custom software and automation.

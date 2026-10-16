@@ -31,7 +31,7 @@ const principles = [
 ];
 
 const timeline = [
-  ["2017", "Service roots", "Triumphant HQ began by helping people and local organisations navigate everyday digital services with care and reliability."],
+  ["2019", "Service roots", "Triumphant HQ began by helping people and local organisations navigate everyday digital services with care and reliability."],
   ["2021", "Growth capability", "Our work expanded into websites, search optimization and the systems businesses need to compete online."],
   ["2024", "Connected delivery", "Software engineering and automation became core capabilities, allowing us to solve operational as well as marketing challenges."],
   ["Today", "One agency partner", "We bring design, development, SEO and automation together around focused business outcomes."],
@@ -125,7 +125,7 @@ export default function AboutPage() {
             </div>
             <div className="space-y-5 text-[1.02rem] leading-8 text-slate-600">
               <p>
-                Triumphant HQ started in 2017 with a simple operating principle: make technology useful, understandable
+                Triumphant HQ started in 2019 with a simple operating principle: make technology useful, understandable
                 and dependable for the person relying on it.
               </p>
               <p>
@@ -182,7 +182,7 @@ export default function AboutPage() {
 
       <section className="section-muted">
         <div className="section-shell">
-          <SectionHeader eyebrow="2017 to present" title="A steady expansion of what we can solve." />
+          <SectionHeader eyebrow="2019 to present" title="A steady expansion of what we can solve." />
           <div className="grid gap-0 border-y border-slate-200 md:grid-cols-4">
             {timeline.map(([year, title, copy]) => (
               <article className="p-6 first:pl-0 last:pr-0 [&+&]:border-l [&+&]:border-slate-200" key={year}>

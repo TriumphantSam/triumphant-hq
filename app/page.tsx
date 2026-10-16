@@ -12,7 +12,7 @@ import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
-  description: "Triumphant HQ builds websites, custom apps, SEO and AI automation for Nigerian businesses. Based in Ibadan and delivering practical digital systems since 2017.",
+  description: "Triumphant HQ builds websites, custom apps, SEO and AI automation for Nigerian businesses. Based in Ibadan and delivering practical digital systems since 2019.",
   path: "/",
   keywords: ["Triumphant HQ Ibadan", "Triumphant Technological Services", "technology agency Ibadan", "website design Ibadan"],
 });
