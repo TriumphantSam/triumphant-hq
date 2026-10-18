@@ -7,6 +7,7 @@ import {
 } from "@/lib/admin-lab-auth";
 import { automationRequest } from "@/lib/automation-api";
 import AdminLogin from "@/components/automation/AdminLogin";
+import ConversationAssistant from "@/components/automation/ConversationAssistant";
 import AdminActions from "@/components/automation/AdminActions";
 import LeadManager, {
   type ManagedLead,
@@ -48,6 +49,7 @@ async function AdminContent() {
   return (
     <>
       <AdminActions action="logout" label="Sign out" />
+      <ConversationAssistant mode="owner" />
       <h2 className="mt-8 text-xl font-bold">
         Real leads and bookings · today in Lagos
       </h2>

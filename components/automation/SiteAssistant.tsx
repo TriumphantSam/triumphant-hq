@@ -111,6 +111,7 @@ export default function SiteAssistant() {
     pathname.startsWith("/invoices") ||
     pathname.startsWith("/receipt/") ||
     pathname === "/automation-lab/chat" ||
+    pathname === "/automation-lab/assistant" ||
     pathname.includes("/checkout") ||
     pathname.startsWith("/parent-home-routine") ||
     pathname.startsWith("/digital-forge/funnel/")

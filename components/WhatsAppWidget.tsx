@@ -19,6 +19,8 @@ export default function WhatsAppWidget() {
   if (
     pathname === "/" ||
     pathname === "/portfolio" ||
+    pathname === "/automation-lab/assistant" ||
+    pathname.startsWith("/admin") ||
     pathname.startsWith("/parent-home-routine") ||
     pathname.startsWith("/digital-forge/funnel/") ||
     pathname.startsWith("/invoices")

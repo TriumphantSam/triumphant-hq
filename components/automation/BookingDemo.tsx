@@ -35,11 +35,11 @@ async function request(path: string, input?: unknown) {
   if (!response.ok) throw new Error(data.error || "Please try again.");
   return data;
 }
-export default function BookingDemo() {
+export default function BookingDemo({ preferredStart = "" }: { preferredStart?: string }) {
   const [slots, setSlots] = useState<Slot[]>([]),
     [loading, setLoading] = useState(true),
-    [start, setStart] = useState(""),
-    [day, setDay] = useState("");
+    [start, setStart] = useState(preferredStart),
+    [day, setDay] = useState(preferredStart ? dateLabel(preferredStart) : "");
   const [channels, setChannels] = useState({ sms: false, whatsapp: false });
   const [booking, setBooking] = useState<Reservation | null>(null),
     [code, setCode] = useState(""),
