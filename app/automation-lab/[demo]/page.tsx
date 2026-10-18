@@ -82,6 +82,7 @@ export default async function DemoPage({
                   ? "Choose a time to talk"
                   : "Preparing this flow"}
             </h2>
+            {demo === "whatsapp" && <Link className="lab-link" href="/automation-lab/assistant">Try the website conversation simulator →</Link>}
             <p className="lab-placeholder">{item.note}</p>
             {demo === "whatsapp" && (
               <a

@@ -6,6 +6,7 @@ import { bookingRoutes, drainBookingOutbox } from "./bookings";
 import { drainBookingMessages, messageChannels } from "./booking-messages";
 import { privateReport, reportWindow } from "./reports";
 import { chatRoutes } from "./chat";
+import { assistantRoutes } from "./assistant";
 import { paymentRoutes, paystackWebhook, drainPaymentJobs } from "./payments";
 import { reviewRoutes, drainReviewJobs, drainReviewInvites } from "./reviews";
 import { adminRoutes, scheduleOwnerReports, drainOwnerReports } from "./admin";
@@ -85,6 +86,7 @@ app.get("/v1/health", (c) =>
 );
 app.route("/v1/bookings", bookingRoutes);
 app.route("/v1/chat", chatRoutes);
+app.route("/v1/assistant", assistantRoutes);
 app.route("/v1/payments", paymentRoutes);
 app.route("/v1/reviews", reviewRoutes);
 app.route("/v1/admin", adminRoutes);
@@ -397,6 +399,7 @@ export default {
       env.DB.prepare("DELETE FROM chat_sessions WHERE expires_at<?").bind(
         new Date().toISOString(),
       ),
+      env.DB.prepare("DELETE FROM assistant_sessions WHERE expires_at<?").bind(new Date().toISOString()),
       env.DB.prepare("DELETE FROM review_feedback WHERE created_at<?").bind(
         new Date(Date.now() - 365 * 86400000).toISOString(),
       ),
