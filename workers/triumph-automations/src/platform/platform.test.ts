@@ -12,6 +12,7 @@ import {
   plans,
 } from "./core";
 import { platformAuth } from "./auth";
+import { conversationAction, responderDefaults } from "./conversations";
 import type { Env } from "../types";
 import { Hono } from "hono";
 import { createPlatformRoutes } from "./routes";
@@ -941,5 +942,68 @@ test("sandbox reply allowances reset at midnight in Lagos", async () => {
   }, publicIp, Date.parse("2026-10-31T23:30:00Z"));
   assert.ok(result);
   assert.equal(sql.prepare("SELECT count FROM platform_usage WHERE workspace_id=? AND period='2026-11'").get(a.id)!.count, 1);
+  sql.close();
+});
+
+test("responder settings are owner-only, isolated and reject stale saves", async () => {
+  const {env,a,b,sql}=await businessFixture();
+  const read=()=>conversationAction(env,"alice","responder.read",{workspaceId:a.id});
+  assert.equal((await read() as {welcome:string}).welcome,responderDefaults.welcome);
+  const input={workspaceId:a.id,...responderDefaults,welcome:"Hello from Alice"};
+  assert.equal((await conversationAction(env,"alice","responder.save",input) as {version:number}).version,1);
+  await assert.rejects(conversationAction(env,"alice","responder.save",input),/changed/);
+  assert.equal((await conversationAction(env,"alice","responder.save",{...input,version:1}) as {version:number}).version,2);
+  await assert.rejects(conversationAction(env,"bob","responder.read",{workspaceId:a.id}),/not found/);
+  sql.prepare("INSERT INTO platform_memberships(workspace_id,user_id,role) VALUES (?,?,'staff')").run(a.id,"bob");
+  await assert.rejects(conversationAction(env,"bob","responder.save",{...input,version:2}),/owner/);
+  assert.equal((await conversationAction(env,"bob","responder.read",{workspaceId:b.id}) as {welcome:string}).welcome,responderDefaults.welcome);
+  sql.close();
+});
+
+test("conversation rehearsal uses approved answers, pauses for team and STOP, and retries once",async()=>{
+  const {env,a,sql}=await businessFixture();
+  const workspaceId=a.id,id=crypto.randomUUID(),now=Date.parse("2026-10-19T10:00:00Z");
+  type Chat={version:number;paused:boolean;messages:{role:string;text:string}[]};
+  const call=async(action:string,input:Record<string,unknown>)=>await conversationAction(env,"alice",action,{workspaceId,id,...input},now) as Chat;
+  await call("conversation.create",{label:"Invented customer"});
+  const message={version:0,role:"customer",text:"What are your consultation hours?",requestId:crypto.randomUUID()};
+  let chat=await call("conversation.message",message);
+  assert.equal(chat.messages.length,3);
+  assert.match(chat.messages[2].text,/Alice Salon/);
+  assert.deepEqual(await call("conversation.message",message),chat);
+  await assert.rejects(call("conversation.message",{...message,text:"Changed text"}),/reference/);
+  await assert.rejects(call("conversation.pause",{version:0,paused:true}),/changed/);
+  chat=await call("conversation.message",{version:1,role:"team",text:"I can help.",requestId:crypto.randomUUID()});
+  assert.equal(chat.paused,true);
+  chat=await call("conversation.message",{version:2,role:"customer",text:"consultation hours",requestId:crypto.randomUUID()});
+  assert.equal(chat.messages.length,5);
+  chat=await call("conversation.pause",{version:3,paused:false});
+  chat=await call("conversation.message",{version:4,role:"customer",text:"STOP",requestId:crypto.randomUUID()});
+  assert.equal(chat.paused,true);
+  assert.equal(chat.messages.length,6);
+  assert.equal((await workspaceView(env,"alice",workspaceId)).readiness.conversationTested,true);
+  assert.equal(sql.prepare("SELECT count(*) n FROM platform_leads").get()!.n,0);
+  sql.close();
+});
+
+test("conversations cannot cross tenants and production cannot simulate a connected channel",async()=>{
+  const {env,a,b,sql}=await businessFixture();
+  const id=crypto.randomUUID();
+  await conversationAction(env,"alice","conversation.create",{workspaceId:a.id,id,label:"Test"});
+  await assert.rejects(conversationAction(env,"bob","conversation.read",{workspaceId:a.id,id}),/not found/);
+  await assert.rejects(conversationAction(env,"bob","conversation.read",{workspaceId:b.id,id}),/not found/);
+  await assert.rejects(conversationAction({...env,ENVIRONMENT:"production"},"alice","conversation.create",{workspaceId:a.id,id:crypto.randomUUID(),label:"Test"}),/staging/);
+  sql.close();
+});
+
+test("outside-hours and disabled responders behave without calling a provider",async()=>{
+  const {env,a,sql}=await businessFixture();
+  const workspaceId=a.id,id=crypto.randomUUID(),now=Date.parse("2026-10-19T22:00:00Z");
+  await conversationAction(env,"alice","conversation.create",{workspaceId,id,label:"Evening test"},now);
+  let chat=await conversationAction(env,"alice","conversation.message",{workspaceId,id,version:0,role:"customer",text:"consultation hours",requestId:crypto.randomUUID()},now) as {messages:{text:string}[]};
+  assert.equal(chat.messages[2].text,responderDefaults.away);
+  await conversationAction(env,"alice","responder.save",{workspaceId,...responderDefaults,enabled:false});
+  chat=await conversationAction(env,"alice","conversation.message",{workspaceId,id,version:1,role:"customer",text:"consultation hours",requestId:crypto.randomUUID()},now) as {messages:{text:string}[]};
+  assert.equal(chat.messages.length,4);
   sql.close();
 });

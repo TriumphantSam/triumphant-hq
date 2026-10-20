@@ -15,6 +15,7 @@ import {
   MessageSquare,
   LogOut,
   Inbox,
+  ListChecks,
 } from "lucide-react";
 import Turnstile from "@/components/automation/Turnstile";
 
@@ -57,15 +58,21 @@ type Bootstrap = {
   plans: Plan[];
 };
 type Tab =
-  "Business" | "Answers" | "Appointments" | "Inbox" | "Plans" | "Launch";
+  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Plans" | "Launch";
+const ConversationStudio = dynamic(() => import("./ConversationStudio"), {
+  loading: () => <p role="status">Loading conversation studio…</p>,
+});
 const InboxPanel = dynamic(() => import("./InboxPanel"), {
   loading: () => <p role="status">Loading business inbox…</p>,
 });
 const tabs = [
+  { name: "Setup", icon: ListChecks },
   { name: "Business", icon: Building2 },
   { name: "Answers", icon: BookOpen },
   { name: "Appointments", icon: CalendarDays },
   { name: "Inbox", icon: Inbox },
+  { name: "Conversations", icon: MessageSquare },
+  { name: "Autoresponders", icon: MessageSquare },
   { name: "Plans", icon: CreditCard },
   { name: "Launch", icon: Rocket },
 ] as const;
@@ -118,7 +125,7 @@ export default function PlatformWorkspace() {
     [otp, setOtp] = useState(""),
     [codeSent, setCodeSent] = useState(false),
     [token, setToken] = useState("");
-  const [tab, setTab] = useState<Tab>("Business"),
+  const [tab, setTab] = useState<Tab>("Setup"),
     [name, setName] = useState(""),
     [description, setDescription] = useState(""),
     [contact, setContact] = useState("");
@@ -403,7 +410,10 @@ export default function PlatformWorkspace() {
                 <div className="platform-eyebrow">BUSINESS WORKSPACE</div>
                 <h1>
                   {view
-                    ? tab === "Business"
+                    ? tab === "Setup" ? "Your business, step by step."
+                      : tab === "Conversations" ? "Make every conversation count."
+                      : tab === "Autoresponders" ? "A helpful reply starts here."
+                      : tab === "Business"
                       ? "Make it your business."
                       : tab === "Answers"
                         ? "Answers you can stand behind."
@@ -466,6 +476,20 @@ export default function PlatformWorkspace() {
               </form>
             ) : (
               <>
+                {tab === "Setup" && <section className="platform-card setup-guide">
+                  <div className="platform-eyebrow">YOUR SETUP PATH</div>
+                  <h2>Build it. Practise it. Connect when ready.</h2>
+                  <p>Progress below comes from saved settings and test activity. Completing setup does not activate a paid plan or connect a WhatsApp number.</p>
+                  <progress max={4} value={[view.readiness.profile,view.readiness.answers,view.readiness.respondersConfigured,view.readiness.conversationTested].filter(Boolean).length} aria-label="Private setup progress" />
+                  {([
+                    {tab:"Business",title:"Introduce your business",detail:"Save what you offer and how customers can contact you.",done:view.readiness.profile},
+                    {tab:"Answers",title:"Add approved answers",detail:"Start with common questions about your services, hours and prices.",done:view.readiness.answers},
+                    {tab:"Autoresponders",title:"Choose your automated messages",detail:"Set welcome, away and fallback replies. Review Appointments for your business hours.",done:view.readiness.respondersConfigured},
+                    {tab:"Conversations",title:"Practise a customer conversation",detail:"Use an invented customer. Test questions and taking over from automation.",done:view.readiness.conversationTested},
+                  ] as const).map((step,i)=><div className="setup-step" key={step.tab}><span className={step.done?"setup-complete":""}>{step.done?<Check size={18}/>:i+1}</span><div><h3>{step.title}</h3><p>{step.detail}</p><small>{step.done?"Saved / tested":"To do"}</small></div><button className="platform-secondary" onClick={()=>setTab(step.tab)}>{step.done?"Review":"Start"}</button></div>)}
+                  <div className="platform-sandbox"><strong>Connection comes next.</strong> WhatsApp number onboarding and subscription activation are not available yet. Keep practising privately; no customer messages or charges are created.</div>
+                </section>}
+                {(tab === "Conversations" || tab === "Autoresponders") && <ConversationStudio key={view.workspace.id+tab} workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/>}
                 {tab === "Business" && (
                   <div className="platform-columns">
                     <form

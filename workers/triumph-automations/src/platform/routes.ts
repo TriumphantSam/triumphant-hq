@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import type { Env } from "../types";
 import { hmac } from "../security";
 import { platformAuth, type OtpSender } from "./auth";
+import { conversationAction } from "./conversations";
 import {
   admit,
   createWorkspace,
@@ -138,6 +139,8 @@ export function createPlatformRoutes(sender?: OtpSender) {
         });
       }
       const id = payload.workspaceId;
+      if (body.action.startsWith("conversation.") || body.action.startsWith("responder."))
+        return c.json({ data: await conversationAction(c.env, userId, body.action, payload) });
       if (body.action === "website.publish" || body.action === "website.pause")
         return c.json({
           data: await publishWorkspace(

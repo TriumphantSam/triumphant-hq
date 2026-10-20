@@ -90,6 +90,29 @@ connection or a successful code deployment. Record actual evidence per gate.
 Meta-dependent work is developed behind explicit readiness checks while approval
 is pending. Do not accept money for a channel that is not available.
 
+## Next increment: guided setup and conversation rehearsal
+
+Migration 0009 adds business-scoped responder settings and private practice
+conversations. The Setup tab derives progress from saved profile/answers,
+explicitly saved responder settings and a stored test message. It does not mark
+WhatsApp or billing ready. Default appointment hours must still be reviewed.
+
+Autoresponders support welcome, outside-hours and unknown-answer messages.
+Conversation rehearsal uses saved FAQs and Lagos booking hours, without an AI
+call or outbound delivery. Each business may store up to 100 test conversations;
+each has a bounded message history. Manual team replies and customer STOP/human
+requests pause automation. Only an authenticated workspace member may resume it.
+Owners alone edit responder settings; workspace members can rehearse replies.
+Version checks prevent stale replies/settings overwrites, and message request IDs
+make retries idempotent. These records never become agency leads or outbound jobs.
+
+This is a rehearsal inbox, not a connected WhatsApp inbox: there are no live
+delivery receipts, unread state, attachments or customer number connection yet.
+Rehearsal mutations are blocked in production. Migration 0009 must be applied
+before deploying this increment to any enabled environment. Production platform
+access remains gated. Live transport, billing and operational acceptance remain
+separate release requirements.
+
 ## Implementation status: 20 October 2026
 
 Built: passwordless verified accounts; one private business workspace per account;
