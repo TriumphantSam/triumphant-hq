@@ -11,6 +11,7 @@
       "ai": {"binding":"AI"},
       "vars": {
         "ENVIRONMENT": "production",
+        "PLATFORM_ENABLED": "false",
         "CHAT_ENABLED": "true",
         "CHAT_PROVIDER": "workers_ai",
         "CHAT_MODEL": "@cf/qwen/qwen3-30b-a3b-fp8",
@@ -37,6 +38,7 @@
       "ai": {"binding":"AI"},
       "vars": {
         "ENVIRONMENT": "staging",
+        "PLATFORM_ENABLED": "true",
         "CHAT_ENABLED": "true",
         "CHAT_PROVIDER": "workers_ai",
         "CHAT_MODEL": "@cf/qwen/qwen3-30b-a3b-fp8",
