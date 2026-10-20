@@ -929,3 +929,17 @@ test("appointment generation respects the business's Lagos hours, weekdays, buff
   );
   assert.ok(slots.every((s) => Date.parse(s.start) >= workflowNow + 86400000));
 });
+
+test("sandbox reply allowances reset at midnight in Lagos", async () => {
+  const { env, a, sql } = await businessFixture();
+  sql.prepare("INSERT INTO platform_usage(workspace_id,period,kind,count) VALUES (?,?,'assistant_replies',100)")
+    .run(a.id, "2026-10");
+  const result = await publicWorkflow(env, "public.ask", {
+    workspaceId: a.id,
+    question: "What are your consultation hours?",
+    requestId: crypto.randomUUID(),
+  }, publicIp, Date.parse("2026-10-31T23:30:00Z"));
+  assert.ok(result);
+  assert.equal(sql.prepare("SELECT count FROM platform_usage WHERE workspace_id=? AND period='2026-11'").get(a.id)!.count, 1);
+  sql.close();
+});

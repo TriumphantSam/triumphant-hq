@@ -161,13 +161,20 @@ Meta messages and provider billing. Do not sell unlimited support or messaging.
 
 ### Staging API acceptance
 
-Staging Worker version `6920d87c-ecbf-4d16-945b-761175980a82` has migrations
+Staging Worker version `8f6c2f4c-b6ea-41d4-9a64-7782f13501f0` has migrations
 0007/0008. A separate, clearly synthetic database fixture has no usable login
 session and uses a reserved `example.test` address. It was seeded directly for
 API acceptance; this is not evidence of the owner publication UI working.
 Signed API checks verified public fact minimization, a saved approved answer,
 cached answer/enquiry retries, a stored appointment, retry reuse, removal of the
 taken slot, cancellation, duplicate cancellation and restoration of availability.
-No customer messages or charges were created. All 63 Worker tests and 14 website
-tests passed. TypeScript and targeted frontend ESLint passed. Edge automation
-timed out during the next customer-page/inbox UI check; that check remains pending.
+No customer messages or charges were created. All 64 Worker tests and 14 website
+tests passed, including a Lagos midnight monthly-allowance regression check.
+The deployed Vercel preview loaded the synthetic business, returned its approved
+FAQ answer and saved an enquiry and appointment. Edge then stopped responding;
+the synthetic appointment was cancelled directly in staging D1, where both test
+appointments are now cancelled. Browser cancellation and owner inbox/publication
+checks remain pending. API cancellation and slot restoration passed separately.
+Switching customer workflows now clears consent and challenge state, appointment
+loading is explicit, and booking requests omit the prior enquiry text. These
+latest UI refinements still need a responsive visual check in a working browser.

@@ -243,7 +243,8 @@ export async function publicWorkflow(
   }
   const w = await published(env, input.workspaceId),
     date = new Date(now).toISOString(),
-    period = date.slice(0, 7);
+    period = new Date(now + 3600000).toISOString().slice(0, 7),
+    monthStart = new Date(period + "-01T00:00:00+01:00").toISOString();
   if (action === "public.read") {
     const answers = await env.DB.prepare(
       "SELECT id,question,answer FROM platform_faqs WHERE workspace_id=? ORDER BY id",
@@ -365,7 +366,7 @@ export async function publicWorkflow(
         date,
         w.id,
         w.id,
-        period + "-01T00:00:00.000Z",
+        monthStart,
       )
       .first<{ id: string }>();
     if (!row)
@@ -463,7 +464,7 @@ export async function publicWorkflow(
         slot.blockedUntil,
         slot.start,
         w.id,
-        period + "-01T00:00:00.000Z",
+        monthStart,
       )
       .first<{ id: string }>();
     if (!row)

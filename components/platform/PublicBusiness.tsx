@@ -66,6 +66,7 @@ export default function PublicBusiness({
     [token, setToken] = useState(""),
     [widget, setWidget] = useState(0);
   const [slots, setSlots] = useState<Slot[]>([]),
+    [loadingSlots, setLoadingSlots] = useState(false),
     [start, setStart] = useState(""),
     [receipt, setReceipt] = useState<Receipt | null>(null);
   const pending = useRef<{ fingerprint: string; id: string } | null>(null);
@@ -110,14 +111,21 @@ export default function PublicBusiness({
     setMode(next);
     setError("");
     setReceipt(null);
-    if (next === "booking")
+    setConsent(false);
+    setToken("");
+    setWidget((v) => v + 1);
+    if (next === "booking") {
+      setSlots([]);
+      setStart("");
+      setLoadingSlots(true);
       await run(async () => {
         const data = await request<{ slots: Slot[] }>("public.slots", {
           workspaceId,
         });
         setSlots(data.slots);
-        setStart("");
       });
+      setLoadingSlots(false);
+    }
   }
   async function submit() {
     await run(async () => {
@@ -126,9 +134,8 @@ export default function PublicBusiness({
         workspaceId,
         name,
         email,
-        need,
         consent,
-        ...(mode === "booking" ? { start } : {}),
+        ...(mode === "booking" ? { start } : { need }),
       };
       const result = await request<Receipt>(
         action,
@@ -329,11 +336,14 @@ export default function PublicBusiness({
                       Available appointment
                       <select
                         value={start}
+                        disabled={loadingSlots}
                         required
                         onChange={(e) => setStart(e.target.value)}
                       >
                         <option value="">
-                          {slots.length
+                          {loadingSlots
+                            ? "Loading available times…"
+                            : slots.length
                             ? "Choose a time"
                             : "No available times"}
                         </option>
@@ -405,7 +415,7 @@ export default function PublicBusiness({
                   className="platform-primary"
                 >
                   {busy
-                    ? "Saving…"
+                    ? loadingSlots ? "Loading available times…" : "Saving…"
                     : mode === "booking"
                       ? "Reserve test appointment"
                       : "Save test enquiry"}

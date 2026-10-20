@@ -272,7 +272,7 @@ export async function workspaceView(
   const usage = await env.DB.prepare(
     "SELECT kind,count FROM platform_usage WHERE workspace_id=? AND period=?",
   )
-    .bind(workspace.id, new Date().toISOString().slice(0, 7))
+    .bind(workspace.id, new Date(Date.now() + 3600000).toISOString().slice(0, 7))
     .all();
   return {
     workspace,
