@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import PageReader from "@/components/PageReader";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import SiteAssistant from "@/components/automation/SiteAssistant";
+import MarketingOnly from "@/components/platform/MarketingOnly";
+import WorkspacePrivacyBoundary from "@/components/platform/WorkspacePrivacyBoundary";
 import JsonLd from "@/components/seo/JsonLd";
 import { PostHogProvider } from "./providers";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -117,6 +119,7 @@ export default function RootLayout({
         <meta name="facebook-domain-verification" content="tzruqlr2vdzldqybooi5n4t2100mxq" />
       </head>
       <body className={`${syne.variable} ${dmSans.variable} ${jetbrains.variable} antialiased`}>
+        <MarketingOnly>
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
             !function(f,b,e,v,n,t,s)
@@ -155,16 +158,21 @@ export default function RootLayout({
           />
         </noscript>
         <GoogleAnalytics />
+        </MarketingOnly>
         <PostHogProvider>
+          <MarketingOnly>
           <AntigravityBackground />
           <Navigation />
+          </MarketingOnly>
           <main id="site-main-content" className="flex-grow w-full pt-[88px]" data-page-reader-root>
-            {children}
+            <WorkspacePrivacyBoundary>{children}</WorkspacePrivacyBoundary>
           </main>
+          <MarketingOnly>
           <Footer />
           <PageReader />
           <WhatsAppWidget />
           <SiteAssistant />
+          </MarketingOnly>
         </PostHogProvider>
       </body>
     </html>

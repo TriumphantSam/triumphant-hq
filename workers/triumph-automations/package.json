@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "wrangler dev --env staging",
     "check": "tsc --noEmit",
-    "test": "tsx --test --test-concurrency=1 src/security.test.ts src/leads.test.ts src/assistant.test.ts google-sheets/sync.test.mjs",
+    "test": "tsx --test --test-concurrency=1 src/security.test.ts src/leads.test.ts src/assistant.test.ts src/platform/platform.test.ts google-sheets/sync.test.mjs",
     "deploy:staging": "wrangler deploy --env staging",
     "migrate:local": "wrangler d1 migrations apply triumph_db_staging --local --env staging"
   },
   "dependencies": {
     "@ai-sdk/google": "^4.0.95",
     "ai": "^7.0.140",
+    "better-auth": "1.7.11",
+    "drizzle-orm": "0.45.2",
     "hono": "^4.10.0",
     "workers-ai-provider": "^4.0.0"
   },

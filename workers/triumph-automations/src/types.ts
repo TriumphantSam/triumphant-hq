@@ -9,6 +9,7 @@ export type Env = {
   REPORTS_EMAIL_ENABLED?: string;
   AUTOMATION_HMAC_SECRET: string;
   ENVIRONMENT: string;
+  PLATFORM_ENABLED?: string;
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
   OWNER_EMAIL?: string;

@@ -7,6 +7,7 @@ import { drainBookingMessages, messageChannels } from "./booking-messages";
 import { privateReport, reportWindow } from "./reports";
 import { chatRoutes } from "./chat";
 import { assistantRoutes } from "./assistant";
+import { platformRoutes } from "./platform/routes";
 import { paymentRoutes, paystackWebhook, drainPaymentJobs } from "./payments";
 import { reviewRoutes, drainReviewJobs, drainReviewInvites } from "./reviews";
 import { adminRoutes, scheduleOwnerReports, drainOwnerReports } from "./admin";
@@ -17,13 +18,16 @@ app.use("/v1/*", async (c, next) => {
   const reader = c.req.raw.body?.getReader(),
     chunks: Uint8Array[] = [];
   let bytes = 0;
+  // A business may save 150 approved answers, including multibyte text. Other
+  // agency endpoints retain their existing smaller request limit.
+  const maxBytes = c.req.path === "/v1/platform/rpc" ? 1048576 : 16384;
   if (reader) {
     try {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         bytes += value.length;
-        if (bytes > 16384) {
+        if (bytes > maxBytes) {
           await reader.cancel();
           return c.json({ error: "Submission too large." }, 413);
         }
@@ -87,6 +91,7 @@ app.get("/v1/health", (c) =>
 app.route("/v1/bookings", bookingRoutes);
 app.route("/v1/chat", chatRoutes);
 app.route("/v1/assistant", assistantRoutes);
+app.route("/v1/platform", platformRoutes);
 app.route("/v1/payments", paymentRoutes);
 app.route("/v1/reviews", reviewRoutes);
 app.route("/v1/admin", adminRoutes);
@@ -372,6 +377,13 @@ app.onError(
 export default {
   fetch: app.fetch,
   async scheduled(_controller: ScheduledController, env: Env) {
+    if (env.PLATFORM_ENABLED === "true") {
+      await env.DB.batch([
+        env.DB.prepare("DELETE FROM platform_auth_session WHERE expires_at<?").bind(Date.now()),
+        env.DB.prepare("DELETE FROM platform_auth_verification WHERE expires_at<?").bind(Date.now()),
+        env.DB.prepare("DELETE FROM platform_requests WHERE created_at<?").bind(new Date(Date.now() - 7 * 86400000).toISOString()),
+      ]);
+    }
     await drainOutbox(env);
     await drainBookingOutbox(env);
     await drainBookingMessages(env);
