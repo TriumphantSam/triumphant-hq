@@ -243,6 +243,16 @@ No card data, reusable authorization or subscription management token is stored.
 Live-key support, refunds/disputes, upgrades/downgrades, payment recovery,
 scheduled reconciliation and customer notification acceptance remain launch
 requirements. Real Paystack checkout/cancellation acceptance is still required.
+On 21 October, the approved account prepared one Starter checkout through the
+workspace. Paystack displayed TEST and NGN 15,000, then Payment Successful.
+Workspace refresh verified the payment and recovered the native subscription.
+The owner-authorized cancellation was submitted, then refreshed against Paystack.
+D1 confirmed one verified payment, an attached provider subscription,
+cancel_requested=1 and state=non-renewing, preserving paid-through
+2026-11-21T20:33:00.000Z. No real money was charged. Full renewal/failure events
+remain mocked acceptance; real automatic staging webhook delivery is not proven.
+All 77 Worker tests, frontend/Worker TypeScript, targeted ESLint and the preview
+build passed before the final cancellation-label refinement.
 
 Provider contracts checked against [Paystack subscriptions](https://paystack.com/docs/payments/subscriptions/),
 [subscription API](https://paystack.com/docs/api/subscription/) and

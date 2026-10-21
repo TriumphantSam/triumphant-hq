@@ -28,6 +28,8 @@ Record desktop/mobile results separately. A top-level assistant page or an HTTP
 inside the independent site's iframe on 21 October 2026 after the owner opened a
 fresh Edge tab. Earlier browser-controlled tabs stalled at `about:blank`.
 Embedded enquiry/booking and negative-origin browser tests are still pending.
+The diagnostic host currently loads its iframe eagerly. The customer-generated
+snippet uses lazy loading; that exact loading mode still needs browser acceptance.
 
 Disable the synthetic widget and restore its reserved origin after acceptance.
 No private owner workspace or production business should be used as a fixture.
