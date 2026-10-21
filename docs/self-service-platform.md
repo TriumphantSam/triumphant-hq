@@ -242,7 +242,7 @@ period does not change sandbox allowances, enable WhatsApp or open production.
 No card data, reusable authorization or subscription management token is stored.
 Live-key support, refunds/disputes, upgrades/downgrades, payment recovery,
 scheduled reconciliation and customer notification acceptance remain launch
-requirements. Real Paystack checkout/cancellation acceptance is still required.
+requirements. Test checkout and cancellation acceptance is recorded below.
 On 21 October, the approved account prepared one Starter checkout through the
 workspace. Paystack displayed TEST and NGN 15,000, then Payment Successful.
 Workspace refresh verified the payment and recovered the native subscription.
