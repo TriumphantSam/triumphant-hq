@@ -1099,14 +1099,16 @@ test("billing reserves checkout once, rejects provider price changes and survive
 });
 test("verified subscription payments are idempotent, renewals reconcile current provider state and cancellation preserves paid time",async()=>{
   const {env,sql,workspaceId,owner}=await billingFixture();const saved=globalThis.fetch;
-  let reference="",amount=1500000,providerState="active",disabled=0,failDisable=false;
+  let reference="",amount=1500000,providerState="active",disabled=0,failDisable=false,ambiguous=false;
   const paidAt=new Date().toISOString();
   let invoice:Record<string,unknown>|undefined;
   const transaction=(ref=reference,id=101)=>({id,reference:ref,status:"success",domain:"test",currency:"NGN",amount,paid_at:paidAt,customer:{email:owner.email,customer_code:"CUS_alice"},plan_object:{plan_code:"PLN_starter"}});
   globalThis.fetch=async(url,options)=>{
     const path=new URL(String(url)).pathname;
     let data:unknown;
-    if(path.startsWith("/plan/")) data={plan_code:"PLN_starter",amount:1500000,currency:"NGN",interval:"monthly",domain:"test"};
+    if(path.startsWith("/plan/")) data={id:1,plan_code:"PLN_starter",amount:1500000,currency:"NGN",interval:"monthly",domain:"test"};
+    else if(path.startsWith("/customer/"))data={id:2,customer_code:"CUS_alice",email:owner.email};
+    else if(path==="/subscription") {const candidate={subscription_code:"SUB_alice",createdAt:paidAt,domain:"test",amount:1500000,plan:{plan_code:"PLN_starter"},customer:{customer_code:"CUS_alice"}};data=ambiguous?[candidate,{...candidate,subscription_code:"SUB_other"}]:[candidate];}
     else if(path==="/transaction/initialize") {const body=JSON.parse(String(options?.body));reference=body.reference;assert.equal(body.email,owner.email);assert.equal(body.amount,1500000);data={reference,authorization_url:"https://checkout.paystack.com/test"};}
     else if(path==="/subscription/disable") {disabled++;if(failDisable)throw new Error("cancellation timeout");providerState="non-renewing";data={ok:true};}
     else if(path.startsWith("/subscription/"))data={subscription_code:"SUB_alice",email_token:"private-provider-token",domain:"test",status:providerState,amount:1500000,plan:{plan_code:"PLN_starter",currency:"NGN",interval:"monthly"},customer:{email:owner.email,customer_code:"CUS_alice"},most_recent_invoice:invoice};
@@ -1124,6 +1126,12 @@ test("verified subscription payments are idempotent, renewals reconcile current 
     await billingEvent(env,"charge.success",{reference});await billingEvent(env,"charge.success",{reference});
     assert.equal(sql.prepare("SELECT count(*) n FROM platform_billing_payments").get()!.n,1);
     const initial=await billingAction(env,owner,"billing.read",{workspaceId});assert.equal(initial.testAccessActive,true);
+    // Refresh can recover a missed subscription.create callback without changing
+    // the account-wide Paystack webhook URL or guessing among duplicates.
+    ambiguous=true;await assert.rejects(billingAction(env,owner,"billing.refresh",{workspaceId}),/Multiple matching/);
+    assert.equal(sql.prepare("SELECT subscription_code FROM platform_billing").get()!.subscription_code,null);
+    ambiguous=false;await billingAction(env,owner,"billing.refresh",{workspaceId});
+    assert.equal(sql.prepare("SELECT subscription_code FROM platform_billing").get()!.subscription_code,"SUB_alice");
     await billingEvent(env,"subscription.create",{subscription_code:"SUB_alice",customer:{email:owner.email},plan:{plan_code:"PLN_starter"}});
     const end=new Date(Date.now()+32*86400000).toISOString();
     invoice={domain:"test",amount:1500000,paid:true,status:"success",transaction:202,period_start:paidAt,period_end:end};

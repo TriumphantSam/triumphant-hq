@@ -10,7 +10,7 @@ type Billing = {
 };
 type Transaction = {
   id: number; reference: string; status: string; domain: string; currency: string;
-  amount: number; paid_at: string; customer: { email: string; customer_code: string };
+  amount: number; paid_at: string; customer: { email: string; customer_code: string; id?:number };
   plan_object?: { plan_code: string }; plan?: string | { plan_code: string };
 };
 type Subscription = {
@@ -80,12 +80,28 @@ async function recordPayment(env: Env, row: Billing, tx: Transaction, periodEnd:
 }
 async function initialPayment(env: Env, row: Billing) {
   const tx = await provider<Transaction>(env,"/transaction/verify/"+encodeURIComponent(row.reference));
-  if (tx.status !== "success") return false;
+  if (tx.status !== "success") return null;
   const planCode = tx.plan_object?.plan_code || (typeof tx.plan === "string" ? tx.plan : tx.plan?.plan_code);
   if (tx.reference !== row.reference || planCode !== row.plan_code || !validTransaction(tx,row))
     throw new PlatformError("The payment does not match this subscription.",409);
   await recordPayment(env,row,tx,nextMonthlyDate(tx.paid_at));
-  return true;
+  return tx;
+}
+async function discoverSubscription(env:Env,row:Billing,tx:Transaction) {
+  const customer=await provider<{id:number;customer_code:string;email:string}>(env,"/customer/"+encodeURIComponent(tx.customer.customer_code));
+  const plan=await provider<{id:number;plan_code:string}>(env,"/plan/"+encodeURIComponent(row.plan_code));
+  if(!Number.isSafeInteger(customer.id)||customer.id<=0||customer.customer_code!==tx.customer.customer_code||customer.email?.toLowerCase()!==row.email||!Number.isSafeInteger(plan.id)||plan.id<=0||plan.plan_code!==row.plan_code)
+    throw new PlatformError("The provider billing identity could not be verified.",409);
+  const candidates=await provider<Array<Subscription&{createdAt?:string;created_at?:string}>>(env,`/subscription?customer=${customer.id}&plan=${plan.id}&perPage=100`);
+  if(!Array.isArray(candidates)||candidates.length>=100)throw new PlatformError("Subscription reconciliation needs operator review.",409);
+  const matches=candidates.filter(s=>s.domain==="test"&&s.customer?.customer_code===customer.customer_code&&s.plan?.plan_code===row.plan_code&&s.amount===row.amount&&code(s.subscription_code,"SUB")&&iso(s.createdAt||s.created_at)&&Date.parse(s.createdAt||s.created_at!)>=Date.parse(row.created_at)-300000&&Date.parse(s.createdAt||s.created_at!)<=Date.parse(tx.paid_at)+600000);
+  if(matches.length>1)throw new PlatformError("Multiple matching subscriptions need operator review. Do not pay again.",409);
+  if(!matches.length)return null;
+  const found=await subscription(env,row,matches[0].subscription_code);
+  await env.DB.prepare("UPDATE platform_billing SET subscription_code=?,customer_code=?,updated_at=? WHERE workspace_id=? AND subscription_code IS NULL").bind(found.subscription_code,found.customer.customer_code,new Date().toISOString(),row.workspace_id).run();
+  const saved=await read(env,row.workspace_id);
+  if(saved?.subscription_code!==found.subscription_code)throw new PlatformError("Subscription reconciliation changed. Reload billing.",409);
+  return saved;
 }
 async function subscription(env: Env, row: Billing, subscriptionCode: string) {
   if (!code(subscriptionCode,"SUB")) throw new PlatformError("Subscription not found.",404);
@@ -98,7 +114,11 @@ async function subscription(env: Env, row: Billing, subscriptionCode: string) {
   return sub;
 }
 async function reconcile(env: Env, row: Billing) {
-  if (!row.subscription_code) { await initialPayment(env,row); return; }
+  if (!row.subscription_code) {
+    const tx=await initialPayment(env,row);if(!tx)return;
+    const found=await discoverSubscription(env,row,tx);if(!found)return;row=found;
+  }
+  if(!row.subscription_code)return;
   const sub = await subscription(env,row,row.subscription_code);
   const invoice = sub.most_recent_invoice;
   if (invoice && invoice.domain === "test" && invoice.amount === row.amount &&
@@ -152,6 +172,7 @@ export async function billingAction(env: Env, user: {id:string;email:string}, ac
     await admit(env,"billing-refresh:"+workspace.id,20);
     if (row) await reconcile(env,row);
   } else if (action === "billing.cancel") {
+    if(row&&!row.subscription_code){await reconcile(env,row);row=await read(env,workspace.id);}
     if (!row?.subscription_code) throw new PlatformError("The provider subscription is still being reconciled. Refresh billing or contact support before paying again.",409);
     await env.DB.prepare("UPDATE platform_billing SET cancel_requested=1,state=CASE WHEN state IN ('non-renewing','cancelled','completed') THEN state ELSE 'cancel-pending' END,updated_at=? WHERE workspace_id=?").bind(new Date().toISOString(),workspace.id).run();
     const sub=await subscription(env,row,row.subscription_code);

@@ -227,6 +227,11 @@ API against reference, customer, test mode, currency, amount and plan/period.
 Payment insertion and paid-through updates commit together. Duplicate and old
 notifications cannot add time or shorten a newer paid period. Subscription
 events reconcile current provider state instead of trusting event order.
+Owner refresh can recover a missing subscription-create callback using the
+verified customer/plan IDs and a bounded provider lookup. Ambiguous matching
+subscriptions stop for review. The existing account-wide webhook URL is not
+changed for the staging test; automatic staging callback delivery is therefore
+not yet accepted.
 Cancellation intent is saved before calling Paystack; provider failure leaves
 an honest cancel-pending state for retry. Confirmed cancellation retains already
 paid time. Failed renewal does not extend access; expiry is evaluated at read
