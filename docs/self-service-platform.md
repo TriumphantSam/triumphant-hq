@@ -138,7 +138,15 @@ frame-ancestors policy and fails closed if settings/publication cannot be checke
 Private workspace pages reject framing. Pausing publication blocks new public
 submissions. These settings are an embed allowlist, not proof of domain ownership.
 Vercel preview protection can prevent cross-site iframe loading: installation on
-an unrelated website and a real model response must be accepted separately.
+an unrelated website must be accepted separately. A signed staging API test on
+21 October selected the synthetic business's approved hours answer using the
+real model and returned the cached result on retry. Two earlier questions handed
+off; explicit paraphrase guidance was added before the successful check. This is
+one live acceptance example, not a broad model quality evaluation. Deployed
+widget headers returned HTTP 200 with frame-ancestors https://example.test for a
+reserved-domain synthetic fixture. Owner UI and unrelated-site acceptance for
+these new controls are still required. Synthetic fixture AI/embed access is
+disabled again after the checks.
 No production platform activation, live WhatsApp transport or charges are enabled.
 
 The existing model was verified against [Cloudflare's model documentation](https://developers.cloudflare.com/workers-ai/models/qwen3-30b-a3b-fp8/).
