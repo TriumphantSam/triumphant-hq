@@ -11,6 +11,9 @@ export type Env = {
   ENVIRONMENT: string;
   PLATFORM_ENABLED?: string;
   PLATFORM_AI_ENABLED?: string;
+  PLATFORM_BILLING_TEST_ENABLED?: string;
+  PLATFORM_PAYSTACK_TEST_PLANS?: string;
+  PLATFORM_BILLING_TEST_EMAIL?: string;
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
   OWNER_EMAIL?: string;

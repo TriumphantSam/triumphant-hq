@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import type { Env } from "./types";
 import { hmac } from "./security";
 import { claimLabJobs } from "./lab-delivery";
+import { billingEvent, billingReady } from "./platform/billing";
 type Invoice = {
   id: string;
   email: string;
@@ -394,6 +395,8 @@ export async function paystackWebhook(request: Request, env: Env) {
     return new Response("Unauthorized", { status: 401 });
   try {
     const event = JSON.parse(body);
+    if (billingReady(env) && typeof event.event === "string" && event.data && typeof event.data === "object" && !Array.isArray(event.data))
+      await billingEvent(env,event.event,event.data);
     if (event.event !== "charge.success")
       return new Response("Ignored", { status: 200 });
     if (!/^thq-test-[a-f0-9-]{36}$/.test(event.data?.reference || ""))

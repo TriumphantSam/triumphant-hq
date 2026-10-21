@@ -62,6 +62,7 @@ type Bootstrap = {
 type Tab =
   "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Launch";
 const WebsiteWidgetPanel=dynamic(()=>import("./WebsiteWidgetPanel"),{loading:()=> <p role="status">Loading website settings…</p>});
+const BillingPanel=dynamic(()=>import("./BillingPanel"),{loading:()=> <p role="status">Loading billing…</p>});
 const ConversationStudio = dynamic(() => import("./ConversationStudio"), {
   loading: () => <p role="status">Loading conversation studio…</p>,
 });
@@ -876,9 +877,10 @@ export default function PlatformWorkspace() {
                         WhatsApp provider charges, taxes and final usage terms
                         need confirmation before paid activation. Website design
                         and custom integrations are separately quoted. Checkout
-                        is not enabled.
+                        is not enabled for live payments.
                       </p>
                     </div>
+                    <WorkspacePanelBoundary key={view.workspace.id+":billing"}><BillingPanel workspaceId={view.workspace.id} plans={view.plans}/></WorkspacePanelBoundary>
                   </>
                 )}
                 {tab === "Launch" && (

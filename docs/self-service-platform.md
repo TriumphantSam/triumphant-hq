@@ -195,6 +195,54 @@ without developer assistance. This implementation is not a launch-ready claim.
 
 ## Pricing arithmetic, not a margin guarantee
 
+### Subscription rehearsal increment: 21 October 2026
+
+Migration 0012 adds isolated test billing accounts and a verified-payment ledger.
+The Plans tab now has a separate subscription rehearsal panel. Draft plan
+selection remains free and does not start billing. Checkout requires owner
+membership, explicit recurring consent, a server-owned price and a verified
+monthly NGN Paystack test plan. Customer email comes from the verified account.
+
+Only staging with `PLATFORM_BILLING_TEST_ENABLED=true` and a `sk_test_` key can
+call the billing provider. Both checked-in environments default the billing flag
+off. `PLATFORM_BILLING_TEST_EMAIL` restricts checkout and management to the approved
+verified test account; other accounts cannot start provider operations.
+Migration 0013 holds the operator-provisioned test plan catalog. A signed
+operator endpoint at `/v1/platform/billing/test-plans` creates the three plans
+with durable one-time reservations; it is absent from the website RPC allowlist.
+`PLATFORM_PAYSTACK_TEST_PLANS` optionally overrides the catalog with an approved
+JSON mapping. Every checkout still verifies the provider's price and interval.
+Never configure a live key here.
+
+A durable checkout reservation prevents retries from starting another native
+subscription. If initialization has an unknown result, the reservation remains
+for reconciliation; it is not silently deleted or charged again. This currently
+needs operator recovery if no checkout URL can be recovered. Only one billing
+attempt/subscription per business is supported in this increment; plan changes
+and resubscription after cancellation are not available yet.
+
+The existing raw-body-verified Paystack webhook also handles platform events in
+enabled staging. Initial charges and renewals are reverified through Paystack's
+API against reference, customer, test mode, currency, amount and plan/period.
+Payment insertion and paid-through updates commit together. Duplicate and old
+notifications cannot add time or shorten a newer paid period. Subscription
+events reconcile current provider state instead of trusting event order.
+Cancellation intent is saved before calling Paystack; provider failure leaves
+an honest cancel-pending state for retry. Confirmed cancellation retains already
+paid time. Failed renewal does not extend access; expiry is evaluated at read
+time even without a scheduled job.
+
+This is test billing, not production entitlement enforcement. Its paid test
+period does not change sandbox allowances, enable WhatsApp or open production.
+No card data, reusable authorization or subscription management token is stored.
+Live-key support, refunds/disputes, upgrades/downgrades, payment recovery,
+scheduled reconciliation and customer notification acceptance remain launch
+requirements. Real Paystack checkout/cancellation acceptance is still required.
+
+Provider contracts checked against [Paystack subscriptions](https://paystack.com/docs/payments/subscriptions/),
+[subscription API](https://paystack.com/docs/api/subscription/) and
+[transaction verification](https://paystack.com/docs/api/transaction/#verify).
+
 Checked on 20 October 2026: Paystack lists Nigerian local transaction fees of
 1.5% plus NGN 100, capped at NGN 2,000. The small-transaction waiver does not apply
 to these proposed plan amounts. These figures exclude other operating costs and
