@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { canonicalRedirectUrl } from "@/lib/canonical-host";
 import { INVOICE_SESSION_COOKIE, verifySessionToken } from "@/lib/invoices/auth";
+import { automationRequest } from "@/lib/automation-api";
 
 const BUILDER_PREFIXES = ["/digital-forge/builder", "/api/digital-forge/builder"];
 
@@ -13,6 +14,25 @@ export async function proxy(request: NextRequest) {
   const canonical = canonicalRedirectUrl(requestHost(request), pathname, search);
   if (canonical) {
     return NextResponse.redirect(canonical, 301);
+  }
+  if(pathname==="/platform"||pathname.startsWith("/platform/")){
+    const response=NextResponse.next();response.headers.set("Content-Security-Policy","frame-ancestors 'none'");return response;
+  }
+  let decodedPath=pathname;try{decodedPath=decodeURIComponent(pathname);}catch{}
+  const widget = decodedPath.match(/^\/business\/([a-f0-9-]{36})\/widget\/?$/);
+  if(widget){
+    let ancestor="'none'";
+    try {
+      const {data}=await automationRequest<{data:{origin:string}}>("/v1/platform/rpc",{action:"public.widget",payload:{workspaceId:widget[1]},ipKey:"0".repeat(64)});
+      const origin=new URL(data.origin);
+      if(origin.protocol==="https:" && /^[a-z0-9.-]+$/i.test(origin.hostname) && origin.origin===data.origin)ancestor=origin.origin;
+    }catch{ /* Fail closed if publication or backend checks fail. */ }
+    const response=NextResponse.next();
+    response.headers.set("Content-Security-Policy",`frame-ancestors ${ancestor}`);
+    response.headers.set("Cache-Control","no-store, private");
+    response.headers.set("Referrer-Policy","no-referrer");
+    response.headers.set("X-Robots-Tag","noindex, nofollow");
+    return response;
   }
 
   // Invoice studio auth

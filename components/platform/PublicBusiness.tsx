@@ -46,8 +46,10 @@ const time = (iso: string) =>
 
 export default function PublicBusiness({
   workspaceId,
+  embedded = false,
 }: {
   workspaceId: string;
+  embedded?:boolean;
 }) {
   const [business, setBusiness] = useState<Business | null>(null),
     [faqs, setFaqs] = useState<Faq[]>([]),
@@ -148,7 +150,7 @@ export default function PublicBusiness({
     });
   }
   return (
-    <div className="platform public-business ph-no-capture">
+    <div className={`platform public-business ph-no-capture${embedded?" platform-embedded":""}`}>
       <header className="platform-header">
         <span className="platform-brand">
           <span>{business?.name.slice(0, 1) || "B"}</span>
@@ -214,7 +216,7 @@ export default function PublicBusiness({
                   <h2>Ask about this business</h2>
                   <p>
                     Answers come from information approved by the business.
-                    Unknown topics are referred to the team.
+                    When AI matching is enabled, Cloudflare Workers AI may process your question and those approved answers. Unknown topics are referred to the team.
                   </p>
                   <form
                     onSubmit={(e) => {

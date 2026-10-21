@@ -1,4 +1,5 @@
 import type { Env } from "../types";
+import {tenantAnswer} from "./tenant-ai";
 import { hmac } from "../security";
 import {
   admit,
@@ -245,6 +246,11 @@ export async function publicWorkflow(
     date = new Date(now).toISOString(),
     period = new Date(now + 3600000).toISOString().slice(0, 7),
     monthStart = new Date(period + "-01T00:00:00+01:00").toISOString();
+  if(action==="public.widget"){
+    const config=await env.DB.prepare("SELECT origin FROM platform_widget_settings WHERE workspace_id=? AND enabled=1").bind(w.id).first<{origin:string}>();
+    if(!config)throw new PlatformError("The sandbox widget is unavailable.",404);
+    return {origin:config.origin,sandbox:true};
+  }
   if (action === "public.read") {
     const answers = await env.DB.prepare(
       "SELECT id,question,answer FROM platform_faqs WHERE workspace_id=? ORDER BY id",
@@ -285,16 +291,22 @@ export async function publicWorkflow(
       return JSON.parse(existing.reply);
     }
     const faqs = await env.DB.prepare(
-      "SELECT id,question,answer FROM platform_faqs WHERE workspace_id=?",
+      "SELECT id,question,answer FROM platform_faqs WHERE workspace_id=? ORDER BY id",
     )
       .bind(w.id)
       .all<Faq>();
+    const config=await env.DB.prepare("SELECT ai_enabled,fallback FROM platform_responder_settings WHERE workspace_id=?").bind(w.id).first<{ai_enabled:number;fallback:string}>();
+    const allowance=await env.DB.prepare("SELECT count FROM platform_usage WHERE workspace_id=? AND period=? AND kind='assistant_replies'").bind(w.id,period).first<{count:number}>();
+    if(Number(allowance?.count)>=100)throw new PlatformError("This business has reached its sandbox answer allowance.",429);
+    const resolved=config?.ai_enabled?await tenantAnswer(env,w.id,input.requestId,input.question,faqs.results,config.fallback,now):null;
     const chosen = matchFaq(input.question, faqs.results),
       reply = {
         answer:
-          chosen?.answer ||
+          resolved?.answer || chosen?.answer ||
           "I do not have an approved answer for that. Please send an enquiry to the business team.",
         source: chosen?.question || null,
+        method:resolved?.method||"approved",
+        handoff:resolved?resolved.handoff:!chosen,
         sandbox: true,
         notifications: "disabled",
       };

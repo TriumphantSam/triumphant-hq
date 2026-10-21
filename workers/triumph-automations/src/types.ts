@@ -10,6 +10,7 @@ export type Env = {
   AUTOMATION_HMAC_SECRET: string;
   ENVIRONMENT: string;
   PLATFORM_ENABLED?: string;
+  PLATFORM_AI_ENABLED?: string;
   RESEND_API_KEY?: string;
   EMAIL_FROM?: string;
   OWNER_EMAIL?: string;

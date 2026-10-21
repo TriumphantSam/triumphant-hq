@@ -90,7 +90,66 @@ connection or a successful code deployment. Record actual evidence per gate.
 Meta-dependent work is developed behind explicit readiness checks while approval
 is pending. Do not accept money for a channel that is not available.
 
+## Next increment: guided setup and conversation rehearsal
+
+Migration 0009 adds business-scoped responder settings and private practice
+conversations. The Setup tab derives progress from saved profile/answers,
+explicitly saved responder settings and a stored test message. It does not mark
+WhatsApp or billing ready. Default appointment hours must still be reviewed.
+
+Autoresponders support welcome, outside-hours and unknown-answer messages.
+Conversation rehearsal uses saved FAQs and Lagos booking hours, without an AI
+call or outbound delivery. Each business may store up to 100 test conversations;
+each has a bounded message history. Manual team replies and customer STOP/human
+requests pause automation. Only an authenticated workspace member may resume it.
+Owners alone edit responder settings; workspace members can rehearse replies.
+Version checks prevent stale replies/settings overwrites, and message request IDs
+make retries idempotent. These records never become agency leads or outbound jobs.
+
+This is a rehearsal inbox, not a connected WhatsApp inbox: there are no live
+delivery receipts, unread state, attachments or customer number connection yet.
+Rehearsal mutations are blocked in production. Migration 0009 must be applied
+before deploying this increment to any enabled environment. Production platform
+access remains gated. Live transport, billing and operational acceptance remain
+separate release requirements.
+
 ## Implementation status: 20 October 2026
+
+### AI-assisted matching and website widget increment
+
+Migrations 0010/0011 add opt-in AI matching, durable inference admission and a
+website origin setting. AI selects approved FAQ IDs; the server renders the
+approved text. It is not free-form answer generation. Exact matches avoid the
+provider. Only the latest question and the current business's approved FAQs enter
+inference; owner records and conversation history do not. Unknown/invalid results
+or provider failures use the business fallback and pause private rehearsal for a
+team member. Outside-hours rehearsal replies remain deterministic.
+
+Inference requires the staging PLATFORM_AI_ENABLED flag, an AI binding and the
+owner's saved opt-in. Reservations cap attempts at 100 per business per Lagos
+month and 500 across the platform per Lagos day. A durable request/digest claim
+prevents duplicate inference; provider retries are disabled. Interrupted claims
+are not sent again. Stored telemetry contains selected IDs and token counts,
+not raw prompts. Cache retention/export/deletion remain operational launch work.
+
+The Website tab produces an iframe snippet after an owner enables one HTTPS
+origin for a published sandbox page. The widget route uses a server-generated
+frame-ancestors policy and fails closed if settings/publication cannot be checked.
+Private workspace pages reject framing. Pausing publication blocks new public
+submissions. These settings are an embed allowlist, not proof of domain ownership.
+Vercel preview protection can prevent cross-site iframe loading: installation on
+an unrelated website must be accepted separately. A signed staging API test on
+21 October selected the synthetic business's approved hours answer using the
+real model and returned the cached result on retry. Two earlier questions handed
+off; explicit paraphrase guidance was added before the successful check. This is
+one live acceptance example, not a broad model quality evaluation. Deployed
+widget headers returned HTTP 200 with frame-ancestors https://example.test for a
+reserved-domain synthetic fixture. Owner UI and unrelated-site acceptance for
+these new controls are still required. Synthetic fixture AI/embed access is
+disabled again after the checks.
+No production platform activation, live WhatsApp transport or charges are enabled.
+
+The existing model was verified against [Cloudflare's model documentation](https://developers.cloudflare.com/workers-ai/models/qwen3-30b-a3b-fp8/).
 
 Built: passwordless verified accounts; one private business workspace per account;
 owner/staff authorization; profile, FAQ and Lagos booking-rule editors; draft NGN

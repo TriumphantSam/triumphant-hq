@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test:automation": "tsx --test lib/seo-audit.test.ts lib/public-form-guard.test.ts lib/admin-lab-auth.test.ts lib/platform-gateway.test.ts",
+    "test:automation": "tsx --test lib/seo-audit.test.ts lib/public-form-guard.test.ts lib/admin-lab-auth.test.ts lib/platform-gateway.test.ts lib/platform-widget.test.ts",
     "dev": "next dev",
     "build": "node scripts/refresh-sitemap-lastmod.mjs && node scripts/sync-blog-index.mjs && next build --webpack",
     "start": "next start",

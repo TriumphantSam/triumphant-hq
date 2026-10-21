@@ -274,6 +274,10 @@ export async function workspaceView(
   )
     .bind(workspace.id, new Date(Date.now() + 3600000).toISOString().slice(0, 7))
     .all();
+  const [responder, rehearsal] = await Promise.all([
+    env.DB.prepare("SELECT version FROM platform_responder_settings WHERE workspace_id=?").bind(workspace.id).first<{version:number}>(),
+    env.DB.prepare("SELECT id FROM platform_conversations WHERE workspace_id=? AND json_array_length(messages)>0 LIMIT 1").bind(workspace.id).first(),
+  ]);
   return {
     workspace,
     faqs: faqs.results,
@@ -284,6 +288,8 @@ export async function workspaceView(
       account: true,
       profile: Boolean(workspace.description),
       answers: faqs.results.length > 0,
+      respondersConfigured: Boolean(responder && responder.version > 0),
+      conversationTested: Boolean(rehearsal),
       websitePublished: workspace.state === "published",
       whatsappConnected: false,
       billingActive: false,
