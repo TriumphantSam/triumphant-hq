@@ -19,6 +19,7 @@ import {
   Globe,
 } from "lucide-react";
 import Turnstile from "@/components/automation/Turnstile";
+import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
 
 type Plan = {
   id: string;
@@ -493,8 +494,8 @@ export default function PlatformWorkspace() {
                   ] as const).map((step,i)=><div className="setup-step" key={step.tab}><span className={step.done?"setup-complete":""}>{step.done?<Check size={18}/>:i+1}</span><div><h3>{step.title}</h3><p>{step.detail}</p><small>{step.done?"Saved / tested":"To do"}</small></div><button className="platform-secondary" onClick={()=>setTab(step.tab)}>{step.done?"Review":"Start"}</button></div>)}
                   <div className="platform-sandbox"><strong>Connection comes next.</strong> WhatsApp number onboarding and subscription activation are not available yet. Keep practising privately; no customer messages or charges are created.</div>
                 </section>}
-                {(tab === "Conversations" || tab === "Autoresponders") && <ConversationStudio key={view.workspace.id+tab} workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/>}
-                {tab==="Website"&&<WebsiteWidgetPanel key={view.workspace.id} workspaceId={view.workspace.id}/>}
+                {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
+                {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {tab === "Business" && (
                   <div className="platform-columns">
                     <form
