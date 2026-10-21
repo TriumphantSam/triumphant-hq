@@ -19,6 +19,8 @@ const allowed = new Set([
   "booking.save",
   "plan.select",
   "assistant.test",
+  "widget.read",
+  "widget.save",
   "responder.read",
   "responder.save",
   "conversation.list",

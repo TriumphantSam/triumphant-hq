@@ -16,6 +16,7 @@ import {
   LogOut,
   Inbox,
   ListChecks,
+  Globe,
 } from "lucide-react";
 import Turnstile from "@/components/automation/Turnstile";
 
@@ -58,7 +59,8 @@ type Bootstrap = {
   plans: Plan[];
 };
 type Tab =
-  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Plans" | "Launch";
+  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Launch";
+const WebsiteWidgetPanel=dynamic(()=>import("./WebsiteWidgetPanel"),{loading:()=> <p role="status">Loading website settings…</p>});
 const ConversationStudio = dynamic(() => import("./ConversationStudio"), {
   loading: () => <p role="status">Loading conversation studio…</p>,
 });
@@ -73,6 +75,7 @@ const tabs = [
   { name: "Inbox", icon: Inbox },
   { name: "Conversations", icon: MessageSquare },
   { name: "Autoresponders", icon: MessageSquare },
+  { name: "Website", icon: Globe },
   { name: "Plans", icon: CreditCard },
   { name: "Launch", icon: Rocket },
 ] as const;
@@ -411,6 +414,7 @@ export default function PlatformWorkspace() {
                 <h1>
                   {view
                     ? tab === "Setup" ? "Your business, step by step."
+                      : tab === "Website" ? "Your assistant, on your website."
                       : tab === "Conversations" ? "Make every conversation count."
                       : tab === "Autoresponders" ? "A helpful reply starts here."
                       : tab === "Business"
@@ -490,6 +494,7 @@ export default function PlatformWorkspace() {
                   <div className="platform-sandbox"><strong>Connection comes next.</strong> WhatsApp number onboarding and subscription activation are not available yet. Keep practising privately; no customer messages or charges are created.</div>
                 </section>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <ConversationStudio key={view.workspace.id+tab} workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/>}
+                {tab==="Website"&&<WebsiteWidgetPanel key={view.workspace.id} workspaceId={view.workspace.id}/>}
                 {tab === "Business" && (
                   <div className="platform-columns">
                     <form

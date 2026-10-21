@@ -897,3 +897,8 @@ body:has(.platform) #site-main-content {
 .conversation-empty { padding:60px 12px; text-align:center; }
 @media(max-width:850px) { .conversation-layout { grid-template-columns:1fr; } .conversation-list nav { max-height:200px; } }
 @media(max-width:550px) { .setup-step { flex-wrap:wrap; gap:12px; } .setup-step>div { flex-basis:70%; } .setup-step>button { margin-left:48px; } .conversation-heading { align-items:flex-start; flex-direction:column; } }
+.platform-embedded .platform-header { padding:12px 16px; height:auto; }
+.platform-embedded .platform-back { display:none; }
+.platform-embedded .public-business-content { padding:16px; }
+.platform-embedded .public-business-title h1 { font-size:2rem; }
+.platform-embedded .platform-columns { grid-template-columns:1fr; }

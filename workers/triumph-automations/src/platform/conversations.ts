@@ -1,5 +1,6 @@
 import type { Env } from "../types";
 import { PlatformError, requireWorkspace, validId, matchFaq, type Faq } from "./core";
+import { tenantAnswer } from "./tenant-ai";
 
 export const responderDefaults = {
   welcome: "Welcome! How can we help you today?",
@@ -7,9 +8,10 @@ export const responderDefaults = {
   fallback: "I don’t have an approved answer for that yet. Please ask to speak to the team.",
   enabled: true,
   version: 0,
+  ai_enabled: false,
 };
-type Settings = { welcome: string; away: string; fallback: string; enabled: boolean | number; version: number };
-type Message = { id: string; role: "customer" | "automation" | "team"; text: string; at: string };
+type Settings = { welcome: string; away: string; fallback: string; enabled: boolean | number; ai_enabled:boolean|number; version: number };
+type Message = { id: string; role: "customer" | "automation" | "team"; text: string; at: string; method?:string };
 type Thread = { id: string; label: string; messages: string; paused: number; version: number; updated_at: string };
 function text(value: unknown, max: number) {
   if (typeof value !== "string" || !value.trim() || value.trim().length > max)
@@ -17,7 +19,7 @@ function text(value: unknown, max: number) {
   return value.trim();
 }
 async function settings(env: Env, id: string): Promise<Settings> {
-  return await env.DB.prepare("SELECT welcome,away,fallback,enabled,version FROM platform_responder_settings WHERE workspace_id=?")
+  return await env.DB.prepare("SELECT welcome,away,fallback,enabled,ai_enabled,version FROM platform_responder_settings WHERE workspace_id=?")
     .bind(id).first<Settings>() || responderDefaults;
 }
 function result(row: Thread) { return { ...row, messages: JSON.parse(row.messages) as Message[], paused: Boolean(row.paused), sandbox: true }; }
@@ -26,13 +28,14 @@ export async function conversationAction(env: Env, userId: string, action: strin
   if (action === "responder.read") return { ...await settings(env, w.id), sandbox: true };
   if (action === "responder.save") {
     const welcome = text(input.welcome, 1000), away = text(input.away, 1000), fallback = text(input.fallback, 1000);
-    if (typeof input.enabled !== "boolean" || !Number.isSafeInteger(input.version)) throw new PlatformError("Check responder settings.");
-    const row = await env.DB.prepare("INSERT INTO platform_responder_settings(workspace_id,welcome,away,fallback,enabled,version,updated_at) SELECT ?,?,?,?,?,1,? WHERE ?=0 ON CONFLICT(workspace_id) DO UPDATE SET welcome=excluded.welcome,away=excluded.away,fallback=excluded.fallback,enabled=excluded.enabled,version=platform_responder_settings.version+1,updated_at=excluded.updated_at WHERE platform_responder_settings.version=? RETURNING version")
-      .bind(w.id,welcome,away,fallback,Number(input.enabled),new Date(now).toISOString(),input.version,input.version).first();
+    if (typeof input.enabled !== "boolean" || (input.ai_enabled!==undefined&&typeof input.ai_enabled!=="boolean") || !Number.isSafeInteger(input.version)) throw new PlatformError("Check responder settings.");
+    const aiEnabled=input.ai_enabled===undefined?Boolean((await settings(env,w.id)).ai_enabled):input.ai_enabled;
+    const row = await env.DB.prepare("INSERT INTO platform_responder_settings(workspace_id,welcome,away,fallback,enabled,ai_enabled,version,updated_at) SELECT ?,?,?,?,?,?,1,? WHERE ?=0 ON CONFLICT(workspace_id) DO UPDATE SET welcome=excluded.welcome,away=excluded.away,fallback=excluded.fallback,enabled=excluded.enabled,ai_enabled=excluded.ai_enabled,version=platform_responder_settings.version+1,updated_at=excluded.updated_at WHERE platform_responder_settings.version=? RETURNING version")
+      .bind(w.id,welcome,away,fallback,Number(input.enabled),Number(aiEnabled),new Date(now).toISOString(),input.version,input.version).first();
     // Existing rows must also be editable after version zero.
     if (!row) {
-      const updated = await env.DB.prepare("UPDATE platform_responder_settings SET welcome=?,away=?,fallback=?,enabled=?,version=version+1,updated_at=? WHERE workspace_id=? AND version=? RETURNING version")
-        .bind(welcome,away,fallback,Number(input.enabled),new Date(now).toISOString(),w.id,input.version).first();
+      const updated = await env.DB.prepare("UPDATE platform_responder_settings SET welcome=?,away=?,fallback=?,enabled=?,ai_enabled=?,version=version+1,updated_at=? WHERE workspace_id=? AND version=? RETURNING version")
+        .bind(welcome,away,fallback,Number(input.enabled),Number(aiEnabled),new Date(now).toISOString(),w.id,input.version).first();
       if (!updated) throw new PlatformError("Settings changed. Reload before saving.",409);
     }
     return { ...await settings(env,w.id), sandbox:true };
@@ -68,6 +71,7 @@ export async function conversationAction(env: Env, userId: string, action: strin
       if (old.text !== content || old.role !== input.role) throw new PlatformError("This message reference has changed.",409);
       return result(row);
     }
+    if(!Number.isSafeInteger(input.version)||input.version!==row.version)throw new PlatformError("Another reply changed this conversation. Reload before continuing.",409);
     if (messages.length >= 38) throw new PlatformError("Start a new test conversation; this one has reached its limit.",409);
     const at = new Date(now).toISOString();
     messages = [...messages,{id:input.requestId,role:input.role as "customer"|"team",text:content,at}];
@@ -75,12 +79,16 @@ export async function conversationAction(env: Env, userId: string, action: strin
     if (input.role === "customer" && /^(stop|human|agent|speak to (a person|the team))\b/i.test(content)) paused = 1;
     const config = await settings(env,w.id);
     if (input.role === "customer" && config.enabled && !paused) {
-      const faqs = await env.DB.prepare("SELECT id,question,answer FROM platform_faqs WHERE workspace_id=?").bind(w.id).all<Faq>();
+      const faqs = await env.DB.prepare("SELECT id,question,answer FROM platform_faqs WHERE workspace_id=? ORDER BY id").bind(w.id).all<Faq>();
       const policy = await env.DB.prepare("SELECT days,start_hour,end_hour FROM platform_booking_policy WHERE workspace_id=?").bind(w.id).first<{days:string;start_hour:number;end_hour:number}>();
       const local = new Date(now + 3600000), open = policy && JSON.parse(policy.days).includes(local.getUTCDay()) && local.getUTCHours() >= policy.start_hour && local.getUTCHours() < policy.end_hour;
-      const answer = !open ? config.away : matchFaq(content,faqs.results)?.answer || config.fallback;
+      const resolved = open && config.ai_enabled
+        ? await tenantAnswer(env,w.id,input.requestId,content,faqs.results,config.fallback,now)
+        : {answer:!open?config.away:matchFaq(content,faqs.results)?.answer||config.fallback,method:!open?"away":"approved",handoff:false};
+      const answer=resolved.answer;
+      if(resolved.handoff)paused=1;
       if (!row.messages || JSON.parse(row.messages).length === 0) messages.push({id:crypto.randomUUID(),role:"automation",text:config.welcome,at});
-      messages.push({id:crypto.randomUUID(),role:"automation",text:answer,at});
+      messages.push({id:crypto.randomUUID(),role:"automation",text:answer,at,method:resolved.method});
     }
   } else {
     if (typeof input.paused !== "boolean") throw new PlatformError("Choose pause or resume.");

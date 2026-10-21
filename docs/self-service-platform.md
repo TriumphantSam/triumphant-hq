@@ -115,6 +115,34 @@ separate release requirements.
 
 ## Implementation status: 20 October 2026
 
+### AI-assisted matching and website widget increment
+
+Migrations 0010/0011 add opt-in AI matching, durable inference admission and a
+website origin setting. AI selects approved FAQ IDs; the server renders the
+approved text. It is not free-form answer generation. Exact matches avoid the
+provider. Only the latest question and the current business's approved FAQs enter
+inference; owner records and conversation history do not. Unknown/invalid results
+or provider failures use the business fallback and pause private rehearsal for a
+team member. Outside-hours rehearsal replies remain deterministic.
+
+Inference requires the staging PLATFORM_AI_ENABLED flag, an AI binding and the
+owner's saved opt-in. Reservations cap attempts at 100 per business per Lagos
+month and 500 across the platform per Lagos day. A durable request/digest claim
+prevents duplicate inference; provider retries are disabled. Interrupted claims
+are not sent again. Stored telemetry contains selected IDs and token counts,
+not raw prompts. Cache retention/export/deletion remain operational launch work.
+
+The Website tab produces an iframe snippet after an owner enables one HTTPS
+origin for a published sandbox page. The widget route uses a server-generated
+frame-ancestors policy and fails closed if settings/publication cannot be checked.
+Private workspace pages reject framing. Pausing publication blocks new public
+submissions. These settings are an embed allowlist, not proof of domain ownership.
+Vercel preview protection can prevent cross-site iframe loading: installation on
+an unrelated website and a real model response must be accepted separately.
+No production platform activation, live WhatsApp transport or charges are enabled.
+
+The existing model was verified against [Cloudflare's model documentation](https://developers.cloudflare.com/workers-ai/models/qwen3-30b-a3b-fp8/).
+
 Built: passwordless verified accounts; one private business workspace per account;
 owner/staff authorization; profile, FAQ and Lagos booking-rule editors; draft NGN
 plan selection; private FAQ testing; a sandbox customer page; business-scoped
