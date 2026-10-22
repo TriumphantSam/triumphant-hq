@@ -195,6 +195,69 @@ without developer assistance. This implementation is not a launch-ready claim.
 
 ## Pricing arithmetic, not a margin guarantee
 
+### Subscription rehearsal increment: 21 October 2026
+
+Migration 0012 adds isolated test billing accounts and a verified-payment ledger.
+The Plans tab now has a separate subscription rehearsal panel. Draft plan
+selection remains free and does not start billing. Checkout requires owner
+membership, explicit recurring consent, a server-owned price and a verified
+monthly NGN Paystack test plan. Customer email comes from the verified account.
+
+Only staging with `PLATFORM_BILLING_TEST_ENABLED=true` and a `sk_test_` key can
+call the billing provider. Both checked-in environments default the billing flag
+off. `PLATFORM_BILLING_TEST_EMAIL` restricts checkout and management to the approved
+verified test account; other accounts cannot start provider operations.
+Migration 0013 holds the operator-provisioned test plan catalog. A signed
+operator endpoint at `/v1/platform/billing/test-plans` creates the three plans
+with durable one-time reservations; it is absent from the website RPC allowlist.
+`PLATFORM_PAYSTACK_TEST_PLANS` optionally overrides the catalog with an approved
+JSON mapping. Every checkout still verifies the provider's price and interval.
+Never configure a live key here.
+
+A durable checkout reservation prevents retries from starting another native
+subscription. If initialization has an unknown result, the reservation remains
+for reconciliation; it is not silently deleted or charged again. This currently
+needs operator recovery if no checkout URL can be recovered. Only one billing
+attempt/subscription per business is supported in this increment; plan changes
+and resubscription after cancellation are not available yet.
+
+The existing raw-body-verified Paystack webhook also handles platform events in
+enabled staging. Initial charges and renewals are reverified through Paystack's
+API against reference, customer, test mode, currency, amount and plan/period.
+Payment insertion and paid-through updates commit together. Duplicate and old
+notifications cannot add time or shorten a newer paid period. Subscription
+events reconcile current provider state instead of trusting event order.
+Owner refresh can recover a missing subscription-create callback using the
+verified customer/plan IDs and a bounded provider lookup. Ambiguous matching
+subscriptions stop for review. The existing account-wide webhook URL is not
+changed for the staging test; automatic staging callback delivery is therefore
+not yet accepted.
+Cancellation intent is saved before calling Paystack; provider failure leaves
+an honest cancel-pending state for retry. Confirmed cancellation retains already
+paid time. Failed renewal does not extend access; expiry is evaluated at read
+time even without a scheduled job.
+
+This is test billing, not production entitlement enforcement. Its paid test
+period does not change sandbox allowances, enable WhatsApp or open production.
+No card data, reusable authorization or subscription management token is stored.
+Live-key support, refunds/disputes, upgrades/downgrades, payment recovery,
+scheduled reconciliation and customer notification acceptance remain launch
+requirements. Test checkout and cancellation acceptance is recorded below.
+On 21 October, the approved account prepared one Starter checkout through the
+workspace. Paystack displayed TEST and NGN 15,000, then Payment Successful.
+Workspace refresh verified the payment and recovered the native subscription.
+The owner-authorized cancellation was submitted, then refreshed against Paystack.
+D1 confirmed one verified payment, an attached provider subscription,
+cancel_requested=1 and state=non-renewing, preserving paid-through
+2026-11-21T20:33:00.000Z. No real money was charged. Full renewal/failure events
+remain mocked acceptance; real automatic staging webhook delivery is not proven.
+All 77 Worker tests, frontend/Worker TypeScript, targeted ESLint and the preview
+build passed before the final cancellation-label refinement.
+
+Provider contracts checked against [Paystack subscriptions](https://paystack.com/docs/payments/subscriptions/),
+[subscription API](https://paystack.com/docs/api/subscription/) and
+[transaction verification](https://paystack.com/docs/api/transaction/#verify).
+
 Checked on 20 October 2026: Paystack lists Nigerian local transaction fees of
 1.5% plus NGN 100, capped at NGN 2,000. The small-transaction waiver does not apply
 to these proposed plan amounts. These figures exclude other operating costs and
@@ -237,3 +300,43 @@ checks remain pending. API cancellation and slot restoration passed separately.
 Switching customer workflows now clears consent and challenge state, appointment
 loading is explicit, and booking requests omit the prior enquiry text. These
 latest UI refinements still need a responsive visual check in a working browser.
+
+### Team access increment (22 October 2026)
+
+Migration 0014 adds email-bound, seven-day staff invitations. Only the workspace
+owner can list team details, invite, withdraw invitations or remove staff. An
+invitation grants access only after its recipient signs in with the matching
+verified email and accepts. Roles are assigned by the server; client input cannot
+grant ownership. Membership is checked on each business request, so removal also
+blocks an existing signed-in session from future business requests.
+
+The first release supports ten members including the owner, with pending
+invitations reserving capacity. Staff can use the inbox and conversation rehearsal;
+business configuration, billing and team administration remain owner-only. Users
+can switch between their own workspace and businesses they have joined.
+Invitations are manually shared from the owner panel; no invitation email is sent.
+Ownership transfer, custom roles and team audit history are not implemented.
+
+All 79 Worker tests passed, including recipient matching, role forgery, concurrent
+capacity, expiry, withdrawal, business isolation and access removal. Browser
+acceptance with a separate verified staff account completed on 22 October: the
+approved recipient signed in, accepted the invitation, and opened the business
+inbox and existing conversation rehearsal. Only Inbox and Conversations appeared
+in its navigation. D1 confirmed the membership role was staff. The temporary
+membership and invitation were revoked through scoped operator D1 commands while
+the staff browser session remained signed in. Its next conversation-list request
+was denied with "Workspace not found." This verifies membership enforcement for
+an existing session; the owner's Remove staff access button still needs browser
+acceptance (the owner-only handler and removal are covered by automated tests).
+The signed-in owner browser created a reserved `example.test` invitation, displayed
+manual sharing instructions, and withdrew it successfully on 22 October. The Team
+screen returned to one owner and no pending invitations; no invitation email was
+sent. The synthetic widget was disabled and its reserved origin restored after
+the independent website checks.
+
+Independent website acceptance on 22 October stored an enquiry, reserved and
+cancelled an appointment, and confirmed both records in the synthetic business's
+database. The management page fits at 390 pixels. The exact lazy-loaded iframe
+answered the approved question on the separate allowed host; a second, unapproved
+origin was refused. This supersedes the older pending embedded-cancellation check
+above. Production activation and real WhatsApp onboarding remain separate gates.

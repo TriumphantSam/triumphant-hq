@@ -4,6 +4,8 @@ import { hmac } from "../security";
 import { platformAuth, type OtpSender } from "./auth";
 import { conversationAction } from "./conversations";
 import { widgetAction } from "./widget";
+import { billingAction, provisionTestPlans } from "./billing";
+import { teamAction } from "./team";
 import {
   admit,
   createWorkspace,
@@ -26,6 +28,10 @@ import {
 
 export function createPlatformRoutes(sender?: OtpSender) {
   const routes = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
+  routes.post("/billing/test-plans",async(c)=>{
+    try {return c.json({data:await provisionTestPlans(c.env)});}
+    catch(error){return c.json({error:error instanceof PlatformError?error.message:"Test plan provisioning failed."},error instanceof PlatformError?error.status:503);}
+  });
   routes.post("/rpc", async (c) => {
     try {
       if (c.env.PLATFORM_ENABLED !== "true")
@@ -140,6 +146,8 @@ export function createPlatformRoutes(sender?: OtpSender) {
         });
       }
       const id = payload.workspaceId;
+      if(body.action.startsWith("team."))return c.json({data:await teamAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
+      if (body.action.startsWith("billing.")) return c.json({data:await billingAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
       if(body.action.startsWith("widget."))return c.json({data:await widgetAction(c.env,userId,body.action,payload)});
       if (body.action.startsWith("conversation.") || body.action.startsWith("responder."))
         return c.json({ data: await conversationAction(c.env, userId, body.action, payload) });

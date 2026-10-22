@@ -12,9 +12,11 @@ import {
   plans,
 } from "./core";
 import { platformAuth } from "./auth";
+import {teamAction} from "./team";
 import { conversationAction, responderDefaults } from "./conversations";
 import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
+import {billingAction,billingEvent,nextMonthlyDate,provisionTestPlans} from "./billing";
 import type { Env } from "../types";
 import { Hono } from "hono";
 import { createPlatformRoutes } from "./routes";
@@ -1057,4 +1059,161 @@ test("website widget settings are owner-scoped and pause with publication",async
   sql.prepare("UPDATE platform_workspaces SET state='draft' WHERE id=?").run(workspaceId);
   await assert.rejects(publicWorkflow(env,"public.widget",{workspaceId},publicIp,workflowNow),/unavailable|published|not found/i);
   sql.close();
+});
+
+async function billingFixture() {
+  const fixture=setup(); fixture.user("alice");fixture.user("bob");
+  const w=await createWorkspace(fixture.env,"alice","Billing test");
+  Object.assign(fixture.env,{ENVIRONMENT:"staging",PLATFORM_BILLING_TEST_ENABLED:"true",PAYSTACK_TEST_SECRET_KEY:"sk_test_unit",PLATFORM_BILLING_TEST_EMAIL:"alice@example.com",PLATFORM_PAYSTACK_TEST_PLANS:JSON.stringify({starter:"PLN_starter"})});
+  return {...fixture,workspaceId:w!.id,owner:{id:"alice",email:"alice@example.com"}};
+}
+test("test billing rejects production, live keys, staff and cross-business access before provider calls",async()=>{
+  const {env,sql,workspaceId,owner}=await billingFixture();const saved=globalThis.fetch;let calls=0;
+  globalThis.fetch=async()=>{calls++;throw new Error("must not call");};
+  try {
+    const payload={workspaceId,planId:"starter",requestId:crypto.randomUUID(),recurringConsent:true};
+    env.ENVIRONMENT="production";await assert.rejects(billingAction(env,owner,"billing.checkout",payload),/not enabled/);
+    env.ENVIRONMENT="staging";env.PAYSTACK_TEST_SECRET_KEY="sk_live_unit";await assert.rejects(billingAction(env,owner,"billing.checkout",payload),/not enabled/);
+    env.PAYSTACK_TEST_SECRET_KEY="sk_test_unit";
+    await assert.rejects(billingAction(env,{id:"bob",email:"bob@example.com"},"billing.read",{workspaceId}),/not found/);
+    sql.prepare("INSERT INTO platform_memberships(workspace_id,user_id,role) VALUES(?,?,'staff')").run(workspaceId,"bob");
+    await assert.rejects(billingAction(env,{id:"bob",email:"bob@example.com"},"billing.checkout",payload),/Only the business owner/);
+    assert.equal(calls,0);
+  } finally {globalThis.fetch=saved;sql.close();}
+});
+test("billing reserves checkout once, rejects provider price changes and survives unknown initialization results without duplicate subscriptions",async()=>{
+  const {env,sql,workspaceId,owner}=await billingFixture();const saved=globalThis.fetch;let initialize=0;let amount=100;
+  globalThis.fetch=async(url)=>{
+    if(String(url).includes("/plan/"))return Response.json({status:true,data:{plan_code:"PLN_starter",amount,currency:"NGN",interval:"monthly",domain:"test"}});
+    initialize++;throw new Error("unknown network result");
+  };
+  try {
+    const payload={workspaceId,planId:"starter",requestId:crypto.randomUUID(),recurringConsent:true,amount:1,email:"attacker@example.com"};
+    await assert.rejects(billingAction(env,owner,"billing.checkout",payload),/displayed price/);
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_billing").get()!.n,0);
+    amount=1500000;
+    await assert.rejects(billingAction(env,owner,"billing.checkout",payload),/could not be reached/);
+    await assert.rejects(billingAction(env,owner,"billing.checkout",payload),/reconciled/);
+    await assert.rejects(billingAction(env,owner,"billing.checkout",{...payload,requestId:crypto.randomUUID()}),/already has a billing attempt/);
+    assert.equal(initialize,1);assert.equal(sql.prepare("SELECT email FROM platform_billing").get()!.email,owner.email);
+  } finally {globalThis.fetch=saved;sql.close();}
+});
+test("verified subscription payments are idempotent, renewals reconcile current provider state and cancellation preserves paid time",async()=>{
+  const {env,sql,workspaceId,owner}=await billingFixture();const saved=globalThis.fetch;
+  let reference="",amount=1500000,providerState="active",disabled=0,failDisable=false,ambiguous=false;
+  const paidAt=new Date().toISOString();
+  let invoice:Record<string,unknown>|undefined;
+  const transaction=(ref=reference,id=101)=>({id,reference:ref,status:"success",domain:"test",currency:"NGN",amount,paid_at:paidAt,customer:{email:owner.email,customer_code:"CUS_alice"},plan_object:{plan_code:"PLN_starter"}});
+  globalThis.fetch=async(url,options)=>{
+    const path=new URL(String(url)).pathname;
+    let data:unknown;
+    if(path.startsWith("/plan/")) data={id:1,plan_code:"PLN_starter",amount:1500000,currency:"NGN",interval:"monthly",domain:"test"};
+    else if(path.startsWith("/customer/"))data={id:2,customer_code:"CUS_alice",email:owner.email};
+    else if(path==="/subscription") {const candidate={subscription_code:"SUB_alice",createdAt:paidAt,domain:"test",amount:1500000,plan:{plan_code:"PLN_starter"},customer:{customer_code:"CUS_alice"}};data=ambiguous?[candidate,{...candidate,subscription_code:"SUB_other"}]:[candidate];}
+    else if(path==="/transaction/initialize") {const body=JSON.parse(String(options?.body));reference=body.reference;assert.equal(body.email,owner.email);assert.equal(body.amount,1500000);data={reference,authorization_url:"https://checkout.paystack.com/test"};}
+    else if(path==="/subscription/disable") {disabled++;if(failDisable)throw new Error("cancellation timeout");providerState="non-renewing";data={ok:true};}
+    else if(path.startsWith("/subscription/"))data={subscription_code:"SUB_alice",email_token:"private-provider-token",domain:"test",status:providerState,amount:1500000,plan:{plan_code:"PLN_starter",currency:"NGN",interval:"monthly"},customer:{email:owner.email,customer_code:"CUS_alice"},most_recent_invoice:invoice};
+    else if(path==="/transaction/202"||path==="/transaction/verify/renewal")data=transaction("renewal",202);
+    else if(path.startsWith("/transaction/verify/"))data=transaction();
+    else throw new Error("unexpected provider operation");
+    return Response.json({status:true,data});
+  };
+  try {
+    const payload={workspaceId,planId:"starter",requestId:crypto.randomUUID(),recurringConsent:true};
+    const checkout=await billingAction(env,owner,"billing.checkout",payload);assert.equal(checkout.state,"checkout");assert.equal(checkout.testAccessActive,false);
+    amount=1;await assert.rejects(billingAction(env,owner,"billing.refresh",{workspaceId}),/does not match/);
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_billing_payments").get()!.n,0);
+    amount=1500000;
+    await billingEvent(env,"charge.success",{reference});await billingEvent(env,"charge.success",{reference});
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_billing_payments").get()!.n,1);
+    const initial=await billingAction(env,owner,"billing.read",{workspaceId});assert.equal(initial.testAccessActive,true);
+    // Refresh can recover a missed subscription.create callback without changing
+    // the account-wide Paystack webhook URL or guessing among duplicates.
+    ambiguous=true;await assert.rejects(billingAction(env,owner,"billing.refresh",{workspaceId}),/Multiple matching/);
+    assert.equal(sql.prepare("SELECT subscription_code FROM platform_billing").get()!.subscription_code,null);
+    ambiguous=false;await billingAction(env,owner,"billing.refresh",{workspaceId});
+    assert.equal(sql.prepare("SELECT subscription_code FROM platform_billing").get()!.subscription_code,"SUB_alice");
+    await billingEvent(env,"subscription.create",{subscription_code:"SUB_alice",customer:{email:owner.email},plan:{plan_code:"PLN_starter"}});
+    const end=new Date(Date.now()+32*86400000).toISOString();
+    invoice={domain:"test",amount:1500000,paid:true,status:"success",transaction:202,period_start:paidAt,period_end:end};
+    await billingEvent(env,"invoice.update",{subscription:{subscription_code:"SUB_alice"}});
+    await billingEvent(env,"invoice.update",{subscription:{subscription_code:"SUB_alice"}});
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_billing_payments").get()!.n,2);
+    failDisable=true;await assert.rejects(billingAction(env,owner,"billing.cancel",{workspaceId}),/could not be reached/);
+    const pending=await billingAction(env,owner,"billing.refresh",{workspaceId});assert.equal(pending.state,"cancel-pending");assert.equal(pending.testAccessActive,true);
+    failDisable=false;
+    const cancelled=await billingAction(env,owner,"billing.cancel",{workspaceId});assert.equal(cancelled.state,"non-renewing");assert.equal(cancelled.testAccessActive,true);assert.equal(cancelled.paidThrough,end);
+    await billingAction(env,owner,"billing.cancel",{workspaceId});assert.equal(disabled,2);
+    // An old active event must not undo the provider's current non-renewing state.
+    await billingEvent(env,"subscription.create",{subscription_code:"SUB_alice",status:"active"});
+    assert.equal((await billingAction(env,owner,"billing.read",{workspaceId})).state,"non-renewing");
+    providerState="attention";invoice={...invoice,paid:false,status:"failed"};
+    await billingEvent(env,"invoice.payment_failed",{subscription:{subscription_code:"SUB_alice"}});
+    assert.equal((await billingAction(env,owner,"billing.read",{workspaceId})).paidThrough,end);
+    sql.prepare("UPDATE platform_billing SET paid_through='2000-01-01T00:00:00.000Z' WHERE workspace_id=?").run(workspaceId);
+    assert.equal((await billingAction(env,owner,"billing.read",{workspaceId})).testAccessActive,false);
+  } finally {globalThis.fetch=saved;sql.close();}
+});
+test("monthly billing clamps late-month anchors to Paystack's documented 28th",()=>{
+  assert.equal(nextMonthlyDate("2026-01-31T12:00:00.000Z"),"2026-02-28T12:00:00.000Z");
+  assert.equal(nextMonthlyDate("2026-12-20T12:00:00.000Z"),"2027-01-20T12:00:00.000Z");
+});
+test("team invitations bind to verified recipients, cannot elevate roles, and removal invalidates reused invitations",async()=>{
+ const {env,sql,user}=setup();for(const id of ["alice","bob","carol"])user(id);
+ const a=(await createWorkspace(env,"alice","Alice business"))!,c=(await createWorkspace(env,"carol","Carol business"))!;
+ const owner={id:"alice",email:"alice@example.com"},staff={id:"bob",email:"bob@example.com"},other={id:"carol",email:"carol@example.com"};
+ const now=Date.now();
+ const created=await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:" BOB@example.com ",role:"owner"},now) as {invitation:{id:string};emailSent:boolean};
+ assert.equal(created.emailSent,false);
+ const same=await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:"bob@example.com"},now) as typeof created;assert.equal(same.invitation.id,created.invitation.id);
+ assert.equal((await teamAction(env,other,"team.invitations",{},now) as {invitations:unknown[]}).invitations.length,0);
+ await assert.rejects(teamAction(env,other,"team.accept",{inviteId:created.invitation.id},now),/expired|withdrawn/);
+ await teamAction(env,staff,"team.accept",{inviteId:created.invitation.id,role:"owner"},now);
+ await teamAction(env,staff,"team.accept",{inviteId:created.invitation.id},now);
+ assert.equal(sql.prepare("SELECT role FROM platform_memberships WHERE workspace_id=? AND user_id='bob'").get(a.id)!.role,"staff");
+ await assert.rejects(teamAction(env,staff,"team.read",{workspaceId:a.id},now),/Only the business owner/);
+ await assert.rejects(teamAction(env,staff,"team.invite",{workspaceId:a.id,email:"new@example.com"},now),/Only the business owner/);
+ await assert.rejects(teamAction(env,owner,"team.read",{workspaceId:c.id},now),/not found/);
+ await assert.rejects(saveProfile(env,"bob",a.id,{name:"Changed",description:"",contactUrl:"",version:0}),/Only the business owner/);
+ await assert.rejects(teamAction(env,owner,"team.remove",{workspaceId:a.id,userId:"alice"},now),/owner cannot be removed/);
+ await inbox(env,"bob",a.id);
+ await teamAction(env,owner,"team.remove",{workspaceId:a.id,userId:"bob"},now);
+ await assert.rejects(inbox(env,"bob",a.id),/not found/);
+ await assert.rejects(teamAction(env,staff,"team.accept",{inviteId:created.invitation.id},now),/expired|withdrawn/);
+ const replacement=await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:"bob@example.com"},now) as typeof created;
+ assert.notEqual(replacement.invitation.id,created.invitation.id);
+ await teamAction(env,owner,"team.revoke",{workspaceId:a.id,inviteId:replacement.invitation.id},now);
+ await assert.rejects(teamAction(env,staff,"team.accept",{inviteId:replacement.invitation.id},now),/expired|withdrawn/);
+ sql.close();
+});
+test("team size admission is atomic, expired invitations release capacity and withdrawal cannot affect another business",async()=>{
+ const {env,sql,user}=setup();user("alice");user("bob");const a=(await createWorkspace(env,"alice","A business"))!,b=(await createWorkspace(env,"bob","B business"))!;
+ const owner={id:"alice",email:"alice@example.com"},now=Date.now();
+ const results=await Promise.allSettled(Array.from({length:12},(_,i)=>teamAction(env,owner,"team.invite",{workspaceId:a.id,email:`person${i}@example.com`},now)));
+ assert.equal(results.filter(r=>r.status==="fulfilled").length,9);
+ assert.equal(sql.prepare("SELECT count(*) n FROM platform_team_invites WHERE workspace_id=? AND state='pending'").get(a.id)!.n,9);
+ const invite=sql.prepare("SELECT id FROM platform_team_invites WHERE workspace_id=? LIMIT 1").get(a.id)!;
+ await teamAction(env,{id:"bob",email:"bob@example.com"},"team.revoke",{workspaceId:b.id,inviteId:invite.id},now);
+ assert.equal(sql.prepare("SELECT state FROM platform_team_invites WHERE id=?").get(invite.id as string)!.state,"pending");
+ user("person0");
+ const theirs=sql.prepare("SELECT id FROM platform_team_invites WHERE email='person0@example.com'").get()!;
+ await assert.rejects(teamAction(env,{id:"person0",email:"person0@example.com"},"team.accept",{inviteId:theirs.id},now+7*86400000),/expired/);
+ await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:"new@example.com"},now+7*86400000+1);
+ assert.equal(sql.prepare("SELECT count(*) n FROM platform_team_invites WHERE workspace_id=? AND state='pending'").get(a.id)!.n,1);
+ sql.close();
+});
+test("test billing catalog creates each plan once and keeps uncertain provider attempts for reconciliation",async()=>{
+  const {env,sql}=await billingFixture();const saved=globalThis.fetch;let created=0;
+  globalThis.fetch=async(_url,options)=>{created++;const body=JSON.parse(String(options?.body));assert.equal(body.currency,"NGN");assert.equal(body.interval,"monthly");return Response.json({status:true,data:{...body,domain:"test",plan_code:"PLN_"+created}});};
+  try {
+    const first=await provisionTestPlans(env);assert.equal(first.plans.length,3);
+    assert.deepEqual(await provisionTestPlans(env),first);assert.equal(created,3);
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_billing_plans WHERE state='ready'").get()!.n,3);
+  } finally {globalThis.fetch=saved;sql.close();}
+  const other=await billingFixture();globalThis.fetch=async()=>{throw new Error("unknown plan creation result");};
+  try {
+    await assert.rejects(provisionTestPlans(other.env),/could not be reached/);
+    await assert.rejects(provisionTestPlans(other.env),/operator reconciliation/);
+    assert.equal(other.sql.prepare("SELECT count(*) n FROM platform_billing_plans").get()!.n,1);
+  } finally {globalThis.fetch=saved;other.sql.close();}
 });

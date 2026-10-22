@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import Turnstile from "@/components/automation/Turnstile";
 import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
+import TeamPanel,{TeamInvitations} from "./TeamPanel";
 
 type Plan = {
   id: string;
@@ -29,6 +30,7 @@ type Plan = {
   faqs: number;
 };
 type Workspace = {
+  role: "owner" | "staff";
   id: string;
   name: string;
   description: string;
@@ -60,8 +62,9 @@ type Bootstrap = {
   plans: Plan[];
 };
 type Tab =
-  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Launch";
+  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Launch" | "Team";
 const WebsiteWidgetPanel=dynamic(()=>import("./WebsiteWidgetPanel"),{loading:()=> <p role="status">Loading website settings…</p>});
+const BillingPanel=dynamic(()=>import("./BillingPanel"),{loading:()=> <p role="status">Loading billing…</p>});
 const ConversationStudio = dynamic(() => import("./ConversationStudio"), {
   loading: () => <p role="status">Loading conversation studio…</p>,
 });
@@ -79,6 +82,7 @@ const tabs = [
   { name: "Website", icon: Globe },
   { name: "Plans", icon: CreditCard },
   { name: "Launch", icon: Rocket },
+  { name: "Team", icon: ShieldCheck },
 ] as const;
 const ngn = (kobo: number) =>
   new Intl.NumberFormat("en-NG", {
@@ -144,16 +148,19 @@ export default function PlatformWorkspace() {
     setContact(data.workspace.contact_url);
     setFaqs(data.faqs);
     setPolicy(data.policy);
+    if(data.workspace.role==="staff")setTab("Inbox");
   }
-  async function bootstrap() {
+  async function bootstrap(preferredId?:string) {
     const data = await rpc<Bootstrap>("bootstrap");
     setAccount(data);
-    if (data.workspaces[0])
+    const selected=data.workspaces.find(w=>w.id===preferredId)||data.workspaces.find(w=>w.id===view?.workspace.id)||data.workspaces[0];
+    if (selected)
       display(
         await rpc<View>("workspace.read", {
-          workspaceId: data.workspaces[0].id,
+          workspaceId: selected.id,
         }),
       );
+    else setView(null);
   }
   useEffect(() => {
     let active = true;
@@ -369,7 +376,7 @@ export default function PlatformWorkspace() {
               </div>
             </div>
             <nav aria-label="Business workspace">
-              {tabs.map(({ name: label, icon: Icon }) => (
+              {tabs.filter(item=>view?.workspace.role!=="staff"||item.name==="Inbox"||item.name==="Conversations").map(({ name: label, icon: Icon }) => (
                 <button
                   key={label}
                   aria-current={tab === label ? "page" : undefined}
@@ -407,6 +414,7 @@ export default function PlatformWorkspace() {
                 <LogOut size={16} /> Sign out
               </button>
             </div>
+            {account.workspaces.length>0&&<label className="platform-workspace-switch">Business workspace<select aria-label="Choose business workspace" disabled={busy} value={view?.workspace.id||""} onChange={e=>{const id=e.target.value;void run(async()=>{setView(null);setTab("Setup");await bootstrap(id);});}}>{account.workspaces.map(w=><option key={w.id} value={w.id}>{w.name} ({w.role})</option>)}</select></label>}
           </aside>
           <section className="platform-content">
             <div className="platform-title">
@@ -418,6 +426,7 @@ export default function PlatformWorkspace() {
                       : tab === "Website" ? "Your assistant, on your website."
                       : tab === "Conversations" ? "Make every conversation count."
                       : tab === "Autoresponders" ? "A helpful reply starts here."
+                      : tab === "Team" ? "The right people. The right access."
                       : tab === "Business"
                       ? "Make it your business."
                       : tab === "Answers"
@@ -445,6 +454,8 @@ export default function PlatformWorkspace() {
                 {notice}
               </p>
             )}
+            <TeamInvitations onAccepted={id=>run(async()=>{setView(null);setTab("Inbox");await bootstrap(id);})}/>
+            {view?.workspace.role==="staff"&&<p className="platform-sandbox">Staff access · You can use this business’s inbox and conversation rehearsal. The owner manages configuration, billing and team membership.</p>}
             {!view ? (
               <form
                 className="platform-card platform-form"
@@ -454,9 +465,7 @@ export default function PlatformWorkspace() {
                     const w = await rpc<Workspace>("workspace.create", {
                       name,
                     });
-                    display(
-                      await rpc<View>("workspace.read", { workspaceId: w.id }),
-                    );
+                    await bootstrap(w.id);
                   });
                 }}
               >
@@ -496,6 +505,7 @@ export default function PlatformWorkspace() {
                 </section>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
+                {tab==="Team"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><TeamPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {tab === "Business" && (
                   <div className="platform-columns">
                     <form
@@ -876,9 +886,10 @@ export default function PlatformWorkspace() {
                         WhatsApp provider charges, taxes and final usage terms
                         need confirmation before paid activation. Website design
                         and custom integrations are separately quoted. Checkout
-                        is not enabled.
+                        is not enabled for live payments.
                       </p>
                     </div>
+                    <WorkspacePanelBoundary key={view.workspace.id+":billing"}><BillingPanel workspaceId={view.workspace.id} plans={view.plans}/></WorkspacePanelBoundary>
                   </>
                 )}
                 {tab === "Launch" && (
