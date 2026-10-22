@@ -319,7 +319,15 @@ Ownership transfer, custom roles and team audit history are not implemented.
 
 All 79 Worker tests passed, including recipient matching, role forgery, concurrent
 capacity, expiry, withdrawal, business isolation and access removal. Browser
-acceptance with a separate verified staff account is still required before release.
+acceptance with a separate verified staff account completed on 22 October: the
+approved recipient signed in, accepted the invitation, and opened the business
+inbox and existing conversation rehearsal. Only Inbox and Conversations appeared
+in its navigation. D1 confirmed the membership role was staff. The temporary
+membership and invitation were revoked through scoped operator D1 commands while
+the staff browser session remained signed in. Its next conversation-list request
+was denied with "Workspace not found." This verifies membership enforcement for
+an existing session; the owner's Remove staff access button still needs browser
+acceptance (the owner-only handler and removal are covered by automated tests).
 The signed-in owner browser created a reserved `example.test` invitation, displayed
 manual sharing instructions, and withdrew it successfully on 22 October. The Team
 screen returned to one owner and no pending invitations; no invitation email was
