@@ -320,6 +320,11 @@ Ownership transfer, custom roles and team audit history are not implemented.
 All 79 Worker tests passed, including recipient matching, role forgery, concurrent
 capacity, expiry, withdrawal, business isolation and access removal. Browser
 acceptance with a separate verified staff account is still required before release.
+The signed-in owner browser created a reserved `example.test` invitation, displayed
+manual sharing instructions, and withdrew it successfully on 22 October. The Team
+screen returned to one owner and no pending invitations; no invitation email was
+sent. The synthetic widget was disabled and its reserved origin restored after
+the independent website checks.
 
 Independent website acceptance on 22 October stored an enquiry, reserved and
 cancelled an appointment, and confirmed both records in the synthetic business's
