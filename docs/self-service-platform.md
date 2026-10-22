@@ -300,3 +300,30 @@ checks remain pending. API cancellation and slot restoration passed separately.
 Switching customer workflows now clears consent and challenge state, appointment
 loading is explicit, and booking requests omit the prior enquiry text. These
 latest UI refinements still need a responsive visual check in a working browser.
+
+### Team access increment (22 October 2026)
+
+Migration 0014 adds email-bound, seven-day staff invitations. Only the workspace
+owner can list team details, invite, withdraw invitations or remove staff. An
+invitation grants access only after its recipient signs in with the matching
+verified email and accepts. Roles are assigned by the server; client input cannot
+grant ownership. Membership is checked on each business request, so removal also
+blocks an existing signed-in session from future business requests.
+
+The first release supports ten members including the owner, with pending
+invitations reserving capacity. Staff can use the inbox and conversation rehearsal;
+business configuration, billing and team administration remain owner-only. Users
+can switch between their own workspace and businesses they have joined.
+Invitations are manually shared from the owner panel; no invitation email is sent.
+Ownership transfer, custom roles and team audit history are not implemented.
+
+All 79 Worker tests passed, including recipient matching, role forgery, concurrent
+capacity, expiry, withdrawal, business isolation and access removal. Browser
+acceptance with a separate verified staff account is still required before release.
+
+Independent website acceptance on 22 October stored an enquiry, reserved and
+cancelled an appointment, and confirmed both records in the synthetic business's
+database. The management page fits at 390 pixels. The exact lazy-loaded iframe
+answered the approved question on the separate allowed host; a second, unapproved
+origin was refused. This supersedes the older pending embedded-cancellation check
+above. Production activation and real WhatsApp onboarding remain separate gates.

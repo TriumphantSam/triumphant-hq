@@ -27,9 +27,18 @@ Record desktop/mobile results separately. A top-level assistant page or an HTTP
 200 is not proof of iframe installation. A real browser answered the sample FAQ
 inside the independent site's iframe on 21 October 2026 after the owner opened a
 fresh Edge tab. Earlier browser-controlled tabs stalled at `about:blank`.
-Embedded enquiry/booking and negative-origin browser tests are still pending.
-The diagnostic host currently loads its iframe eagerly. The customer-generated
-snippet uses lazy loading; that exact loading mode still needs browser acceptance.
+On 22 October 2026, the independent iframe stored a synthetic enquiry and reserved
+then cancelled a synthetic appointment. Scoped D1 reads confirmed both records
+belong to the synthetic business and the appointment is cancelled. The cancellation
+page was inspected at 390 pixels wide. No outbound messages or payments were sent.
+The host now uses the same lazy loading as the generated customer snippet; the
+embedded question form returned the approved answer after a fresh reload.
+
+The `blocked` environment deploys the same page at
+https://triumphant-widget-blocked.triumphantsam30.workers.dev/. This origin is
+deliberately absent from the business's saved website origin. Chrome refused its
+iframe while the allowed host worked. Do not add this negative-control origin to
+the business configuration or loosen framing protection to make it load.
 
 Disable the synthetic widget and restore its reserved origin after acceptance.
 No private owner workspace or production business should be used as a fixture.

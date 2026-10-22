@@ -902,3 +902,4 @@ body:has(.platform) #site-main-content {
 .platform-embedded .public-business-content { padding:16px; }
 .platform-embedded .public-business-title h1 { font-size:2rem; }
 .platform-embedded .platform-columns { grid-template-columns:1fr; }
+.team-person{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--platform-border,#dce7df);min-width:0}.team-person>div{min-width:0;overflow-wrap:anywhere}.team-person p{margin:.3rem 0}.platform-workspace-switch{display:grid;gap:.5rem;margin:1rem 0;font-size:.85rem;min-width:0}.platform-workspace-switch select{max-width:100%;width:100%;padding:.65rem;border:1px solid #dce7df;border-radius:.7rem;background:white;color:inherit}@media(max-width:600px){.team-person{align-items:flex-start;flex-direction:column}.team-person button{max-width:100%;white-space:normal}}

@@ -12,6 +12,7 @@ import {
   plans,
 } from "./core";
 import { platformAuth } from "./auth";
+import {teamAction} from "./team";
 import { conversationAction, responderDefaults } from "./conversations";
 import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
@@ -1156,6 +1157,50 @@ test("verified subscription payments are idempotent, renewals reconcile current 
 test("monthly billing clamps late-month anchors to Paystack's documented 28th",()=>{
   assert.equal(nextMonthlyDate("2026-01-31T12:00:00.000Z"),"2026-02-28T12:00:00.000Z");
   assert.equal(nextMonthlyDate("2026-12-20T12:00:00.000Z"),"2027-01-20T12:00:00.000Z");
+});
+test("team invitations bind to verified recipients, cannot elevate roles, and removal invalidates reused invitations",async()=>{
+ const {env,sql,user}=setup();for(const id of ["alice","bob","carol"])user(id);
+ const a=(await createWorkspace(env,"alice","Alice business"))!,c=(await createWorkspace(env,"carol","Carol business"))!;
+ const owner={id:"alice",email:"alice@example.com"},staff={id:"bob",email:"bob@example.com"},other={id:"carol",email:"carol@example.com"};
+ const now=Date.now();
+ const created=await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:" BOB@example.com ",role:"owner"},now) as {invitation:{id:string};emailSent:boolean};
+ assert.equal(created.emailSent,false);
+ const same=await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:"bob@example.com"},now) as typeof created;assert.equal(same.invitation.id,created.invitation.id);
+ assert.equal((await teamAction(env,other,"team.invitations",{},now) as {invitations:unknown[]}).invitations.length,0);
+ await assert.rejects(teamAction(env,other,"team.accept",{inviteId:created.invitation.id},now),/expired|withdrawn/);
+ await teamAction(env,staff,"team.accept",{inviteId:created.invitation.id,role:"owner"},now);
+ await teamAction(env,staff,"team.accept",{inviteId:created.invitation.id},now);
+ assert.equal(sql.prepare("SELECT role FROM platform_memberships WHERE workspace_id=? AND user_id='bob'").get(a.id)!.role,"staff");
+ await assert.rejects(teamAction(env,staff,"team.read",{workspaceId:a.id},now),/Only the business owner/);
+ await assert.rejects(teamAction(env,staff,"team.invite",{workspaceId:a.id,email:"new@example.com"},now),/Only the business owner/);
+ await assert.rejects(teamAction(env,owner,"team.read",{workspaceId:c.id},now),/not found/);
+ await assert.rejects(saveProfile(env,"bob",a.id,{name:"Changed",description:"",contactUrl:"",version:0}),/Only the business owner/);
+ await assert.rejects(teamAction(env,owner,"team.remove",{workspaceId:a.id,userId:"alice"},now),/owner cannot be removed/);
+ await inbox(env,"bob",a.id);
+ await teamAction(env,owner,"team.remove",{workspaceId:a.id,userId:"bob"},now);
+ await assert.rejects(inbox(env,"bob",a.id),/not found/);
+ await assert.rejects(teamAction(env,staff,"team.accept",{inviteId:created.invitation.id},now),/expired|withdrawn/);
+ const replacement=await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:"bob@example.com"},now) as typeof created;
+ assert.notEqual(replacement.invitation.id,created.invitation.id);
+ await teamAction(env,owner,"team.revoke",{workspaceId:a.id,inviteId:replacement.invitation.id},now);
+ await assert.rejects(teamAction(env,staff,"team.accept",{inviteId:replacement.invitation.id},now),/expired|withdrawn/);
+ sql.close();
+});
+test("team size admission is atomic, expired invitations release capacity and withdrawal cannot affect another business",async()=>{
+ const {env,sql,user}=setup();user("alice");user("bob");const a=(await createWorkspace(env,"alice","A business"))!,b=(await createWorkspace(env,"bob","B business"))!;
+ const owner={id:"alice",email:"alice@example.com"},now=Date.now();
+ const results=await Promise.allSettled(Array.from({length:12},(_,i)=>teamAction(env,owner,"team.invite",{workspaceId:a.id,email:`person${i}@example.com`},now)));
+ assert.equal(results.filter(r=>r.status==="fulfilled").length,9);
+ assert.equal(sql.prepare("SELECT count(*) n FROM platform_team_invites WHERE workspace_id=? AND state='pending'").get(a.id)!.n,9);
+ const invite=sql.prepare("SELECT id FROM platform_team_invites WHERE workspace_id=? LIMIT 1").get(a.id)!;
+ await teamAction(env,{id:"bob",email:"bob@example.com"},"team.revoke",{workspaceId:b.id,inviteId:invite.id},now);
+ assert.equal(sql.prepare("SELECT state FROM platform_team_invites WHERE id=?").get(invite.id as string)!.state,"pending");
+ user("person0");
+ const theirs=sql.prepare("SELECT id FROM platform_team_invites WHERE email='person0@example.com'").get()!;
+ await assert.rejects(teamAction(env,{id:"person0",email:"person0@example.com"},"team.accept",{inviteId:theirs.id},now+7*86400000),/expired/);
+ await teamAction(env,owner,"team.invite",{workspaceId:a.id,email:"new@example.com"},now+7*86400000+1);
+ assert.equal(sql.prepare("SELECT count(*) n FROM platform_team_invites WHERE workspace_id=? AND state='pending'").get(a.id)!.n,1);
+ sql.close();
 });
 test("test billing catalog creates each plan once and keeps uncertain provider attempts for reconciliation",async()=>{
   const {env,sql}=await billingFixture();const saved=globalThis.fetch;let created=0;

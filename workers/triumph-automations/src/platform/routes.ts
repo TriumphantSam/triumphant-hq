@@ -5,6 +5,7 @@ import { platformAuth, type OtpSender } from "./auth";
 import { conversationAction } from "./conversations";
 import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans } from "./billing";
+import { teamAction } from "./team";
 import {
   admit,
   createWorkspace,
@@ -145,6 +146,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
         });
       }
       const id = payload.workspaceId;
+      if(body.action.startsWith("team."))return c.json({data:await teamAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
       if (body.action.startsWith("billing.")) return c.json({data:await billingAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
       if(body.action.startsWith("widget."))return c.json({data:await widgetAction(c.env,userId,body.action,payload)});
       if (body.action.startsWith("conversation.") || body.action.startsWith("responder."))

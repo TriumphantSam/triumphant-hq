@@ -4,5 +4,6 @@
   "main": "worker.ts",
   "compatibility_date": "2026-10-13",
   "account_id": "a9bf344e401d603c114b152f500e6722",
-  "workers_dev": true
+  "workers_dev": true,
+  "env": {"blocked":{"name":"triumphant-widget-blocked","workers_dev":true}}
 }
