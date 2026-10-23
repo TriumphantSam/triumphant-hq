@@ -46,4 +46,19 @@ Staging release: migration 0016 applied successfully; Worker version
 ESLint and Worker dry-run passed. Vercel preview for commit `6714f6f` is Ready.
 Draft PR #20 targets the review-evidence branch (#19); neither this record nor
 the staging deployment represents a production merge or launch. Browser acceptance
-is waiting for the owner's sign-in on the new preview domain.
+completed with the signed-in staging owner on 23 October: assigned the existing
+synthetic rehearsal to the owner, saved a private note, refreshed team details,
+reloaded the whole page and reopened the thread. Assignment and note persisted;
+the original six messages and paused state were unchanged. One transient request
+failed without saving; retrying its same request ID saved exactly one note.
+A transient bootstrap load also recovered on reload without another sign-in.
+These intermittent availability errors remain a reliability limitation to track.
+
+The narrow viewport check reported an actual 520px viewport with 512px document
+width and no horizontal overflow; it is not a verified 390px result. Controls
+and notes remained legible, and the viewport override was reset. The temporary
+assignment was cleared through the UI; the single synthetic note was removed
+with a scoped staging D1 cleanup. D1 confirmed zero notes, unassigned, six
+messages and automation still paused. No customer messages or emails were sent.
+Staff permissions and live-thread separation were covered by automated tests;
+this owner rehearsal acceptance does not claim live WhatsApp delivery.
