@@ -31,3 +31,23 @@ Local validation: all 88 Worker tests passed. Additional focused tests cover
 personal cursors, new arrivals during a read, stale tabs, member removal,
 cross-channel protection, equal timestamps and the latest-200-event window.
 Browser, staging and production release evidence is tracked separately.
+
+## Staging acceptance, 23 October 2026
+
+Migration 0017 applied and Worker version
+`d45d135a-fbbf-4ae6-98cc-7830695deca3` deployed. Both frontend and Worker
+TypeScript, all 15 website tests, all 88 Worker tests, focused latest-history
+tests and lint for all changed inbox components passed. Vercel code build
+`5d57b26` is Ready. The earlier team preview alias was reassigned to this preview
+to preserve the owner's sign-in; it no longer represents the frozen PR #20 build.
+
+Owner browser checks on the existing synthetic rehearsal showed three unread
+customer messages, then zero after opening the snapshot. Unread and Assigned to
+me filters initially showed empty results as appropriate. After assigning the
+thread to the owner and refreshing, Assigned to me included it and Unassigned
+excluded it. The original six messages and paused automation stayed unchanged.
+The assignment was cleared through the UI and the test read position was removed
+with scoped D1 cleanup, restoring the fixture's initial unread state. No customer
+messages, email or external WhatsApp read receipts were sent. Independent staff
+read state and live-event races were verified by automated tests, not by a live
+customer connection. Production is unchanged. Draft PR #21 depends on PR #20.
