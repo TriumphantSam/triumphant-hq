@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import ConversationTeam from "./ConversationTeam";
 
 type Settings = { welcome:string; away:string; fallback:string; enabled:boolean|number; ai_enabled:boolean|number; version:number };
 type Summary = { id:string; label:string; paused:boolean|number; version:number; updated_at:string; message_count:number };
@@ -64,6 +65,7 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
       <section className="platform-card conversation-chat" aria-label="Conversation rehearsal">
         {!thread?<div className="conversation-empty"><h2>See the customer experience.</h2><p>Start a test conversation, ask a saved FAQ and practise taking over. Nothing is sent to WhatsApp.</p></div>:<>
           <header className="conversation-heading"><div><h2>{thread.label}</h2><small>{thread.paused?"Automation paused · team in control":settings?.enabled?"Automation available":"Auto replies disabled in settings"}</small></div><button className="platform-secondary" disabled={busy} onClick={()=>void run(async()=>{setThread(await call<Thread>("conversation.pause",{workspaceId,id:thread.id,version:thread.version,paused:!thread.paused}));await refresh();})}>{thread.paused?"Resume automation":"Pause automation"}</button></header>
+          <ConversationTeam key={`${workspaceId}:${thread.id}`} workspaceId={workspaceId} threadId={thread.id} channel="rehearsal"/>
           <div className="conversation-messages" role="log" aria-live="polite" aria-label="Test messages">{thread.messages.map(m=><article className={`conversation-bubble conversation-${m.role}`} key={m.id}><small>{m.role==="customer"?"Test customer":m.role==="team"?"Your team":m.method==="ai"?"AI-selected approved answer":"Autoresponder"}</small><p>{m.text}</p><time dateTime={m.at}>{new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",hour:"2-digit",minute:"2-digit"}).format(new Date(m.at))} WAT</time></article>)}{!thread.messages.length&&<p className="platform-muted">Send a test message below to begin.</p>}</div>
           <form className="conversation-composer" onSubmit={e=>{e.preventDefault();void run(send);}}>
             <label>Send as<select value={role} disabled={busy} onChange={e=>setRole(e.target.value as "customer"|"team")}><option value="customer">Test customer</option><option value="team">Your team (pauses automation)</option></select></label>

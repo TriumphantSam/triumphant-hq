@@ -30,6 +30,7 @@ import type { Env } from "../types";
 import { Hono } from "hono";
 import { createPlatformRoutes } from "./routes";
 import { matchFaq } from "./core";
+import {collaborationAction} from "./collaboration";
 import {
   publicWorkflow,
   policySlots,
@@ -38,6 +39,48 @@ import {
   updateLead,
   ownerCancelBooking,
 } from "./workflows";
+test('team collaboration scopes threads, protects assignments and preserves private idempotent notes',async()=>{
+ const {env,sql,user}=setup();for(const u of ['owner','staff','outsider'])user(u);
+ const a=(await createWorkspace(env,'owner','Business A'))!,b=(await createWorkspace(env,'outsider','Business B'))!;
+ sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(a.id,'staff');
+ const id=crypto.randomUUID(),other=crypto.randomUUID(),stamp=new Date().toISOString();
+ for(const [thread,w] of [[id,a.id],[other,b.id]])sql.prepare("INSERT INTO platform_conversations(id,workspace_id,label,messages,created_at,updated_at) VALUES(?,?,?,'[]',?,?)").run(thread,w,'Practice customer',stamp,stamp);
+ const target={workspaceId:a.id,id,channel:'rehearsal'};
+ assert.equal((await collaborationAction(env,'staff','collaboration.read',target)).assignment.version,0);
+ const assigned=await collaborationAction(env,'staff','collaboration.assign',{...target,assigneeId:'owner',version:0});assert.equal(assigned.assignment.assigneeId,'owner');
+ await assert.rejects(collaborationAction(env,'owner','collaboration.assign',{...target,assigneeId:'staff',version:0}),/Assignment changed/);
+ await assert.rejects(collaborationAction(env,'owner','collaboration.assign',{...target,assigneeId:'outsider',version:1}),/Assignment changed/);
+ await assert.rejects(collaborationAction(env,'outsider','collaboration.read',target),/Workspace not found/);
+ await assert.rejects(collaborationAction(env,'owner','collaboration.read',{...target,id:other}),/Conversation not found/);
+ const requestId=crypto.randomUUID(),input={...target,requestId,text:'Private handover: awaiting customer confirmation.'};
+ const first=await collaborationAction(env,'staff','collaboration.note',input);assert.equal(first.notes.length,1);
+ assert.equal((await collaborationAction(env,'staff','collaboration.note',input)).notes.length,1);
+ await assert.rejects(collaborationAction(env,'owner','collaboration.note',input),/could not be saved/);
+ await assert.rejects(collaborationAction(env,'staff','collaboration.note',{...input,text:'changed'}),/could not be saved/);
+ assert.equal(sql.prepare('SELECT messages,paused,version FROM platform_conversations WHERE id=?').get(id)!.messages,'[]');
+ assert.equal(sql.prepare('SELECT count(*) n FROM platform_whatsapp_events').get()!.n,0);
+ assert.ok(!JSON.stringify(first).includes('@example.com'));
+ await collaborationAction(env,'owner','collaboration.assign',{...target,assigneeId:'staff',version:1});
+ sql.prepare('DELETE FROM platform_memberships WHERE workspace_id=? AND user_id=?').run(a.id,'staff');
+ const removed=await collaborationAction(env,'owner','collaboration.read',target);assert.equal(removed.assignment.assigneeId,null);assert.equal(removed.assignment.version,3);assert.equal(removed.notes.length,1);
+ await assert.rejects(collaborationAction(env,'staff','collaboration.read',target),/Workspace not found/);
+ sql.close();
+});
+
+test('live collaboration stays separate from rehearsal and bounds note storage',async()=>{
+ const {env,sql,user}=setup();user('owner');const w=(await createWorkspace(env,'owner','Business'))!,id=crypto.randomUUID(),stamp=new Date().toISOString();
+ sql.prepare("INSERT INTO platform_whatsapp_threads(id,workspace_id,wa_id,label,updated_at,created_at) VALUES(?,?,'2348000000000','Synthetic live fixture',?,?)").run(id,w.id,stamp,stamp);
+ const target={workspaceId:w.id,id,channel:'whatsapp'};
+ await assert.rejects(collaborationAction(env,'owner','collaboration.read',{...target,channel:'rehearsal'}),/Conversation not found/);
+ for(const text of ['', ' '.repeat(2),'x'.repeat(2001)])await assert.rejects(collaborationAction(env,'owner','collaboration.note',{...target,requestId:crypto.randomUUID(),text}),/Enter a note/);
+ for(let i=0;i<200;i++)sql.prepare('INSERT INTO platform_thread_notes VALUES(?,?,?,?,?,?,?)').run(crypto.randomUUID(),w.id,'whatsapp',id,'owner','Note '+i,stamp);
+ await assert.rejects(collaborationAction(env,'owner','collaboration.note',{...target,requestId:crypto.randomUUID(),text:'Over capacity'}),/could not be saved/);
+ assert.equal((await collaborationAction(env,'owner','collaboration.read',target)).notes.length,200);
+ assert.equal(sql.prepare('SELECT count(*) n FROM platform_whatsapp_events').get()!.n,0);
+ assert.equal(sql.prepare('SELECT version FROM platform_whatsapp_threads WHERE id=?').get(id)!.version,0);
+ sql.close();
+});
+
 test("private FAQ matching rejects generic words, repetition and ambiguous topics", () => {
   const faq = {
     id: "hours",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ConversationTeam from "./ConversationTeam";
 
 type Summary = {
   id: string;
@@ -145,6 +146,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
                 {thread.paused ? "Resume automation" : "Pause automation"}
               </button>
             </header>
+            <ConversationTeam key={`${workspaceId}:${thread.id}`} workspaceId={workspaceId} threadId={thread.id} channel="whatsapp"/>
             <div
               className="conversation-messages"
               role="log"
