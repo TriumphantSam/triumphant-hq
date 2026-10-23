@@ -21,6 +21,15 @@ staging D1 read confirmed zero connected workspaces and zero live WhatsApp event
 
 ## Video 1: whatsapp_business_messaging
 
+The separately authorised website send was performed once after the user said
+their recording was running. The staging panel showed Meta accepted the message.
+Receipt of this second message and the saved recording file still need checking;
+the earlier handset confirmation applied to the initial connectivity test only.
+The temporary staging sender was disabled and its token deleted afterward.
+The deployed read check also exposed a Workers incompatibility with redirect
+mode `error`; using `manual` rejects redirects without forwarding credentials.
+The live readiness check and send then succeeded. Production was unchanged.
+
 1. Use the authorised Meta app's isolated test account. Establish permitted
    app-owned test access; do not present external-customer onboarding as working.
 2. Show the real authorisation flow requested by the review form. Keep passwords,
