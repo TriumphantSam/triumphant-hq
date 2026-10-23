@@ -8,12 +8,18 @@ import { privateReport, reportWindow } from "./reports";
 import { chatRoutes } from "./chat";
 import { assistantRoutes } from "./assistant";
 import { platformRoutes } from "./platform/routes";
+import {
+  handleWhatsAppWebhook,
+  verifyWhatsAppSubscription,
+} from "./platform/whatsapp";
 import { paymentRoutes, paystackWebhook, drainPaymentJobs } from "./payments";
 import { reviewRoutes, drainReviewJobs, drainReviewInvites } from "./reviews";
 import { adminRoutes, scheduleOwnerReports, drainOwnerReports } from "./admin";
 
 const app = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
 app.post("/webhooks/paystack", (c) => paystackWebhook(c.req.raw, c.env));
+app.get("/webhooks/whatsapp", (c) => verifyWhatsAppSubscription(c.req.raw, c.env));
+app.post("/webhooks/whatsapp", (c) => handleWhatsAppWebhook(c.req.raw, c.env));
 app.use("/v1/*", async (c, next) => {
   const reader = c.req.raw.body?.getReader(),
     chunks: Uint8Array[] = [];

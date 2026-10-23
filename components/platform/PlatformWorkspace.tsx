@@ -71,6 +71,9 @@ const ConversationStudio = dynamic(() => import("./ConversationStudio"), {
 const InboxPanel = dynamic(() => import("./InboxPanel"), {
   loading: () => <p role="status">Loading business inbox…</p>,
 });
+const WhatsAppConnect = dynamic(() => import("./WhatsAppConnect"), {
+  loading: () => <p role="status">Loading WhatsApp connection…</p>,
+});
 const tabs = [
   { name: "Setup", icon: ListChecks },
   { name: "Business", icon: Building2 },
@@ -501,7 +504,7 @@ export default function PlatformWorkspace() {
                     {tab:"Autoresponders",title:"Choose your automated messages",detail:"Set welcome, away and fallback replies. Review Appointments for your business hours.",done:view.readiness.respondersConfigured},
                     {tab:"Conversations",title:"Practise a customer conversation",detail:"Use an invented customer. Test questions and taking over from automation.",done:view.readiness.conversationTested},
                   ] as const).map((step,i)=><div className="setup-step" key={step.tab}><span className={step.done?"setup-complete":""}>{step.done?<Check size={18}/>:i+1}</span><div><h3>{step.title}</h3><p>{step.detail}</p><small>{step.done?"Saved / tested":"To do"}</small></div><button className="platform-secondary" onClick={()=>setTab(step.tab)}>{step.done?"Review":"Start"}</button></div>)}
-                  <div className="platform-sandbox"><strong>Connection comes next.</strong> WhatsApp number onboarding and subscription activation are not available yet. Keep practising privately; no customer messages or charges are created.</div>
+                  <div className="platform-sandbox"><strong>Connection is separate from rehearsal.</strong> Practise privately first. Staging can onboard a tester number with Embedded Signup v5; App Review is not submitted, so external customers cannot connect yet. Production WhatsApp stays off.</div>
                 </section>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
@@ -830,7 +833,7 @@ export default function PlatformWorkspace() {
                   </form>
                 )}
                 {tab === "Inbox" && (
-                  <InboxPanel workspaceId={view.workspace.id} />
+                  <InboxPanel workspaceId={view.workspace.id} whatsappConnected={view.readiness.whatsappConnected} />
                 )}
                 {tab === "Plans" && (
                   <>
@@ -894,6 +897,13 @@ export default function PlatformWorkspace() {
                 )}
                 {tab === "Launch" && (
                   <div className="platform-columns">
+                    {view.workspace.role === "owner" && (
+                      <WhatsAppConnect
+                        workspaceId={view.workspace.id}
+                        connected={view.readiness.whatsappConnected}
+                        onChanged={() => void run(bootstrap)}
+                      />
+                    )}
                     <section className="platform-card platform-form">
                       <h2>Your launch checklist</h2>
                       <p>
@@ -915,7 +925,7 @@ export default function PlatformWorkspace() {
                           ready: view.readiness.websitePublished,
                         },
                         { name: "Customer website installation", ready: false },
-                        { name: "WhatsApp connected and tested", ready: false },
+                        { name: "WhatsApp connected and tested", ready: view.readiness.whatsappConnected },
                         {
                           name: "Subscription and usage controls",
                           ready: false,

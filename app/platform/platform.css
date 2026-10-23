@@ -681,6 +681,9 @@ body:has(.platform) #site-main-content {
   margin: 0 auto;
   padding: 35px 24px 80px;
 }
+.platform-inbox-whatsapp {
+  margin: 0 0 28px;
+}
 .platform-sandbox {
   background: #f3eedc;
   color: #695324;

@@ -49,6 +49,7 @@ async function AdminContent() {
   return (
     <>
       <AdminActions action="logout" label="Sign out" />
+      <a className="my-4 inline-block underline" href="/admin/platform">Open platform operations →</a>
       <ConversationAssistant mode="owner" />
       <h2 className="mt-8 text-xl font-bold">
         Real leads and bookings · today in Lagos

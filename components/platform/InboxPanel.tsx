@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import WhatsAppInbox from "./WhatsAppInbox";
 type Lead = {
   id: string;
   name: string;
@@ -83,7 +84,13 @@ function EnquiryCard({
     </article>
   );
 }
-export default function InboxPanel({ workspaceId }: { workspaceId: string }) {
+export default function InboxPanel({
+  workspaceId,
+  whatsappConnected,
+}: {
+  workspaceId: string;
+  whatsappConnected: boolean;
+}) {
   const [data, setData] = useState<Data | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
@@ -143,6 +150,11 @@ export default function InboxPanel({ workspaceId }: { workspaceId: string }) {
         <p role="status" className="platform-success">
           {notice}
         </p>
+      )}
+      {whatsappConnected && (
+        <div className="platform-inbox-whatsapp">
+          <WhatsAppInbox workspaceId={workspaceId} />
+        </div>
       )}
       {!data ? (
         <p role="status">Loading business records…</p>

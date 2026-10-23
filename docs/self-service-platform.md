@@ -326,8 +326,10 @@ in its navigation. D1 confirmed the membership role was staff. The temporary
 membership and invitation were revoked through scoped operator D1 commands while
 the staff browser session remained signed in. Its next conversation-list request
 was denied with "Workspace not found." This verifies membership enforcement for
-an existing session; the owner's Remove staff access button still needs browser
-acceptance (the owner-only handler and removal are covered by automated tests).
+an existing session. On 23 October, the approved test membership was briefly
+restored as an operator fixture and the signed-in owner used Remove staff access.
+The UI confirmed removal and returned to one owner, closing the owner-button
+browser acceptance check. No messages were sent and no staff membership remains.
 The signed-in owner browser created a reserved `example.test` invitation, displayed
 manual sharing instructions, and withdrew it successfully on 22 October. The Team
 screen returned to one owner and no pending invitations; no invitation email was
@@ -340,3 +342,79 @@ database. The management page fits at 390 pixels. The exact lazy-loaded iframe
 answered the approved question on the separate allowed host; a second, unapproved
 origin was refused. This supersedes the older pending embedded-cancellation check
 above. Production activation and real WhatsApp onboarding remain separate gates.
+
+### Platform operations overview
+
+`/admin/platform` reuses the existing private agency owner session. It calls only
+the signed internal `/v1/admin/platform` endpoint; customer workspace sessions do
+not grant operator access, and the customer RPC has no overview action. The page
+is read-only and excludes account email addresses, customer contact details,
+message bodies, cancellation codes, provider identifiers and authentication data.
+
+The overview shows global business totals, state filters and twenty businesses
+per page using an ID cursor. Each card shows team counts, current Lagos-month
+sandbox replies, all-time enquiry/confirmed-appointment/rehearsal counts, business
+widget/AI flags and stored TEST billing state. Global controls are configuration
+flags, not provider-health checks. Published means a sandbox business page; it
+does not mean an approved WhatsApp connection. Paid test periods do not grant
+live production access. No suspension, plan changes or billing actions are offered.
+
+The endpoint refuses requests when the platform is disabled, before reading its
+tables. No migration is needed beyond the existing platform schema through 0014.
+All 80 Worker tests and 15 website tests passed, including pagination without
+duplicates, Lagos month rollover, private-data exclusion, invalid-filter rejection,
+disabled-platform refusal and blocked operator actions at the customer gateway.
+
+Staging acceptance on 23 October: the private owner login opened the overview
+and displayed both existing businesses, including zero staff memberships after
+cleanup. The published filter returned the one published synthetic business;
+the suspended filter showed the explicit empty result. At 390 pixels wide,
+business cards and labels remained readable with no horizontal page overflow.
+The viewport override was reset after inspection. The staging endpoint returned
+401 unsigned and 200 with the internal signature. Vercel build/TypeScript and
+targeted lint passed. No production activation was performed.
+
+The owner-admin password differs from the invoice admin password. For this
+acceptance, the owner privately configured a new `ADMIN_LAB_PASSWORD_HASH` scoped
+only to `codex/platform-operator-overview` in Vercel Preview. It was applied by a
+preview redeployment; no password or hash is stored in this document. Production
+operator access must be configured independently before that environment opens.
+
+## WhatsApp staging onboarding increment
+
+Official Meta Embedded Signup is **v5** (released 20 October 2026). v2/v3 were
+deprecated on 15 October 2026. Access Verification is retired; App Review is
+still required for Advanced Access. This increment does not submit App Review
+and does not claim Advanced Access.
+
+Staging can onboard a tester number:
+
+- Launch tab starts Embedded Signup v5 (`extras.version: "v5"`, Cloud API only).
+  WhatsApp Business app coexistence stays on, which is required for
+  `+234 909 009 0910`.
+- The Worker exchanges the 30-second code server-side, encrypts the business
+  token per workspace, and subscribes the Messaging account with
+  `override_callback_uri` so `messages` do not use the app’s default callback.
+- `POST/GET /webhooks/whatsapp` on the automation Worker verifies Meta
+  signatures and routes only by stored `phone_number_id`. Unknown numbers and
+  the protected UK campaign ID `1092109073976406` are ignored.
+- Live inbox threads are separate from rehearsal conversations. Approved FAQ
+  answers can reply; STOP/HUMAN/team replies pause automation.
+- `PLATFORM_WHATSAPP_ENABLED` is false in production and staging wrangler
+  vars. Enabling staging still requires Meta app ID/secret, Facebook Login
+  configuration ID, verify token, webhook URL and a 32-byte token key. Apply
+  migration 0015 before enabling.
+- The existing `triumphanthq-whatsapp-bot` Worker, its webhook and
+  `whatsapp-bot-prod` are unchanged. Do not point Digital Forge 2’s default
+  callback at this new path.
+
+Public website env names: `NEXT_PUBLIC_META_APP_ID`,
+`NEXT_PUBLIC_META_ES_CONFIG_ID`, `NEXT_PUBLIC_META_GRAPH_VERSION` (v26.0).
+Worker secret names: `META_APP_ID`, `META_APP_SECRET`,
+`PLATFORM_WA_VERIFY_TOKEN`, `PLATFORM_WA_WEBHOOK_URL`,
+`PLATFORM_WA_TOKEN_KEY`. Values are not recorded here.
+
+A rehearsal or a successful code deploy is not live delivery. Genuine evidence
+is still: inbound webhook for the connected number, tenant-scoped approved
+reply, Graph acceptance, and the message on the handset. External-customer
+signup waits on Advanced Access.

@@ -274,9 +274,10 @@ export async function workspaceView(
   )
     .bind(workspace.id, new Date(Date.now() + 3600000).toISOString().slice(0, 7))
     .all();
-  const [responder, rehearsal] = await Promise.all([
+  const [responder, rehearsal, whatsapp] = await Promise.all([
     env.DB.prepare("SELECT version FROM platform_responder_settings WHERE workspace_id=?").bind(workspace.id).first<{version:number}>(),
     env.DB.prepare("SELECT id FROM platform_conversations WHERE workspace_id=? AND json_array_length(messages)>0 LIMIT 1").bind(workspace.id).first(),
+    env.DB.prepare("SELECT 1 AS ok FROM platform_whatsapp_connections WHERE workspace_id=? AND state='connected'").bind(workspace.id).first(),
   ]);
   return {
     workspace,
@@ -291,7 +292,7 @@ export async function workspaceView(
       respondersConfigured: Boolean(responder && responder.version > 0),
       conversationTested: Boolean(rehearsal),
       websitePublished: workspace.state === "published",
-      whatsappConnected: false,
+      whatsappConnected: Boolean(whatsapp),
       billingActive: false,
     },
   };
