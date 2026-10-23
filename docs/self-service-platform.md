@@ -364,3 +364,18 @@ tables. No migration is needed beyond the existing platform schema through 0014.
 All 80 Worker tests and 15 website tests passed, including pagination without
 duplicates, Lagos month rollover, private-data exclusion, invalid-filter rejection,
 disabled-platform refusal and blocked operator actions at the customer gateway.
+
+Staging acceptance on 23 October: the private owner login opened the overview
+and displayed both existing businesses, including zero staff memberships after
+cleanup. The published filter returned the one published synthetic business;
+the suspended filter showed the explicit empty result. At 390 pixels wide,
+business cards and labels remained readable with no horizontal page overflow.
+The viewport override was reset after inspection. The staging endpoint returned
+401 unsigned and 200 with the internal signature. Vercel build/TypeScript and
+targeted lint passed. No production activation was performed.
+
+The owner-admin password differs from the invoice admin password. For this
+acceptance, the owner privately configured a new `ADMIN_LAB_PASSWORD_HASH` scoped
+only to `codex/platform-operator-overview` in Vercel Preview. It was applied by a
+preview redeployment; no password or hash is stored in this document. Production
+operator access must be configured independently before that environment opens.
