@@ -379,3 +379,42 @@ acceptance, the owner privately configured a new `ADMIN_LAB_PASSWORD_HASH` scope
 only to `codex/platform-operator-overview` in Vercel Preview. It was applied by a
 preview redeployment; no password or hash is stored in this document. Production
 operator access must be configured independently before that environment opens.
+
+## WhatsApp staging onboarding increment
+
+Official Meta Embedded Signup is **v5** (released 20 October 2026). v2/v3 were
+deprecated on 15 October 2026. Access Verification is retired; App Review is
+still required for Advanced Access. This increment does not submit App Review
+and does not claim Advanced Access.
+
+Staging can onboard a tester number:
+
+- Launch tab starts Embedded Signup v5 (`extras.version: "v5"`, Cloud API only).
+  WhatsApp Business app coexistence stays on, which is required for
+  `+234 909 009 0910`.
+- The Worker exchanges the 30-second code server-side, encrypts the business
+  token per workspace, and subscribes the Messaging account with
+  `override_callback_uri` so `messages` do not use the app’s default callback.
+- `POST/GET /webhooks/whatsapp` on the automation Worker verifies Meta
+  signatures and routes only by stored `phone_number_id`. Unknown numbers and
+  the protected UK campaign ID `1092109073976406` are ignored.
+- Live inbox threads are separate from rehearsal conversations. Approved FAQ
+  answers can reply; STOP/HUMAN/team replies pause automation.
+- `PLATFORM_WHATSAPP_ENABLED` is false in production and staging wrangler
+  vars. Enabling staging still requires Meta app ID/secret, Facebook Login
+  configuration ID, verify token, webhook URL and a 32-byte token key. Apply
+  migration 0015 before enabling.
+- The existing `triumphanthq-whatsapp-bot` Worker, its webhook and
+  `whatsapp-bot-prod` are unchanged. Do not point Digital Forge 2’s default
+  callback at this new path.
+
+Public website env names: `NEXT_PUBLIC_META_APP_ID`,
+`NEXT_PUBLIC_META_ES_CONFIG_ID`, `NEXT_PUBLIC_META_GRAPH_VERSION` (v26.0).
+Worker secret names: `META_APP_ID`, `META_APP_SECRET`,
+`PLATFORM_WA_VERIFY_TOKEN`, `PLATFORM_WA_WEBHOOK_URL`,
+`PLATFORM_WA_TOKEN_KEY`. Values are not recorded here.
+
+A rehearsal or a successful code deploy is not live delivery. Genuine evidence
+is still: inbound webhook for the connected number, tenant-scoped approved
+reply, Graph acceptance, and the message on the handset. External-customer
+signup waits on Advanced Access.

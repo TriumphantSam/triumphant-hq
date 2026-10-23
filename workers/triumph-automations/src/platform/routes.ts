@@ -3,6 +3,7 @@ import type { Env } from "../types";
 import { hmac } from "../security";
 import { platformAuth, type OtpSender } from "./auth";
 import { conversationAction } from "./conversations";
+import { whatsappAction } from "./whatsapp";
 import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans } from "./billing";
 import { teamAction } from "./team";
@@ -151,6 +152,8 @@ export function createPlatformRoutes(sender?: OtpSender) {
       if(body.action.startsWith("widget."))return c.json({data:await widgetAction(c.env,userId,body.action,payload)});
       if (body.action.startsWith("conversation.") || body.action.startsWith("responder."))
         return c.json({ data: await conversationAction(c.env, userId, body.action, payload) });
+      if (body.action.startsWith("whatsapp."))
+        return c.json({ data: await whatsappAction(c.env, userId, body.action, payload) });
       if (body.action === "website.publish" || body.action === "website.pause")
         return c.json({
           data: await publishWorkspace(

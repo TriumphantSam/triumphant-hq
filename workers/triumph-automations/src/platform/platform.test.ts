@@ -14,6 +14,13 @@ import {
 import { platformAuth } from "./auth";
 import {teamAction} from "./team";
 import {platformOverview} from "./operator";
+import {
+  handleWhatsAppWebhook,
+  processWhatsAppPayload,
+  verifyWhatsAppSubscription,
+  whatsappAction,
+} from "./whatsapp";
+import { hmac } from "../security";
 import { conversationAction, responderDefaults } from "./conversations";
 import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
@@ -1242,4 +1249,332 @@ test("test billing catalog creates each plan once and keeps uncertain provider a
     await assert.rejects(provisionTestPlans(other.env),/operator reconciliation/);
     assert.equal(other.sql.prepare("SELECT count(*) n FROM platform_billing_plans").get()!.n,1);
   } finally {globalThis.fetch=saved;other.sql.close();}
+});
+
+const WA_TOKEN_KEY = "ab".repeat(32);
+function enableWhatsApp(env: Env) {
+  env.ENVIRONMENT = "staging";
+  env.PLATFORM_WHATSAPP_ENABLED = "true";
+  env.META_APP_ID = "1234567890";
+  env.META_APP_SECRET = "test-app-secret";
+  env.PLATFORM_WA_VERIFY_TOKEN = "verify-token";
+  env.PLATFORM_WA_WEBHOOK_URL = "https://worker.example/webhooks/whatsapp";
+  env.PLATFORM_WA_TOKEN_KEY = WA_TOKEN_KEY;
+}
+function graphFetch(handlers: Record<string, (url: string, init?: RequestInit) => Response | Promise<Response>>) {
+  return async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url = String(input);
+    const matched = Object.keys(handlers).find((part) => url.includes(part));
+    if (!matched) throw new Error("unexpected graph call");
+    return handlers[matched](url, init);
+  };
+}
+async function signedWhatsApp(env: Env, payload: unknown) {
+  const body = JSON.stringify(payload);
+  return handleWhatsAppWebhook(
+    new Request("https://worker.example/webhooks/whatsapp", {
+      method: "POST",
+      headers: {
+        "x-hub-signature-256": "sha256=" + (await hmac(env.META_APP_SECRET!, body)),
+      },
+      body,
+    }),
+    env,
+  );
+}
+
+test("staging WhatsApp signup stores a tenant token, overrides the webhook and ignores the UK campaign number", async () => {
+  const { env, user, sql } = setup();
+  user("alice");
+  user("bob");
+  enableWhatsApp(env);
+  const alice = (await createWorkspace(env, "alice", "Alice Salon"))!;
+  const bob = (await createWorkspace(env, "bob", "Bob Shop"))!;
+  await saveFaqs(env, "alice", alice.id, {
+    version: 0,
+    faqs: [
+      {
+        id: crypto.randomUUID(),
+        question: "What are your opening hours?",
+        answer: "Weekdays ten to four.",
+      },
+    ],
+  });
+  const saved = globalThis.fetch;
+  const calls: string[] = [];
+  globalThis.fetch = graphFetch({
+    "/oauth/access_token": () => Response.json({ access_token: "tenant-token" }),
+    "fields=display_phone_number": () =>
+      Response.json({
+        display_phone_number: "+234 801 111 1111",
+        is_on_biz_app: true,
+        platform_type: "CLOUD_API",
+      }),
+    "/subscribed_apps": (_url, init) => {
+      const body = JSON.parse(String(init?.body));
+      assert.equal(body.override_callback_uri, "https://worker.example/webhooks/whatsapp");
+      assert.equal(body.verify_token, "verify-token");
+      calls.push("override");
+      return Response.json({ success: true });
+    },
+    "/messages": (_url, init) => {
+      assert.equal(new Headers(init?.headers).get("Authorization"), "Bearer tenant-token");
+      assert.equal(JSON.parse(String(init?.body)).to, "2348010000001");
+      calls.push("message");
+      return Response.json({ messages: [{ id: "wamid.out-" + calls.length }] });
+    },
+  }) as typeof fetch;
+  try {
+    await assert.rejects(
+      whatsappAction(env, "alice", "whatsapp.connect", {
+        workspaceId: alice.id,
+        code: "exchange-code-value",
+        session: {
+          event: "FINISH",
+          data: { phone_number_id: "1092109073976406", messaging_account_ids: ["555000111"] },
+        },
+      }),
+      /agency campaign/,
+    );
+    env.ENVIRONMENT = "production";
+    await assert.rejects(
+      whatsappAction(env, "alice", "whatsapp.connect", {
+        workspaceId: alice.id,
+        code: "exchange-code-value",
+        session: {
+          event: "FINISH",
+          data: { phone_number_id: "555111222333", messaging_account_ids: ["555000111"] },
+        },
+      }),
+      /testers on the app/,
+    );
+    env.ENVIRONMENT = "staging";
+    sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(alice.id, "bob");
+    await assert.rejects(
+      whatsappAction(env, "bob", "whatsapp.connect", {
+        workspaceId: alice.id,
+        code: "exchange-code-value",
+        session: {
+          event: "FINISH",
+          data: { phone_number_id: "555111222333", messaging_account_ids: ["555000111"] },
+        },
+      }),
+      /business owner/,
+    );
+    const connected = (await whatsappAction(env, "alice", "whatsapp.connect", {
+      workspaceId: alice.id,
+      code: "exchange-code-value",
+      session: {
+        type: "WA_EMBEDDED_SIGNUP",
+        event: "FINISH",
+        data: {
+          phone_number_id: "555111222333",
+          messaging_account_ids: ["555000111"],
+          business_id: "999888777",
+          is_on_biz_app: true,
+        },
+      },
+    })) as { connected: boolean; displayPhone: string | null; testerOnly: boolean };
+    assert.equal(connected.connected, true);
+    assert.equal(connected.displayPhone, "+234 801 111 1111");
+    assert.equal(connected.testerOnly, true);
+    assert.equal((await workspaceView(env, "alice", alice.id)).readiness.whatsappConnected, true);
+    const stored = sql.prepare("SELECT token_ciphertext,phone_number_id FROM platform_whatsapp_connections WHERE workspace_id=?").get(alice.id)!;
+    assert.equal(stored.phone_number_id, "555111222333");
+    assert.ok(!String(stored.token_ciphertext).includes("tenant-token"));
+    await assert.rejects(
+      whatsappAction(env, "bob", "whatsapp.connect", {
+        workspaceId: bob.id,
+        code: "exchange-code-value",
+        session: {
+          event: "FINISH",
+          data: { phone_number_id: "555111222333", messaging_account_ids: ["555000111"] },
+        },
+      }),
+      /another business/,
+    );
+    const verify = await verifyWhatsAppSubscription(
+      new Request("https://worker.example/webhooks/whatsapp?hub.mode=subscribe&hub.verify_token=verify-token&hub.challenge=challenge-token"),
+      env,
+    );
+    assert.equal(verify.status, 200);
+    assert.equal(await verify.text(), "challenge-token");
+    assert.equal(
+      (
+        await handleWhatsAppWebhook(
+          new Request("https://worker.example/webhooks/whatsapp", {
+            method: "POST",
+            headers: { "x-hub-signature-256": "sha256=" + "ab".repeat(32) },
+            body: "{}",
+          }),
+          env,
+        )
+      ).status,
+      403,
+    );
+    const ignored = await signedWhatsApp(env, {
+      object: "whatsapp_business_account",
+      entry: [
+        {
+          changes: [
+            {
+              value: {
+                metadata: { phone_number_id: "1092109073976406" },
+                messages: [{ id: "wamid.uk", from: "447400000000", type: "text", text: { body: "hours" } }],
+              },
+            },
+          ],
+        },
+      ],
+    });
+    assert.equal(ignored.status, 200);
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_whatsapp_events").get()!.n, 0);
+    const inbound = {
+      object: "whatsapp_business_account",
+      entry: [
+        {
+          changes: [
+            {
+              value: {
+                metadata: { phone_number_id: "555111222333" },
+                contacts: [{ profile: { name: "Ada" } }],
+                messages: [
+                  {
+                    id: "wamid.in-1",
+                    from: "2348010000001",
+                    type: "text",
+                    text: { body: "What are your opening hours?" },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    };
+    await processWhatsAppPayload(env, inbound, Date.parse("2026-10-23T10:30:00Z"));
+    const events = sql.prepare("SELECT direction,role,text FROM platform_whatsapp_events ORDER BY created_at,wamid").all() as {direction:string;role:string;text:string}[];
+    assert.ok(events.some((row) => row.direction === "in" && row.text.includes("opening hours")));
+    assert.ok(events.some((row) => row.role === "automation" && row.text === "Weekdays ten to four."));
+    const inbox = (await whatsappAction(env, "alice", "whatsapp.inbox", {
+      workspaceId: alice.id,
+    })) as { threads: Array<{ id: string; wa_id: string }> };
+    assert.equal(inbox.threads.length, 1);
+    assert.equal(inbox.threads[0].wa_id, "0001");
+    await assert.rejects(
+      whatsappAction(env, "bob", "whatsapp.thread", {
+        workspaceId: bob.id,
+        id: inbox.threads[0].id,
+      }),
+      /not found/,
+    );
+    const replay = await signedWhatsApp(env, inbound);
+    assert.equal(replay.status, 200);
+    assert.equal(
+      sql.prepare("SELECT count(*) n FROM platform_whatsapp_events WHERE direction='in'").get()!.n,
+      1,
+    );
+    assert.ok(calls.includes("override"));
+  } finally {
+    globalThis.fetch = saved;
+    sql.close();
+  }
+});
+
+test("live WhatsApp human takeover pauses automation and unknown numbers never create records", async () => {
+  const { env, user, sql } = setup();
+  user("alice");
+  enableWhatsApp(env);
+  const alice = (await createWorkspace(env, "alice", "Alice Salon"))!;
+  await saveFaqs(env, "alice", alice.id, {
+    version: 0,
+    faqs: [{ id: crypto.randomUUID(), question: "What are your opening hours?", answer: "Weekdays ten to four." }],
+  });
+  const saved = globalThis.fetch;
+  globalThis.fetch = graphFetch({
+    "/oauth/access_token": () => Response.json({ access_token: "tenant-token" }),
+    "fields=display_phone_number": () =>
+      Response.json({ display_phone_number: "+234 801 222 2222", is_on_biz_app: true }),
+    "/subscribed_apps": () => Response.json({ success: true }),
+    "/messages": () => Response.json({ messages: [{ id: "wamid.team-out" }] }),
+  }) as typeof fetch;
+  try {
+    await whatsappAction(env, "alice", "whatsapp.connect", {
+      workspaceId: alice.id,
+      code: "exchange-code-value",
+      session: {
+        event: "FINISH",
+        data: { phone_number_id: "555222333444", messaging_account_ids: ["555222000"] },
+      },
+    });
+    assert.equal(
+      (
+        await signedWhatsApp(env, {
+          object: "whatsapp_business_account",
+          entry: [
+            {
+              changes: [
+                {
+                  value: {
+                    metadata: { phone_number_id: "000000000000" },
+                    messages: [{ id: "wamid.unknown", from: "2348000000000", type: "text", text: { body: "hello" } }],
+                  },
+                },
+              ],
+            },
+          ],
+        })
+      ).status,
+      200,
+    );
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_whatsapp_threads").get()!.n, 0);
+    await processWhatsAppPayload(env, {
+      object: "whatsapp_business_account",
+      entry: [
+        {
+          changes: [
+            {
+              value: {
+                metadata: { phone_number_id: "555222333444" },
+                contacts: [{ profile: { name: "Chidi" } }],
+                messages: [
+                  {
+                    id: "wamid.human",
+                    from: "2348090000009",
+                    type: "text",
+                    text: { body: "HUMAN" },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+    });
+    const thread = sql.prepare("SELECT id,paused,version FROM platform_whatsapp_threads").get()! as {
+      id: string;
+      paused: number;
+      version: number;
+    };
+    assert.equal(thread.paused, 1);
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_whatsapp_events WHERE direction='out'").get()!.n, 0);
+    const replied = (await whatsappAction(env, "alice", "whatsapp.reply", {
+      workspaceId: alice.id,
+      id: thread.id,
+      version: thread.version,
+      text: "We will help you shortly.",
+    })) as { paused: boolean; messages: Array<{ role: string; text: string }> };
+    assert.equal(replied.paused, true);
+    assert.ok(replied.messages.some((m) => m.role === "team"));
+    assert.equal(
+      sql.prepare("SELECT count(*) n FROM platform_whatsapp_connections WHERE state='connected'").get()!.n,
+      1,
+    );
+    await whatsappAction(env, "alice", "whatsapp.disconnect", { workspaceId: alice.id });
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_whatsapp_connections").get()!.n, 0);
+    assert.equal((await workspaceView(env, "alice", alice.id)).readiness.whatsappConnected, false);
+  } finally {
+    globalThis.fetch = saved;
+    sql.close();
+  }
 });
