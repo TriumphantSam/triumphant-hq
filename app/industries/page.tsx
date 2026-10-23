@@ -6,7 +6,7 @@ import { industries } from "@/lib/compare-industries";
 import { buildPageMetadata, collectionPageJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Industries We Serve | Triumphant HQ Ibadan",
+  title: "Industries We Serve | TriumphantTech Ibadan",
   description:
     "Digital systems for professional firms, SaaS teams and local service businesses in Ibadan and across Nigeria—plus a dedicated local support desk.",
   path: "/industries",

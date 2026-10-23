@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "SEO Snapshot received | Triumphant HQ",
+  title: "SEO Snapshot received | TriumphantTech",
   description: "Your SEO snapshot request was received. Check your inbox for the summary.",
   path: "/seo-snapshot/thank-you",
   noIndex: true,

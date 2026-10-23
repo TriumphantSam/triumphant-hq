@@ -27,7 +27,7 @@ relatedLinks:
 
 The map pack sits above the ordinary blue links for a lot of Ibadan searches. People looking for a clinic, a school, a designer or an agency often choose from those three profiles before they ever scroll. This guide is how to make a Google Business Profile worth choosing. It is not a method for forcing your way into the pack, and it is not an invitation to stuff the business name with keywords.
 
-Triumphant HQ’s own profile is a useful caution. The public listing people see is for Triumphant Technological Services, with a computer-support category and very few reviews, while the agencies already in the Ibadan pack have dozens or hundreds of reviews and categories closer to marketing or web design. Category and review count are doing more work than a clever sentence on the website. If you want the website side of local SEO, that lives on [SEO in Ibadan](/services/seo/ibadan). The [checklist](/blog/seo-for-ibadan-local-businesses) is the wider order of work.
+TriumphantTech’s own profile is a useful caution. The public listing people see is for Triumphant Technological Services, with a computer-support category and very few reviews, while the agencies already in the Ibadan pack have dozens or hundreds of reviews and categories closer to marketing or web design. Category and review count are doing more work than a clever sentence on the website. If you want the website side of local SEO, that lives on [SEO in Ibadan](/services/seo/ibadan). The [checklist](/blog/seo-for-ibadan-local-businesses) is the wider order of work.
 
 ## What the pack is actually judging
 

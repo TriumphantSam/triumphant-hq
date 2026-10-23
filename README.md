@@ -1,6 +1,6 @@
-# Triumphant HQ Website
+# TriumphantTech Website
 
-Modern website for Triumphant HQ built with Next.js 16 + Tailwind CSS v4.
+Modern website for TriumphantTech built with Next.js 16 + Tailwind CSS v4.
 
 Automation Lab implementation, current readiness, WhatsApp deployment audit,
 and staging setup: [docs/automation-lab.md](docs/automation-lab.md).
@@ -78,5 +78,5 @@ To add a new blog post manually:
 ## 📞 Contact Info
 
 - **Email**: admin@triumphantech.com
-- **WhatsApp**: +234 810 771 1190
+- **WhatsApp**: +234 909 009 0910
 - **Address**: Basorun Rd, Ibadan 211107, Oyo

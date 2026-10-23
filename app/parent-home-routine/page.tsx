@@ -476,7 +476,7 @@ export default function ParentHomeRoutinePage() {
       <footer className="py-12 px-6 border-t text-center" style={{ background: WARM_BG, borderColor: 'rgba(253,248,239,0.05)' }}>
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs font-light" style={{ color: 'rgba(253,248,239,0.2)' }}>
-            © {new Date().getFullYear()} ParentPeace · Hosted on <Link href="/" className="underline hover:opacity-60 transition-opacity">Triumphant HQ</Link>
+            © {new Date().getFullYear()} ParentPeace · Hosted on <Link href="/" className="underline hover:opacity-60 transition-opacity">TriumphantTech</Link>
           </p>
           <div className="flex gap-6 text-xs font-light" style={{ color: 'rgba(253,248,239,0.2)' }}>
             <Link href="/privacy-policy" className="hover:opacity-60 transition-opacity">Privacy</Link>

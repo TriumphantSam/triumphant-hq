@@ -13,9 +13,9 @@ import { agencyServices, projectEnquiryUrl } from "@/lib/services";
 import { SITE_URL, buildPageMetadata, imageObjectJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Technology & Growth Services in Ibadan | Triumphant HQ",
+  title: "Technology & Growth Services in Ibadan | TriumphantTech",
   description:
-    "Website design, custom apps, SEO and AI automation from Triumphant HQ in Ibadan—serving Oyo State, Osun and businesses across Nigeria.",
+    "Website design, custom apps, SEO and AI automation from TriumphantTech in Ibadan—serving Oyo State, Osun and businesses across Nigeria.",
   path: "/services",
   keywords: [
     "technology services Ibadan",

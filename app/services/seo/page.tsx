@@ -12,7 +12,7 @@ import { getAgencyService, projectEnquiryUrl, whatsappNumber } from "@/lib/servi
 
 const service = getAgencyService("seo")!;
 const path = "/services/seo";
-const title = "SEO Company in Nigeria | SEO Agency Services · Triumphant HQ";
+const title = "SEO Company in Nigeria | SEO Agency Services · TriumphantTech";
 const description =
   "Nigerian SEO agency serving Lagos, Abuja, Ibadan and nationwide: technical SEO, migrations, content, local SEO and AI-search visibility. Free SEO snapshot.";
 
@@ -39,7 +39,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-  "Hello Triumphant HQ — I would like to talk about SEO for my business in Nigeria.",
+  "Hello TriumphantTech — I would like to talk about SEO for my business in Nigeria.",
 )}`;
 
 export default function NigeriaSeoPage() {
@@ -80,7 +80,7 @@ export default function NigeriaSeoPage() {
         <p className="eyebrow">{service.eyebrow}</p>
         <h1>SEO agency in Nigeria for businesses that need search to bring in leads</h1>
         <p>
-          Triumphant HQ is a Nigerian SEO agency based in Ibadan since 2019, delivering search work for businesses
+          TriumphantTech is a Nigerian SEO agency based in Ibadan since 2019, delivering search work for businesses
           across the country. The headquarters is on Basorun Rd. The clients are not all in Ibadan, and this page is
           not an Ibadan page with the city name swapped out.
         </p>
@@ -233,7 +233,7 @@ export default function NigeriaSeoPage() {
               <h3 className="font-display text-xl font-bold text-slate-950">AI search visibility</h3>
               <p className="mt-3 max-w-3xl text-[1.05rem] leading-8 text-slate-600">
                 Assistants repeat what they can verify. Consistent naming — Triumphant Technological Services,
-                Triumphant HQ, the city, the services — and FAQs that match the visible page give them less to invent.
+                TriumphantTech, the city, the services — and FAQs that match the visible page give them less to invent.
                 Structured data should confirm the page, not add a rating or a price the page does not show.
               </p>
             </article>
@@ -248,7 +248,7 @@ export default function NigeriaSeoPage() {
             The SEO case study we can account for
           </h2>
           <p className="mt-4 text-[1.05rem] leading-8 text-slate-600">
-            Integrated Aerial Precision (iaprecision.com) is the engagement we use as the main proof. Triumphant HQ
+            Integrated Aerial Precision (iaprecision.com) is the engagement we use as the main proof. TriumphantTech
             has managed the website and the SEO since July 2024. IAP sells agricultural drone services and equipment
             to a Nigerian market, with a large content and product site rather than a single local landing page.
           </p>

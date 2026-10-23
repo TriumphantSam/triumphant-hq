@@ -3,9 +3,9 @@ import LocalSupportExperience from "@/components/marketing/LocalSupportExperienc
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "NIN & BVN Help Desk in Ibadan | Verification, IPE & Recovery · Triumphant HQ",
+  title: "NIN & BVN Help Desk in Ibadan | Verification, IPE & Recovery · TriumphantTech",
   description:
-    "Get NIN enrolment, verification, lost NIN recovery, IPE clearance, validation, suspended NIN fix, and BVN card/retrieval support from Triumphant HQ's local desk in Ibadan. Contact us on WhatsApp.",
+    "Get NIN enrolment, verification, lost NIN recovery, IPE clearance, validation, suspended NIN fix, and BVN card/retrieval support from TriumphantTech's local desk in Ibadan. Contact us on WhatsApp.",
   path: "/nin-bvn-desk",
   keywords: [
     "NIN verification Ibadan",

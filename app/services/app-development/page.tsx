@@ -6,7 +6,7 @@ import { buildPageMetadata } from "@/lib/seo";
 const service = getAgencyService("app-development")!;
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Custom App Development in Ibadan | Triumphant HQ",
+  title: "Custom App Development in Ibadan | TriumphantTech",
   description:
     "Custom web applications, portals and operational software designed in Ibadan for teams across Oyo State, Osun and Nigeria.",
   path: "/services/app-development",

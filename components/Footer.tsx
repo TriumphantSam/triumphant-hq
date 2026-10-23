@@ -73,12 +73,12 @@ export default function Footer() {
         <div className="grid gap-12 border-b border-slate-200/90 pt-16 pb-14 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-16 lg:pt-20 lg:pb-14">
           {/* Brand / NAP / CTAs — single left edge, even vertical rhythm */}
           <div className="site-footer-brand flex w-full max-w-[22rem] flex-col items-start gap-6">
-            <Link href="/" className="inline-flex items-center gap-3" aria-label="Triumphant HQ">
+            <Link href="/" className="inline-flex items-center gap-3" aria-label="TriumphantTech">
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--accent-color)]">
                 <span className="font-display text-lg font-bold text-white">T</span>
               </div>
               <span className="font-display text-xl font-bold tracking-[-0.03em] text-slate-950">
-                Triumphant<span className="text-[var(--accent-color)]">HQ</span>
+                Triumphant<span className="text-[var(--accent-color)]">Tech</span>
               </span>
             </Link>
 

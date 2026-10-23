@@ -21,10 +21,10 @@ export async function generateMetadata({
   const study = getCaseStudy(slug);
   if (!study) return {};
   return buildPageMetadata({
-    title: `${study.client} Case Study | Triumphant HQ`,
+    title: `${study.client} Case Study | TriumphantTech`,
     description: study.summary,
     path: `/work/${study.slug}`,
-    keywords: [study.client, study.sector, study.service, "case study Ibadan", "Triumphant HQ work"],
+    keywords: [study.client, study.sector, study.service, "case study Ibadan", "TriumphantTech work"],
   });
 }
 

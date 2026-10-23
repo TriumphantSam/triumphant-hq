@@ -1,4 +1,4 @@
-# Canonical host — Triumphant HQ
+# Canonical host — TriumphantTech
 
 Primary public host: **https://triumphantech.com** (apex, no `www`).
 

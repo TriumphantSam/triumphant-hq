@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
             product_options: {
               enabled_variants: [variantId],
               redirect_url: redirectUrl.toString(),
-              receipt_button_text: "Return to Triumphant HQ",
+              receipt_button_text: "Return to TriumphantTech",
               receipt_link_url: redirectUrl.toString(),
             },
           },

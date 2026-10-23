@@ -7,9 +7,9 @@ import { buildPageMetadata, collectionPageJsonLd, locationPages, siteIdentity } 
 import { whatsappNumber } from "@/lib/services";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Service Areas | Ibadan, Oyo, Osun & Nigeria | Triumphant HQ",
+  title: "Service Areas | Ibadan, Oyo, Osun & Nigeria | TriumphantTech",
   description:
-    "Service areas for Triumphant HQ: Ibadan neighbourhoods, Oyo State, Osun State and remote clients across Nigeria, plus local NIN and BVN support.",
+    "Service areas for TriumphantTech: Ibadan neighbourhoods, Oyo State, Osun State and remote clients across Nigeria, plus local NIN and BVN support.",
   path: "/locations",
   keywords: [
     "technology agency Ibadan",
@@ -89,7 +89,7 @@ export default function LocationsHubPage() {
             </Link>
             <a
               className="button button-secondary"
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello Triumphant HQ — I need local support in my area.")}`}
+              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello TriumphantTech — I need local support in my area.")}`}
               target="_blank"
               rel="noreferrer"
             >

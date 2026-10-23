@@ -5,12 +5,12 @@ import JsonLd from '@/components/seo/JsonLd';
 import { buildPageMetadata, collectionPageJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Insights & Guides | Triumphant HQ Blog",
+  title: "Insights & Guides | TriumphantTech Blog",
   description:
-    "Practical articles on websites, SEO, automation and digital growth from Triumphant HQ in Ibadan—built for founders and operators across Nigeria.",
+    "Practical articles on websites, SEO, automation and digital growth from TriumphantTech in Ibadan—built for founders and operators across Nigeria.",
   path: "/blog",
   keywords: [
-    "Triumphant HQ blog",
+    "TriumphantTech blog",
     "SEO guides Nigeria",
     "digital growth Ibadan",
     "automation insights",

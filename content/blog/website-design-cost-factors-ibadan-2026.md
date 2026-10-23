@@ -39,7 +39,7 @@ A professional engagement is more than a homepage mockup. Typical scope covers:
 4. **Launch** — DNS, analytics, basic SEO metadata, handover  
 5. **Optional care** — updates, security monitoring, iterative improvements  
 
-Triumphant HQ delivers this from Basorun Rd, Ibadan, for local firms and nationwide remote clients. See [website design in Ibadan](/services/websites/ibadan).
+TriumphantTech delivers this from Basorun Rd, Ibadan, for local firms and nationwide remote clients. See [website design in Ibadan](/services/websites/ibadan).
 
 ## The real cost drivers
 

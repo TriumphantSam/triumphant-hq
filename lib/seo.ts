@@ -10,11 +10,11 @@ export function publicSiteUrl() {
 }
 
 export const siteIdentity = {
-  brandName: "Triumphant HQ",
+  brandName: "TriumphantTech",
   legalName: "Triumphant Technological Services",
   email: "admin@triumphantech.com",
-  phoneDisplay: "+234 810 771 1190",
-  phoneE164: "+2348107711190",
+  phoneDisplay: "+234 909 009 0910",
+  phoneE164: "+2349090090910",
   whatsapp: "2349090090910",
   streetAddress: "Basorun Rd",
   addressLocality: "Ibadan",
@@ -95,12 +95,12 @@ export const locationPages: LocationPage[] = [
     slug: "ibadan",
     name: "Ibadan",
     region: "Oyo State, Nigeria",
-    title: "Technology Agency in Ibadan | NIN & BVN Support · Triumphant HQ",
+    title: "Technology Agency in Ibadan | NIN & BVN Support · TriumphantTech",
     description:
-      "Triumphant HQ in Ibadan offers website design, SEO, custom apps, automation, plus certified NIN enrolment and BVN support across Oyo State.",
+      "TriumphantTech in Ibadan offers website design, SEO, custom apps, automation, plus certified NIN enrolment and BVN support across Oyo State.",
     h1: "Technology agency in Ibadan—plus NIN and BVN support on Basorun Rd",
     intro: [
-      "Triumphant HQ is an Ibadan-based technology and growth agency. We help businesses grow with websites, SEO, applications and automation—and we run a dedicated local desk for NIN, BVN and essential digital services.",
+      "TriumphantTech is an Ibadan-based technology and growth agency. We help businesses grow with websites, SEO, applications and automation—and we run a dedicated local desk for NIN, BVN and essential digital services.",
       "Whether you are in Bodija, Akobo, Bashorun, Challenge, Ojoo or elsewhere in the city, you can reach us for practical support and professional delivery.",
       "Since 2019 we have combined global-standard digital delivery with local responsiveness—serving organisations across Oyo State, Osun State and clients nationwide from our Basorun Rd base.",
     ],
@@ -118,9 +118,9 @@ export const locationPages: LocationPage[] = [
     nearby: ["akobo", "bashorun", "bodija", "challenge", "ojoo", "oyo", "osogbo"],
     faqs: [
       {
-        question: "Is Triumphant HQ a technology company in Ibadan?",
+        question: "Is TriumphantTech a technology company in Ibadan?",
         answer:
-          "Yes. Triumphant HQ (Triumphant Technological Services) is based on Basorun Rd, Ibadan, Oyo State. We deliver websites, SEO, custom applications and automation, plus a separate Local Support desk for NIN and BVN.",
+          "Yes. TriumphantTech (Triumphant Technological Services) is based on Basorun Rd, Ibadan, Oyo State. We deliver websites, SEO, custom applications and automation, plus a separate Local Support desk for NIN and BVN.",
       },
       {
         question: "Do you only serve Ibadan?",
@@ -133,9 +133,9 @@ export const locationPages: LocationPage[] = [
     slug: "akobo",
     name: "Akobo",
     region: "Ibadan, Oyo State",
-    title: "NIN, BVN & Digital Support in Akobo, Ibadan | Triumphant HQ",
+    title: "NIN, BVN & Digital Support in Akobo, Ibadan | TriumphantTech",
     description:
-      "Need NIN enrolment or BVN help in Akobo, Ibadan? Triumphant HQ provides certified local digital support plus websites, SEO and automation for nearby businesses.",
+      "Need NIN enrolment or BVN help in Akobo, Ibadan? TriumphantTech provides certified local digital support plus websites, SEO and automation for nearby businesses.",
     h1: "NIN, BVN and digital help for Akobo and nearby Ibadan",
     intro: [
       "Residents and businesses around Akobo can get careful guidance for NIN and BVN services, plus access to our full agency capabilities when growth systems are needed.",
@@ -164,14 +164,14 @@ export const locationPages: LocationPage[] = [
     slug: "bashorun",
     name: "Bashorun",
     region: "Ibadan, Oyo State",
-    title: "NIN Enrolment & Tech Support in Bashorun, Ibadan | Triumphant HQ",
+    title: "NIN Enrolment & Tech Support in Bashorun, Ibadan | TriumphantTech",
     description:
       "Certified NIN and BVN support for Bashorun, Ibadan, plus website design, SEO and automation for local businesses across Oyo State.",
     h1: "Local digital support serving Bashorun, Ibadan",
     intro: [
       "From Bashorun and surrounding neighbourhoods, people come to us for NIN enrolment, modifications and BVN help—with clear WhatsApp-first guidance.",
       "Our office is on Basorun Rd, Ibadan 211107, Oyo—practical for Bashorun-area residents and businesses.",
-      "Businesses in and around Bashorun also engage Triumphant HQ for websites, search visibility and practical automation.",
+      "Businesses in and around Bashorun also engage TriumphantTech for websites, search visibility and practical automation.",
     ],
     localFocus: [
       "NIN enrolment and NIMC-related support near Bashorun",
@@ -185,7 +185,7 @@ export const locationPages: LocationPage[] = [
     nearby: ["ibadan", "akobo", "bodija", "challenge"],
     faqs: [
       {
-        question: "Where is Triumphant HQ relative to Bashorun?",
+        question: "Where is TriumphantTech relative to Bashorun?",
         answer:
           "We are on Basorun Rd, Ibadan 211107, Oyo. Message WhatsApp first for Local Support so we confirm documents and availability.",
       },
@@ -195,12 +195,12 @@ export const locationPages: LocationPage[] = [
     slug: "bodija",
     name: "Bodija",
     region: "Ibadan, Oyo State",
-    title: "Website, SEO & NIN Support near Bodija, Ibadan | Triumphant HQ",
+    title: "Website, SEO & NIN Support near Bodija, Ibadan | TriumphantTech",
     description:
-      "Triumphant HQ serves Bodija and greater Ibadan with professional websites, SEO, automation and certified NIN/BVN local support.",
+      "TriumphantTech serves Bodija and greater Ibadan with professional websites, SEO, automation and certified NIN/BVN local support.",
     h1: "Technology and identity support near Bodija",
     intro: [
-      "Bodija and central Ibadan clients use Triumphant HQ for both growth systems and essential digital services like NIN and BVN.",
+      "Bodija and central Ibadan clients use TriumphantTech for both growth systems and essential digital services like NIN and BVN.",
       "Whether you need a credible website for a professional firm or careful NIN enrolment help, start on WhatsApp or book a discovery call for agency work.",
     ],
     localFocus: ["NIN and BVN assistance", "School portal support", "Document and form help"],
@@ -218,7 +218,7 @@ export const locationPages: LocationPage[] = [
     slug: "challenge",
     name: "Challenge",
     region: "Ibadan, Oyo State",
-    title: "NIN, BVN & Digital Services in Challenge, Ibadan | Triumphant HQ",
+    title: "NIN, BVN & Digital Services in Challenge, Ibadan | TriumphantTech",
     description:
       "Get NIN enrolment help, BVN support and digital services for Challenge, Ibadan—plus agency websites and SEO for local businesses.",
     h1: "Digital support for Challenge and South Ibadan",
@@ -241,12 +241,12 @@ export const locationPages: LocationPage[] = [
     slug: "ojoo",
     name: "Ojoo",
     region: "Ibadan, Oyo State",
-    title: "NIN Enrolment & Tech Agency Services in Ojoo, Ibadan | Triumphant HQ",
+    title: "NIN Enrolment & Tech Agency Services in Ojoo, Ibadan | TriumphantTech",
     description:
       "NIN and BVN support for Ojoo, Ibadan, with website design, SEO and automation for businesses across northern Ibadan corridors.",
     h1: "Serving Ojoo with local support and growth systems",
     intro: [
-      "From Ojoo and nearby routes into Ibadan, clients reach Triumphant HQ for certified local identity support and professional digital delivery.",
+      "From Ojoo and nearby routes into Ibadan, clients reach TriumphantTech for certified local identity support and professional digital delivery.",
       "We combine neighbourhood accessibility with agency-grade websites, SEO and automation for operators along the northern corridor.",
     ],
     localFocus: ["NIN support", "BVN support", "Portal and document help"],
@@ -264,9 +264,9 @@ export const locationPages: LocationPage[] = [
     slug: "oyo",
     name: "Oyo",
     region: "Oyo State, Nigeria",
-    title: "Website Design, SEO & NIN Support in Oyo State | Triumphant HQ",
+    title: "Website Design, SEO & NIN Support in Oyo State | TriumphantTech",
     description:
-      "Triumphant HQ supports Oyo town and Oyo State with websites, SEO, automation and local NIN/BVN digital services from our Ibadan base.",
+      "TriumphantTech supports Oyo town and Oyo State with websites, SEO, automation and local NIN/BVN digital services from our Ibadan base.",
     h1: "Digital services across Oyo State",
     intro: [
       "Based in Ibadan, we serve clients across Oyo State—including Oyo town—with agency delivery and local digital support.",
@@ -277,7 +277,7 @@ export const locationPages: LocationPage[] = [
     nearby: ["ibadan", "osogbo", "ojoo"],
     faqs: [
       {
-        question: "Can Oyo town businesses hire Triumphant HQ?",
+        question: "Can Oyo town businesses hire TriumphantTech?",
         answer:
           "Yes. We deliver websites, SEO, apps and automation across Oyo State from Ibadan, with remote-friendly project management.",
       },
@@ -287,12 +287,12 @@ export const locationPages: LocationPage[] = [
     slug: "osogbo",
     name: "Osogbo",
     region: "Osun State, Nigeria",
-    title: "SEO, Websites & Digital Support for Osogbo & Osun | Triumphant HQ",
+    title: "SEO, Websites & Digital Support for Osogbo & Osun | TriumphantTech",
     description:
       "Work with an Ibadan-based technology partner serving Osogbo and Osun State—websites, SEO, automation and practical digital support.",
     h1: "Technology partnership for Osogbo and Osun State",
     intro: [
-      "Organisations in Osogbo and across Osun State engage Triumphant HQ for credible websites, search visibility and operational systems.",
+      "Organisations in Osogbo and across Osun State engage TriumphantTech for credible websites, search visibility and operational systems.",
       "We combine remote delivery with regional understanding of Southwestern Nigeria markets.",
     ],
     localFocus: ["Practical digital support coordinated via WhatsApp", "Identity and portal guidance when needed"],
@@ -310,12 +310,12 @@ export const locationPages: LocationPage[] = [
     slug: "ife",
     name: "Ile-Ife",
     region: "Osun State, Nigeria",
-    title: "Web Design & SEO for Ile-Ife, Osun State | Triumphant HQ",
+    title: "Web Design & SEO for Ile-Ife, Osun State | TriumphantTech",
     description:
-      "Triumphant HQ helps Ile-Ife and Osun State businesses with websites, SEO growth, applications and automation—delivered from Ibadan.",
+      "TriumphantTech helps Ile-Ife and Osun State businesses with websites, SEO growth, applications and automation—delivered from Ibadan.",
     h1: "Digital growth systems for Ile-Ife",
     intro: [
-      "From Ile-Ife, partner with Triumphant HQ for professional websites, SEO and systems that help customers find and trust you.",
+      "From Ile-Ife, partner with TriumphantTech for professional websites, SEO and systems that help customers find and trust you.",
       "Discovery calls and WhatsApp keep collaboration clear whether your team is campus-adjacent or city-based.",
     ],
     localFocus: ["WhatsApp-first coordination for digital tasks", "Referrals to local support when identity services are needed"],
@@ -323,7 +323,7 @@ export const locationPages: LocationPage[] = [
     nearby: ["osogbo", "oyo", "ibadan"],
     faqs: [
       {
-        question: "Can Ile-Ife startups get website design from Triumphant HQ?",
+        question: "Can Ile-Ife startups get website design from TriumphantTech?",
         answer:
           "Yes. We design and build websites for Ile-Ife and Osun State organisations, with SEO and automation available as the next stage.",
       },
@@ -338,7 +338,7 @@ export const locationPages: LocationPage[] = [
       "Nigerian technology agency based in Ibadan: websites, custom apps, SEO and AI automation for businesses nationwide, plus a NIN/BVN desk.",
     h1: "A Nigerian technology partner for ambitious businesses",
     intro: [
-      "Triumphant HQ (Triumphant Technological Services) is a technology agency headquartered on Basorun Rd, Ibadan. We have worked with organisations since 2019. This page is about that national technology practice: websites, custom applications and automation for teams anywhere in Nigeria. Search programmes have their own page, so this one does not try to rank as an SEO company.",
+      "TriumphantTech (Triumphant Technological Services) is a technology agency headquartered on Basorun Rd, Ibadan. We have worked with organisations since 2019. This page is about that national technology practice: websites, custom applications and automation for teams anywhere in Nigeria. Search programmes have their own page, so this one does not try to rank as an SEO company.",
       "The office is in Ibadan, in the Bashorun area of Oyo State. We do not run branch offices in Lagos, Abuja or Port Harcourt. When a client is outside Ibadan, delivery is remote: a discovery call, a written scope, and WhatsApp for the questions that should not wait for a meeting. Osun State clients in Osogbo and Ile-Ife use the same remote path.",
       "Website work is usually a Next.js build with a clear structure, fast mobile pages and the technical basics search engines need. Application work is for a workflow that spreadsheets and off-the-shelf tools keep breaking. Automation is for repetitive follow-up, handoffs and reporting. We will say when a smaller job is the right one.",
       "Local Support — NIN enrolment, modifications and BVN help — is a separate desk at the same Ibadan address. It is WhatsApp-first and it is not bundled into a software project. Nationwide clients who only need a website, an application or an automation stay on the agency path.",
@@ -350,7 +350,7 @@ export const locationPages: LocationPage[] = [
     nearby: ["ibadan", "oyo", "osogbo"],
     faqs: [
       {
-        question: "Does Triumphant HQ work nationwide?",
+        question: "Does TriumphantTech work nationwide?",
         answer:
           "Yes. Website, application and automation work is delivered nationwide from our Ibadan headquarters. The NIN and BVN desk is in Ibadan and is coordinated on WhatsApp.",
       },
@@ -384,12 +384,12 @@ export const serviceLocationPages: ServiceLocationPage[] = [
   {
     serviceSlug: "websites",
     locationSlug: "ibadan",
-    title: "Website Design Company in Ibadan | Triumphant HQ",
+    title: "Website Design Company in Ibadan | TriumphantTech",
     description:
       "Professional website design and development in Ibadan, Oyo State—conversion-focused sites for businesses across Southwestern Nigeria.",
     h1: "Website design and development in Ibadan",
     intro: [
-      "If you are searching for a website design company in Ibadan, Triumphant HQ builds credible, fast sites that help customers understand and trust your offer.",
+      "If you are searching for a website design company in Ibadan, TriumphantTech builds credible, fast sites that help customers understand and trust your offer.",
       "We work with professional firms, clinics, schools, SaaS teams and local service businesses—from first structure through launch and ongoing care.",
       "Based on Basorun Rd, we serve Ibadan neighbourhoods and deliver remotely across Oyo State, Osun State and Nigeria.",
     ],
@@ -413,7 +413,7 @@ export const serviceLocationPages: ServiceLocationPage[] = [
       {
         question: "Where is your website design studio?",
         answer:
-          "Triumphant HQ works from Basorun Rd, Ibadan 211107, Oyo. Discovery can be a call or WhatsApp; delivery is remote-friendly across Oyo State and Nigeria.",
+          "TriumphantTech works from Basorun Rd, Ibadan 211107, Oyo. Discovery can be a call or WhatsApp; delivery is remote-friendly across Oyo State and Nigeria.",
       },
     ],
     keywords: [
@@ -432,7 +432,7 @@ export function getServiceLocationPage(serviceSlug: string, locationSlug: string
 }
 
 export const defaultKeywords = [
-  "Triumphant HQ",
+  "TriumphantTech",
   "technology agency Ibadan",
   "technology company Ibadan",
   "best tech company Ibadan",
@@ -850,7 +850,7 @@ export function aboutPageJsonLd() {
       {
         "@type": "AboutPage",
         "@id": `${url}#webpage`,
-        name: "About Triumphant HQ",
+        name: "About TriumphantTech",
         url,
         isPartOf: { "@id": `${SITE_URL}/#website` },
         about: { "@id": `${SITE_URL}/#founder` },
@@ -870,7 +870,7 @@ export function aboutPageJsonLd() {
       {
         ...imageObjectJsonLd({
           src: "/images/adeyemi-olayemi.png",
-          caption: "Adeyemi Olayemi, founder of Triumphant HQ",
+          caption: "Adeyemi Olayemi, founder of TriumphantTech",
           id: imageId,
         }),
       },
@@ -1054,4 +1054,4 @@ export const formattedNapAddress = [
   .join(", ");
 
 export const entityDefinition =
-  "Triumphant HQ is an Ibadan-based technology and growth agency (Triumphant Technological Services) offering website design, SEO, custom applications and business automation, plus a certified Local Support desk for NIN and BVN services across Oyo State and Nigeria.";
+  "TriumphantTech is an Ibadan-based technology and growth agency (Triumphant Technological Services) offering website design, SEO, custom applications and business automation, plus a certified Local Support desk for NIN and BVN services across Oyo State and Nigeria.";

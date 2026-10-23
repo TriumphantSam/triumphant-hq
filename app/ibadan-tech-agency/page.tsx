@@ -21,9 +21,9 @@ const faqs = [
       "Look for clear scope, real proof (live work), local responsiveness, and a process you can follow. Ask who will do the work, how decisions are made, and how success is measured—not just a cheap quote.",
   },
   {
-    question: "Is Triumphant HQ a technology company in Ibadan?",
+    question: "Is TriumphantTech a technology company in Ibadan?",
     answer:
-      "Yes. Triumphant HQ (Triumphant Technological Services) is based on Basorun Rd, Ibadan 211107, Oyo. We deliver websites, SEO, custom applications and automation, with a separate Local Support desk for NIN and BVN.",
+      "Yes. TriumphantTech (Triumphant Technological Services) is based on Basorun Rd, Ibadan 211107, Oyo. We deliver websites, SEO, custom applications and automation, with a separate Local Support desk for NIN and BVN.",
   },
   {
     question: "Do you claim to be the number-one tech company in Ibadan?",
@@ -43,7 +43,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Tech Company in Ibadan | Technology Agency · Triumphant HQ",
+  title: "Tech Company in Ibadan | Technology Agency · TriumphantTech",
   description:
     "Tech company in Ibadan on Basorun Rd: websites, SEO, custom apps and automation from Triumphant Technological Services, plus a NIN and BVN desk.",
   path: "/ibadan-tech-agency",
@@ -101,7 +101,7 @@ export default function IbadanTechAgencyPage() {
             vague strategy decks.
           </p>
           <p>
-            Triumphant HQ has operated from Ibadan since {siteIdentity.foundingYear}. Our office NAP is{" "}
+            TriumphantTech has operated from Ibadan since {siteIdentity.foundingYear}. Our office NAP is{" "}
             <a
               href={siteIdentity.mapsUrl}
               target="_blank"
@@ -165,7 +165,7 @@ export default function IbadanTechAgencyPage() {
       <section className="section-muted">
         <div className="section-shell">
           <Reveal>
-            <p className="eyebrow">Why teams choose Triumphant HQ</p>
+            <p className="eyebrow">Why teams choose TriumphantTech</p>
             <h2 className="font-display mt-4 max-w-2xl text-[clamp(1.7rem,3vw,2.4rem)] font-bold tracking-[-0.035em] text-slate-950">
               Four disciplines. One accountable partner based in Ibadan.
             </h2>
@@ -224,7 +224,7 @@ export default function IbadanTechAgencyPage() {
               </Link>
               <a
                 className="button button-secondary"
-                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello Triumphant HQ — I need local support in Ibadan.")}`}
+                href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello TriumphantTech — I need local support in Ibadan.")}`}
                 target="_blank"
                 rel="noreferrer"
               >

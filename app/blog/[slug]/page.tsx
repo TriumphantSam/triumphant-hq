@@ -23,9 +23,9 @@ export async function generateMetadata({
     if (!post) return {};
     return buildPageMetadata({
         title: post.metaTitle || post.title,
-        description: post.excerpt || `${post.title} — insights from Triumphant HQ.`,
+        description: post.excerpt || `${post.title} — insights from TriumphantTech.`,
         path: `/blog/${post.slug}`,
-        keywords: [post.category, 'Triumphant HQ blog', 'digital growth Nigeria'],
+        keywords: [post.category, 'TriumphantTech blog', 'digital growth Nigeria'],
     });
 }
 

@@ -9,7 +9,7 @@ published: true
 serviceHref: "/services/seo/ibadan"
 serviceCtaLabel: "SEO company in Ibadan"
 serviceCtaTitle: "Want this done with you, not just read?"
-serviceCtaDescription: "Triumphant HQ is on Basorun Rd. Start with a free SEO snapshot or send a short brief."
+serviceCtaDescription: "TriumphantTech is on Basorun Rd. Start with a free SEO snapshot or send a short brief."
 faqSchema:
   - question: "What should an Ibadan business fix first?"
     answer: "Make the Google Business Profile and the website show the same name, address and phone, then fix anything that stops Google crawling the important pages."
@@ -26,7 +26,7 @@ relatedLinks:
     href: "/services/seo"
 ---
 
-If your customers are in Ibadan, the first job is not a generic keyword from another country. It is whether someone searching nearby can tell who you are, where you are, and what you do. This checklist is the order we use at Triumphant HQ, on Basorun Rd, when an Ibadan or Oyo State business asks for local SEO. It is not a second sales page. The service itself is on [SEO in Ibadan](/services/seo/ibadan).
+If your customers are in Ibadan, the first job is not a generic keyword from another country. It is whether someone searching nearby can tell who you are, where you are, and what you do. This checklist is the order we use at TriumphantTech, on Basorun Rd, when an Ibadan or Oyo State business asks for local SEO. It is not a second sales page. The service itself is on [SEO in Ibadan](/services/seo/ibadan).
 
 Work through it in order. Skipping to blog posts while the site cannot be crawled wastes the writing.
 

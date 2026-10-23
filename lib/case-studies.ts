@@ -81,7 +81,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       "By September 2026 the live site was a large Next.js property — blog, products, reports and core pages — and the crawl showed uneven index foundations. The sitemap and the pages Google could already see were not the same set, and several templates had titles, headings and claims that a buyer could not check.",
     solution:
-      "On 9 September 2026 Triumphant HQ delivered a full SEO audit of https://www.iaprecision.com. It recorded what the crawler returned, ranked 25 findings by severity, and wrote the evidence and the fix for each one. Quick wins and a 30-day roadmap sat at the front so the first month had an order, not a pile.",
+      "On 9 September 2026 TriumphantTech delivered a full SEO audit of https://www.iaprecision.com. It recorded what the crawler returned, ranked 25 findings by severity, and wrote the evidence and the fix for each one. Quick wins and a 30-day roadmap sat at the front so the first month had an order, not a pile.",
     // TODO(owner): add a verified iaprecision.com result (Search Console, index coverage or Core Web Vitals) only when you have the figure. Do not publish an estimate, ranking or testimonial.
     outcome:
       "The deliverable is the audit itself: a sitemap inventory, a severity-ranked finding list, quick wins, a four-week roadmap and Nigeria keyword clusters marked as content targets. This page does not add rankings, traffic, revenue or a client quotation.",
@@ -91,7 +91,7 @@ export const caseStudies: CaseStudy[] = [
       {
         heading: "What we are responsible for",
         paragraphs: [
-          "Triumphant HQ has managed the Integrated Aerial Precision website and SEO since July 2024. IAP is an agricultural drone company. The public site, iaprecision.com, sells services and equipment to a Nigerian market and carries a large blog and product catalogue. The work described here is that engagement, not a local-pack result for an Ibadan shop.",
+          "TriumphantTech has managed the Integrated Aerial Precision website and SEO since July 2024. IAP is an agricultural drone company. The public site, iaprecision.com, sells services and equipment to a Nigerian market and carries a large blog and product catalogue. The work described here is that engagement, not a local-pack result for an Ibadan shop.",
           "Older notes on this site described a move away from a rigid cPanel setup. The 9 September 2026 audit is the document we can cite line by line, so this page follows the audit rather than adding speed or traffic claims the audit did not measure.",
         ],
       },
@@ -133,7 +133,7 @@ export const caseStudies: CaseStudy[] = [
     service: "Technical SEO & local visibility",
     title: "Fixing local search visibility and technical SEO",
     summary:
-      "Technical SEO for Dr Seyi Absolute Wellness from Triumphant HQ in Ibadan: site structure, metadata and pages aligned to local search.",
+      "Technical SEO for Dr Seyi Absolute Wellness from TriumphantTech in Ibadan: site structure, metadata and pages aligned to local search.",
     problem:
       "Despite high-value wellness services, the brand had low digital visibility. High-intent local searchers could not reliably find landing pages when looking for wellness solutions.",
     solution:

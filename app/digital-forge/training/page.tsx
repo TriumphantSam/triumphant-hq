@@ -3,7 +3,7 @@ import CurrencyPrice from "@/components/CurrencyPrice";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Free Digital Forge Training | Triumphant HQ",
+  title: "Free Digital Forge Training | TriumphantTech",
   description: "The Digital Forge free training launches with the course. Join the waitlist to hear when it goes live.",
   path: "/digital-forge/training",
 });

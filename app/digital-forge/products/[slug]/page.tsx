@@ -69,11 +69,11 @@ export async function generateMetadata({ params }: PageProps) {
   const product = await getForgeProduct(slug);
   if (!product) return {};
   const rawTitle = (product.seo?.metaTitle || product.title)
-    .replace(/\s*\|\s*Triumphant HQ\s*$/i, "")
+    .replace(/\s*\|\s*TriumphantTech\s*$/i, "")
     .replace(/\s*\|\s*Digital Forge\s*$/i, "");
   const descriptionSource = product.seo?.metaDescription || product.promise || product.title;
   return buildPageMetadata({
-    title: `${clipMeta(rawTitle, 42)} | Triumphant HQ`,
+    title: `${clipMeta(rawTitle, 42)} | TriumphantTech`,
     description: clipMeta(descriptionSource, 155),
     path: `/digital-forge/products/${product.slug}`,
   });

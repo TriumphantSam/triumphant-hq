@@ -5,7 +5,7 @@ import { formatOfferPrice, resolveLaunchBundleOffer } from "@/lib/digital-forge-
 import { buildPageMetadata, collectionPageJsonLd } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Digital Forge Products | Triumphant HQ",
+  title: "Digital Forge Products | TriumphantTech",
   description:
     "AI playbooks, prompt packs and workflow systems from the Digital Forge store. Instant delivery for people who want a finished method.",
   path: "/digital-forge/products",

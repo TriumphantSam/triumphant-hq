@@ -11,7 +11,7 @@ serviceCtaTitle: "Need NIN help in Ibadan?"
 serviceCtaDescription: "WhatsApp our Local Support desk before you visit so we confirm documents and timing."
 faqSchema:
   - question: "Where can I get NIN enrolment help in Ibadan?"
-    answer: "Triumphant HQ runs a Local Support desk in Ibadan for NIN enrolment and modifications, coordinated WhatsApp-first. Confirm requirements before visiting."
+    answer: "TriumphantTech runs a Local Support desk in Ibadan for NIN enrolment and modifications, coordinated WhatsApp-first. Confirm requirements before visiting."
   - question: "Do you serve Akobo and Bashorun?"
     answer: "Yes. Residents around Akobo, Bashorun and other Ibadan neighbourhoods use our Local Support desk. Message WhatsApp first."
   - question: "Is Local Support the same as hiring your tech agency?"
@@ -25,7 +25,7 @@ relatedLinks:
     href: "/locations/bashorun"
 ---
 
-If you need **NIN enrolment in Ibadan**—or a modification—the fastest path is preparation plus clear guidance. This page explains what to expect when you work with Triumphant HQ’s Local Support desk.
+If you need **NIN enrolment in Ibadan**—or a modification—the fastest path is preparation plus clear guidance. This page explains what to expect when you work with TriumphantTech’s Local Support desk.
 
 ## Start on WhatsApp
 

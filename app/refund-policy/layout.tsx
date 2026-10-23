@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Refund Policy | Triumphant HQ",
+  title: "Refund Policy | TriumphantTech",
   description:
-    "Refund Policy for digital products sold by Triumphant HQ (Triumphant Technological Services).",
+    "Refund Policy for digital products sold by TriumphantTech (Triumphant Technological Services).",
   path: "/refund-policy",
 });
 

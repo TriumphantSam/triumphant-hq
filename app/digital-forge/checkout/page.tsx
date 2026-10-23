@@ -27,7 +27,7 @@ type CheckoutPageProps = {
 };
 
 export const metadata = buildPageMetadata({
-  title: "Secure Checkout | Triumphant HQ",
+  title: "Secure Checkout | TriumphantTech",
   description: "Complete a Digital Forge purchase. Global and local payment options are available.",
   path: "/digital-forge/checkout",
 });
@@ -236,7 +236,7 @@ export default async function DigitalForgeCheckoutPage({ searchParams }: Checkou
                     <p className="font-bold">This offer is temporarily unavailable.</p>
                     <p className="mt-2 text-sm leading-6">Please contact us before purchasing. We will confirm when delivery is ready.</p>
                     <Link className="mt-4 inline-block font-semibold text-blue-700 underline" href="/contact">
-                      Contact Triumphant HQ
+                      Contact TriumphantTech
                     </Link>
                   </div>
                 )}

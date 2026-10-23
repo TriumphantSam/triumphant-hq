@@ -1,4 +1,4 @@
-# Frontend Designer Brief — Triumphant HQ
+# Frontend Designer Brief — TriumphantTech
 ## Apply IAP-level craftsmanship to `triumphant-hq`
 
 **Repo / local path:** `C:\Users\trium\triumphant-hq`  
@@ -12,7 +12,7 @@
 
 ## 0. One-sentence mission
 
-Raise every marketing surface of Triumphant HQ to the **same craft bar** we used when we redesigned Precision Field Academy off **Integrated Aerial Precision (IAP)** — every detail intentional, premium, and coherent — while keeping **Triumphant HQ’s own brand** (editorial light + blue accent), not IAP’s green AgTech look.
+Raise every marketing surface of TriumphantTech to the **same craft bar** we used when we redesigned Precision Field Academy off **Integrated Aerial Precision (IAP)** — every detail intentional, premium, and coherent — while keeping **TriumphantTech’s own brand** (editorial light + blue accent), not IAP’s green AgTech look.
 
 ---
 
@@ -20,10 +20,10 @@ Raise every marketing surface of Triumphant HQ to the **same craft bar** we used
 
 ### Do this
 - Steal **quality, rhythm, spatial discipline, photography treatment, motion taste, and interaction polish** from IAP (`https://www.iaprecision.com`) and from the PFA site that already absorbed that craft.
-- Make Triumphant HQ feel like a **top-tier African tech agency site**: cinematic, confident, quiet luxury, zero template smell.
+- Make TriumphantTech feel like a **top-tier African tech agency site**: cinematic, confident, quiet luxury, zero template smell.
 
 ### Do not do this
-- Do **not** paste IAP greens (`#022706`, `#32aa00`, `#4bff00`) onto Triumphant HQ.
+- Do **not** paste IAP greens (`#022706`, `#32aa00`, `#4bff00`) onto TriumphantTech.
 - Do **not** copy IAP copy, drone imagery, or AgTech IA.
 - Do **not** invent a second design system beside the tokens already in `app/globals.css`.
 - Do **not** ship “AI slop”: purple-blue mesh blobs, generic 3D icons, uneven card padding, orphan CTAs, mismatched radii, decorative lines that go nowhere.
@@ -38,7 +38,7 @@ Raise every marketing surface of Triumphant HQ to the **same craft bar** we used
 |---|---|---|
 | 1 | Live IAP — `https://www.iaprecision.com` | The craft bar: hero photography, partner strip, dual CTAs, section pacing, trust density |
 | 2 | Live PFA — `https://precisionfieldacademy.com` (and workers.dev if custom domain lags) | Proof we already transferred IAP craft into another Triumphant brand successfully |
-| 3 | This repo’s `app/globals.css` + `components/Hero.tsx` + `components/Navigation.tsx` + `components/marketing/*` | The **official** Triumphant HQ token + component kit — extend, don’t replace |
+| 3 | This repo’s `app/globals.css` + `components/Hero.tsx` + `components/Navigation.tsx` + `components/marketing/*` | The **official** TriumphantTech token + component kit — extend, don’t replace |
 | 4 | Homepage `app/page.tsx` | Canonical section order and content spine |
 
 Also compare side-by-side on desktop + iPhone width. Screenshot IAP hero, logo rail, services band, proof band, final CTA — then match the *feeling*, not the hex codes.
@@ -104,7 +104,7 @@ Accent a **single** phrase in big headlines (`.accent-word` / span), never rainb
 
 ## 4. IAP craft patterns to transplant (detail checklist)
 
-Use this as a **quality audit**. Every pattern below should be visibly true on Triumphant HQ after the pass.
+Use this as a **quality audit**. Every pattern below should be visibly true on TriumphantTech after the pass.
 
 ### 4.1 Hero (cinematic, not “template”)
 1. Full-bleed real photography (or approved cinematic still), not a flat colour wash.
@@ -191,7 +191,7 @@ IAP lesson: each band has **one job**. No band tries to sell services + tell a s
 2. Normalize button classes (`.button` / `.button-primary` / `.button-secondary` / `.button-ghost`) everywhere — kill one-off inline gradient buttons.
 3. Normalize SectionHeader usage on all marketing pages.
 4. Confirm fonts load once via `layout.tsx`; no conflicting Google Fonts tags.
-5. Align naming in UI: **Triumphant HQ** (decision: pick one lockup — `TriumphantHQ` vs `Triumphant HQ` — and use it everywhere including nav, footer, metadata, OG).
+5. Align naming in UI: **TriumphantTech**, including nav, footer, metadata, and OG.
 
 ### Phase B — Homepage craft pass
 1. Hero photography + overlay + CTAs + scroll cue to IAP bar.
@@ -266,7 +266,7 @@ Digital Forge, funnels, invoices, parent-home-routine may hide main nav (already
 
 The pass is done when Adeyemi / Chief Developer can say yes to all of these:
 
-1. **Side-by-side:** IAP homepage and Triumphant HQ homepage feel like the same *craft tier* (spacing, type, photo treatment, CTA clarity) even though colours differ.  
+1. **Side-by-side:** IAP homepage and TriumphantTech homepage feel like the same *craft tier* (spacing, type, photo treatment, CTA clarity) even though colours differ.  
 2. **Token fidelity:** No rogue colours outside the locked palette on marketing pages.  
 3. **Nav behaviour:** Transparent over home hero → frosted white on scroll; correct on inner pages.  
 4. **Dual CTA clarity:** Every major band ends with an obvious next step.  
@@ -303,7 +303,7 @@ If time is short: **Days 1–3 only** (homepage to IAP bar) is the minimum valua
 ## 12. Asset asks (flag early)
 
 Designer should list gaps immediately. Likely needs:
-- Final Triumphant HQ logo SVG (light + dark / mono)
+- Final TriumphantTech logo SVG (light + dark / mono)
 - 1–2 cinematic hero stills (agency / Ibadan tech atmosphere)
 - Client logos (SVG or transparent PNG) for trust rail
 - Service card photography (4 disciplines)
@@ -325,7 +325,7 @@ When blocked on brand choice (lockup spelling, logo mark), ask Adeyemi once with
 
 ## 14. Paste-ready kickoff message (send this to the designer)
 
-> Please upgrade Triumphant HQ (`C:\Users\trium\triumphant-hq`) to the same craftsmanship bar as IAP (`iaprecision.com`) — the same standard we used for Precision Field Academy. Keep Triumphant HQ’s editorial light theme and blue accent (`#075ee5`); do not copy IAP greens. Work inside the existing Next.js tokens in `app/globals.css` and components. Every detail matters: hero photography + overlays, frosted nav states, hairline agency grids, Syne/DM Sans hierarchy, dual CTAs, process timeline, proof/testimonials, dark CTA band, mobile polish, and zero AI-slop. Follow `docs/FRONTEND-DESIGNER-BRIEF-IAP-CRAFT.md` end-to-end. Start with Phase A + homepage, then services/work/contact. Ship with before/after screenshots.
+> Please upgrade TriumphantTech (`C:\Users\trium\triumphant-hq`) to the same craftsmanship bar as IAP (`iaprecision.com`) — the same standard we used for Precision Field Academy. Keep TriumphantTech’s editorial light theme and blue accent (`#075ee5`); do not copy IAP greens. Work inside the existing Next.js tokens in `app/globals.css` and components. Every detail matters: hero photography + overlays, frosted nav states, hairline agency grids, Syne/DM Sans hierarchy, dual CTAs, process timeline, proof/testimonials, dark CTA band, mobile polish, and zero AI-slop. Follow `docs/FRONTEND-DESIGNER-BRIEF-IAP-CRAFT.md` end-to-end. Start with Phase A + homepage, then services/work/contact. Ship with before/after screenshots.
 
 ---
 

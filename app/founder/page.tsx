@@ -23,7 +23,7 @@ const PORTRAIT_SRC = "/images/founder/adeyemi-olayemi.jpg";
 const PORTRAIT_ALT =
   "Adeyemi Olayemi, founder of TriumphantTech, smiling outdoors in a royal-blue double-breasted suit, white shirt and striped tie, with green trees behind him.";
 
-const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello Triumphant HQ — I have a project enquiry.")}`;
+const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello TriumphantTech — I have a project enquiry.")}`;
 
 const disciplines = [
   {

@@ -9,9 +9,9 @@ import { projectEnquiryUrl } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Ongoing Support & Retainers | Triumphant HQ Ibadan",
+  title: "Ongoing Support & Retainers | TriumphantTech Ibadan",
   description:
-    "Monthly website care, SEO execution and automation support from Triumphant HQ in Ibadan—scoped after discovery for teams across Nigeria.",
+    "Monthly website care, SEO execution and automation support from TriumphantTech in Ibadan—scoped after discovery for teams across Nigeria.",
   path: "/ongoing-support",
   keywords: [
     "website retainer Ibadan",

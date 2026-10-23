@@ -41,7 +41,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 const whatsappHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-  "Hello Triumphant HQ — I would like to talk about SEO for my Ibadan business.",
+  "Hello TriumphantTech — I would like to talk about SEO for my Ibadan business.",
 )}`;
 
 export default function IbadanSeoPage() {
@@ -84,7 +84,7 @@ export default function IbadanSeoPage() {
         <p className="eyebrow">Ibadan · Oyo State</p>
         <h1>SEO company in Ibadan for businesses that want to be found on Google</h1>
         <p>
-          Triumphant HQ is an Ibadan SEO company on Basorun Rd. Triumphant Technological Services has operated from
+          TriumphantTech is an Ibadan SEO company on Basorun Rd. Triumphant Technological Services has operated from
           here since 2019. We help Ibadan and Oyo State businesses fix the technical problems that keep a site out of
           Google, tidy the Google Business Profile so it matches the website, and publish pages that answer the
           searches their customers actually type.
@@ -279,7 +279,7 @@ export default function IbadanSeoPage() {
             Recent SEO work
           </h2>
           <p className="mt-4 text-[1.05rem] leading-8 text-slate-600">
-            The example we can describe in detail is Integrated Aerial Precision, iaprecision.com. Triumphant HQ has
+            The example we can describe in detail is Integrated Aerial Precision, iaprecision.com. TriumphantTech has
             managed the company’s website and SEO since July 2024. IAP is an agricultural drone business serving
             Nigeria, not an Ibadan high-street shop, so we are not going to pretend this case study is a map-pack win
             on Basorun Rd. It is the audit practice we use, delivered from this office.

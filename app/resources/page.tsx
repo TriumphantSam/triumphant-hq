@@ -5,8 +5,8 @@ import SectionHeader from "@/components/marketing/SectionHeader";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Resources | Guides and Training · Triumphant HQ",
-  description: "Guides, training, digital products and practical systems from Triumphant HQ for building with technology and AI.",
+  title: "Resources | Guides and Training · TriumphantTech",
+  description: "Guides, training, digital products and practical systems from TriumphantTech for building with technology and AI.",
   path: "/resources",
 });
 
@@ -59,7 +59,7 @@ export default function ResourcesPage() {
   return (
     <div>
       <header className="page-hero">
-        <p className="eyebrow">Resources by Triumphant HQ</p>
+        <p className="eyebrow">Resources by TriumphantTech</p>
         <h1>Practical knowledge and systems for people ready to build.</h1>
         <p>
           Our client services solve complex business challenges. These resources give founders, creators and operators a

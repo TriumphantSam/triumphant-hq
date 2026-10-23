@@ -32,11 +32,11 @@ export const comparisons: ComparisonPage[] = [
       "The right partner depends less on labels and more on risk, coordination and what must still work after launch.",
       "Use this guide to choose a model that matches the complexity of your problem—not the loudest pitch.",
     ],
-    columns: ["Freelancer", "Typical agency", "Triumphant HQ"],
+    columns: ["Freelancer", "Typical agency", "TriumphantTech"],
     whenLabels: [
       "When a freelancer fits",
       "When an agency model fits",
-      "When Triumphant HQ is a strong fit",
+      "When TriumphantTech is a strong fit",
     ],
     rows: [
       {
@@ -105,11 +105,11 @@ export const comparisons: ComparisonPage[] = [
       "Hiring is a long-term operating decision. Partnering is a way to buy focused capability without carrying full-time overhead on day one.",
       "Neither option is universally better. The mistake is choosing based on habit instead of workload, urgency and institutional knowledge.",
     ],
-    columns: ["In-house hire", "External partner", "Triumphant HQ"],
+    columns: ["In-house hire", "External partner", "TriumphantTech"],
     whenLabels: [
       "When hiring in-house fits",
       "When an external partner fits",
-      "When Triumphant HQ is a strong fit",
+      "When TriumphantTech is a strong fit",
     ],
     rows: [
       {
