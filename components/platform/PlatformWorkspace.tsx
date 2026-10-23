@@ -21,6 +21,7 @@ import {
 import Turnstile from "@/components/automation/Turnstile";
 import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
 import TeamPanel,{TeamInvitations} from "./TeamPanel";
+import WhatsAppReview from "./WhatsAppReview";
 
 type Plan = {
   id: string;
@@ -896,7 +897,8 @@ export default function PlatformWorkspace() {
                   </>
                 )}
                 {tab === "Launch" && (
-                  <div className="platform-columns">
+                  <>
+                    {view.workspace.role==="owner"&&<WhatsAppReview key={view.workspace.id+":review"} workspaceId={view.workspace.id}/>}
                     {view.workspace.role === "owner" && (
                       <WhatsAppConnect
                         workspaceId={view.workspace.id}
@@ -904,6 +906,7 @@ export default function PlatformWorkspace() {
                         onChanged={() => void run(bootstrap)}
                       />
                     )}
+                  <div className="platform-columns">
                     <section className="platform-card platform-form">
                       <h2>Your launch checklist</h2>
                       <p>
@@ -1009,6 +1012,7 @@ export default function PlatformWorkspace() {
                       </Link>
                     </section>
                   </div>
+                  </>
                 )}
               </>
             )}

@@ -387,7 +387,8 @@ export default {
       await env.DB.batch([
         env.DB.prepare("DELETE FROM platform_auth_session WHERE expires_at<?").bind(Date.now()),
         env.DB.prepare("DELETE FROM platform_auth_verification WHERE expires_at<?").bind(Date.now()),
-        env.DB.prepare("DELETE FROM platform_requests WHERE created_at<?").bind(new Date(Date.now() - 7 * 86400000).toISOString()),
+        // Keep the one-send review reservations even after normal request expiry.
+        env.DB.prepare("DELETE FROM platform_requests WHERE created_at<? AND request_id NOT LIKE 'wa-review:%'").bind(new Date(Date.now() - 7 * 86400000).toISOString()),
       ]);
     }
     await drainOutbox(env);

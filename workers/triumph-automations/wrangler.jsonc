@@ -43,7 +43,7 @@
         "ENVIRONMENT": "staging",
         "PLATFORM_ENABLED": "true",
         "PLATFORM_AI_ENABLED": "true",
-        "PLATFORM_WHATSAPP_ENABLED": "false",
+        "PLATFORM_WHATSAPP_ENABLED": "true",
         "PLATFORM_BILLING_TEST_ENABLED": "false",
         "CHAT_ENABLED": "true",
         "CHAT_PROVIDER": "workers_ai",
