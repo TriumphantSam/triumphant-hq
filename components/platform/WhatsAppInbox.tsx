@@ -44,7 +44,8 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
   }
   useEffect(() => {
     let active = true;
-    refresh()
+    rpc<{threads:Summary[]}>("whatsapp.inbox",{workspaceId})
+      .then(data=>{if(active)setThreads(data.threads);})
       .catch((e) => {
         if (active) setError(e.message);
       });
