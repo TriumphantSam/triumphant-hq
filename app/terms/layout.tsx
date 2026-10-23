@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Terms of Service | Triumphant HQ",
+  title: "Terms of Service | TriumphantTech",
   description:
-    "Terms of Service for triumphantech.com and digital products from Triumphant HQ (Triumphant Technological Services).",
+    "Terms of Service for triumphantech.com and digital products from TriumphantTech (Triumphant Technological Services).",
   path: "/terms",
 });
 

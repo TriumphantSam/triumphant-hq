@@ -8,7 +8,7 @@ published: true
 serviceHref: "/ibadan-tech-agency"
 serviceCtaLabel: "Read the full Ibadan guide"
 serviceCtaTitle: "Choosing a technology partner in Ibadan"
-serviceCtaDescription: "Use our full guide, then book a discovery call if Triumphant HQ looks like a fit."
+serviceCtaDescription: "Use our full guide, then book a discovery call if TriumphantTech looks like a fit."
 faqSchema:
   - question: "What should I ask a tech company in Ibadan before hiring?"
     answer: "Ask who does the work, how scope is locked, what proof they can show, how communication works (including WhatsApp), and what happens after launch."
@@ -46,7 +46,7 @@ If the process is “pay and we start coding,” walk away.
 
 ## 3. Separate agency work from local identity help
 
-NIN enrolment and BVN support are valuable—but they are not the same as building your product website. Triumphant HQ keeps a dedicated [Local Support](/local-support) desk for identity services so agency projects stay focused.
+NIN enrolment and BVN support are valuable—but they are not the same as building your product website. TriumphantTech keeps a dedicated [Local Support](/local-support) desk for identity services so agency projects stay focused.
 
 ## 4. Check local responsiveness
 

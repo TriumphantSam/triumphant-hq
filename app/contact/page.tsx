@@ -9,12 +9,12 @@ import { buildPageMetadata, contactPageJsonLd, formattedNapAddress, siteIdentity
 import { whatsappNumber } from "@/lib/services";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Contact Triumphant HQ | Project Enquiry in Ibadan",
+  title: "Contact TriumphantTech | Project Enquiry in Ibadan",
   description:
-    "Contact Triumphant HQ in Ibadan for website design, SEO, apps and automation. Share your project context—we respond within one business day.",
+    "Contact TriumphantTech in Ibadan for website design, SEO, apps and automation. Share your project context—we respond within one business day.",
   path: "/contact",
   keywords: [
-    "contact Triumphant HQ",
+    "contact TriumphantTech",
     "website agency Ibadan contact",
     "SEO agency Ibadan",
   ],
@@ -76,7 +76,7 @@ export default function ContactPage() {
               {siteIdentity.phoneDisplay}
             </a>
             <a
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello Triumphant HQ — I have a project enquiry.")}`}
+              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello TriumphantTech — I have a project enquiry.")}`}
               target="_blank"
               rel="noreferrer"
               className="mt-1 block text-[0.95rem] font-medium text-[var(--accent-color)] transition hover:text-[var(--accent-hover)]"

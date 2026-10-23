@@ -81,7 +81,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         <div className="button-row mt-8">
           <a
             className="button button-primary"
-            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hello Triumphant HQ — I need support in ${page.name}.`)}`}
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hello TriumphantTech — I need support in ${page.name}.`)}`}
             target="_blank"
             rel="noreferrer"
           >

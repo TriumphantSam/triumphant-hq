@@ -6,7 +6,7 @@ import { comparisons } from "@/lib/compare-industries";
 import { buildPageMetadata, collectionPageJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Agency vs Freelancer Guides | Triumphant HQ",
+  title: "Agency vs Freelancer Guides | TriumphantTech",
   description:
     "Practical decision guides for choosing between freelancers, agencies and specialist partners—written from an Ibadan-based delivery perspective.",
   path: "/compare",

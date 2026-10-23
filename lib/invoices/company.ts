@@ -1,8 +1,8 @@
 export const COMPANY = {
   legalName: "Triumphant Technological Services",
-  tradingAs: "Triumphant HQ",
+  tradingAs: "TriumphantTech",
   addressLines: ["Basorun Rd, Ibadan 211107, Oyo", "Nigeria"],
-  phones: ["08107711190", "09090090910"],
+  phones: ["09090090910"],
   email: "admin@triumphantech.com",
   website: "triumphantech.com",
   websiteUrl: "https://triumphantech.com",

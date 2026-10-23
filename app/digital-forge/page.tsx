@@ -4,7 +4,7 @@ import { getForgeProducts } from "@/lib/digital-forge";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Digital Forge | AI Product Systems · Triumphant HQ",
+  title: "Digital Forge | AI Product Systems · TriumphantTech",
   description:
     "Digital Forge is a practical system for building and selling AI-powered digital products, with guides, templates and a clear next step.",
   path: "/digital-forge",
@@ -124,7 +124,7 @@ export default async function DigitalForgePage() {
           >
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#075ee5", display: "inline-block" }} />
             <span style={{ color: "#075ee5", fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" }}>
-              Digital Forge by Triumphant HQ
+              Digital Forge by TriumphantTech
             </span>
           </div>
 

@@ -12,7 +12,7 @@ serviceCtaDescription: "See the full comparison, then talk to us if you need an 
 faqSchema:
   - question: "Is an agency always better than a freelancer in Ibadan?"
     answer: "No. Freelancers can be excellent for narrow tasks. Agencies fit better when you need multi-disciplinary delivery, process and continuity."
-  - question: "What does Triumphant HQ offer as an agency?"
+  - question: "What does TriumphantTech offer as an agency?"
     answer: "Websites, SEO, custom applications and automation from Ibadan—plus optional ongoing support. Local NIN/BVN help is a separate desk."
 relatedLinks:
   - label: "Full agency vs freelancer comparison"
@@ -38,7 +38,7 @@ Ibadan founders often ask whether to hire a freelancer or a full technology agen
 - Multiple stakeholders and compliance needs  
 - You need continuity if one person is unavailable  
 
-Triumphant HQ operates as an Ibadan-based partner for that second category. Read the full [agency vs freelancer](/compare/agency-vs-freelancer) comparison and the [hiring checklist](/blog/hire-tech-company-ibadan-checklist).
+TriumphantTech operates as an Ibadan-based partner for that second category. Read the full [agency vs freelancer](/compare/agency-vs-freelancer) comparison and the [hiring checklist](/blog/hire-tech-company-ibadan-checklist).
 
 ## Hybrid reality
 

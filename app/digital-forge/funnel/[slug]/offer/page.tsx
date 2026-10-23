@@ -193,7 +193,7 @@ export default async function FunnelOfferPage(props: { params: Promise<{ slug: s
                                 fontWeight: 900, fontSize: '22px', color: 'var(--text-primary)', flexShrink: 0,
                             }}>T</div>
                             <div>
-                                <p style={{ color: 'var(--text-primary)', fontWeight: 800, fontSize: '15px', margin: '0 0 4px' }}>TriumphantHQ</p>
+                                <p style={{ color: 'var(--text-primary)', fontWeight: 800, fontSize: '15px', margin: '0 0 4px' }}>TriumphantTech</p>
                                 <p style={{ color: '#64748b', fontSize: '12px', margin: 0 }}>Built from real systems, not theory</p>
                             </div>
                         </div>

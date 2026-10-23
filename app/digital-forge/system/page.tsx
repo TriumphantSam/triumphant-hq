@@ -5,7 +5,7 @@ import { formatOfferPrice, resolveSystemOffer, resolveUsdPriceLabel } from "@/li
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Digital Forge Starter System | Triumphant HQ",
+  title: "Digital Forge Starter System | TriumphantTech",
   description:
     "The Digital Forge Starter System: guides, prompts and templates for building and selling a first AI-powered digital product.",
   path: "/digital-forge/system",

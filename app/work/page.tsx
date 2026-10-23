@@ -9,9 +9,9 @@ import { caseStudies } from "@/lib/case-studies";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Work & Case Studies | Triumphant HQ Ibadan",
+  title: "Work & Case Studies | TriumphantTech Ibadan",
   description:
-    "Selected website, technical SEO and digital systems projects from Triumphant HQ in Ibadan for brands that needed clearer performance and visibility.",
+    "Selected website, technical SEO and digital systems projects from TriumphantTech in Ibadan for brands that needed clearer performance and visibility.",
   path: "/work",
   keywords: ["case studies Ibadan", "website projects Nigeria", "SEO portfolio Oyo State"],
 });

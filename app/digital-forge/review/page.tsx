@@ -4,7 +4,7 @@ import CurrencyPrice from "@/components/CurrencyPrice";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Free Product Idea Review | Triumphant HQ",
+  title: "Free Product Idea Review | TriumphantTech",
   description: "Send a product idea, skill or AI workflow for a free review and practical offer clarity from Digital Forge.",
   path: "/digital-forge/review",
 });
@@ -189,7 +189,7 @@ export default function ReviewPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/images/adeyemi-founder.jpg"
-                alt="Adeyemi — Founder, Triumphant HQ"
+                alt="Adeyemi — Founder, TriumphantTech"
                 width={160}
                 height={160}
                 style={{
@@ -219,7 +219,7 @@ export default function ReviewPage() {
               <p style={{ color: "#334155", lineHeight: 1.9, fontSize: "1.05rem" }}>
                 This review exists to close that gap for you — for free. And if you want the full system to build it out, the Starter System is there.
               </p>
-              <p style={{ color: "#64748b", marginTop: "2rem", fontWeight: 600, fontSize: "0.95rem" }}>— Adeyemi, Triumphant HQ</p>
+              <p style={{ color: "#64748b", marginTop: "2rem", fontWeight: 600, fontSize: "0.95rem" }}>— Adeyemi, TriumphantTech</p>
             </div>
           </div>
         </div>

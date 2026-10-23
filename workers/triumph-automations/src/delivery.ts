@@ -107,7 +107,7 @@ async function sendEmail(env: Env, job: Job, lead: Lead) {
         : "We received your TriumphantTech enquiry",
       text: owner
         ? `Name: ${lead.name}\nEmail: ${lead.email || "Not provided"}\nPhone: ${lead.phone || "Not provided"}\nService: ${lead.service}\n${lead.need}\nReference: ${lead.id}`
-        : `Hi ${lead.name},\n\nWe received your enquiry about ${lead.service || "our services"}. We will review it and reply with a practical next step.\n\nReference: ${lead.id}\nTriumphantTech\nadmin@triumphantech.com\n+234 810 771 1190`,
+        : `Hi ${lead.name},\n\nWe received your enquiry about ${lead.service || "our services"}. We will review it and reply with a practical next step.\n\nReference: ${lead.id}\nTriumphantTech\nadmin@triumphantech.com\n+234 909 009 0910`,
     }),
   });
   if (!response.ok)

@@ -4,7 +4,7 @@ import { whatsappNumber } from "@/lib/services";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Enquiry received | Triumphant HQ",
+  title: "Enquiry received | TriumphantTech",
   description:
     "Your project enquiry is with us. We will reply within one business day; you can also message us on WhatsApp.",
   path: "/contact/thank-you",
@@ -56,7 +56,7 @@ export default function ContactThankYouPage() {
         <div className="button-row mt-12">
           <a
             className="button button-primary"
-            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi Triumphant HQ — I just sent a project enquiry and would like to follow up.")}`}
+            href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hi TriumphantTech — I just sent a project enquiry and would like to follow up.")}`}
             target="_blank"
             rel="noreferrer"
           >

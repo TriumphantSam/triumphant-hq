@@ -4,7 +4,7 @@ import WaitlistForm from "./WaitlistForm";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Digital Forge Course Waitlist | Triumphant HQ",
+  title: "Digital Forge Course Waitlist | TriumphantTech",
   description: "Join the Digital Forge Course waitlist for priority access and a note when enrolment opens.",
   path: "/digital-forge/course/waitlist",
 });

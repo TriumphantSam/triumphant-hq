@@ -49,7 +49,7 @@ const categoryServiceMap: Record<string, { href: string; label: string; title: s
     label: "Explore agency services",
     title: "Prefer done-for-you execution?",
     description:
-      "Triumphant HQ delivers websites, applications, SEO and automation as focused business engagements.",
+      "TriumphantTech delivers websites, applications, SEO and automation as focused business engagements.",
   },
 };
 

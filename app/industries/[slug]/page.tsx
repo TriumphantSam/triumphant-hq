@@ -17,7 +17,7 @@ export async function generateMetadata({
   const page = getIndustry(slug);
   if (!page) return {};
   return buildPageMetadata({
-    title: `${page.title} | Triumphant HQ`,
+    title: `${page.title} | TriumphantTech`,
     description: page.description,
     path: `/industries/${page.slug}`,
     keywords: [page.title, "Ibadan", "Oyo State", "Nigeria technology agency"],

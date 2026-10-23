@@ -151,7 +151,7 @@ export function routeLaunchBundleMessage(text: string): RouteResult {
     return {
       text:
         "If you have paid, check your email and spam folder for the download.\n\n" +
-        "The email comes from Triumphant HQ after Flutterwave or Lemon Squeezy confirms payment.\n\n" +
+        "The email comes from TriumphantTech after Flutterwave or Lemon Squeezy confirms payment.\n\n" +
         "If it is not there yet, reply *PAID* with:\n" +
         "1. the email you used at checkout\n" +
         "2. payment screenshot\n" +

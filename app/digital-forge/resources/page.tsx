@@ -2,7 +2,7 @@ import { forgeResources } from "@/lib/digital-forge";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata = buildPageMetadata({
-  title: "Digital Forge Resources | Triumphant HQ",
+  title: "Digital Forge Resources | TriumphantTech",
   description: "Free and supporting Digital Forge resources, lead magnets, prompt packs and frameworks.",
   path: "/digital-forge/resources",
 });

@@ -1,13 +1,13 @@
-# SEO Ops Checklist — Triumphant HQ (Ibadan)
+# SEO Ops Checklist — TriumphantTech (Ibadan)
 
 Use this weekly. On-site work underperforms without these off-site steps.
 
 ## Canonical NAP (lock this everywhere)
 
 - **Legal name:** Triumphant Technological Services
-- **Brand:** Triumphant HQ
+- **Brand:** TriumphantTech
 - **Address:** Basorun Rd, Ibadan 211107, Oyo
-- **Phone / WhatsApp:** +234 810 771 1190 (`2348107711190`)
+- **Phone / WhatsApp:** +234 909 009 0910 (`2349090090910`)
 - **Email:** admin@triumphantech.com
 ## Canonical host (lock this)
 

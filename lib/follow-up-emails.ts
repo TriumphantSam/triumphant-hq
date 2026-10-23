@@ -1,7 +1,7 @@
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? "";
 const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? "";
-const EMAILJS_FROM_NAME = process.env.EMAILJS_FROM_NAME ?? "TriumphantHQ";
+const EMAILJS_FROM_NAME = process.env.EMAILJS_FROM_NAME ?? "TriumphantTech";
 
 const TEMPLATE_BY_KEY: Record<string, string> = {
   funnel_day3: process.env.EMAILJS_TEMPLATE_ID_FUNNEL_FOLLOWUP_DAY3 ?? "",

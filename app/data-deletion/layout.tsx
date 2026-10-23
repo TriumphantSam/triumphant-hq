@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Data Deletion | Triumphant HQ",
+  title: "Data Deletion | TriumphantTech",
   description:
-    "How to request deletion of data associated with Triumphant HQ Digital Forge / ForgeGrid Meta applications.",
+    "How to request deletion of data associated with TriumphantTech Digital Forge / ForgeGrid Meta applications.",
   path: "/data-deletion",
 });
 

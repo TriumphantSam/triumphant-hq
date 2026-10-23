@@ -17,7 +17,7 @@ export async function generateMetadata({
   const page = getComparison(slug);
   if (!page) return {};
   return buildPageMetadata({
-    title: `${page.title} | Triumphant HQ`,
+    title: `${page.title} | TriumphantTech`,
     description: page.description,
     path: `/compare/${page.slug}`,
     keywords: [page.title, "hire agency Ibadan", "technology partner Nigeria"],

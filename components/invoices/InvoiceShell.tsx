@@ -38,7 +38,7 @@ export default function InvoiceShell({
         <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <div className="flex items-center gap-6">
             <Link href="/invoices" className="font-display text-lg font-bold tracking-[-0.03em] text-slate-950">
-              Triumphant<span className="text-[#075ee5]">HQ</span>
+              Triumphant<span className="text-[#075ee5]">Tech</span>
               <span className="ml-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">
                 Invoices
               </span>

@@ -120,7 +120,7 @@ export default function Navigation() {
       <a href="#site-main-content" className="fixed left-4 top-2 z-[300] -translate-y-20 rounded-lg bg-white px-4 py-2 font-bold text-[var(--navy)] focus:translate-y-0">Skip to content</a>
       <nav ref={nav} aria-label="Main navigation" className="fixed inset-x-0 top-0 z-[200] px-3 pt-3 sm:px-4">
         <div className={`mx-auto flex h-16 max-w-7xl items-center justify-between rounded-2xl border px-4 text-white backdrop-blur-md transition-all duration-300 sm:px-6 ${scrolled ? "border-white/15 bg-[var(--navy)]/95 shadow-[0_10px_30px_rgba(0,0,0,0.35)]" : "border-white/10 bg-[var(--navy)]/85"}`}>
-          <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" aria-label="Triumphant HQ home"><span className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--brand)] font-display text-lg font-bold">T</span><span className="font-display text-base font-bold tracking-tight">Triumphant<span className="text-[#7eb0ff]">HQ</span></span></Link>
+          <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" aria-label="TriumphantTech home"><span className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--brand)] font-display text-lg font-bold">T</span><span className="font-display text-base font-bold tracking-tight">Triumphant<span className="text-[#7eb0ff]">Tech</span></span></Link>
           <div className="hidden items-center gap-0.5 lg:flex">
             {navLink(mainLinks[0], true)}
             {dropdown("services", "Services", services)}

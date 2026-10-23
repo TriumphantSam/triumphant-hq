@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Privacy Policy | Triumphant HQ",
+  title: "Privacy Policy | TriumphantTech",
   description:
-    "Privacy Policy for Triumphant HQ (Triumphant Technological Services)—how we collect, use and protect information on triumphantech.com.",
+    "Privacy Policy for TriumphantTech (Triumphant Technological Services)—how we collect, use and protect information on triumphantech.com.",
   path: "/privacy-policy",
 });
 

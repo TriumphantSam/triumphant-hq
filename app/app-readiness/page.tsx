@@ -4,7 +4,7 @@ import { appReadiness } from "@/lib/lead-magnets";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "App Build Readiness Check | Triumphant HQ",
+  title: "App Build Readiness Check | TriumphantTech",
   description: appReadiness.description,
   path: "/app-readiness",
 });

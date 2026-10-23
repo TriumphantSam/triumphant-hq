@@ -6,9 +6,9 @@ import { buildPageMetadata } from "@/lib/seo";
 const service = getAgencyService("websites")!;
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Website Design in Ibadan | Triumphant HQ",
+  title: "Website Design in Ibadan | TriumphantTech",
   description:
-    "Website design in Ibadan from Triumphant HQ: conversion-focused Next.js sites for Oyo State businesses, built on Basorun Rd.",
+    "Website design in Ibadan from TriumphantTech: conversion-focused Next.js sites for Oyo State businesses, built on Basorun Rd.",
   path: "/services/websites",
   keywords: [
     "website design Ibadan",
@@ -23,7 +23,7 @@ export default function WebsitesPage() {
     <ServiceLanding
       service={service}
       h1="Website design in Ibadan for businesses that need to look as serious as their work"
-      intro="Triumphant HQ designs and builds fast, conversion-focused websites for Ibadan and Oyo State organisations—professional firms, clinics, schools, SaaS teams and local operators who are done with templates that do not convert."
+      intro="TriumphantTech designs and builds fast, conversion-focused websites for Ibadan and Oyo State organisations—professional firms, clinics, schools, SaaS teams and local operators who are done with templates that do not convert."
       localLinks={[
         { href: "/services/websites/ibadan", label: "Ibadan website design" },
         { href: "/locations/ibadan", label: "Ibadan service area" },

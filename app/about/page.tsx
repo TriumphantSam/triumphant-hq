@@ -11,12 +11,12 @@ import { projectEnquiryUrl, agencyServices } from "@/lib/services";
 import { aboutPageJsonLd, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "About Triumphant HQ | Triumphant Technological Services",
+  title: "About TriumphantTech | Triumphant Technological Services",
   description:
-    "Meet Adeyemi Olayemi and Triumphant HQ (Triumphant Technological Services)—an Ibadan technology agency for websites, SEO, custom apps and automation.",
+    "Meet Adeyemi Olayemi and TriumphantTech (Triumphant Technological Services)—an Ibadan technology agency for websites, SEO, custom apps and automation.",
   path: "/about",
   keywords: [
-    "about Triumphant HQ",
+    "about TriumphantTech",
     "Triumphant Technological Services",
     "technology agency Ibadan",
     "Adeyemi Olayemi",
@@ -31,7 +31,7 @@ const principles = [
 ];
 
 const timeline = [
-  ["2019", "Service roots", "Triumphant HQ began by helping people and local organisations navigate everyday digital services with care and reliability."],
+  ["2019", "Service roots", "TriumphantTech began by helping people and local organisations navigate everyday digital services with care and reliability."],
   ["2021", "Growth capability", "Our work expanded into websites, search optimization and the systems businesses need to compete online."],
   ["2024", "Connected delivery", "Software engineering and automation became core capabilities, allowing us to solve operational as well as marketing challenges."],
   ["Today", "One agency partner", "We bring design, development, SEO and automation together around focused business outcomes."],
@@ -48,7 +48,7 @@ export default function AboutPage() {
         ]}
       />
       <header className="page-hero !pt-8">
-        <p className="eyebrow">About Triumphant HQ</p>
+        <p className="eyebrow">About TriumphantTech</p>
         <h1>Practical technology, delivered with ambition and accountability.</h1>
         <p>
           We are a multidisciplinary technology and growth agency based in Ibadan for organisations that need more than
@@ -61,7 +61,7 @@ export default function AboutPage() {
           <div className="relative aspect-[4/5] overflow-hidden bg-slate-100 sm:max-w-md lg:max-w-none">
             <Image
               src="/images/adeyemi-olayemi.png"
-              alt="Adeyemi Olayemi, founder of Triumphant HQ"
+              alt="Adeyemi Olayemi, founder of TriumphantTech"
               fill
               className="object-cover object-top"
               sizes="(max-width: 1024px) 100vw, 40vw"
@@ -125,7 +125,7 @@ export default function AboutPage() {
             </div>
             <div className="space-y-5 text-[1.02rem] leading-8 text-slate-600">
               <p>
-                Triumphant HQ started in 2019 with a simple operating principle: make technology useful, understandable
+                TriumphantTech started in 2019 with a simple operating principle: make technology useful, understandable
                 and dependable for the person relying on it.
               </p>
               <p>
@@ -196,7 +196,7 @@ export default function AboutPage() {
       </section>
 
       <CTABand
-        eyebrow="Work with Triumphant HQ"
+        eyebrow="Work with TriumphantTech"
         title="Want to talk about how we can fix your digital path?"
       />
     </div>

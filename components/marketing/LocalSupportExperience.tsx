@@ -29,61 +29,61 @@ const ninServices: NinServiceItem[] = [
     title: "NIN Verification",
     copy: "Instant verification of your National Identification Number status, authenticity, and demographic matching for banks, immigration, telcos, and official portals.",
     badge: "Verification",
-    whatsappMessage: "Hello Triumphant HQ — I need NIN verification support.",
+    whatsappMessage: "Hello TriumphantTech — I need NIN verification support.",
   },
   {
     title: "Recover Lost NIN",
     copy: "Swift, hassle-free retrieval of misplaced or forgotten NIN numbers and slips using your registered phone number, tracking ID, or demographic record.",
     badge: "Recovery",
-    whatsappMessage: "Hello Triumphant HQ — I need to recover my lost NIN.",
+    whatsappMessage: "Hello TriumphantTech — I need to recover my lost NIN.",
   },
   {
     title: "NIN Validation",
     copy: "Validating unlinked or pending NIN records across central NIMC servers, JAMB, NIS passport offices, and telecom networks.",
     badge: "Validation",
-    whatsappMessage: "Hello Triumphant HQ — I need NIN validation support.",
+    whatsappMessage: "Hello TriumphantTech — I need NIN validation support.",
   },
   {
     title: "IPE Clearance",
     copy: "Fast-track resolution for NIMC backend In-Process Exception (IPE) bottlenecks, unlocking stalled modifications and delayed enrolments.",
     badge: "IPE Clearance",
-    whatsappMessage: "Hello Triumphant HQ — I need help with IPE clearance for my NIN.",
+    whatsappMessage: "Hello TriumphantTech — I need help with IPE clearance for my NIN.",
   },
   {
     title: "Record Not Found",
     copy: "Expert troubleshooting and resolution when your NIN returns a 'Record Not Found' error on official verification portals or banking apps.",
     badge: "Error Fix",
-    whatsappMessage: "Hello Triumphant HQ — I am encountering a 'Record Not Found' error on my NIN.",
+    whatsappMessage: "Hello TriumphantTech — I am encountering a 'Record Not Found' error on my NIN.",
   },
   {
     title: "Suspended NIN",
     copy: "Diagnostic assistance, case review, and official escalation to investigate, rectify, and reactivate suspended, locked, or flagged NIN records.",
     badge: "Reactivation",
-    whatsappMessage: "Hello Triumphant HQ — My NIN is suspended and I need help reactivating it.",
+    whatsappMessage: "Hello TriumphantTech — My NIN is suspended and I need help reactivating it.",
   },
   {
     title: "New NIN Enrolment",
     copy: "Complete, patient guidance for first-time applicant registrations (both adults and minors) following certified NIMC ID Ecosystem standards.",
     badge: "Enrolment",
-    whatsappMessage: "Hello Triumphant HQ — I need new NIN enrolment support.",
+    whatsappMessage: "Hello TriumphantTech — I need new NIN enrolment support.",
   },
   {
     title: "Data Modification & Corrections",
     copy: "Assisting with official updates for name spelling, date of birth, phone number, residential address, or marital status.",
     badge: "Modification",
-    whatsappMessage: "Hello Triumphant HQ — I need to modify details on my NIN.",
+    whatsappMessage: "Hello TriumphantTech — I need to modify details on my NIN.",
   },
   {
     title: "NIN Slip & Card Printing",
     copy: "High-resolution regular slips, premium colour NIN slips, and durable plastic identity cards for daily wallet use and official presentation.",
     badge: "Printing",
-    whatsappMessage: "Hello Triumphant HQ — I need NIN slip or plastic card printing.",
+    whatsappMessage: "Hello TriumphantTech — I need NIN slip or plastic card printing.",
   },
   {
     title: "Portal Troubleshooting & Consultation",
     copy: "Pre-visit document audits, error diagnosis, and dedicated advice so you never face unexpected rejections or delays.",
     badge: "Consultation",
-    whatsappMessage: "Hello Triumphant HQ — I need consultation on a NIN portal issue.",
+    whatsappMessage: "Hello TriumphantTech — I need consultation on a NIN portal issue.",
   },
 ];
 
@@ -97,22 +97,22 @@ const bvnServices: BvnServiceItem[] = [
   {
     title: "BVN Verification & Card",
     copy: "Verify BVN record authenticity across NIBSS and print durable, verified plastic or laminated BVN identity cards.",
-    whatsappMessage: "Hello Triumphant HQ — I need BVN verification and plastic card printing.",
+    whatsappMessage: "Hello TriumphantTech — I need BVN verification and plastic card printing.",
   },
   {
     title: "BVN Retrieval",
     copy: "Fast, secure recovery of lost, forgotten, or misplaced Bank Verification Numbers without queuing at the bank.",
-    whatsappMessage: "Hello Triumphant HQ — I need BVN retrieval support.",
+    whatsappMessage: "Hello TriumphantTech — I need BVN retrieval support.",
   },
   {
     title: "BVN Enrolment Assistance",
     copy: "Guided support for new Bank Verification Number registration requirements, documents, and centre directions.",
-    whatsappMessage: "Hello Triumphant HQ — I need guidance on BVN enrolment.",
+    whatsappMessage: "Hello TriumphantTech — I need guidance on BVN enrolment.",
   },
   {
     title: "BVN Consultation & Reconciliation",
     copy: "Clear advice and troubleshooting for name mismatches, date-of-birth conflicts between NIN and BVN, and bank updates.",
-    whatsappMessage: "Hello Triumphant HQ — I need BVN consultation or reconciliation support.",
+    whatsappMessage: "Hello TriumphantTech — I need BVN consultation or reconciliation support.",
   },
 ];
 
@@ -128,14 +128,14 @@ const otherSupport = [
     title: "School and examination portals",
     summary: "JAMB, WAEC, NECO and related education services with patient, accurate assistance.",
     items: ["Profile and portal setup", "Registration support", "Result checking guidance", "Application troubleshooting"],
-    message: "Hello Triumphant HQ — I need help with a school or exam portal.",
+    message: "Hello TriumphantTech — I need help with a school or exam portal.",
   },
   {
     id: "documents",
     title: "Documents and online applications",
     summary: "Everyday digital tasks where accuracy, speed and a clear outcome matter.",
     items: ["Typing and document formatting", "Printing and scanning", "Online form completion", "Email and account assistance"],
-    message: "Hello Triumphant HQ — I need document or online application support.",
+    message: "Hello TriumphantTech — I need document or online application support.",
   },
 ];
 
@@ -170,7 +170,7 @@ export default function LocalSupportExperience() {
         <div className="button-row mt-8">
           <a
             className="button button-primary"
-            href={wa("Hello Triumphant HQ — I need NIN support.")}
+            href={wa("Hello TriumphantTech — I need NIN support.")}
             target="_blank"
             rel="noreferrer"
           >
@@ -178,7 +178,7 @@ export default function LocalSupportExperience() {
           </a>
           <a
             className="button button-secondary"
-            href={wa("Hello Triumphant HQ — I need BVN support.")}
+            href={wa("Hello TriumphantTech — I need BVN support.")}
             target="_blank"
             rel="noreferrer"
           >
@@ -239,7 +239,7 @@ export default function LocalSupportExperience() {
               Message before you visit so we confirm documents, timing and the right service path.
             </p>
             <a
-              href={wa("Hello Triumphant HQ — I need local support in Ibadan.")}
+              href={wa("Hello TriumphantTech — I need local support in Ibadan.")}
               target="_blank"
               rel="noreferrer"
               className="mt-3 inline-block text-sm font-medium text-[var(--accent-color)] hover:text-[var(--accent-hover)]"
@@ -325,7 +325,7 @@ export default function LocalSupportExperience() {
                 </p>
                 <a
                   className="button button-primary mt-7"
-                  href={wa("Hello Triumphant HQ — I need NIN enrolment or modification support.")}
+                  href={wa("Hello TriumphantTech — I need NIN enrolment or modification support.")}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -399,7 +399,7 @@ export default function LocalSupportExperience() {
               <div className="button-row mt-10">
                 <a
                   className="button button-primary"
-                  href={wa("Hello Triumphant HQ — I need BVN verification, card printing or retrieval support.")}
+                  href={wa("Hello TriumphantTech — I need BVN verification, card printing or retrieval support.")}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -510,13 +510,13 @@ export default function LocalSupportExperience() {
             <p>From verification, IPE clearance, and lost ID recovery to plastic card printing—send a short WhatsApp message and we will confirm the next step.</p>
           </div>
           <div className="button-row lg:justify-end">
-            <a className="button button-primary" href={wa("Hello Triumphant HQ — I need NIN support.")} target="_blank" rel="noreferrer">
+            <a className="button button-primary" href={wa("Hello TriumphantTech — I need NIN support.")} target="_blank" rel="noreferrer">
               WhatsApp NIN
               <span className="button-arrow" aria-hidden="true">→</span>
             </a>
             <a
               className="button button-ghost"
-              href={wa("Hello Triumphant HQ — I need BVN support.")}
+              href={wa("Hello TriumphantTech — I need BVN support.")}
               target="_blank"
               rel="noreferrer"
             >
@@ -528,10 +528,10 @@ export default function LocalSupportExperience() {
 
       {showSticky ? (
         <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-slate-200 bg-white/95 p-3 backdrop-blur-xl lg:hidden">
-          <a className="button button-primary !min-h-12 !px-3 !text-[0.68rem]" href={wa("Hello Triumphant HQ — I need NIN support.")} target="_blank" rel="noreferrer">
+          <a className="button button-primary !min-h-12 !px-3 !text-[0.68rem]" href={wa("Hello TriumphantTech — I need NIN support.")} target="_blank" rel="noreferrer">
             WhatsApp NIN
           </a>
-          <a className="button button-secondary !min-h-12 !px-3 !text-[0.68rem]" href={wa("Hello Triumphant HQ — I need BVN support.")} target="_blank" rel="noreferrer">
+          <a className="button button-secondary !min-h-12 !px-3 !text-[0.68rem]" href={wa("Hello TriumphantTech — I need BVN support.")} target="_blank" rel="noreferrer">
             WhatsApp BVN
           </a>
         </div>

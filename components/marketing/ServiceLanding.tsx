@@ -122,7 +122,7 @@ export default function ServiceLanding({
         <section className="section-shell !pb-0">
           <Reveal className="max-w-3xl space-y-4 text-[1.05rem] leading-8 text-slate-600">
             <p>
-              Triumphant HQ has operated from Ibadan since 2019. We work from Basorun Rd—not a city name added to a
+              TriumphantTech has operated from Ibadan since 2019. We work from Basorun Rd—not a city name added to a
               remote listing. Neighbourhoods across Oyo State are in reach, and we keep a separate Local Support desk
               for NIN and BVN so agency projects stay focused.
             </p>

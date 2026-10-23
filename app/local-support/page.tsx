@@ -7,9 +7,9 @@ import { localSupportFaqs } from "@/lib/faqs";
 import { buildPageMetadata, serviceJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "NIN Enrolment, Verification & Recovery in Ibadan | BVN Support · Triumphant HQ",
+  title: "NIN Enrolment, Verification & Recovery in Ibadan | BVN Support · TriumphantTech",
   description:
-    "NIN enrolment, verification, lost NIN recovery, IPE clearance, validation, suspended NIN fix, and BVN cards/retrieval in Ibadan at Triumphant HQ on Basorun Rd.",
+    "NIN enrolment, verification, lost NIN recovery, IPE clearance, validation, suspended NIN fix, and BVN cards/retrieval in Ibadan at TriumphantTech on Basorun Rd.",
   path: "/local-support",
   keywords: [
     "NIN enrolment Ibadan",

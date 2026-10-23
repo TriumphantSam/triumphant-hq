@@ -47,17 +47,17 @@ const jetbrains = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
-    template: "%s | Triumphant HQ",
+    default: "Technology Agency in Ibadan | Tech Company · TriumphantTech",
+    template: "%s | TriumphantTech",
   },
   description:
-    "Triumphant HQ is a technology agency in Ibadan, Oyo State: website design, SEO, custom apps and AI automation, plus NIN enrolment and BVN support.",
+    "TriumphantTech is a technology agency in Ibadan, Oyo State: website design, SEO, custom apps and AI automation, plus NIN enrolment and BVN support.",
   keywords: defaultKeywords,
   authors: [{ name: siteIdentity.brandName }],
   creator: siteIdentity.brandName,
   publisher: siteIdentity.legalName,
   openGraph: {
-    title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
+    title: "Technology Agency in Ibadan | Tech Company · TriumphantTech",
     description:
       "Websites, SEO, apps and automation from a tech company in Ibadan—serving Oyo State, Osun State and clients across Nigeria.",
     url: SITE_URL,
@@ -69,13 +69,13 @@ export const metadata: Metadata = {
         url: "/images/og-agency-hero-cinematic.jpg",
         width: 1200,
         height: 630,
-        alt: "Triumphant HQ — technology and growth agency in Ibadan",
+        alt: "TriumphantTech — technology and growth agency in Ibadan",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Technology Agency in Ibadan | Tech Company · Triumphant HQ",
+    title: "Technology Agency in Ibadan | Tech Company · TriumphantTech",
     description:
       "Websites, SEO, apps and automation from Ibadan—plus local NIN and BVN support.",
     images: ["/images/og-agency-hero-cinematic.jpg"],

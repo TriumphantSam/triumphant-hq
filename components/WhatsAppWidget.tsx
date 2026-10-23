@@ -14,7 +14,7 @@ export default function WhatsAppWidget() {
   const waUrl =
     pathname.startsWith("/digital-product") || pathname.startsWith("/digital-forge/checkout")
       ? `https://wa.me/${launchBundleWhatsappNumber}?text=${LAUNCH_BUNDLE_MESSAGE}`
-      : whatsappLink("Hi Triumphant HQ, I'd like to discuss a project with your agency.");
+      : whatsappLink("Hi TriumphantTech, I'd like to discuss a project with your agency.");
 
   if (
     pathname === "/" ||

@@ -4,7 +4,7 @@ import { automationChecklist } from "@/lib/lead-magnets";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Automation Readiness Checklist | Triumphant HQ",
+  title: "Automation Readiness Checklist | TriumphantTech",
   description: automationChecklist.description,
   path: "/automation-checklist",
 });

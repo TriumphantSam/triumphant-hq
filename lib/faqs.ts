@@ -41,7 +41,7 @@ export const serviceFaqs: Record<string, FaqItem[]> = {
     {
       question: "Do you offer website design in Ibadan?",
       answer:
-        "Yes. Triumphant HQ is based on Basorun Rd, Ibadan, and website design is a core service. We build conversion-focused Next.js sites for Oyo State businesses—not template packs with a city name swapped in.",
+        "Yes. TriumphantTech is based on Basorun Rd, Ibadan, and website design is a core service. We build conversion-focused Next.js sites for Oyo State businesses—not template packs with a city name swapped in.",
     },
     {
       question: "How is this different from other Ibadan web design agencies?",
@@ -255,7 +255,7 @@ export const ibadanSeoFaqs: FaqItem[] = [
 
 export const localSupportFaqs: FaqItem[] = [
   {
-    question: "Can I get NIN enrolment in Ibadan at Triumphant HQ?",
+    question: "Can I get NIN enrolment in Ibadan at TriumphantTech?",
     answer:
       "Yes. Our Local Support desk on Basorun Rd, Ibadan 211107, Oyo assists with NIN enrolment, modifications and slip printing. WhatsApp first so we confirm documents and timing before you visit.",
   },
@@ -265,7 +265,7 @@ export const localSupportFaqs: FaqItem[] = [
         "Yes. We support BVN enrolment, consultation, recovery and card printing guidance. This desk is separate from website and SEO projects so identity visits stay focused.",
   },
   {
-    question: "Where is Triumphant HQ for NIN and BVN support in Ibadan?",
+    question: "Where is TriumphantTech for NIN and BVN support in Ibadan?",
     answer:
       "We are based at Basorun Rd, Ibadan 211107, Oyo. Message us on WhatsApp first so we confirm requirements, documents and timing before you visit.",
   },
@@ -295,7 +295,7 @@ export const localSupportFaqs: FaqItem[] = [
       "Yes. If you lost your NIN number or slip, we assist with recovering your record using your registered phone number, tracking ID, or demographic details. If your NIN throws a 'Record Not Found' error when validating with banks, immigration, or telcos, we diagnose the database synchronization and help clear the issue.",
   },
   {
-    question: "What is IPE Clearance and can Triumphant HQ help clear it?",
+    question: "What is IPE Clearance and can TriumphantTech help clear it?",
     answer:
       "IPE stands for In-Process Exception (or Identity Processing Error), which occurs when an enrolment or data modification is held up at the NIMC backend. We help escalate, track, and clear IPE bottlenecks so your update is approved and your valid slip can be generated.",
   },

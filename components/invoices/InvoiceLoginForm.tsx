@@ -40,7 +40,7 @@ export default function InvoiceLoginForm() {
         onSubmit={onSubmit}
         className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_24px_60px_rgba(15,23,42,0.08)]"
       >
-        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#075ee5]">Triumphant HQ</p>
+        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#075ee5]">TriumphantTech</p>
         <h1 className="font-display mt-2 text-3xl font-bold tracking-[-0.03em] text-slate-950">
           Invoice studio
         </h1>

@@ -4,7 +4,7 @@ import { websiteScorecard } from "@/lib/lead-magnets";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Free Website Scorecard | Triumphant HQ",
+  title: "Free Website Scorecard | TriumphantTech",
   description: websiteScorecard.description,
   path: "/website-scorecard",
 });

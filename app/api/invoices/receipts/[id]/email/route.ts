@@ -10,7 +10,7 @@ import { SITE_URL } from "@/lib/seo";
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? "";
 const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY ?? "";
 const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY ?? "";
-const EMAILJS_FROM_NAME = process.env.EMAILJS_FROM_NAME ?? "TriumphantHQ";
+const EMAILJS_FROM_NAME = process.env.EMAILJS_FROM_NAME ?? "TriumphantTech";
 // Falls back to the invoice template: it renders {{{message_html}}} + {{subject}}, which we fill below.
 const EMAILJS_TEMPLATE_ID_RECEIPT =
   process.env.EMAILJS_TEMPLATE_ID_RECEIPT ||

@@ -6,9 +6,9 @@ import { buildPageMetadata } from "@/lib/seo";
 const service = getAgencyService("automation")!;
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "AI & Workflow Automation in Ibadan | Triumphant HQ",
+  title: "AI & Workflow Automation in Ibadan | TriumphantTech",
   description:
-    "Practical business automation, integrations and AI-assisted workflows from Triumphant HQ in Ibadan—for lean teams across Nigeria.",
+    "Practical business automation, integrations and AI-assisted workflows from TriumphantTech in Ibadan—for lean teams across Nigeria.",
   path: "/services/automation",
   keywords: [
     "business automation Ibadan",

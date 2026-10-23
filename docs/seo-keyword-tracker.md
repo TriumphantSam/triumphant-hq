@@ -1,4 +1,4 @@
-# SEO Keyword Tracker — Triumphant HQ
+# SEO Keyword Tracker — TriumphantTech
 
 Track weekly. Goal: climb from deep SERPs toward page 1 for Ibadan commercial queries.
 

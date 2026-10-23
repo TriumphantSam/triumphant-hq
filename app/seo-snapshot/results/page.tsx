@@ -569,7 +569,7 @@ export default function SeoResultsPage() {
                 Beyond the snapshot — what a full SEO fix looks like
               </h2>
               <p style={{ color: '#64748b', maxWidth: 680, margin: '0 auto', lineHeight: 1.85 }}>
-                The snapshot surfaces the issues. The real work is fixing them systematically. Here is what Triumphant HQ clients typically experience when they go beyond the free report.
+                The snapshot surfaces the issues. The real work is fixing them systematically. Here is what TriumphantTech clients typically experience when they go beyond the free report.
               </p>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>

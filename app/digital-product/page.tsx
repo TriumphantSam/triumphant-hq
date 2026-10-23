@@ -867,7 +867,7 @@ export default function DigitalProductPage() {
 
       {/* Footer */}
       <footer className="dp-footer relative w-full clear-both text-center text-xs sm:text-sm text-white/50 border-t border-white/10" style={{ background: GREEN_DEEP }}>
-        Digital Product Seller Launch Bundle · Hosted on <Link href="/" className="underline hover:text-white transition">Triumphant HQ</Link>
+        Digital Product Seller Launch Bundle · Hosted on <Link href="/" className="underline hover:text-white transition">TriumphantTech</Link>
       </footer>
 
       {/* Mobile Sticky CTA bar */}

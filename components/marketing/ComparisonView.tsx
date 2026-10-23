@@ -17,7 +17,7 @@ export default function ComparisonView({ page }: { page: ComparisonPage }) {
             <p key={paragraph}>{paragraph}</p>
           ))}
           <p>
-            Based in Ibadan, Oyo State, Triumphant HQ helps Southwestern Nigeria teams choose the right delivery model—
+            Based in Ibadan, Oyo State, TriumphantTech helps Southwestern Nigeria teams choose the right delivery model—
             then execute with clear scope. See our{" "}
             <Link href="/ibadan-tech-agency" className="font-semibold text-blue-600 hover:text-blue-800">
               Ibadan technology partner guide

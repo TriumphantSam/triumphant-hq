@@ -18,7 +18,7 @@ type ConfirmedPageProps = {
 export const dynamic = "force-dynamic";
 
 export const metadata = buildPageMetadata({
-  title: "Payment Received | Triumphant HQ",
+  title: "Payment Received | TriumphantTech",
   description: "Your Digital Forge payment is being verified before delivery.",
   path: "/digital-forge/checkout/confirmed",
 });
