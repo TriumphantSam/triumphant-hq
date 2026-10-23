@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ConversationTeam from "./ConversationTeam";
+import InboxFilters,{matchesFilter,type InboxFilter,type Signals} from './InboxFilters';
 
-type Summary = {
+type Summary = Signals & {
   id: string;
   label: string;
   wa_id: string;
@@ -11,6 +13,7 @@ type Summary = {
   updated_at: string;
 };
 type Thread = Summary & {
+  readCursor:number;
   messages: { id: string; role: string; text: string; at: string }[];
   live?: boolean;
 };
@@ -32,6 +35,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const pending = useRef<string | null>(null);
+  const [filter,setFilter]=useState<InboxFilter>('all');
   async function refresh() {
     const data = await rpc<{ threads: Summary[] }>("whatsapp.inbox", {
       workspaceId,
@@ -40,7 +44,8 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
   }
   useEffect(() => {
     let active = true;
-    refresh()
+    rpc<{threads:Summary[]}>("whatsapp.inbox",{workspaceId})
+      .then(data=>{if(active)setThreads(data.threads);})
       .catch((e) => {
         if (active) setError(e.message);
       });
@@ -61,8 +66,9 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
     }
   }
   async function open(id: string) {
-    setThread(await rpc<Thread>("whatsapp.thread", { workspaceId, id }));
+    const next=await rpc<Thread>("whatsapp.thread", { workspaceId, id });setThread(next);
     setMessage("");
+    await rpc('collaboration.seen',{workspaceId,id,channel:'whatsapp',cursor:next.readCursor});await refresh();
   }
   return (
     <div className="conversation-layout">
@@ -86,8 +92,9 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
             {error}
           </p>
         )}
+        <InboxFilters value={filter} onChange={setFilter} disabled={busy}/><p className="platform-muted">Unread counts are personal and count customer messages only. Refresh to see new activity.</p>
         <nav aria-label="Live WhatsApp conversations">
-          {threads.map((item) => (
+          {threads.filter(item=>matchesFilter(item,filter)).map((item) => (
             <button
               key={item.id}
               disabled={busy}
@@ -95,12 +102,14 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
               onClick={() => void run(() => open(item.id))}
             >
               <strong>{item.label}</strong>
+              <small>{item.assigned?`Assigned to ${item.assigneeName}`:'Unassigned'}{Number(item.unreadCount)>0?` · ${item.unreadCount} unread`:''}</small>
               <small>
                 {item.paused ? "With team" : "Automation on"} · ending {item.wa_id}
               </small>
             </button>
           ))}
         </nav>
+        {threads.length>0&&!threads.some(item=>matchesFilter(item,filter))&&<p>No conversations match this filter.</p>}
         {!threads.length && (
           <p>No live WhatsApp conversations yet. Send a message to the connected number.</p>
         )}
@@ -145,6 +154,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
                 {thread.paused ? "Resume automation" : "Pause automation"}
               </button>
             </header>
+            <ConversationTeam key={`${workspaceId}:${thread.id}`} workspaceId={workspaceId} threadId={thread.id} channel="whatsapp"/>
             <div
               className="conversation-messages"
               role="log"

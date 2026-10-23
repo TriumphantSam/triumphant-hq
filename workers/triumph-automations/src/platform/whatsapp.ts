@@ -9,6 +9,7 @@ import {
 } from "./core";
 import { tenantAnswer } from "./tenant-ai";
 import { responderDefaults } from "./conversations";
+import {threadSignals} from './collaboration';
 
 export const PROTECTED_PHONE_NUMBER_IDS = new Set(["1092109073976406"]);
 export const PROTECTED_DISPLAY_PHONES = new Set(["447478036301"]);
@@ -466,13 +467,15 @@ function eventView(row: {
 async function listThreads(env: Env, userId: string, workspaceId: unknown) {
   const w = await requireWorkspace(env, userId, workspaceId);
   const rows = await env.DB.prepare(
-    "SELECT id,label,wa_id,paused,version,updated_at FROM platform_whatsapp_threads WHERE workspace_id=? ORDER BY updated_at DESC LIMIT 50",
+    "SELECT id,label,wa_id,paused,version,updated_at FROM platform_whatsapp_threads WHERE workspace_id=? ORDER BY updated_at DESC,id LIMIT 50",
   )
     .bind(w.id)
     .all<Thread>();
+  const signals=await threadSignals(env,w.id,userId,'whatsapp');
   return {
     threads: rows.results.map((row) => ({
       ...row,
+      ...signals.get(row.id),
       paused: Boolean(row.paused),
       wa_id: row.wa_id.slice(-4),
     })),
@@ -489,15 +492,16 @@ async function readThread(env: Env, userId: string, input: Record<string, unknow
     .first<Thread>();
   if (!row) throw new PlatformError("Conversation not found.", 404);
   const events = await env.DB.prepare(
-    "SELECT wamid,role,text,created_at FROM platform_whatsapp_events WHERE workspace_id=? AND thread_id=? ORDER BY created_at LIMIT ?",
+    "SELECT rowid AS read_cursor,wamid,role,text,created_at FROM platform_whatsapp_events WHERE workspace_id=? AND thread_id=? ORDER BY rowid DESC LIMIT ?",
   )
     .bind(w.id, row.id, EVENT_LIMIT)
-    .all<{ wamid: string; role: string; text: string; created_at: string }>();
+    .all<{ read_cursor:number;wamid: string; role: string; text: string; created_at: string }>();
   return {
     ...row,
     paused: Boolean(row.paused),
     wa_id: row.wa_id.slice(-4),
-    messages: events.results.map(eventView),
+    readCursor:events.results[0]?.read_cursor||0,
+    messages: [...events.results].reverse().map(eventView),
     sandbox: true,
     live: true,
   };

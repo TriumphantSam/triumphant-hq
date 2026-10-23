@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import ConversationTeam from "./ConversationTeam";
+import InboxFilters,{matchesFilter,type InboxFilter,type Signals} from './InboxFilters';
 
 type Settings = { welcome:string; away:string; fallback:string; enabled:boolean|number; ai_enabled:boolean|number; version:number };
-type Summary = { id:string; label:string; paused:boolean|number; version:number; updated_at:string; message_count:number };
-type Thread = Summary & { messages:{id:string;role:"customer"|"automation"|"team";text:string;at:string;method?:string}[] };
+type Summary = Signals & { id:string; label:string; paused:boolean|number; version:number; updated_at:string; message_count:number };
+type Thread = Summary & {readCursor:number; messages:{id:string;role:"customer"|"automation"|"team";text:string;at:string;method?:string}[] };
 async function call<T>(action:string,payload:unknown):Promise<T> {
   const response=await fetch("/api/platform",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,payload}),cache:"no-store"});
   const data=await response.json();
@@ -15,6 +17,7 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
   const [loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
   const [label,setLabel]=useState("Practice customer"),[message,setMessage]=useState(""),[role,setRole]=useState<"customer"|"team">("customer");
   const pending=useRef<{fingerprint:string;id:string}|null>(null),createId=useRef<string|null>(null);
+  const [filter,setFilter]=useState<InboxFilter>('all');
   useEffect(()=>{
     let active=true;
     Promise.all([call<Settings>("responder.read",{workspaceId}),call<{conversations:Summary[]}>("conversation.list",{workspaceId})])
@@ -27,7 +30,7 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
     try{await work();}catch(e){setError(e instanceof Error?e.message:"Please try again.");}finally{setBusy(false);}
   }
   async function refresh(){const data=await call<{conversations:Summary[]}>("conversation.list",{workspaceId});setThreads(data.conversations);}
-  async function open(id:string){setThread(await call<Thread>("conversation.read",{workspaceId,id}));setMessage("");pending.current=null;}
+  async function open(id:string){const next=await call<Thread>("conversation.read",{workspaceId,id});setThread(next);setMessage("");pending.current=null;await call('collaboration.seen',{workspaceId,id,channel:'rehearsal',cursor:next.readCursor});await refresh();}
   async function send(){
     if(!thread)return;
     const fingerprint=JSON.stringify([thread.id,role,message]);
@@ -53,17 +56,20 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
       <aside className="platform-card conversation-list">
         <h2>Conversations <span className="platform-status">Test</span></h2>
         <button className="platform-secondary" disabled={busy} onClick={()=>void run(refresh)}>Refresh conversation list</button>
+        <InboxFilters value={filter} onChange={setFilter} disabled={busy}/><p className="platform-muted">Unread counts are personal and count customer messages only. Refresh to see new activity.</p>
         <form onSubmit={e=>{e.preventDefault();void run(async()=>{createId.current??=crypto.randomUUID();const created=await call<Thread>("conversation.create",{workspaceId,id:createId.current,label});setThread(created);createId.current=null;await refresh();});}}>
           <label>Test customer name<input required maxLength={80} value={label} onChange={e=>{setLabel(e.target.value);createId.current=null;}}/></label>
           <button className="platform-secondary" disabled={busy}>Start test conversation</button>
         </form>
         <p className="platform-muted">Up to 100 practice conversations. Use invented customer details.</p>
-        <nav aria-label="Test conversations">{threads.map(t=><button key={t.id} disabled={busy} aria-current={thread?.id===t.id?"page":undefined} onClick={()=>void run(()=>open(t.id))}><strong>{t.label}</strong><small>{t.paused?"With team":settings?.enabled?"Automation on":"Auto replies disabled"} · {t.message_count} messages</small></button>)}</nav>
+        <nav aria-label="Test conversations">{threads.filter(t=>matchesFilter(t,filter)).map(t=><button key={t.id} disabled={busy} aria-current={thread?.id===t.id?"page":undefined} onClick={()=>void run(()=>open(t.id))}><strong>{t.label}</strong><small>{t.paused?"With team":settings?.enabled?"Automation on":"Auto replies disabled"} · {t.message_count} messages</small><small>{t.assigned?`Assigned to ${t.assigneeName}`:'Unassigned'}{Number(t.unreadCount)>0?` · ${t.unreadCount} unread`:''}</small></button>)}</nav>
+        {threads.length>0&&!threads.some(t=>matchesFilter(t,filter))&&<p>No conversations match this filter.</p>}
         {!threads.length&&<p>No conversations yet. Start one to try your settings.</p>}
       </aside>
       <section className="platform-card conversation-chat" aria-label="Conversation rehearsal">
         {!thread?<div className="conversation-empty"><h2>See the customer experience.</h2><p>Start a test conversation, ask a saved FAQ and practise taking over. Nothing is sent to WhatsApp.</p></div>:<>
           <header className="conversation-heading"><div><h2>{thread.label}</h2><small>{thread.paused?"Automation paused · team in control":settings?.enabled?"Automation available":"Auto replies disabled in settings"}</small></div><button className="platform-secondary" disabled={busy} onClick={()=>void run(async()=>{setThread(await call<Thread>("conversation.pause",{workspaceId,id:thread.id,version:thread.version,paused:!thread.paused}));await refresh();})}>{thread.paused?"Resume automation":"Pause automation"}</button></header>
+          <ConversationTeam key={`${workspaceId}:${thread.id}`} workspaceId={workspaceId} threadId={thread.id} channel="rehearsal"/>
           <div className="conversation-messages" role="log" aria-live="polite" aria-label="Test messages">{thread.messages.map(m=><article className={`conversation-bubble conversation-${m.role}`} key={m.id}><small>{m.role==="customer"?"Test customer":m.role==="team"?"Your team":m.method==="ai"?"AI-selected approved answer":"Autoresponder"}</small><p>{m.text}</p><time dateTime={m.at}>{new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",hour:"2-digit",minute:"2-digit"}).format(new Date(m.at))} WAT</time></article>)}{!thread.messages.length&&<p className="platform-muted">Send a test message below to begin.</p>}</div>
           <form className="conversation-composer" onSubmit={e=>{e.preventDefault();void run(send);}}>
             <label>Send as<select value={role} disabled={busy} onChange={e=>setRole(e.target.value as "customer"|"team")}><option value="customer">Test customer</option><option value="team">Your team (pauses automation)</option></select></label>

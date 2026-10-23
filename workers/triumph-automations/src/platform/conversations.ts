@@ -1,6 +1,7 @@
 import type { Env } from "../types";
 import { PlatformError, requireWorkspace, validId, matchFaq, type Faq } from "./core";
 import { tenantAnswer } from "./tenant-ai";
+import {threadSignals} from './collaboration';
 
 export const responderDefaults = {
   welcome: "Welcome! How can we help you today?",
@@ -22,7 +23,7 @@ async function settings(env: Env, id: string): Promise<Settings> {
   return await env.DB.prepare("SELECT welcome,away,fallback,enabled,ai_enabled,version FROM platform_responder_settings WHERE workspace_id=?")
     .bind(id).first<Settings>() || responderDefaults;
 }
-function result(row: Thread) { return { ...row, messages: JSON.parse(row.messages) as Message[], paused: Boolean(row.paused), sandbox: true }; }
+function result(row: Thread) { const messages=JSON.parse(row.messages) as Message[];return { ...row, messages,readCursor:messages.length, paused: Boolean(row.paused), sandbox: true }; }
 export async function conversationAction(env: Env, userId: string, action: string, input: Record<string, unknown>, now = Date.now()) {
   const w = await requireWorkspace(env, userId, input.workspaceId, action === "responder.save");
   if (action === "responder.read") return { ...await settings(env, w.id), sandbox: true };
@@ -42,7 +43,8 @@ export async function conversationAction(env: Env, userId: string, action: strin
   }
   if (action === "conversation.list") {
     const rows = await env.DB.prepare("SELECT id,label,paused,version,updated_at,json_array_length(messages) AS message_count FROM platform_conversations WHERE workspace_id=? ORDER BY updated_at DESC,id LIMIT 100").bind(w.id).all();
-    return { conversations: rows.results, sandbox: true };
+    const signals=await threadSignals(env,w.id,userId,'rehearsal');
+    return { conversations: rows.results.map(row=>({...row,...signals.get(String(row.id))})), sandbox: true };
   }
   // These records are a private rehearsal, never a WhatsApp transport or outbox.
   if (env.ENVIRONMENT === "production") throw new PlatformError("Conversation rehearsal is available in staging only.",503);
