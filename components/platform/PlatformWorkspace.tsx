@@ -896,7 +896,7 @@ export default function PlatformWorkspace() {
                   </>
                 )}
                 {tab === "Launch" && (
-                  <div className="platform-columns">
+                  <>
                     {view.workspace.role === "owner" && (
                       <WhatsAppConnect
                         workspaceId={view.workspace.id}
@@ -904,6 +904,7 @@ export default function PlatformWorkspace() {
                         onChanged={() => void run(bootstrap)}
                       />
                     )}
+                  <div className="platform-columns">
                     <section className="platform-card platform-form">
                       <h2>Your launch checklist</h2>
                       <p>
@@ -1009,6 +1010,7 @@ export default function PlatformWorkspace() {
                       </Link>
                     </section>
                   </div>
+                  </>
                 )}
               </>
             )}
