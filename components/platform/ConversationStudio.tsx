@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import ConversationTeam from "./ConversationTeam";
+import InboxFilters,{matchesFilter,type InboxFilter,type Signals} from './InboxFilters';
 
 type Settings = { welcome:string; away:string; fallback:string; enabled:boolean|number; ai_enabled:boolean|number; version:number };
-type Summary = { id:string; label:string; paused:boolean|number; version:number; updated_at:string; message_count:number };
-type Thread = Summary & { messages:{id:string;role:"customer"|"automation"|"team";text:string;at:string;method?:string}[] };
+type Summary = Signals & { id:string; label:string; paused:boolean|number; version:number; updated_at:string; message_count:number };
+type Thread = Summary & {readCursor:number; messages:{id:string;role:"customer"|"automation"|"team";text:string;at:string;method?:string}[] };
 async function call<T>(action:string,payload:unknown):Promise<T> {
   const response=await fetch("/api/platform",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,payload}),cache:"no-store"});
   const data=await response.json();
@@ -16,6 +17,7 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
   const [loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
   const [label,setLabel]=useState("Practice customer"),[message,setMessage]=useState(""),[role,setRole]=useState<"customer"|"team">("customer");
   const pending=useRef<{fingerprint:string;id:string}|null>(null),createId=useRef<string|null>(null);
+  const [filter,setFilter]=useState<InboxFilter>('all');
   useEffect(()=>{
     let active=true;
     Promise.all([call<Settings>("responder.read",{workspaceId}),call<{conversations:Summary[]}>("conversation.list",{workspaceId})])
@@ -28,7 +30,7 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
     try{await work();}catch(e){setError(e instanceof Error?e.message:"Please try again.");}finally{setBusy(false);}
   }
   async function refresh(){const data=await call<{conversations:Summary[]}>("conversation.list",{workspaceId});setThreads(data.conversations);}
-  async function open(id:string){setThread(await call<Thread>("conversation.read",{workspaceId,id}));setMessage("");pending.current=null;}
+  async function open(id:string){const next=await call<Thread>("conversation.read",{workspaceId,id});setThread(next);setMessage("");pending.current=null;await call('collaboration.seen',{workspaceId,id,channel:'rehearsal',cursor:next.readCursor});await refresh();}
   async function send(){
     if(!thread)return;
     const fingerprint=JSON.stringify([thread.id,role,message]);
@@ -54,12 +56,14 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
       <aside className="platform-card conversation-list">
         <h2>Conversations <span className="platform-status">Test</span></h2>
         <button className="platform-secondary" disabled={busy} onClick={()=>void run(refresh)}>Refresh conversation list</button>
+        <InboxFilters value={filter} onChange={setFilter} disabled={busy}/><p className="platform-muted">Unread counts are personal and count customer messages only. Refresh to see new activity.</p>
         <form onSubmit={e=>{e.preventDefault();void run(async()=>{createId.current??=crypto.randomUUID();const created=await call<Thread>("conversation.create",{workspaceId,id:createId.current,label});setThread(created);createId.current=null;await refresh();});}}>
           <label>Test customer name<input required maxLength={80} value={label} onChange={e=>{setLabel(e.target.value);createId.current=null;}}/></label>
           <button className="platform-secondary" disabled={busy}>Start test conversation</button>
         </form>
         <p className="platform-muted">Up to 100 practice conversations. Use invented customer details.</p>
-        <nav aria-label="Test conversations">{threads.map(t=><button key={t.id} disabled={busy} aria-current={thread?.id===t.id?"page":undefined} onClick={()=>void run(()=>open(t.id))}><strong>{t.label}</strong><small>{t.paused?"With team":settings?.enabled?"Automation on":"Auto replies disabled"} · {t.message_count} messages</small></button>)}</nav>
+        <nav aria-label="Test conversations">{threads.filter(t=>matchesFilter(t,filter)).map(t=><button key={t.id} disabled={busy} aria-current={thread?.id===t.id?"page":undefined} onClick={()=>void run(()=>open(t.id))}><strong>{t.label}</strong><small>{t.paused?"With team":settings?.enabled?"Automation on":"Auto replies disabled"} · {t.message_count} messages</small><small>{t.assigned?`Assigned to ${t.assigneeName}`:'Unassigned'}{Number(t.unreadCount)>0?` · ${t.unreadCount} unread`:''}</small></button>)}</nav>
+        {threads.length>0&&!threads.some(t=>matchesFilter(t,filter))&&<p>No conversations match this filter.</p>}
         {!threads.length&&<p>No conversations yet. Start one to try your settings.</p>}
       </aside>
       <section className="platform-card conversation-chat" aria-label="Conversation rehearsal">
