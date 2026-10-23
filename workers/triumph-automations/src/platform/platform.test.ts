@@ -1239,6 +1239,9 @@ test("review sender rejects real senders and keeps ambiguous send outcomes reser
   Object.assign(env,{ENVIRONMENT:"staging",PLATFORM_WA_REVIEW_ENABLED:"true",PLATFORM_WA_REVIEW_OWNER_EMAIL:"alice@example.com",PLATFORM_WA_REVIEW_WORKSPACE_ID:w.id,PLATFORM_WA_REVIEW_PHONE_ID:"12345678901",PLATFORM_WA_REVIEW_RECIPIENT:"2348000001190",PLATFORM_WA_REVIEW_TOKEN:"private-test-credential",PLATFORM_WA_REVIEW_RUN_ID:crypto.randomUUID(),PLATFORM_WA_REVIEW_EXPIRES_AT:new Date(now+3600000).toISOString()});
   const owner={id:"alice",email:"alice@example.com"},input={workspaceId:w.id};let sends=0;
   try{
+    globalThis.fetch=async(_url,options)=>{assert.equal(options?.redirect,"manual");return new Response(null,{status:302,headers:{Location:"https://untrusted.example/"}});};
+    await assert.rejects(whatsappReview(env,owner,"whatsapp.review.send",input,now),/could not be verified/);
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_requests").get()!.n,0);
     globalThis.fetch=async()=>Response.json({id:env.PLATFORM_WA_REVIEW_PHONE_ID,display_phone_number:"+2349090090910",verified_name:"Company"});
     await assert.rejects(whatsappReview(env,owner,"whatsapp.review.send",input,now),/isolated Test Number/);
     assert.equal(sql.prepare("SELECT count(*) n FROM platform_requests").get()!.n,0);

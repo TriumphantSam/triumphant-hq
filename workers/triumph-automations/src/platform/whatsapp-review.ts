@@ -26,16 +26,20 @@ export async function whatsappReview(env:Env,user:Actor,action:string,input:Reco
   if(action==="whatsapp.review.send"&&saved) return {available:true,state,recipientLastFour:to.slice(-4)};
   let profile:Record<string,unknown>;
   try {
-    const r=await fetch(endpoint+"?fields=id,display_phone_number,verified_name",{headers:{Authorization:"Bearer "+token},signal:AbortSignal.timeout(8000),redirect:"error"});
-    if(!r.ok)throw new Error();profile=await r.json() as Record<string,unknown>;
-  }catch{throw new PlatformError("The test sender could not be verified. The temporary token may have expired.",503);}
+    const r=await fetch(endpoint+"?fields=id,display_phone_number,verified_name",{headers:{Authorization:"Bearer "+token},signal:AbortSignal.timeout(8000),redirect:"manual"});
+    if(!r.ok){
+      const failure=await r.json().catch(()=>null) as {error?:{code?:number;error_subcode?:number}}|null;
+      console.warn("whatsapp_review_profile_failed",{status:r.status,code:failure?.error?.code,subcode:failure?.error?.error_subcode});
+      throw new Error();
+    }profile=await r.json() as Record<string,unknown>;
+  }catch(error){console.warn("whatsapp_review_profile_unavailable",{kind:error instanceof Error?error.name:"unknown"});throw new PlatformError("The test sender could not be verified. The temporary token may have expired.",503);}
   const display=String(profile.display_phone_number||"").replace(/\D/g,"");
   if(profile.id!==phone||!/^1555\d{7}$/.test(display)||String(profile.verified_name||"").toLowerCase()!=="test number")throw new PlatformError("Only Meta's isolated Test Number can be used in this review panel.",403);
   if(action==="whatsapp.review.read")return {available:true,state,sender:display,recipientLastFour:to.slice(-4),template:"hello_world"};
   const claimed=await env.DB.prepare("INSERT INTO platform_requests(workspace_id,request_id,payload_digest,response,created_at) VALUES(?,?,?,NULL,?) ON CONFLICT DO NOTHING RETURNING request_id").bind(w.id,requestId,digest,new Date().toISOString()).first();
   if(!claimed)return {available:true,state:"reserved",recipientLastFour:to.slice(-4)};
   try {
-    const r=await fetch(endpoint+"/messages",{method:"POST",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({messaging_product:"whatsapp",to,type:"template",template:{name:"hello_world",language:{code:"en_US"}}}),signal:AbortSignal.timeout(8000),redirect:"error"});
+    const r=await fetch(endpoint+"/messages",{method:"POST",headers:{Authorization:"Bearer "+token,"Content-Type":"application/json"},body:JSON.stringify({messaging_product:"whatsapp",to,type:"template",template:{name:"hello_world",language:{code:"en_US"}}}),signal:AbortSignal.timeout(8000),redirect:"manual"});
     const result=await r.json() as {messages?:Array<{id?:string}>};
     if(!r.ok||!result.messages?.[0]?.id)throw new Error();
     state="accepted";
