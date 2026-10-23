@@ -14,6 +14,7 @@ import {
 import { platformAuth } from "./auth";
 import {teamAction} from "./team";
 import {platformOverview} from "./operator";
+import {whatsappReview} from "./whatsapp-review";
 import {
   handleWhatsAppWebhook,
   processWhatsAppPayload,
@@ -1210,6 +1211,43 @@ test("team size admission is atomic, expired invitations release capacity and wi
  assert.equal(sql.prepare("SELECT count(*) n FROM platform_team_invites WHERE workspace_id=? AND state='pending'").get(a.id)!.n,1);
  sql.close();
 });
+test("review sender allows one fixed test template, reserves atomically and never exposes credentials",async()=>{
+  const {env,sql,user}=setup();user("alice");user("bob");const w=(await createWorkspace(env,"alice","Review business"))!;
+  const now=Date.now(),savedFetch=globalThis.fetch;
+  Object.assign(env,{ENVIRONMENT:"staging",PLATFORM_WA_REVIEW_ENABLED:"true",PLATFORM_WA_REVIEW_OWNER_EMAIL:"alice@example.com",PLATFORM_WA_REVIEW_WORKSPACE_ID:w.id,PLATFORM_WA_REVIEW_PHONE_ID:"12345678901",PLATFORM_WA_REVIEW_RECIPIENT:"2348000001190",PLATFORM_WA_REVIEW_TOKEN:"private-test-credential",PLATFORM_WA_REVIEW_RUN_ID:crypto.randomUUID(),PLATFORM_WA_REVIEW_EXPIRES_AT:new Date(now+3600000).toISOString()});
+  let sends=0;
+  globalThis.fetch=async(_url,options)=>{
+    assert.equal(new Headers(options?.headers).get("Authorization"),"Bearer private-test-credential");
+    if(options?.method==="POST"){sends++;const b=JSON.parse(String(options.body));assert.equal(b.to,env.PLATFORM_WA_REVIEW_RECIPIENT);assert.equal(b.template.name,"hello_world");return Response.json({messages:[{id:"wamid.review-test"}]});}
+    return Response.json({id:env.PLATFORM_WA_REVIEW_PHONE_ID,display_phone_number:"+1 555 172 4523",verified_name:"Test Number"});
+  };
+  const owner={id:"alice",email:"alice@example.com"},input={workspaceId:w.id,to:"attacker",template:"arbitrary"};
+  try {
+    assert.equal((await whatsappReview(env,owner,"whatsapp.review.read",input,now)).state,"ready");
+    await assert.rejects(whatsappReview(env,{id:"bob",email:"bob@example.com"},"whatsapp.review.send",input,now),/unavailable for this account/);
+    const results=await Promise.all([whatsappReview(env,owner,"whatsapp.review.send",input,now),whatsappReview(env,owner,"whatsapp.review.send",input,now)]);
+    assert.equal(sends,1);assert.ok(results.some(r=>r.state==="accepted"));
+    const replay=await whatsappReview(env,owner,"whatsapp.review.send",input,now);assert.equal(replay.state,"accepted");assert.equal(sends,1);
+    assert.ok(!JSON.stringify(replay).includes("private-test-credential"));
+    env.ENVIRONMENT="production";await assert.rejects(whatsappReview(env,owner,"whatsapp.review.send",input,now),/disabled/);assert.equal(sends,1);
+    env.ENVIRONMENT="staging";env.PLATFORM_WA_REVIEW_EXPIRES_AT=new Date(now-1).toISOString();assert.equal((await whatsappReview(env,owner,"whatsapp.review.read",input,now)).available,false);
+  }finally{globalThis.fetch=savedFetch;sql.close();}
+});
+
+test("review sender rejects real senders and keeps ambiguous send outcomes reserved",async()=>{
+  const {env,sql,user}=setup();user("alice");const w=(await createWorkspace(env,"alice","Review business"))!,now=Date.now(),savedFetch=globalThis.fetch;
+  Object.assign(env,{ENVIRONMENT:"staging",PLATFORM_WA_REVIEW_ENABLED:"true",PLATFORM_WA_REVIEW_OWNER_EMAIL:"alice@example.com",PLATFORM_WA_REVIEW_WORKSPACE_ID:w.id,PLATFORM_WA_REVIEW_PHONE_ID:"12345678901",PLATFORM_WA_REVIEW_RECIPIENT:"2348000001190",PLATFORM_WA_REVIEW_TOKEN:"private-test-credential",PLATFORM_WA_REVIEW_RUN_ID:crypto.randomUUID(),PLATFORM_WA_REVIEW_EXPIRES_AT:new Date(now+3600000).toISOString()});
+  const owner={id:"alice",email:"alice@example.com"},input={workspaceId:w.id};let sends=0;
+  try{
+    globalThis.fetch=async()=>Response.json({id:env.PLATFORM_WA_REVIEW_PHONE_ID,display_phone_number:"+2349090090910",verified_name:"Company"});
+    await assert.rejects(whatsappReview(env,owner,"whatsapp.review.send",input,now),/isolated Test Number/);
+    assert.equal(sql.prepare("SELECT count(*) n FROM platform_requests").get()!.n,0);
+    globalThis.fetch=async(_url,options)=>{if(options?.method==="POST"){sends++;throw new Error("timeout including private credential must never escape");}return Response.json({id:env.PLATFORM_WA_REVIEW_PHONE_ID,display_phone_number:"+1 555 172 4523",verified_name:"Test Number"});};
+    assert.equal((await whatsappReview(env,owner,"whatsapp.review.send",input,now)).state,"unconfirmed");
+    assert.equal((await whatsappReview(env,owner,"whatsapp.review.send",input,now)).state,"unconfirmed");assert.equal(sends,1);
+  }finally{globalThis.fetch=savedFetch;sql.close();}
+});
+
 test("operator overview paginates businesses and excludes private customer and auth records",async()=>{
   const {env,sql,user}=setup();
   const now=Date.parse("2026-10-31T23:30:00Z");

@@ -21,6 +21,7 @@ import {
 import Turnstile from "@/components/automation/Turnstile";
 import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
 import TeamPanel,{TeamInvitations} from "./TeamPanel";
+import WhatsAppReview from "./WhatsAppReview";
 
 type Plan = {
   id: string;
@@ -897,6 +898,7 @@ export default function PlatformWorkspace() {
                 )}
                 {tab === "Launch" && (
                   <>
+                    {view.workspace.role==="owner"&&<WhatsAppReview key={view.workspace.id+":review"} workspaceId={view.workspace.id}/>}
                     {view.workspace.role === "owner" && (
                       <WhatsAppConnect
                         workspaceId={view.workspace.id}
