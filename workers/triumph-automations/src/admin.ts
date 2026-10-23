@@ -3,11 +3,21 @@ import type { Env } from "./types";
 import { privateReport } from "./reports";
 import { hmac } from "./security";
 import { claimLabJobs } from "./lab-delivery";
+import { platformOverview } from "./platform/operator";
+import { PlatformError } from "./platform/core";
 import facts from "../../../content/kb/business.json";
 export const adminRoutes = new Hono<{
   Bindings: Env;
   Variables: { raw: string };
 }>();
+adminRoutes.post("/platform", async(c)=>{
+  try {
+    let input:unknown;
+    try {input=JSON.parse(c.get("raw"));} catch {throw new PlatformError("Invalid overview request.");}
+    if(!input||typeof input!=="object"||Array.isArray(input))throw new PlatformError("Invalid overview request.");
+    return c.json(await platformOverview(c.env,input as Record<string,unknown>));
+  }catch(error){return c.json({error:error instanceof PlatformError?error.message:"The platform overview is unavailable."},error instanceof PlatformError?error.status:503);}
+});
 export async function generateDrafts(env: Env, now = new Date()) {
   const monday = new Date(now.getTime() + 3600000);
   monday.setUTCDate(monday.getUTCDate() - ((monday.getUTCDay() + 6) % 7));

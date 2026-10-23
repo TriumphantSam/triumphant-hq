@@ -35,6 +35,8 @@ test("platform gateway rejects cross-origin, oversized and unknown actions befor
       400,
     );
     assert.equal((await POST(make("x".repeat(1048577)))).status, 413);
+    for (const action of ["admin.platform", "platform.overview", "operator.read"])
+      assert.equal((await POST(make(JSON.stringify({action})))).status,400);
     assert.equal(calls, 0);
   } finally {
     globalThis.fetch = originalFetch;

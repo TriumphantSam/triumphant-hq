@@ -326,8 +326,10 @@ in its navigation. D1 confirmed the membership role was staff. The temporary
 membership and invitation were revoked through scoped operator D1 commands while
 the staff browser session remained signed in. Its next conversation-list request
 was denied with "Workspace not found." This verifies membership enforcement for
-an existing session; the owner's Remove staff access button still needs browser
-acceptance (the owner-only handler and removal are covered by automated tests).
+an existing session. On 23 October, the approved test membership was briefly
+restored as an operator fixture and the signed-in owner used Remove staff access.
+The UI confirmed removal and returned to one owner, closing the owner-button
+browser acceptance check. No messages were sent and no staff membership remains.
 The signed-in owner browser created a reserved `example.test` invitation, displayed
 manual sharing instructions, and withdrew it successfully on 22 October. The Team
 screen returned to one owner and no pending invitations; no invitation email was
@@ -340,3 +342,25 @@ database. The management page fits at 390 pixels. The exact lazy-loaded iframe
 answered the approved question on the separate allowed host; a second, unapproved
 origin was refused. This supersedes the older pending embedded-cancellation check
 above. Production activation and real WhatsApp onboarding remain separate gates.
+
+### Platform operations overview
+
+`/admin/platform` reuses the existing private agency owner session. It calls only
+the signed internal `/v1/admin/platform` endpoint; customer workspace sessions do
+not grant operator access, and the customer RPC has no overview action. The page
+is read-only and excludes account email addresses, customer contact details,
+message bodies, cancellation codes, provider identifiers and authentication data.
+
+The overview shows global business totals, state filters and twenty businesses
+per page using an ID cursor. Each card shows team counts, current Lagos-month
+sandbox replies, all-time enquiry/confirmed-appointment/rehearsal counts, business
+widget/AI flags and stored TEST billing state. Global controls are configuration
+flags, not provider-health checks. Published means a sandbox business page; it
+does not mean an approved WhatsApp connection. Paid test periods do not grant
+live production access. No suspension, plan changes or billing actions are offered.
+
+The endpoint refuses requests when the platform is disabled, before reading its
+tables. No migration is needed beyond the existing platform schema through 0014.
+All 80 Worker tests and 15 website tests passed, including pagination without
+duplicates, Lagos month rollover, private-data exclusion, invalid-filter rejection,
+disabled-platform refusal and blocked operator actions at the customer gateway.

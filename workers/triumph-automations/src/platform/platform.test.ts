@@ -13,6 +13,7 @@ import {
 } from "./core";
 import { platformAuth } from "./auth";
 import {teamAction} from "./team";
+import {platformOverview} from "./operator";
 import { conversationAction, responderDefaults } from "./conversations";
 import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
@@ -1202,6 +1203,31 @@ test("team size admission is atomic, expired invitations release capacity and wi
  assert.equal(sql.prepare("SELECT count(*) n FROM platform_team_invites WHERE workspace_id=? AND state='pending'").get(a.id)!.n,1);
  sql.close();
 });
+test("operator overview paginates businesses and excludes private customer and auth records",async()=>{
+  const {env,sql,user}=setup();
+  const now=Date.parse("2026-10-31T23:30:00Z");
+  for(let i=0;i<23;i++){user("operator"+i);await createWorkspace(env,"operator"+i,"Business "+i);}
+  const first=sql.prepare("SELECT id FROM platform_workspaces ORDER BY id LIMIT 1").get()!.id as string;
+  sql.prepare("UPDATE platform_workspaces SET state='published' WHERE id=?").run(first);
+  sql.prepare("INSERT INTO platform_usage VALUES(?,'2026-11','assistant_replies',9)").run(first);
+  sql.prepare("INSERT INTO platform_usage VALUES(?,'2026-10','assistant_replies',70)").run(first);
+  sql.prepare("INSERT INTO platform_leads VALUES(?,?,?,?,?,?,?,?,?,?,?)").run(crypto.randomUUID(),first,crypto.randomUUID(),"secret-digest","Private customer","private@example.test","private customer message","new",0,new Date(now).toISOString(),new Date(now).toISOString());
+  const a=await platformOverview(env,{},now);
+  assert.equal(a.period,"2026-11");assert.equal(a.totals.businesses,23);assert.equal(a.totals.published,1);
+  assert.equal(a.businesses.length,20);assert.ok(a.nextCursor);
+  assert.equal(a.businesses[0].replies,9);assert.equal(a.businesses[0].enquiries,1);
+  const b=await platformOverview(env,{cursor:a.nextCursor},now);
+  assert.equal(b.businesses.length,3);assert.equal(b.nextCursor,null);
+  assert.equal(new Set([...a.businesses,...b.businesses].map(w=>w.id)).size,23);
+  const filtered=await platformOverview(env,{state:"published"},now);assert.equal(filtered.businesses.length,1);
+  const output=JSON.stringify(a);for(const privateValue of ["private@example.test","private customer message","secret-digest","operator0@example.com","sessionCookie","subscription_code"]){assert.ok(!output.includes(privateValue));}
+  assert.equal(sql.prepare("SELECT count(*) n FROM platform_leads").get()!.n,1);
+  await assert.rejects(platformOverview(env,{state:"published' OR 1=1 --"},now),/valid business filter/);
+  await assert.rejects(platformOverview(env,{cursor:"invalid"},now),/valid business filter/);
+  env.PLATFORM_ENABLED="false";await assert.rejects(platformOverview(env,{},now),/not open yet/);
+  sql.close();
+});
+
 test("test billing catalog creates each plan once and keeps uncertain provider attempts for reconciliation",async()=>{
   const {env,sql}=await billingFixture();const saved=globalThis.fetch;let created=0;
   globalThis.fetch=async(_url,options)=>{created++;const body=JSON.parse(String(options?.body));assert.equal(body.currency,"NGN");assert.equal(body.interval,"monthly");return Response.json({status:true,data:{...body,domain:"test",plan_code:"PLN_"+created}});};
