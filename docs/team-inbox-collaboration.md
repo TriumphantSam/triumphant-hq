@@ -39,3 +39,11 @@ cross-business/channel isolation, stale and invalid assignments, note retries,
 author protection, automatic unassignment, removed-member denial, bounded note
 storage and separation from customer messaging. Browser acceptance is recorded
 separately; synthetic live-thread tests are not proof of WhatsApp delivery.
+
+Staging release: migration 0016 applied successfully; Worker version
+`f41f35b6-4236-4901-9a5b-0c0660292b33` deployed. The unsigned live RPC returned
+401. All 15 website tests, Worker/frontend TypeScript, targeted new-component
+ESLint and Worker dry-run passed. Vercel preview for commit `6714f6f` is Ready.
+Draft PR #20 targets the review-evidence branch (#19); neither this record nor
+the staging deployment represents a production merge or launch. Browser acceptance
+is waiting for the owner's sign-in on the new preview domain.
