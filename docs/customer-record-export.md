@@ -41,14 +41,19 @@ row and byte bounds. Worker/frontend TypeScript and targeted ESLint passed.
 25 October staging checkpoint: Worker version
 6170a805-3217-479f-91ce-80fa20c3fd56 deployed and Vercel preview
 dpl_5b5teEENQUR6MXH9CxjQ2YjwkF9Y is Ready. The reusable codex-team-i-60166a
-staging alias points to this preview. The owner Inbox displayed the export form
-and reported a prepared one-record enquiry export. The browser download event
-timed out; disk receipt and file inspection remain unverified. Opening Edge's
-internal Downloads page is blocked by browser-control policy, so user confirmation
-of the saved path was requested. Evidence: tmp/record-export-preview.png.
+staging alias points to this preview. The owner Inbox prepared one-record enquiry
+and appointment exports. Browser download-event detection timed out, but the user
+supplied the enquiry download paths. Both downloaded copies were inspected from
+disk and had identical SHA-256 hashes. CSV parsing confirmed one row, protected
+formula text, intact Unicode, quotes and embedded line breaks, and no private
+digests. The appointment file was also found and parsed from disk: one cancelled
+booking, correctly labelled UTC start time and no management/request digests.
+This confirms actual browser downloads, not just an API preparation message.
+Evidence: tmp/record-export-preview.png and tmp/record-export-accepted.png.
 
-Two disposable reserved example.test fixtures remain in staging for acceptance:
-lead e850e456-3ae7-4a64-ae79-f4910e56ab42 and cancelled booking
-0280b873-8d20-4b09-9d75-72c48e34fe1a, both scoped to TriumphantTech Staging Test.
-Remove these exact records after file acceptance; no messages were queued.
+The disposable example.test fixtures (lead
+e850e456-3ae7-4a64-ae79-f4910e56ab42 and cancelled booking
+0280b873-8d20-4b09-9d75-72c48e34fe1a) were removed using exact workspace, ID,
+request ID and email guards. A remote query confirmed zero remaining test
+records. No messages were queued or sent.
 Production is unchanged. Draft PR #27 contains this increment.
