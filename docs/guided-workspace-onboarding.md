@@ -37,3 +37,16 @@ now points to that build to avoid introducing another login domain. Browser
 layout and navigation acceptance is pending because the prior session expired;
 the user was asked to sign in again. No business configuration was changed by
 the examples, and production does not include this onboarding increment yet.
+
+Owner browser acceptance completed on 24 October: the existing business showed
+4/4 saved/tested preparation facts and a separate launch-readiness action.
+Selecting Shop changed the draft example; navigating to Answers confirmed the
+previously saved consultation answer was unchanged. Team, booking, website and
+launch shortcuts opened their intended screens without saving settings, inviting
+anyone or sending messages. The submitted/pending Meta notice was visible.
+The narrow test reported actual viewport 520px and document width 512px, with no
+horizontal overflow; a true 390px result is not claimed. Text and controls were
+visually inspected and the viewport override reset. The existing incomplete-step
+branch was not manually exercised with a new workspace in this acceptance.
+Setup was left open for the owner. This closes the owner layout/navigation gate;
+production promotion remains separate.
