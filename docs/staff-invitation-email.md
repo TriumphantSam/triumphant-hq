@@ -44,4 +44,11 @@ example.test invitation was created without email, its reusable sharing
 instructions displayed the actual expiry in WAT, and withdrawal left no pending
 invitations and one owner member. Evidence: tmp/invitation-browser-cleanup.png.
 Production has not received migration
-0018 or this draft feature. Real invitation delivery remains untested.
+0018 or this draft feature.
+
+One explicitly approved real staging invitation was sent to the user's controlled
+second mailbox. The UI reported provider acceptance and the user confirmed
+receipt. The invitation was then withdrawn; the browser showed no pending
+invitations and one owner member. No staff membership was created. Evidence:
+tmp/invitation-provider-accepted.png. Email sending and the temporary test
+recipient/workspace URL are disabled again after this controlled check.
