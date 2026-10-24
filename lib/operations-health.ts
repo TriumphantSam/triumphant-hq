@@ -1,0 +1,1 @@
+export type OperationsHealth={environment:string;generatedAt:string;heartbeat:{lastStarted:string;lastFinished:string|null;lastSuccess:string|null;lastOutcome:string}|null;heartbeatAttention:boolean;queues:Array<{name:string;failed:number;unknown:number;overdue:number;expiredLeases:number}>;invitationAttention:number;attention:boolean};

@@ -34,6 +34,8 @@ import {collaborationAction,threadSignals} from "./collaboration";
 import {workspaceUsage} from './usage';
 import {invitationEmailAvailable} from './invitation-email';
 import {exportRecords,csvCell} from './record-export';
+import {retentionAction} from './retention';
+import {operationsHealth,heartbeatStart,heartbeatFinish} from '../operations';
 import {
   publicWorkflow,
   policySlots,
@@ -1304,6 +1306,38 @@ test("verified subscription payments are idempotent, renewals reconcile current 
     sql.prepare("UPDATE platform_billing SET paid_through='2000-01-01T00:00:00.000Z' WHERE workspace_id=?").run(workspaceId);
     assert.equal((await billingAction(env,owner,"billing.read",{workspaceId})).testAccessActive,false);
   } finally {globalThis.fetch=saved;sql.close();}
+});
+test('retention preview is off by default, owner scoped, versioned and never deletes records',async()=>{
+ const {env,sql,user}=setup();for(const id of ['owner','staff','other'])user(id);
+ const w=(await createWorkspace(env,'owner','Retention business'))!,other=(await createWorkspace(env,'other','Other retention'))!;
+ sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(w.id,'staff');
+ const now=Date.parse('2026-10-25T12:00:00.000Z'),old='2025-01-01T00:00:00.000Z',fresh='2026-10-24T00:00:00.000Z',target={workspaceId:w.id};
+ const insert=sql.prepare("INSERT INTO platform_leads(id,workspace_id,request_id,request_digest,name,email,need,status,created_at,updated_at) VALUES(?,?,?,'private','Person','synthetic@example.test','Need',?,?,?)");
+ for(const [id,workspace,status,updated] of [['closed',w.id,'won',old],['active',w.id,'qualified',old],['updated',w.id,'lost',fresh],['foreign',other.id,'won',old]])insert.run(id,workspace,id,status,old,updated);
+ const booking=sql.prepare("INSERT INTO platform_bookings(id,workspace_id,request_id,request_digest,manage_digest,name,email,start,end,blocked_until,state,created_at,updated_at) VALUES(?,?,?,'private','private','Person','synthetic@example.test',?,?,?,'cancelled',?,?)");
+ booking.run('past',w.id,'past',old,old,old,old,old);booking.run('future',w.id,'future','2027-01-01','2027-01-01','2027-01-01',old,old);
+ const initial=await retentionAction(env,'owner','retention.read',target,now);assert.equal(initial.days,0);assert.equal(initial.deletionEnabled,false);
+ const saved=await retentionAction(env,'owner','retention.save',{...target,days:90,version:0},now);assert.equal(saved.enquiries,1);assert.equal(saved.appointments,1);assert.equal(saved.version,1);assert.equal(saved.deletionEnabled,false);
+ await assert.rejects(retentionAction(env,'owner','retention.save',{...target,days:180,version:0},now),/preview changed/);
+ const changed=await retentionAction(env,'owner','retention.save',{...target,days:180,version:1},now);assert.equal(changed.version,2);
+ await assert.rejects(retentionAction(env,'staff','retention.read',target,now),/Only the business owner/);await assert.rejects(retentionAction(env,'other','retention.read',target,now),/not found/);
+ for(const days of [1,30,'90',-1])await assert.rejects(retentionAction(env,'owner','retention.save',{...target,days,version:2},now),/valid preview/);
+ await assert.rejects(retentionAction(env,'owner','retention.purge',target,now),/Unknown/);
+ assert.equal(sql.prepare('SELECT count(*) AS n FROM platform_leads').get()!.n,4);assert.equal(sql.prepare('SELECT count(*) AS n FROM platform_bookings').get()!.n,2);
+ const off=await retentionAction(env,'owner','retention.save',{...target,days:0,version:2},now);assert.equal(off.cutoff,null);sql.close();
+});
+test('private operations warnings distinguish failed, unknown, overdue and leased jobs without private contents',async()=>{
+ const {env,sql}=setup(),now=Date.now(),old=new Date(now-30*60000).toISOString(),future=new Date(now+3600000).toISOString();
+ assert.equal((await operationsHealth(env,now)).heartbeatAttention,true);
+ await heartbeatStart(env);await heartbeatFinish(env,true);assert.equal((await operationsHealth(env)).heartbeatAttention,false);
+ sql.prepare("INSERT INTO leads(id,created_at,updated_at,source,name,email,need) VALUES('ops',?,?,'test','PRIVATE PERSON','private@example.test','PRIVATE BODY')").run(old,old);
+ sql.prepare("INSERT INTO outbox(id,lead_id,kind,state,next_attempt_at,lease_until,last_error) VALUES('failed','ops','reply_email','failed',?,NULL,'PRIVATE ERROR'),('overdue','ops','sheet','pending',?,NULL,NULL),('lease','ops','owner_email','sending',?, ?,NULL)").run(old,old,old,old);
+ sql.prepare("INSERT INTO review_feedback(id,created_at,rating) VALUES('ops-feedback',?,3)").run(old);
+ sql.prepare("INSERT INTO review_jobs(id,feedback_id,state,next_attempt_at) VALUES('unknown','ops-feedback','unknown',?),('future','ops-feedback','pending',?)").run(old,future);
+ const health=await operationsHealth(env,now);assert.equal(health.attention,true);const delivery=health.queues.find(q=>q.name==='Enquiry delivery')!;assert.deepEqual([delivery.failed,delivery.overdue,delivery.expiredLeases],[1,1,1]);assert.equal(health.queues.find(q=>q.name==='Feedback alerts')!.unknown,1);assert.equal(health.queues.find(q=>q.name==='Feedback alerts')!.overdue,0);
+ assert.ok(!JSON.stringify(health).includes('PRIVATE'));assert.ok(!JSON.stringify(health).includes('private@example'));
+ await heartbeatFinish(env,false);assert.equal((await operationsHealth(env)).heartbeatAttention,true);
+ sql.close();
 });
 test('record exports isolate owners and use inclusive Lagos creation dates without credentials',async()=>{
  const {env,sql,user}=setup();for(const id of ['owner','staff','other'])user(id);

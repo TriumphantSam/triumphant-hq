@@ -11,6 +11,7 @@ import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans } from "./billing";
 import { teamAction } from "./team";
 import {exportRecords} from './record-export';
+import {retentionAction} from './retention';
 import {
   admit,
   createWorkspace,
@@ -151,6 +152,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
         });
       }
       const id = payload.workspaceId;
+      if(body.action==='retention.read'||body.action==='retention.save')return c.json({data:await retentionAction(c.env,userId,body.action,payload)});
       if(body.action==='records.export')return c.json({data:await exportRecords(c.env,userId,payload)});
       if(body.action==='usage.read')return c.json({data:await workspaceUsage(c.env,userId,id)});
       if(body.action.startsWith("collaboration."))return c.json({data:await collaborationAction(c.env,userId,body.action,payload)});

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import WhatsAppInbox from "./WhatsAppInbox";
 import RecordExport from './RecordExport';
+import RetentionPreview from './RetentionPreview';
 type Lead = {
   id: string;
   name: string;
@@ -154,6 +155,7 @@ export default function InboxPanel({
         </p>
       )}
       {data?.exportAvailable&&<RecordExport key={workspaceId} workspaceId={workspaceId}/>}
+      {data?.exportAvailable&&<RetentionPreview key={workspaceId} workspaceId={workspaceId}/>}
       {whatsappConnected && (
         <div className="platform-inbox-whatsapp">
           <WhatsAppInbox workspaceId={workspaceId} />

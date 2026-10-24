@@ -5,11 +5,16 @@ import { hmac } from "./security";
 import { claimLabJobs } from "./lab-delivery";
 import { platformOverview } from "./platform/operator";
 import { PlatformError } from "./platform/core";
+import {operationsHealth} from './operations';
 import facts from "../../../content/kb/business.json";
 export const adminRoutes = new Hono<{
   Bindings: Env;
   Variables: { raw: string };
 }>();
+adminRoutes.post('/operations',async(c)=>{
+ try{return c.json(await operationsHealth(c.env));}
+ catch{return c.json({error:'Operations health is unavailable. Check database access and migrations.'},503);}
+});
 adminRoutes.post("/platform", async(c)=>{
   try {
     let input:unknown;

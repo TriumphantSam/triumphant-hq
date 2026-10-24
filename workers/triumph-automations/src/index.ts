@@ -15,6 +15,7 @@ import {
 import { paymentRoutes, paystackWebhook, drainPaymentJobs } from "./payments";
 import { reviewRoutes, drainReviewJobs, drainReviewInvites } from "./reviews";
 import { adminRoutes, scheduleOwnerReports, drainOwnerReports } from "./admin";
+import {heartbeatStart,heartbeatFinish} from './operations';
 
 const app = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
 app.post("/webhooks/paystack", (c) => paystackWebhook(c.req.raw, c.env));
@@ -383,6 +384,8 @@ app.onError(
 export default {
   fetch: app.fetch,
   async scheduled(_controller: ScheduledController, env: Env) {
+    await heartbeatStart(env);
+    try {
     if (env.PLATFORM_ENABLED === "true") {
       await env.DB.batch([
         env.DB.prepare("DELETE FROM platform_auth_session WHERE expires_at<?").bind(Date.now()),
@@ -426,5 +429,10 @@ export default {
         new Date(Date.now() - 365 * 86400000).toISOString(),
       ),
     ]);
+    await heartbeatFinish(env,true);
+    } catch {
+      await heartbeatFinish(env,false);
+      throw new Error('scheduled_run_failed');
+    }
   },
 } satisfies ExportedHandler<Env>;
