@@ -28,3 +28,17 @@ match. Production Vercel dpl_DgugiDCgQCGyCZXGFmMqwgNaiPpX is Ready and serves th
 public domains. No Worker source changed in that PR, so no Worker redeployment
 was required. The signed production platform gate still returns the expected
 503; the production customer platform remains closed. Usage is a separate branch.
+
+## Staging acceptance
+
+Worker c2f6b217-3a1e-4d2b-97e4-c97c2de90f15 deployed after a successful dry-run;
+no migration was needed. The accepted Vercel code preview 3e312cd showed the owner
+Usage tab, October 2026 period and 1 November 00:00 WAT reset. All three zero
+counts matched a scoped staging D1 aggregate check. Refresh and explanations for
+cancelled bookings/status changes worked. No records, messages or charges were
+created. Near/reached warnings were verified by automated tests, not by modifying
+the owner's counters. Actual narrow viewport was 520px with document width 512px;
+no horizontal overflow and readable cards. Viewport override was reset.
+The subsequent heading-only change gives Usage its own workspace heading.
+The existing staging team-preview alias is used to preserve the owner's session.
+This increment remains in draft PR #24, separate from the completed main release.
