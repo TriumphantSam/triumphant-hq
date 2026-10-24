@@ -33,3 +33,14 @@ dpl_3Az17mHf66g2N1WHX9DBzSUZUCQo is Ready on triumphantech.com. Public home,
 platform and automation-lab routes returned 200. The signed platform RPC retained
 its expected 503 gate. Local main was fast-forwarded and clean before creating
 this branch. Invitation sending remains off.
+
+Validation on 24 October: 93 Worker tests, 15 website tests, frontend and Worker
+TypeScript, targeted ESLint and diff checks passed. Staging migration 0019 and
+Worker version 64c53627-a298-4948-ab7a-b51e7a3d30ec are deployed. Vercel preview
+dpl_9BtmKP2du2yXahaUqGtyg4CcUy2e is Ready; the reusable codex-team-i-60166a alias
+points to it. Owner browser acceptance created and withdrew one reserved
+example.test invitation without email. Both events appeared automatically with
+the correct actor and WAT times, and a remote read confirmed persistence. There
+were no pending invitations and only the owner membership after cleanup.
+Evidence: tmp/team-history-desktop.png. This feature is draft PR #26 and has not
+been promoted to production.
