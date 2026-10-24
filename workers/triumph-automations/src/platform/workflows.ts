@@ -157,6 +157,7 @@ export async function inbox(env: Env, userId: string, id: unknown) {
   return {
     leads: leads.results,
     bookings: bookings.results,
+    exportAvailable:w.role==='owner',
     sandbox: env.ENVIRONMENT !== "production",
     notifications: "disabled",
   };
