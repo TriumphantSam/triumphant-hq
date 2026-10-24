@@ -1,6 +1,17 @@
 # WhatsApp App Review recording plan
 
-## Current evidence, 23 October 2026
+## Submission status, 23 October 2026
+
+The owner confirmed App Review submission on 23 October 2026 and provided the
+downloaded Digital Forge 2 App Review PDF. It contains the two intended WhatsApp
+permissions, descriptions and video entries. The messaging recording shows the
+website send and WhatsApp Web receipt; the separate template recording shows
+creation and saving in WhatsApp Manager, explicitly permitted by Meta's shown
+instructions. Approval is pending, not granted. Temporary review sending was
+disabled and its credential removed. The notes below preserve preparation
+history and shot lists; incomplete-form statements refer to the earlier audit.
+
+### Earlier preparation audit, before submission
 
 Business verification is approved. App Review submission is not confirmed: the
 user explicitly says it was not submitted, the permission forms are incomplete,

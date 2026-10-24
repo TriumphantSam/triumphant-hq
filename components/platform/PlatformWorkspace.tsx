@@ -22,6 +22,7 @@ import Turnstile from "@/components/automation/Turnstile";
 import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
 import TeamPanel,{TeamInvitations} from "./TeamPanel";
 import WhatsAppReview from "./WhatsAppReview";
+import SetupGuide from './SetupGuide';
 
 type Plan = {
   id: string;
@@ -494,19 +495,7 @@ export default function PlatformWorkspace() {
               </form>
             ) : (
               <>
-                {tab === "Setup" && <section className="platform-card setup-guide">
-                  <div className="platform-eyebrow">YOUR SETUP PATH</div>
-                  <h2>Build it. Practise it. Connect when ready.</h2>
-                  <p>Progress below comes from saved settings and test activity. Completing setup does not activate a paid plan or connect a WhatsApp number.</p>
-                  <progress max={4} value={[view.readiness.profile,view.readiness.answers,view.readiness.respondersConfigured,view.readiness.conversationTested].filter(Boolean).length} aria-label="Private setup progress" />
-                  {([
-                    {tab:"Business",title:"Introduce your business",detail:"Save what you offer and how customers can contact you.",done:view.readiness.profile},
-                    {tab:"Answers",title:"Add approved answers",detail:"Start with common questions about your services, hours and prices.",done:view.readiness.answers},
-                    {tab:"Autoresponders",title:"Choose your automated messages",detail:"Set welcome, away and fallback replies. Review Appointments for your business hours.",done:view.readiness.respondersConfigured},
-                    {tab:"Conversations",title:"Practise a customer conversation",detail:"Use an invented customer. Test questions and taking over from automation.",done:view.readiness.conversationTested},
-                  ] as const).map((step,i)=><div className="setup-step" key={step.tab}><span className={step.done?"setup-complete":""}>{step.done?<Check size={18}/>:i+1}</span><div><h3>{step.title}</h3><p>{step.detail}</p><small>{step.done?"Saved / tested":"To do"}</small></div><button className="platform-secondary" onClick={()=>setTab(step.tab)}>{step.done?"Review":"Start"}</button></div>)}
-                  <div className="platform-sandbox"><strong>Connection is separate from rehearsal.</strong> Practise privately first. Staging can onboard a tester number with Embedded Signup v5; App Review is not submitted, so external customers cannot connect yet. Production WhatsApp stays off.</div>
-                </section>}
+                {tab === "Setup" && <SetupGuide key={view.workspace.id} readiness={view.readiness} onNavigate={setTab}/>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {tab==="Team"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><TeamPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}

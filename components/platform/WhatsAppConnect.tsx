@@ -167,7 +167,7 @@ export default function WhatsAppConnect({
       )}
       <div className="platform-sandbox">
         <strong>Staging tester onboarding</strong> · Embedded Signup v5. App
-        Review is not submitted, so only Meta app admins, developers and testers
+        Review was submitted on 23 October 2026 and approval is pending. Only Meta app admins, developers and testers
         can complete this. External customers cannot be onboarded yet. The UK
         campaign number stays on the existing bot.
       </div>
