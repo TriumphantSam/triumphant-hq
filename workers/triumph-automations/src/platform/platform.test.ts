@@ -33,6 +33,7 @@ import { matchFaq } from "./core";
 import {collaborationAction,threadSignals} from "./collaboration";
 import {workspaceUsage} from './usage';
 import {invitationEmailAvailable} from './invitation-email';
+import {exportRecords,csvCell} from './record-export';
 import {
   publicWorkflow,
   policySlots,
@@ -1303,6 +1304,34 @@ test("verified subscription payments are idempotent, renewals reconcile current 
     sql.prepare("UPDATE platform_billing SET paid_through='2000-01-01T00:00:00.000Z' WHERE workspace_id=?").run(workspaceId);
     assert.equal((await billingAction(env,owner,"billing.read",{workspaceId})).testAccessActive,false);
   } finally {globalThis.fetch=saved;sql.close();}
+});
+test('record exports isolate owners and use inclusive Lagos creation dates without credentials',async()=>{
+ const {env,sql,user}=setup();for(const id of ['owner','staff','other'])user(id);
+ const w=(await createWorkspace(env,'owner','Export business'))!,other=(await createWorkspace(env,'other','Other export'))!;
+ sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(w.id,'staff');
+ const insert=sql.prepare("INSERT INTO platform_leads(id,workspace_id,request_id,request_digest,name,email,need,created_at,updated_at) VALUES(?,?,?,'secret-digest',?,?,?, ?,?)");
+ for(const [id,workspace,stamp] of [['before',w.id,'2026-10-23T22:59:59.999Z'],['inside',w.id,'2026-10-23T23:00:00.000Z'],['last',w.id,'2026-10-24T22:59:59.999Z'],['after',w.id,'2026-10-24T23:00:00.000Z'],['foreign',other.id,'2026-10-24T12:00:00.000Z']])insert.run(id,workspace,id,'=HYPERLINK("bad")','customer@example.test','Text, with "quotes"\nand Unicode: Ẹ káàárọ̀',stamp,stamp);
+ const input={workspaceId:w.id,kind:'enquiries',from:'2026-10-24',to:'2026-10-24'};
+ const result=await exportRecords(env,'owner',input);assert.equal(result.count,2);assert.ok(result.csv.startsWith('\ufeff"Reference"'));assert.ok(result.csv.includes('"\'=HYPERLINK(""bad"")"'));assert.ok(result.csv.includes('Ẹ káàárọ̀'));assert.ok(result.csv.includes('"inside"'));assert.ok(!result.csv.includes('"after"'));assert.ok(!result.csv.includes('"before"'));assert.ok(!result.csv.includes('foreign'));assert.ok(!result.csv.includes('secret-digest'));
+ await assert.rejects(exportRecords(env,'staff',input),/Only the business owner/);await assert.rejects(exportRecords(env,'other',input),/not found/);
+ assert.equal((await inbox(env,'staff',w.id)).exportAvailable,false);assert.equal((await inbox(env,'owner',w.id)).exportAvailable,true);
+ sql.prepare("INSERT INTO platform_bookings(id,workspace_id,request_id,request_digest,manage_digest,name,email,start,end,blocked_until,state,created_at,updated_at) VALUES('booking',?,'booking','private-request','private-manage','Person','person@example.test','2026-11-01T09:00:00Z','2026-11-01T09:30:00Z','2026-11-01T09:45:00Z','cancelled','2026-10-24T10:00:00.000Z','2026-10-24T10:00:00.000Z')").run(w.id);
+ const booked=await exportRecords(env,'owner',{...input,kind:'bookings'});assert.equal(booked.count,1);assert.ok(booked.csv.includes('cancelled'));assert.ok(!booked.csv.includes('private-'));assert.ok(!booked.csv.includes('manage_digest'));
+ assert.equal((await exportRecords(env,'owner',{...input,from:'2026-09-01',to:'2026-09-01'})).count,0);
+ sql.close();
+});
+test('record exports reject malformed ranges, oversized results and spreadsheet formula prefixes',async()=>{
+ for(const value of ['=1+1',' +SUM(1,2)','\t@SUM(1,2)','\nhello','\u0000-1','@name'])assert.ok(csvCell(value).startsWith('"\''));
+ assert.equal(csvCell('plain,"quoted"'),'"plain,""quoted"""');assert.equal(csvCell('Ábíkẹ́'),'"Ábíkẹ́"');
+ const {env,sql,user}=setup();user('owner');const w=(await createWorkspace(env,'owner','Export limits'))!;
+ const input={workspaceId:w.id,kind:'enquiries',from:'2026-10-01',to:'2026-10-31'};
+ for(const patch of [{kind:'all'},{from:'2026-02-30'},{from:'2026-10-02',to:'2026-10-01'},{to:'2026-11-01'},{from:12},{from:'2026-1-01'}])await assert.rejects(exportRecords(env,'owner',{...input,...patch}),/Choose/);
+ const insert=sql.prepare("INSERT INTO platform_leads(id,workspace_id,request_id,request_digest,name,email,need,created_at,updated_at) VALUES(?,?,?,'private','Person','synthetic@example.test','A request','2026-10-15T10:00:00.000Z','2026-10-15T10:00:00.000Z')");
+ for(let i=0;i<501;i++)insert.run(String(i),w.id,String(i));
+ await assert.rejects(exportRecords(env,'owner',input),/no partial file/);
+ sql.prepare("DELETE FROM platform_leads WHERE id='500'").run();assert.equal((await exportRecords(env,'owner',input)).count,500);
+ sql.prepare("UPDATE platform_leads SET need=?").run('😀'.repeat(2000));await assert.rejects(exportRecords(env,'owner',input),/too large/);
+ sql.close();
 });
 test('team history records committed changes once and remains owner scoped',async()=>{
  const {env,sql,user}=setup();for(const id of ['owner','staff','other'])user(id);

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import WhatsAppInbox from "./WhatsAppInbox";
+import RecordExport from './RecordExport';
 type Lead = {
   id: string;
   name: string;
@@ -24,6 +25,7 @@ type Data = {
   bookings: Booking[];
   sandbox: boolean;
   notifications: string;
+  exportAvailable:boolean;
 };
 async function rpc<T>(action: string, payload: unknown): Promise<T> {
   const response = await fetch("/api/platform", {
@@ -151,6 +153,7 @@ export default function InboxPanel({
           {notice}
         </p>
       )}
+      {data?.exportAvailable&&<RecordExport key={workspaceId} workspaceId={workspaceId}/>}
       {whatsappConnected && (
         <div className="platform-inbox-whatsapp">
           <WhatsAppInbox workspaceId={workspaceId} />
