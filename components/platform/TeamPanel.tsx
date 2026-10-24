@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useState} from "react";
+import TeamHistory from './TeamHistory';
 type Invite={id:string;email:string;expiresAt:string;emailState:'not-sent'|'sending'|'accepted'|'unconfirmed'};
 type Member={userId:string;name:string;email:string;role:string};
 async function rpc<T>(action:string,payload:unknown={}) {
@@ -13,6 +14,7 @@ export function TeamInvitations({onAccepted}:{onAccepted:(workspaceId:string)=>P
   return <section className="platform-card platform-form"><h2>You’ve been invited</h2><p>Accept only businesses you recognise. Staff can view the inbox and practise team replies. Owners control settings, billing and team access.</p>{error&&<p role="alert" className="platform-error">{error}</p>}{invites.map(i=><div key={i.id}><h3>{i.businessName}</h3><button disabled={busy} className="platform-primary" onClick={async()=>{setBusy(true);setError("");try{const result=await rpc<{workspaceId:string}>("team.accept",{inviteId:i.id});setInvites(items=>items.filter(x=>x.id!==i.id));await onAccepted(result.workspaceId);}catch(e){setError(e instanceof Error?e.message:"Please reload invitations.");}finally{setBusy(false);}}}>Join as staff</button></div>)}</section>;
 }
 export default function TeamPanel({workspaceId}:{workspaceId:string}) {
+  const [historyVersion,setHistoryVersion]=useState(0);
   function shareInvitation(invite:Invite){setShare(`You’re invited to our TriumphantTech workspace as staff. Open ${window.location.origin}/platform and sign in with ${invite.email}. Accept only the business you recognise. This invitation expires ${new Intl.DateTimeFormat('en-NG',{timeZone:'Africa/Lagos',dateStyle:'medium',timeStyle:'short'}).format(new Date(invite.expiresAt))} WAT. Do not forward sign-in codes.`);}
   const [data,setData]=useState<{members:Member[];invitations:Invite[];limit:number;emailAvailable:boolean}|null>(null),[email,setEmail]=useState(""),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState(""),[share,setShare]=useState(""),[sendEmail,setSendEmail]=useState(false);
   useEffect(()=>{let active=true;rpc<typeof data>("team.read",{workspaceId}).then(result=>{if(active)setData(result);}).catch(e=>{if(active)setError(e.message);});return()=>{active=false;};},[workspaceId]);
@@ -20,7 +22,7 @@ export default function TeamPanel({workspaceId}:{workspaceId:string}) {
     if(busy)return;setBusy(true);setError("");setNotice("");setShare("");
     try {
       const result=await rpc<{invitation?:Invite;emailState?:string;emailSent?:boolean}>(action,{workspaceId,...payload});
-      setData(await rpc("team.read",{workspaceId}));setNotice(message);
+      setData(await rpc("team.read",{workspaceId}));setNotice(message);setHistoryVersion(value=>value+1);
       if(action==='team.email'||(action==='team.invite'&&payload.sendEmail))setNotice(result.emailState==='accepted'?'The email provider accepted the invitation email. Delivery is not yet confirmed.':'The invitation is saved, but the email outcome needs checking. Share the instructions manually; no automatic resend will occur.');
       if(action==="team.invite"){if(result.invitation)shareInvitation(result.invitation);setEmail("");setSendEmail(false);}
     }catch(e){setError(e instanceof Error?e.message:"Please reload the team.");}finally{setBusy(false);}
@@ -44,5 +46,6 @@ export default function TeamPanel({workspaceId}:{workspaceId:string}) {
       </div>)}
     </>}
     <button disabled={busy} className="platform-secondary" onClick={()=>void run("team.read",{},"Team refreshed.")}>Refresh team</button>
+    <TeamHistory key={`${workspaceId}:${historyVersion}`} workspaceId={workspaceId}/>
   </section>;
 }
