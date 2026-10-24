@@ -1304,6 +1304,47 @@ test("verified subscription payments are idempotent, renewals reconcile current 
     assert.equal((await billingAction(env,owner,"billing.read",{workspaceId})).testAccessActive,false);
   } finally {globalThis.fetch=saved;sql.close();}
 });
+test('team history records committed changes once and remains owner scoped',async()=>{
+ const {env,sql,user}=setup();for(const id of ['owner','staff','other'])user(id);
+ const w=(await createWorkspace(env,'owner','History business'))!,other=(await createWorkspace(env,'other','Other business'))!;
+ const owner={id:'owner',email:'owner@example.com'},staff={id:'staff',email:'staff@example.com'},outsider={id:'other',email:'other@example.com'},now=Date.now();
+ const target={workspaceId:w.id};
+ const invite=await teamAction(env,owner,'team.invite',{...target,email:staff.email},now) as {invitation:{id:string}};
+ await teamAction(env,owner,'team.invite',{...target,email:staff.email},now);
+ await teamAction(env,staff,'team.accept',{inviteId:invite.invitation.id},now);
+ await teamAction(env,staff,'team.accept',{inviteId:invite.invitation.id},now);
+ await assert.rejects(teamAction(env,staff,'team.history',target),/Only the business owner/);
+ await assert.rejects(teamAction(env,outsider,'team.history',target),/not found/);
+ await teamAction(env,owner,'team.remove',{...target,userId:'staff'},now);
+ await teamAction(env,owner,'team.remove',{...target,userId:'staff'},now);
+ const replacement=await teamAction(env,owner,'team.invite',{...target,email:staff.email},now) as typeof invite;
+ await teamAction(env,owner,'team.revoke',{...target,inviteId:replacement.invitation.id},now);
+ await teamAction(env,owner,'team.revoke',{...target,inviteId:replacement.invitation.id},now);
+ type History={events:Array<{sequence:number;action:string;subjectEmail:string;actor:string}>;nextCursor:number|null};
+ const history=await teamAction(env,owner,'team.history',target) as History;
+ assert.deepEqual(history.events.map(e=>e.action),['withdrawn','invited','removed','joined','invited']);
+ assert.ok(history.events.every(e=>e.subjectEmail===staff.email));assert.equal(history.nextCursor,null);
+ assert.equal((await teamAction(env,outsider,'team.history',{workspaceId:other.id}) as History).events.length,0);
+ assert.ok(!JSON.stringify(history).includes('actor_user_id'));
+ // An activity-write failure rolls back the access mutation too.
+ sql.exec("CREATE TRIGGER reject_history BEFORE INSERT ON platform_team_history BEGIN SELECT RAISE(ABORT,'history unavailable'); END");
+ await assert.rejects(teamAction(env,owner,'team.invite',{...target,email:'rollback@example.test'},now),/history unavailable/);
+ assert.equal(sql.prepare("SELECT count(*) AS n FROM platform_team_invites WHERE email='rollback@example.test'").get()!.n,0);
+ sql.close();
+});
+test('team history cursor pages remain stable across new events and reject invalid cursors',async()=>{
+ const {env,sql,user}=setup();user('owner');const w=(await createWorkspace(env,'owner','History pages'))!;
+ const owner={id:'owner',email:'owner@example.com'},target={workspaceId:w.id},stamp=new Date().toISOString();
+ const insert=sql.prepare("INSERT INTO platform_team_history(workspace_id,event_key,action,actor_user_id,subject_email,created_at) VALUES(?,?,'invited','owner','synthetic@example.test',?)");
+ for(let i=0;i<25;i++)insert.run(w.id,String(i),stamp);
+ type History={events:Array<{sequence:number}>;nextCursor:number|null};
+ const first=await teamAction(env,owner,'team.history',target) as History;assert.equal(first.events.length,20);assert.ok(first.nextCursor);
+ insert.run(w.id,'new',stamp);
+ const second=await teamAction(env,owner,'team.history',{...target,cursor:first.nextCursor}) as History;
+ assert.equal(second.events.length,5);assert.equal(second.nextCursor,null);assert.equal(new Set([...first.events,...second.events].map(e=>e.sequence)).size,25);
+ for(const cursor of [0,-1,1.5,'20',Number.MAX_SAFE_INTEGER+1])await assert.rejects(teamAction(env,owner,'team.history',{...target,cursor}),/Invalid activity cursor/);
+ sql.close();
+});
 test("monthly billing clamps late-month anchors to Paystack's documented 28th",()=>{
   assert.equal(nextMonthlyDate("2026-01-31T12:00:00.000Z"),"2026-02-28T12:00:00.000Z");
   assert.equal(nextMonthlyDate("2026-12-20T12:00:00.000Z"),"2027-01-20T12:00:00.000Z");

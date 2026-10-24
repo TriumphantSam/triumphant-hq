@@ -24,6 +24,7 @@ const allowed = new Set([
   "booking.save",
   "plan.select",
   "team.read",
+  "team.history",
   "team.invite",
   "team.email",
   "team.revoke",

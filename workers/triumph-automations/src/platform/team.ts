@@ -18,6 +18,7 @@ export async function teamAction(env:Env,user:Actor,action:string,input:Record<s
     }
     await env.DB.batch([
       env.DB.prepare("INSERT INTO platform_memberships(workspace_id,user_id,role) SELECT workspace_id,?,'staff' FROM platform_team_invites WHERE id=? AND email=? AND state='pending' AND expires_at>? AND (SELECT count(*) FROM platform_memberships WHERE workspace_id=platform_team_invites.workspace_id)<10 ON CONFLICT DO NOTHING").bind(user.id,input.inviteId,email,stamp),
+      env.DB.prepare("INSERT INTO platform_team_history(workspace_id,event_key,action,actor_user_id,subject_email,created_at) SELECT workspace_id,id||':joined','joined',?,email,? FROM platform_team_invites WHERE id=? AND email=? AND state='pending' AND expires_at>? AND EXISTS(SELECT 1 FROM platform_memberships WHERE workspace_id=platform_team_invites.workspace_id AND user_id=?) ON CONFLICT DO NOTHING").bind(user.id,stamp,input.inviteId,email,stamp,user.id),
       env.DB.prepare("UPDATE platform_team_invites SET state='accepted' WHERE id=? AND email=? AND state='pending' AND expires_at>? AND EXISTS(SELECT 1 FROM platform_memberships WHERE workspace_id=platform_team_invites.workspace_id AND user_id=?)").bind(input.inviteId,email,stamp,user.id),
     ]);
     const accepted=await env.DB.prepare("SELECT state FROM platform_team_invites WHERE id=?").bind(input.inviteId).first<{state:string}>();
@@ -25,6 +26,13 @@ export async function teamAction(env:Env,user:Actor,action:string,input:Record<s
     return {ok:true,workspaceId:invite.workspace_id};
   }
   const w=await requireWorkspace(env,user.id,input.workspaceId,true);
+  if(action==='team.history') {
+    if(input.cursor!==undefined&&(!Number.isSafeInteger(input.cursor)||Number(input.cursor)<1))throw new PlatformError('Invalid activity cursor.');
+    const cursor=input.cursor===undefined?Number.MAX_SAFE_INTEGER:Number(input.cursor);
+    const result=await env.DB.prepare("SELECT h.sequence,h.action,h.subject_email AS subjectEmail,h.created_at AS createdAt,coalesce(nullif(u.name,''),u.email,'Former account') AS actor FROM platform_team_history h LEFT JOIN platform_auth_user u ON u.id=h.actor_user_id WHERE h.workspace_id=? AND h.sequence<? ORDER BY h.sequence DESC LIMIT 21").bind(w.id,cursor).all<{sequence:number;action:string;subjectEmail:string;createdAt:string;actor:string}>();
+    const events=result.results.slice(0,20);
+    return {events,nextCursor:result.results.length>20?events[events.length-1].sequence:null};
+  }
   if(action==="team.read") {
     const [members,invites]=await Promise.all([
       env.DB.prepare("SELECT m.user_id AS userId,m.role,u.name,u.email FROM platform_memberships m JOIN platform_auth_user u ON u.id=m.user_id WHERE m.workspace_id=? ORDER BY m.role,u.email").bind(w.id).all(),
@@ -44,6 +52,7 @@ export async function teamAction(env:Env,user:Actor,action:string,input:Record<s
     await env.DB.batch([
       env.DB.prepare("UPDATE platform_team_invites SET state='expired' WHERE workspace_id=? AND state='pending' AND expires_at<=?").bind(w.id,stamp),
       env.DB.prepare("INSERT INTO platform_team_invites(id,workspace_id,email,created_by,created_at,expires_at) SELECT ?,?,?,?,?,? WHERE ((SELECT count(*) FROM platform_memberships WHERE workspace_id=?)+(SELECT count(*) FROM platform_team_invites WHERE workspace_id=? AND state='pending' AND expires_at>?))<10 ON CONFLICT DO NOTHING").bind(id,w.id,recipient,user.id,stamp,expires,w.id,w.id,stamp),
+      env.DB.prepare("INSERT INTO platform_team_history(workspace_id,event_key,action,actor_user_id,subject_email,created_at) SELECT workspace_id,id||':invited','invited',created_by,email,created_at FROM platform_team_invites WHERE id=? ON CONFLICT DO NOTHING").bind(id),
     ]);
     const invite=await env.DB.prepare("SELECT id,email,expires_at AS expiresAt,email_state AS emailState FROM platform_team_invites WHERE workspace_id=? AND email=? AND state='pending' AND expires_at>?").bind(w.id,recipient,stamp).first<{id:string;email:string;expiresAt:string;emailState:string}>();
     if(!invite)throw new PlatformError("Your team is full. Remove a pending invitation or staff member first.",409);
@@ -55,12 +64,16 @@ export async function teamAction(env:Env,user:Actor,action:string,input:Record<s
   }
   if(action==="team.revoke") {
     if(!validId(input.inviteId))throw new PlatformError("Invitation not found.",404);
-    await env.DB.prepare("UPDATE platform_team_invites SET state='revoked' WHERE id=? AND workspace_id=? AND state='pending'").bind(input.inviteId,w.id).run();
+    await env.DB.batch([
+      env.DB.prepare("INSERT INTO platform_team_history(workspace_id,event_key,action,actor_user_id,subject_email,created_at) SELECT workspace_id,id||':withdrawn','withdrawn',?,email,? FROM platform_team_invites WHERE id=? AND workspace_id=? AND state='pending' AND expires_at>? ON CONFLICT DO NOTHING").bind(user.id,stamp,input.inviteId,w.id,stamp),
+      env.DB.prepare("UPDATE platform_team_invites SET state='revoked' WHERE id=? AND workspace_id=? AND state='pending'").bind(input.inviteId,w.id),
+    ]);
     return {ok:true};
   }
   if(action==="team.remove") {
     if(typeof input.userId!=="string"||input.userId.length>128||input.userId===w.owner_user_id)throw new PlatformError("The business owner cannot be removed.",409);
     await env.DB.batch([
+      env.DB.prepare("INSERT INTO platform_team_history(workspace_id,event_key,action,actor_user_id,subject_email,created_at) SELECT m.workspace_id,?,'removed',?,lower(u.email),? FROM platform_memberships m JOIN platform_auth_user u ON u.id=m.user_id WHERE m.workspace_id=? AND m.user_id=? AND m.role='staff'").bind(crypto.randomUUID(),user.id,stamp,w.id,input.userId),
       env.DB.prepare("UPDATE platform_team_invites SET state='revoked' WHERE workspace_id=? AND email=(SELECT lower(email) FROM platform_auth_user WHERE id=?)").bind(w.id,input.userId),
       env.DB.prepare("DELETE FROM platform_memberships WHERE workspace_id=? AND user_id=? AND role='staff'").bind(w.id,input.userId),
     ]);
