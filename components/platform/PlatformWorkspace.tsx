@@ -443,6 +443,7 @@ export default function PlatformWorkspace() {
                           ? "Your time, on your terms."
                           : tab === "Inbox"
                             ? "Every enquiry has a place."
+                            : tab === "Usage" ? "Your allowance, at a glance."
                             : tab === "Plans"
                               ? "Room to grow."
                               : "Know what’s ready."
