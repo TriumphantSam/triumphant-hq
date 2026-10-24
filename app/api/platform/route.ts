@@ -8,6 +8,7 @@ import {
 
 export const maxDuration = 20;
 const allowed = new Set([
+  "usage.read",
   "collaboration.read",
   "collaboration.seen",
   "collaboration.assign",

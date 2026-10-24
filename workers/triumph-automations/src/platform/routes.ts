@@ -6,6 +6,7 @@ import { conversationAction } from "./conversations";
 import { whatsappAction } from "./whatsapp";
 import {whatsappReview} from "./whatsapp-review";
 import {collaborationAction} from "./collaboration";
+import {workspaceUsage} from './usage';
 import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans } from "./billing";
 import { teamAction } from "./team";
@@ -149,6 +150,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
         });
       }
       const id = payload.workspaceId;
+      if(body.action==='usage.read')return c.json({data:await workspaceUsage(c.env,userId,id)});
       if(body.action.startsWith("collaboration."))return c.json({data:await collaborationAction(c.env,userId,body.action,payload)});
       if(body.action.startsWith("team."))return c.json({data:await teamAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
       if (body.action.startsWith("billing.")) return c.json({data:await billingAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
