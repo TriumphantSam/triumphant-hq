@@ -32,6 +32,7 @@ import { createPlatformRoutes } from "./routes";
 import { matchFaq } from "./core";
 import {collaborationAction,threadSignals} from "./collaboration";
 import {workspaceUsage} from './usage';
+import {invitationEmailAvailable} from './invitation-email';
 import {
   publicWorkflow,
   policySlots,
@@ -147,6 +148,35 @@ test('owner usage uses enforced sandbox limits and Lagos monthly resets without 
  const capped=await workspaceUsage(env,'owner',a.id,Date.parse('2026-11-01T00:00:00Z'));assert.equal(capped.metrics[0].remaining,0);assert.equal(capped.metrics[0].percent,100);assert.equal(capped.metrics[0].state,'reached');
  assert.equal((await workspaceUsage(env,'owner',a.id,Date.parse('2026-12-31T23:00:00Z'))).resetsAt,'2027-01-31T23:00:00.000Z');
  sql.close();
+});
+
+test('staff invitation emails are opt-in, owner-only, reserved once and never treated as membership',async()=>{
+ const {env,sql,user}=setup();user('owner');user('staff');const w=(await createWorkspace(env,'owner','Invitation business'))!,owner={id:'owner',email:'owner@example.com'},staff={id:'staff',email:'staff@example.com'},savedFetch=globalThis.fetch;
+ let sends=0;globalThis.fetch=async(_url,options)=>{sends++;assert.equal(options?.redirect,'manual');assert.match(new Headers(options?.headers).get('Idempotency-Key')||'',/^platform-team-invite-/);const body=JSON.parse(String(options?.body));assert.equal(body.to[0],'staff@example.com');assert.ok(body.text.includes('https://preview.example/platform'));assert.ok(body.text.includes('Invitation business'));return Response.json({id:'provider-test-id'});};
+ try{
+  await assert.rejects(teamAction(env,owner,'team.invite',{workspaceId:w.id,email:'staff@example.com',sendEmail:true}),/not enabled/);assert.equal(sends,0);assert.equal(sql.prepare('SELECT count(*) n FROM platform_team_invites').get()!.n,0);
+  const created=await teamAction(env,owner,'team.invite',{workspaceId:w.id,email:'staff@example.com'}) as {invitation:{id:string}};
+  Object.assign(env,{PLATFORM_TEAM_EMAIL_ENABLED:'true',RESEND_API_KEY:'private-test-key',EMAIL_FROM:'Test <test@example.test>',PLATFORM_WORKSPACE_URL:'https://preview.example/platform',PLATFORM_TEAM_EMAIL_TEST_EMAIL:'staff@example.com'});
+  assert.equal(invitationEmailAvailable(env),true);
+  await Promise.all([teamAction(env,owner,'team.email',{workspaceId:w.id,inviteId:created.invitation.id}),teamAction(env,owner,'team.email',{workspaceId:w.id,inviteId:created.invitation.id})]);assert.equal(sends,1);
+  const replay=await teamAction(env,owner,'team.invite',{workspaceId:w.id,email:'staff@example.com',sendEmail:true}) as {emailState:string};assert.equal(replay.emailState,'accepted');assert.equal(sends,1);assert.ok(!JSON.stringify(replay).includes('private-test-key'));
+  assert.equal(sql.prepare('SELECT count(*) n FROM platform_memberships WHERE workspace_id=?').get(w.id)!.n,1);
+  await assert.rejects(teamAction(env,staff,'team.email',{workspaceId:w.id,inviteId:created.invitation.id}),/Workspace not found/);
+  await teamAction(env,owner,'team.revoke',{workspaceId:w.id,inviteId:created.invitation.id});await assert.rejects(teamAction(env,owner,'team.email',{workspaceId:w.id,inviteId:created.invitation.id}),/expired or was withdrawn/);
+  env.PLATFORM_WORKSPACE_URL='https://preview.example/platform?token=unsafe';assert.equal(invitationEmailAvailable(env),false);
+ }finally{globalThis.fetch=savedFetch;sql.close();}
+});
+
+test('uncertain invitation email outcomes retain their reservation and test recipients are enforced',async()=>{
+ const {env,sql,user}=setup();user('owner');const w=(await createWorkspace(env,'owner','Email fallback'))!,owner={id:'owner',email:'owner@example.com'},savedFetch=globalThis.fetch;let sends=0;
+ Object.assign(env,{PLATFORM_TEAM_EMAIL_ENABLED:'true',RESEND_API_KEY:'private-test-key',EMAIL_FROM:'Test <test@example.test>',PLATFORM_WORKSPACE_URL:'https://preview.example/platform',PLATFORM_TEAM_EMAIL_TEST_EMAIL:'staff@example.com'});
+ globalThis.fetch=async()=>{sends++;throw new Error('Ambiguous timeout');};
+ try{
+  await assert.rejects(teamAction(env,owner,'team.invite',{workspaceId:w.id,email:'another@example.com',sendEmail:true}),/configured test recipient/);
+  const created=await teamAction(env,owner,'team.invite',{workspaceId:w.id,email:'staff@example.com',sendEmail:true}) as {invitation:{id:string};emailState:string};assert.equal(created.emailState,'unconfirmed');assert.equal(sends,1);
+  const replay=await teamAction(env,owner,'team.email',{workspaceId:w.id,inviteId:created.invitation.id}) as {emailState:string};assert.equal(replay.emailState,'unconfirmed');assert.equal(sends,1);
+  assert.equal(sql.prepare('SELECT state FROM platform_team_invites WHERE id=?').get(created.invitation.id)!.state,'pending');
+ }finally{globalThis.fetch=savedFetch;sql.close();}
 });
 
 test("private FAQ matching rejects generic words, repetition and ambiguous topics", () => {

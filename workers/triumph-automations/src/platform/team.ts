@@ -1,5 +1,6 @@
 import type {Env} from "../types";
 import {admit,PlatformError,requireWorkspace,validId} from "./core";
+import {invitationEmailAvailable,checkInvitationEmail,emailInvitation} from './invitation-email';
 type Actor={id:string;email:string};
 export async function teamAction(env:Env,user:Actor,action:string,input:Record<string,unknown>,now=Date.now()) {
   const email=user.email.trim().toLowerCase(),stamp=new Date(now).toISOString();
@@ -27,13 +28,15 @@ export async function teamAction(env:Env,user:Actor,action:string,input:Record<s
   if(action==="team.read") {
     const [members,invites]=await Promise.all([
       env.DB.prepare("SELECT m.user_id AS userId,m.role,u.name,u.email FROM platform_memberships m JOIN platform_auth_user u ON u.id=m.user_id WHERE m.workspace_id=? ORDER BY m.role,u.email").bind(w.id).all(),
-      env.DB.prepare("SELECT id,email,expires_at AS expiresAt FROM platform_team_invites WHERE workspace_id=? AND state='pending' AND expires_at>? ORDER BY created_at DESC").bind(w.id,stamp).all(),
+      env.DB.prepare("SELECT id,email,expires_at AS expiresAt,email_state AS emailState FROM platform_team_invites WHERE workspace_id=? AND state='pending' AND expires_at>? ORDER BY created_at DESC").bind(w.id,stamp).all(),
     ]);
-    return {members:members.results,invitations:invites.results,limit:10};
+    return {members:members.results,invitations:invites.results,limit:10,emailAvailable:invitationEmailAvailable(env)};
   }
   if(action==="team.invite") {
     const recipient=typeof input.email==="string"?input.email.trim().toLowerCase():"";
     if(recipient.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient)||recipient===email)throw new PlatformError("Enter your colleague's email address.");
+    if(input.sendEmail!==undefined&&typeof input.sendEmail!=='boolean')throw new PlatformError('Choose whether to email the invitation.');
+    if(input.sendEmail)checkInvitationEmail(env,recipient);
     await admit(env,"team-invite:"+w.id,20);
     const member=await env.DB.prepare("SELECT m.user_id FROM platform_memberships m JOIN platform_auth_user u ON u.id=m.user_id WHERE m.workspace_id=? AND lower(u.email)=?").bind(w.id,recipient).first();
     if(member)throw new PlatformError("This person already belongs to your team.",409);
@@ -42,9 +45,13 @@ export async function teamAction(env:Env,user:Actor,action:string,input:Record<s
       env.DB.prepare("UPDATE platform_team_invites SET state='expired' WHERE workspace_id=? AND state='pending' AND expires_at<=?").bind(w.id,stamp),
       env.DB.prepare("INSERT INTO platform_team_invites(id,workspace_id,email,created_by,created_at,expires_at) SELECT ?,?,?,?,?,? WHERE ((SELECT count(*) FROM platform_memberships WHERE workspace_id=?)+(SELECT count(*) FROM platform_team_invites WHERE workspace_id=? AND state='pending' AND expires_at>?))<10 ON CONFLICT DO NOTHING").bind(id,w.id,recipient,user.id,stamp,expires,w.id,w.id,stamp),
     ]);
-    const invite=await env.DB.prepare("SELECT id,email,expires_at AS expiresAt FROM platform_team_invites WHERE workspace_id=? AND email=? AND state='pending' AND expires_at>?").bind(w.id,recipient,stamp).first();
+    const invite=await env.DB.prepare("SELECT id,email,expires_at AS expiresAt,email_state AS emailState FROM platform_team_invites WHERE workspace_id=? AND email=? AND state='pending' AND expires_at>?").bind(w.id,recipient,stamp).first<{id:string;email:string;expiresAt:string;emailState:string}>();
     if(!invite)throw new PlatformError("Your team is full. Remove a pending invitation or staff member first.",409);
-    return {invitation:invite,emailSent:false};
+    return {invitation:invite,...(input.sendEmail?await emailInvitation(env,w.id,w.name,invite.id,now):{emailSent:false,emailState:invite.emailState})};
+  }
+  if(action==='team.email'){
+    if(!validId(input.inviteId))throw new PlatformError('Invitation not found.',404);
+    return emailInvitation(env,w.id,w.name,input.inviteId,now);
   }
   if(action==="team.revoke") {
     if(!validId(input.inviteId))throw new PlatformError("Invitation not found.",404);
