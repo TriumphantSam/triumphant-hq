@@ -25,6 +25,7 @@ const allowed = new Set([
   "plan.select",
   "team.read",
   "team.invite",
+  "team.email",
   "team.revoke",
   "team.remove",
   "team.invitations",
