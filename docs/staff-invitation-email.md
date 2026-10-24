@@ -39,6 +39,9 @@ For this draft PR #25, staging migration 0018 was applied and Worker version
 0680a9ec-63ba-4ac1-bd2f-1a384afeb9f3 deployed with invitation email disabled.
 Vercel preview dpl_8GPfa3gase8iynvGyuhXhBKoCTCJ is Ready and the reusable
 codex-team-i-60166a staging alias points to it. Frontend TypeScript, targeted
-ESLint and 15 website tests passed. Browser acceptance is pending owner sign-in
-because the previous session expired. Production has not received migration
+ESLint and 15 website tests passed. Owner browser acceptance passed: a synthetic
+example.test invitation was created without email, its reusable sharing
+instructions displayed the actual expiry in WAT, and withdrawal left no pending
+invitations and one owner member. Evidence: tmp/invitation-browser-cleanup.png.
+Production has not received migration
 0018 or this draft feature. Real invitation delivery remains untested.
