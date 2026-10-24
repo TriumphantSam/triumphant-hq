@@ -28,3 +28,17 @@ covering opt-in behavior, ownership, concurrent attempts, accepted replay,
 ambiguous outcomes, withdrawn invitations, recipient restrictions and unchanged
 membership. No real email was sent. Frontend and deployment acceptance is recorded
 separately. Controlled real delivery requires a separately approved recipient.
+
+24 October release checkpoint: PR #24 is merged into main at a1fb127; local main
+was synchronized before returning to this feature branch. Its production Vercel
+deployment is Ready and the production Worker version is
+639f0fc2-c4d9-4da3-94ad-f448a53cf443. The signed platform gate still returns the
+expected HTTP 503.
+
+For this draft PR #25, staging migration 0018 was applied and Worker version
+0680a9ec-63ba-4ac1-bd2f-1a384afeb9f3 deployed with invitation email disabled.
+Vercel preview dpl_8GPfa3gase8iynvGyuhXhBKoCTCJ is Ready and the reusable
+codex-team-i-60166a staging alias points to it. Frontend TypeScript, targeted
+ESLint and 15 website tests passed. Browser acceptance is pending owner sign-in
+because the previous session expired. Production has not received migration
+0018 or this draft feature. Real invitation delivery remains untested.
