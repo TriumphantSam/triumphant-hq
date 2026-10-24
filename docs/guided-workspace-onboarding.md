@@ -28,3 +28,12 @@ Public home, platform shell and automation lab return 200. A signed platform RPC
 still returns the expected disabled-platform 503. Production platform, WhatsApp,
 AI and test-billing flags remain false; the protected existing bot was untouched.
 The onboarding increment is a separate branch and preview release.
+
+## Increment validation
+
+Frontend TypeScript and lint for SetupGuide, PlatformWorkspace and WhatsAppConnect
+passed. Vercel code build bf6db6c is Ready. The existing staging team-preview alias
+now points to that build to avoid introducing another login domain. Browser
+layout and navigation acceptance is pending because the prior session expired;
+the user was asked to sign in again. No business configuration was changed by
+the examples, and production does not include this onboarding increment yet.
