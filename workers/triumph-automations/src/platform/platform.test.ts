@@ -31,6 +31,7 @@ import { Hono } from "hono";
 import { createPlatformRoutes } from "./routes";
 import { matchFaq } from "./core";
 import {collaborationAction,threadSignals} from "./collaboration";
+import {workspaceUsage} from './usage';
 import {
   publicWorkflow,
   policySlots,
@@ -123,6 +124,28 @@ test('WhatsApp unread tracks insertion cursors even for equal timestamps and onl
  for(let i=0;i<202;i++)insert('later-'+i,'in','customer');
  const view=await whatsappAction(env,'owner','whatsapp.thread',{workspaceId:w.id,id}) as {messages:{id:string}[];readCursor:number};
  assert.equal(view.messages.length,200);assert.equal(view.messages[0].id,'later-2');assert.equal(view.messages.at(-1)!.id,'later-201');assert.equal(view.readCursor,205);
+ sql.close();
+});
+
+test('owner usage uses enforced sandbox limits and Lagos monthly resets without cross-business data',async()=>{
+ const {env,sql,user}=setup();user('owner');user('staff');user('outsider');const a=(await createWorkspace(env,'owner','Usage A'))!,b=(await createWorkspace(env,'outsider','Usage B'))!;
+ sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(a.id,'staff');
+ sql.prepare("INSERT INTO platform_usage VALUES(?,'2026-11','assistant_replies',80)").run(a.id);
+ sql.prepare("INSERT INTO platform_usage VALUES(?,'2026-10','assistant_replies',99)").run(a.id);
+ sql.prepare("INSERT INTO platform_usage VALUES(?,'2026-11','assistant_replies',100)").run(b.id);
+ const data=await workspaceUsage(env,'owner',a.id,Date.parse('2026-10-31T23:00:00Z'));
+ assert.equal(data.period,'2026-11');assert.equal(data.resetsAt,'2026-11-30T23:00:00.000Z');assert.equal(data.metrics[0].used,80);assert.equal(data.metrics[0].remaining,20);assert.equal(data.metrics[0].state,'near');
+ assert.equal(data.metrics[1].used,0);assert.equal(data.metrics[2].used,0);assert.ok(data.metrics.every(m=>m.limit===100));
+ for(const [workspace,at] of [[a.id,'2026-10-31T22:59:59.000Z'],[a.id,'2026-10-31T23:00:00.000Z'],[b.id,'2026-10-31T23:00:00.000Z']]){
+  sql.prepare("INSERT INTO platform_leads(id,workspace_id,request_id,request_digest,name,email,need,status,created_at,updated_at) VALUES(?,?,?,?,?,?,?,'won',?,?)").run(crypto.randomUUID(),workspace,crypto.randomUUID(),'digest','Synthetic','example@example.test','Need',at,at);
+  sql.prepare("INSERT INTO platform_bookings(id,workspace_id,request_id,request_digest,manage_digest,name,email,start,end,blocked_until,state,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,'cancelled',?,?)").run(crypto.randomUUID(),workspace,crypto.randomUUID(),'digest','manage','Synthetic','example@example.test',at,at,at,at,at);
+ }
+ const records=await workspaceUsage(env,'owner',a.id,Date.parse('2026-11-01T00:00:00Z'));assert.equal(records.metrics[1].used,1);assert.equal(records.metrics[2].used,1);
+ assert.ok(!JSON.stringify(records).includes('example@example.test'));
+ await assert.rejects(workspaceUsage(env,'staff',a.id),/Only the business owner/);await assert.rejects(workspaceUsage(env,'outsider',a.id),/Workspace not found/);
+ sql.prepare("UPDATE platform_usage SET count=105 WHERE workspace_id=? AND period='2026-11'").run(a.id);
+ const capped=await workspaceUsage(env,'owner',a.id,Date.parse('2026-11-01T00:00:00Z'));assert.equal(capped.metrics[0].remaining,0);assert.equal(capped.metrics[0].percent,100);assert.equal(capped.metrics[0].state,'reached');
+ assert.equal((await workspaceUsage(env,'owner',a.id,Date.parse('2026-12-31T23:00:00Z'))).resetsAt,'2027-01-31T23:00:00.000Z');
  sql.close();
 });
 

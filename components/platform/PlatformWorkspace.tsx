@@ -17,6 +17,7 @@ import {
   Inbox,
   ListChecks,
   Globe,
+  BarChart3,
 } from "lucide-react";
 import Turnstile from "@/components/automation/Turnstile";
 import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
@@ -64,7 +65,8 @@ type Bootstrap = {
   plans: Plan[];
 };
 type Tab =
-  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Launch" | "Team";
+  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Usage" | "Launch" | "Team";
+const UsagePanel=dynamic(()=>import('./UsagePanel'),{loading:()=> <p role="status">Loading usage…</p>});
 const WebsiteWidgetPanel=dynamic(()=>import("./WebsiteWidgetPanel"),{loading:()=> <p role="status">Loading website settings…</p>});
 const BillingPanel=dynamic(()=>import("./BillingPanel"),{loading:()=> <p role="status">Loading billing…</p>});
 const ConversationStudio = dynamic(() => import("./ConversationStudio"), {
@@ -86,6 +88,7 @@ const tabs = [
   { name: "Autoresponders", icon: MessageSquare },
   { name: "Website", icon: Globe },
   { name: "Plans", icon: CreditCard },
+  { name: "Usage", icon: BarChart3 },
   { name: "Launch", icon: Rocket },
   { name: "Team", icon: ShieldCheck },
 ] as const;
@@ -440,6 +443,7 @@ export default function PlatformWorkspace() {
                           ? "Your time, on your terms."
                           : tab === "Inbox"
                             ? "Every enquiry has a place."
+                            : tab === "Usage" ? "Your allowance, at a glance."
                             : tab === "Plans"
                               ? "Room to grow."
                               : "Know what’s ready."
@@ -496,6 +500,7 @@ export default function PlatformWorkspace() {
             ) : (
               <>
                 {tab === "Setup" && <SetupGuide key={view.workspace.id} readiness={view.readiness} onNavigate={setTab}/>}
+                {tab === "Usage" && <WorkspacePanelBoundary key={view.workspace.id+tab}><UsagePanel key={view.workspace.id} workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {tab==="Team"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><TeamPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
