@@ -30,7 +30,9 @@ excluded from Git and the OpenNext env-file fallback is removed before deploymen
   invoice login, signed session verification and a read of the existing invoice
   database succeed on the deployed Worker. No invoice records were created.
 - Malformed contact submissions are rejected before delivery.
-- Mobile home/menu visually checked; live browser console reports no errors.
+- Mobile home/menu visually checked; live home-page console reports no errors.
+  A later contact-page browser check received HTTP 400 from the Turnstile challenge;
+  preview challenge verification and real submission acceptance remain unresolved.
 - Preview responses carry `X-Robots-Tag: noindex, nofollow`.
 - Cloudflare preview has no schedules. The scheduled handler also requires
   `SITE_CRON_ENABLED=true`, preventing duplicate follow-ups during migration.
