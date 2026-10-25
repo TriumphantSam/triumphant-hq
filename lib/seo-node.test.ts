@@ -39,12 +39,14 @@ test("Workers sends no lead details and refuses credential-leaking redirects or 
   try {
     globalThis.fetch = async (input, init) => {
       assert.equal(String(input), "https://private-scanner.vercel.app/api/internal/seo-snapshot");
-      assert.equal(init?.redirect, "error");
+      assert.equal(init?.redirect, "manual");
       assert.deepEqual(JSON.parse(String(init?.body)), { websiteUrl: "https://example.com" });
       assert.equal(validSeoNodeRequest(new Headers(init?.headers), String(init?.body), key), true);
       return Response.json({ ok: true, checks: [], quickScore: 50 });
     };
     assert.equal((await runHostedSeoAudit("https://example.com")).quickScore, 50);
+    globalThis.fetch = async () => new Response(null, { status: 302, headers: { location: "https://attacker.example" } });
+    await assert.rejects(runHostedSeoAudit("https://example.com"), /redirect rejected/);
     process.env.SEO_NODE_BACKEND_URL = "https://attacker.example";
     await assert.rejects(runHostedSeoAudit("https://example.com"), /Invalid SEO/);
   } finally {

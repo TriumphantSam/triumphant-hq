@@ -3,6 +3,7 @@
 import handler from "../.open-next/worker.js";
 import { canonicalRedirectUrl } from "../lib/canonical-host";
 import { runSchedule } from "./schedules";
+import { siteEnvironment } from "./environment";
 
 const worker = {
   async fetch(request: Request, env: Record<string, string>, ctx: unknown) {
@@ -10,7 +11,7 @@ const worker = {
     const url = new URL(request.url);
     const canonical = canonicalRedirectUrl(url.host, url.pathname, url.search);
     if (canonical) return Response.redirect(canonical, 301);
-    const response = await handler.fetch(request, env, ctx);
+    const response = await handler.fetch(request, siteEnvironment(env), ctx);
     if (env.SITE_PREVIEW !== "true") return response;
     const preview = new Response(response.body, response);
     preview.headers.set("X-Robots-Tag", "noindex, nofollow");

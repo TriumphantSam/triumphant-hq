@@ -1,13 +1,22 @@
 // Prepare ignored runtime files without printing credential values. Local
-// settings are only a migration preview baseline; compare Vercel before cutover.
+// Exported production config and local private overrides are ignored by Git.
 import fs from "node:fs";
 import path from "node:path";
 import { parse } from "dotenv";
 
 const variables = {};
-for (const file of [".env", ".env.local", ".env.production.local", ".env.cloudflare"]) {
+for (const file of [".env", ".env.local", ".env.production.local"]) {
   if (fs.existsSync(file)) Object.assign(variables, parse(fs.readFileSync(file)));
 }
+if (fs.existsSync(".cloudflare-production-config.json")) {
+  const config = JSON.parse(fs.readFileSync(".cloudflare-production-config.json", "utf8"));
+  for (const value of Object.values(config)) {
+    if (typeof value !== "string" || value.includes("...[truncated]"))
+      throw new Error("Production config contains an incomplete value");
+  }
+  Object.assign(variables, config);
+}
+if (fs.existsSync(".env.cloudflare")) Object.assign(variables, parse(fs.readFileSync(".env.cloudflare")));
 const used = new Set();
 for (const directory of ["app", "lib", "components"]) {
   for (const file of fs.readdirSync(directory, { recursive: true })) {
@@ -22,7 +31,17 @@ const runtime = Object.fromEntries(Object.entries(variables).filter(([key, value
 runtime.NEXT_PUBLIC_SITE_URL = "https://triumphantech.com";
 runtime.SITE_URL = "https://triumphantech.com";
 fs.mkdirSync("tmp", { recursive: true });
-fs.writeFileSync("tmp/cloudflare-secrets.json", JSON.stringify(runtime));
-fs.writeFileSync(".dev.vars", Object.entries(runtime).map(([key,value]) => `${key}=${JSON.stringify(value)}`).join("\n") + "\n");
-console.log(`Prepared ${Object.keys(runtime).length} runtime settings in ignored local files. No credential values printed.`);
+const publicConfig = Object.fromEntries(Object.entries(runtime).filter(([key]) => key.startsWith("NEXT_PUBLIC_")));
+const bindings = Object.fromEntries(Object.entries(runtime).filter(([key]) => !key.startsWith("NEXT_PUBLIC_")));
+bindings.SITE_PUBLIC_CONFIG = JSON.stringify(publicConfig);
+fs.writeFileSync("tmp/cloudflare-secrets.json", JSON.stringify(bindings));
+fs.writeFileSync("tmp/cloudflare-public-config.json", JSON.stringify({ SITE_PUBLIC_CONFIG: bindings.SITE_PUBLIC_CONFIG }));
+// dotenv does not unescape embedded JSON quotes in double-quoted values.
+const quote = value => {
+  for (const mark of ["'", "`"])
+    if (!value.includes(mark)) return mark + value + mark;
+  throw new Error("An environment value needs manual dotenv quoting");
+};
+fs.writeFileSync(".dev.vars", Object.entries(bindings).map(([key,value]) => `${key}=${quote(value)}`).join("\n") + "\n");
+console.log(`Prepared ${Object.keys(runtime).length} runtime settings in ${Object.keys(bindings).length} secret bindings. No credential values printed.`);
 console.log("Production-only settings must be compared with Vercel before domain cutover.");

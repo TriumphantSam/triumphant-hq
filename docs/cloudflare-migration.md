@@ -6,24 +6,28 @@ The website is deployed separately at:
 
 https://triumphant-hq-web-preview.triumphantsam30.workers.dev
 
-Worker version: `88f4145c-a08e-4a1f-8840-b255e9af806d`.
+Last code deployment: `f0a9d12a-638b-4fb6-997d-0bfb58e80aff`. Later secret updates create separate active versions.
 The canonical domain is still served by Vercel. No DNS records, webhook subscriptions,
 existing automation Workers, or Vercel schedules were changed.
 This branch starts from production `main` (`60d726c`); the unpublished operations
 readiness work remains on its original branch.
 
-The preview uses the existing local settings as a baseline, with production-local
-overrides. These have **not** been compared with the live Vercel environment.
-57 settings were stored as secrets on the new preview Worker. Secret values are
-excluded from Git and the OpenNext env-file fallback is removed before deployment.
+The preview now uses 31 complete exportable production configurations retrieved
+from Vercel, with local credentials retained for sensitive settings Vercel cannot
+export. Owner access was configured locally without logging the password. All
+NEXT_PUBLIC settings are packed into SITE_PUBLIC_CONFIG: 58 secret bindings plus
+three text settings fit the Free plan's 64-variable limit. Only public keys can be
+expanded from the pack; service bindings and private settings cannot be replaced.
+Private configuration files and DNS backups are ignored by Git. The generated
+OpenNext environment fallback is removed before deployment.
 
 ## Verified
 
 - Next.js 16.4.3 production build, TypeScript and OpenNext build pass.
-- 15 existing automation tests and four migration tests pass.
+- 15 existing automation tests and eight migration tests pass.
 - Changed-file lint passes (the pre-existing unused `seedForgeProducts` warning remains).
-- Wrangler dry run: 2,212.31 KiB gzip, 424 asset files; preview deployment completed.
-- Remote R2 cache seeded with 117 entries; all 180 changed assets uploaded.
+- Wrangler dry run: 2,215.94 KiB gzip, 427 asset files; preview deployment completed.
+- Remote R2 cache seeded with 117 entries; the last eight changed assets uploaded.
 - Local and deployed Workers: home, dynamic blog index, article, product catalogue,
   sitemap, robots, platform page and SEO URL redirect return expected responses.
 - Invoice and builder protection reject anonymous requests. Builder authentication,
@@ -46,24 +50,26 @@ were sent as migration acceptance tests.
 
 ## Release blockers
 
-1. **SEO snapshot runtime.** `lib/seo-audit.ts` validates DNS answers and pins the
-   HTTP connection to a validated IP. Cloudflare's Node HTTP implementation rejects
-   the `lookup` option. A read-only local Workers probe failed with
-   `The options.lookup option is not implemented`. Keep this scanner on a
-   compatible Node backend and verify the frontend-to-backend path before cutover.
-   Do not replace this with an unpinned fetch that weakens the existing SSRF checks.
-   References: [Cloudflare HTTP support](https://developers.cloudflare.com/workers/runtime-apis/nodejs/http/)
-   and [DNS support](https://developers.cloudflare.com/workers/runtime-apis/nodejs/dns/).
-2. **Live configuration comparison.** The Vercel connection returns 403 for team
-   `adeyemi-olayemis-projects`; team authorization is required. Compare all current
-   production variables, public build settings, backend URLs, webhook secrets,
-   invoice credentials and scheduled-job secrets before production deployment.
-   Sensitive variables that Vercel cannot export need secure entry from their
-   original source, never copying into chat or Git.
-3. **DNS cutover.** `triumphantech.com` uses `dns1.registrar-servers.com` and
-   `dns2.registrar-servers.com`. It is not a zone in the authenticated Cloudflare
-   account. Export and preserve the complete DNS zone (especially mail records)
-   before changing nameservers or website routing. Keep a rollback record.
+1. **Stable SEO Node backend.** The scanner keeps its DNS-pinned HTTP implementation
+   on Node because Workers does not support its lookup option. A dedicated HMAC
+   endpoint binds the timestamp and exact request body; the client restricts the
+   HTTPS Vercel origin and refuses redirects. Unsigned requests return 401 and
+   private targets return 400. A real Cloudflare-to-protected-Node scan returned
+   200 with 17 checks. The temporary acceptance Worker was removed. The current
+   backend is a protected Vercel preview deployment; establish a retained production
+   backend before cutover. Do not remove Vercel while this dependency remains.
+2. **Configuration verification.** Exportable production settings are compared and
+   complete, including the delivery override JSON. Signed owner dashboard access,
+   invoice login/database reads and builder authentication passed on Cloudflare.
+   Sensitive non-exportable credentials use original local values; real delivery
+   and payment remain separate acceptance checks.
+3. **DNS cutover.** A complete local backup now contains 15 host records and one
+   Microsoft 365 MX record, with priority, TTL and original nameservers. Two host
+   fields already include the domain and consequently resolve with a repeated
+   domain suffix: preserve the actual existing names, do not silently repair them.
+   No records or nameservers have changed. Create a Free Cloudflare zone, import
+   and compare all 16 records DNS-only, delegate while still serving Vercel, then
+   wait for zone activation and certificates before switching website routing.
 4. **End-to-end acceptance.** Turnstile hostname configuration is prepared for the
    preview, but a successful challenge/submission is still unverified. Verify enquiry storage/delivery,
    booking and payment callbacks with a controlled test and cleanup before release.
@@ -90,8 +96,8 @@ npm run preview:cloudflare
 ```
 
 `prepare-cloudflare-env.mjs` reads local env files and writes ignored `.dev.vars`
-and `tmp/cloudflare-secrets.json`, printing names/counts only, never values. These
-are a preview baseline, not proof that current production credentials were copied.
+and `tmp/cloudflare-secrets.json`, printing names/counts only, never values. It reads the ignored production configuration and local Cloudflare overrides;
+non-exportable credentials still require functional verification.
 
 ```powershell
 node node_modules/wrangler/bin/wrangler.js whoami
