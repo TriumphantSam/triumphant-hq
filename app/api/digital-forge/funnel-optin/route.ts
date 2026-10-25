@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import bundledContent from '@/content/site-content.generated.json';
 import { NextResponse } from 'next/server';
 
 const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID ?? '';
@@ -25,7 +26,7 @@ function resolveFunnelPath(slug: string): string {
 
 function readLocalFunnel(slug: string): FunnelPayload | null {
     const filePath = resolveFunnelPath(slug);
-    if (!fs.existsSync(filePath)) return null;
+    if (!fs.existsSync(filePath)) return (bundledContent.funnels as Record<string, FunnelPayload>)[slug] ?? null;
     try {
         return JSON.parse(fs.readFileSync(filePath, 'utf-8')) as FunnelPayload;
     } catch {
