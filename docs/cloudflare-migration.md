@@ -6,7 +6,7 @@ The website is deployed separately at:
 
 https://triumphant-hq-web-preview.triumphantsam30.workers.dev
 
-Worker version: `782d0b9d-34c3-43ba-8762-839c57cc9fcf`.
+Worker version: `88f4145c-a08e-4a1f-8840-b255e9af806d`.
 The canonical domain is still served by Vercel. No DNS records, webhook subscriptions,
 existing automation Workers, or Vercel schedules were changed.
 This branch starts from production `main` (`60d726c`); the unpublished operations
@@ -32,7 +32,10 @@ excluded from Git and the OpenNext env-file fallback is removed before deploymen
 - Malformed contact submissions are rejected before delivery.
 - Mobile home/menu visually checked; live home-page console reports no errors.
   A later contact-page browser check received HTTP 400 from the Turnstile challenge;
-  preview challenge verification and real submission acceptance remain unresolved.
+  error code `110200` identified the missing hostname authorization. The exact
+  preview hostname was added to the existing widget while preserving both
+  production hostnames; the preview server allowlist also includes it. Automated
+  challenge completion and real submission acceptance remain unresolved.
 - Preview responses carry `X-Robots-Tag: noindex, nofollow`.
 - Cloudflare preview has no schedules. The scheduled handler also requires
   `SITE_CRON_ENABLED=true`, preventing duplicate follow-ups during migration.
@@ -61,8 +64,8 @@ were sent as migration acceptance tests.
    `dns2.registrar-servers.com`. It is not a zone in the authenticated Cloudflare
    account. Export and preserve the complete DNS zone (especially mail records)
    before changing nameservers or website routing. Keep a rollback record.
-4. **End-to-end acceptance.** Configure a controlled preview hostname for Turnstile
-   and the preview's allowed-hostname validation. Verify enquiry storage/delivery,
+4. **End-to-end acceptance.** Turnstile hostname configuration is prepared for the
+   preview, but a successful challenge/submission is still unverified. Verify enquiry storage/delivery,
    booking and payment callbacks with a controlled test and cleanup before release.
 5. **Builder publishing.** Existing builder actions update repository JSON only
    when a writable checkout is available. Deployed Workers cannot persist those

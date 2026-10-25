@@ -10,7 +10,11 @@
   "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "triumphant-hq-web-preview" }],
   "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "triumphant-hq-web-preview-cache" }],
   "images": { "binding": "IMAGES" },
-  "vars": { "HOSTING_PLATFORM": "cloudflare", "SITE_PREVIEW": "true" },
+  "vars": {
+    "HOSTING_PLATFORM": "cloudflare",
+    "SITE_PREVIEW": "true",
+    "TURNSTILE_ALLOWED_HOSTNAMES": "triumphantech.com,www.triumphantech.com,triumphant-hq-web-preview.triumphantsam30.workers.dev"
+  },
   "observability": { "enabled": true },
   "env": {
     "production": {
