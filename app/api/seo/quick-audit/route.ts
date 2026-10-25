@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { runHostedSeoAudit } from "@/lib/seo-node-client";
 import {
   runSeoAudit,
   AuditTargetError,
@@ -31,7 +32,9 @@ export async function POST(request: Request) {
       message: `Website: ${websiteUrl}\nBusiness: ${field(body, "businessType", 120)}\n${field(body, "notes")}`,
       consentMarketing: body.consentMarketing === true,
     }).catch(() => ({ stored: false, leadId: "", destination: "none" }));
-    const audit = await runSeoAudit(websiteUrl).catch((error) => ({
+    const audit = await (process.env.HOSTING_PLATFORM === "cloudflare"
+      ? runHostedSeoAudit(websiteUrl)
+      : runSeoAudit(websiteUrl)).catch((error) => ({
       ok: false as const,
       error:
         error instanceof AuditTargetError

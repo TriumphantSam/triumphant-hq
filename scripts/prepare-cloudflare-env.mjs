@@ -5,7 +5,7 @@ import path from "node:path";
 import { parse } from "dotenv";
 
 const variables = {};
-for (const file of [".env", ".env.local", ".env.production.local"]) {
+for (const file of [".env", ".env.local", ".env.production.local", ".env.cloudflare"]) {
   if (fs.existsSync(file)) Object.assign(variables, parse(fs.readFileSync(file)));
 }
 const used = new Set();

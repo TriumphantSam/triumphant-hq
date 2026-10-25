@@ -11,10 +11,10 @@
     "migrate:invoices": "tsx scripts/migrate-invoices.ts",
     "predev": "node scripts/bundle-site-content.mjs",
     "prebuild": "node scripts/bundle-site-content.mjs",
-    "build:cloudflare": "opennextjs-cloudflare build && node scripts/cloudflare-runtime-env.mjs",
+    "build:cloudflare": "node scripts/build-cloudflare.mjs",
     "preview:cloudflare": "opennextjs-cloudflare preview",
     "deploy:cloudflare": "opennextjs-cloudflare deploy",
-    "test:cloudflare": "node scripts/bundle-site-content.mjs && tsx --test lib/client-ip.test.ts lib/bundled-content.test.ts cloudflare/schedules.test.ts",
+    "test:cloudflare": "node scripts/bundle-site-content.mjs && tsx --test lib/client-ip.test.ts lib/bundled-content.test.ts lib/seo-node.test.ts cloudflare/schedules.test.ts",
     "check:cloudflare": "wrangler deploy --dry-run",
     "predeploy:cloudflare": "node scripts/cloudflare-runtime-env.mjs"
   },
