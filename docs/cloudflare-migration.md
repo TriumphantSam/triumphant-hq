@@ -7,8 +7,9 @@ The website is deployed separately at:
 https://triumphant-hq-web-preview.triumphantsam30.workers.dev
 
 Last code deployment: `f0a9d12a-638b-4fb6-997d-0bfb58e80aff`. Later secret updates create separate active versions.
-The canonical domain is still served by Vercel. No DNS records, webhook subscriptions,
-existing automation Workers, or Vercel schedules were changed.
+The canonical domain is still served by Vercel. The new Cloudflare zone contains a verified DNS-only copy of all 16 original
+records. Registrar nameservers, webhook subscriptions, existing automation Workers
+and Vercel schedules remain unchanged.
 This branch starts from production `main` (`60d726c`); the unpublished operations
 readiness work remains on its original branch.
 
@@ -67,9 +68,14 @@ were sent as migration acceptance tests.
    Microsoft 365 MX record, with priority, TTL and original nameservers. Two host
    fields already include the domain and consequently resolve with a repeated
    domain suffix: preserve the actual existing names, do not silently repair them.
-   No records or nameservers have changed. Create a Free Cloudflare zone, import
-   and compare all 16 records DNS-only, delegate while still serving Vercel, then
-   wait for zone activation and certificates before switching website routing.
+   The Free zone `b7b9a6c3e2aa32b63b75cf4a637c96c9` is created with
+   `cosmin.ns.cloudflare.com` and `jewel.ns.cloudflare.com`. All 16 DNS-only records
+   match the backup, including original TTLs; direct authoritative queries matched
+   all 16 values and MX priority. The automatic scan found only eight records and
+   incorrectly proxied Microsoft aliases; these were corrected and all missing
+   records were added manually. Registrar delegation is pending renewed Namecheap
+   login. Delegate while still serving Vercel, then wait for activation and
+   certificates before switching website routing.
 4. **End-to-end acceptance.** Turnstile hostname configuration is prepared for the
    preview, but a successful challenge/submission is still unverified. Verify enquiry storage/delivery,
    booking and payment callbacks with a controlled test and cleanup before release.
