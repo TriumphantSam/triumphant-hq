@@ -8,8 +8,9 @@ https://triumphant-hq-web-preview.triumphantsam30.workers.dev
 
 Last code deployment: `f0a9d12a-638b-4fb6-997d-0bfb58e80aff`. Later secret updates create separate active versions.
 The canonical domain is still served by Vercel. The new Cloudflare zone contains a verified DNS-only copy of all 16 original
-records. Registrar nameservers, webhook subscriptions, existing automation Workers
-and Vercel schedules remain unchanged.
+records. Namecheap now delegates to Cloudflare; the zone and Universal SSL certificate
+are active. Website records still point to Vercel. Webhook subscriptions, existing
+automation Workers and Vercel schedules remain unchanged.
 This branch starts from production `main` (`60d726c`); the unpublished operations
 readiness work remains on its original branch.
 
@@ -73,9 +74,9 @@ were sent as migration acceptance tests.
    match the backup, including original TTLs; direct authoritative queries matched
    all 16 values and MX priority. The automatic scan found only eight records and
    incorrectly proxied Microsoft aliases; these were corrected and all missing
-   records were added manually. Registrar delegation is pending renewed Namecheap
-   login. Delegate while still serving Vercel, then wait for activation and
-   certificates before switching website routing.
+   records were added manually. Namecheap saved both assigned nameservers, and the zone activated at
+   19:10 UTC on 25 October. Universal SSL for the root and wildcard is active.
+   Website routing remains on Vercel until production Worker acceptance passes.
 4. **End-to-end acceptance.** Turnstile hostname configuration is prepared for the
    preview, but a successful challenge/submission is still unverified. Verify enquiry storage/delivery,
    booking and payment callbacks with a controlled test and cleanup before release.
@@ -114,7 +115,8 @@ npm run deploy:cloudflare
 The default Wrangler target is explicitly named `triumphant-hq-web-preview` and has
 no custom-domain routes. The `production` environment is a separate
 `triumphant-hq-web` service with its own cache bucket and scheduling disabled.
-Production resources have not been created by this migration.
+Production Worker and its separate cache bucket have now been created. Asset
+upload and production acceptance must complete before website routing changes.
 
 `scripts/cloudflare-middleware-trace.mjs` repairs a generated dependency trace:
 Next traces OpenTelemetry's CommonJS entry, but OpenNext's middleware bundler selects

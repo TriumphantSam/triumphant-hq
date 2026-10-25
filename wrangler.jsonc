@@ -24,7 +24,7 @@
       "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "triumphant-hq-web" }],
       "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "triumphant-hq-web-cache" }],
       "images": { "binding": "IMAGES" },
-      "vars": { "HOSTING_PLATFORM": "cloudflare", "SITE_PREVIEW": "false", "SITE_CRON_ENABLED": "false" }
+      "vars": { "HOSTING_PLATFORM": "cloudflare", "SITE_PREVIEW": "false", "SITE_CRON_ENABLED": "false", "TURNSTILE_ALLOWED_HOSTNAMES": "triumphantech.com,www.triumphantech.com" }
     }
   }
 }
