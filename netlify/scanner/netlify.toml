@@ -1,0 +1,16 @@
+[build]
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "22"
+  AWS_LAMBDA_JS_RUNTIME = "nodejs22.x"
+
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/api/internal/seo-snapshot"
+  to = "/.netlify/functions/seo-snapshot"
+  status = 200
+  force = true

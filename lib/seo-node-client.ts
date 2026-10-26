@@ -29,8 +29,8 @@ export async function runContainerSeoAudit(websiteUrl: string, service: ScannerS
 }
 
 export async function runHostedSeoAudit(websiteUrl: string): Promise<SeoQuickAuditResponse & { checks: SeoCheck[] }> {
-  // Staged opt-in: the live Vercel path remains until a private Cloudflare
-  // Container has passed remote acceptance and its service binding is deployed.
+  // The paid container option remains inactive. Netlify uses the same signed
+  // request contract as Vercel without sending Vercel credentials to Netlify.
   if (process.env.SEO_SCANNER_BACKEND === "cloudflare-container") {
     if (process.env.HOSTING_PLATFORM !== "cloudflare") throw new Error("Container scanner requires Cloudflare");
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
@@ -41,16 +41,17 @@ export async function runHostedSeoAudit(websiteUrl: string): Promise<SeoQuickAud
   const base = process.env.SEO_NODE_BACKEND_URL;
   const secret = process.env.SEO_NODE_SHARED_SECRET;
   const bypass = process.env.SEO_NODE_VERCEL_BYPASS;
-  if (!base || !secret || secret.length < 32 || !bypass) throw new Error("SEO Node backend is not configured");
+  const netlify = process.env.SEO_SCANNER_BACKEND === "netlify";
+  if (!base || !secret || secret.length < 32 || (!netlify && !bypass)) throw new Error("SEO Node backend is not configured");
   const url = new URL(SEO_NODE_PATH, base);
-  if (url.protocol !== "https:" || !url.hostname.endsWith(".vercel.app") || url.username || url.password || url.port)
+  if (url.protocol !== "https:" || !url.hostname.endsWith(netlify ? ".netlify.app" : ".vercel.app") || url.username || url.password || url.port)
     throw new Error("Invalid SEO Node backend URL");
   // Send only the target URL. Lead details and delivery stay on the main site.
   const body = JSON.stringify({ websiteUrl });
   const response = await fetch(url, {
     method: "POST", redirect: "manual", cache: "no-store",
-    headers: { ...seoNodeHeaders(body, secret), "x-vercel-protection-bypass": bypass },
-    body, signal: AbortSignal.timeout(14000),
+    headers: { ...seoNodeHeaders(body, secret), ...(!netlify && bypass ? { "x-vercel-protection-bypass": bypass } : {}) },
+    body, signal: AbortSignal.timeout(netlify ? 30000 : 14000),
   });
   // Workers does not implement redirect:"error". Never follow a redirect with
   // either backend credential, including redirects to another Vercel hostname.

@@ -5,6 +5,31 @@ import { POST } from "../app/api/internal/seo-snapshot/route";
 import { runHostedSeoAudit } from "./seo-node-client";
 
 const key = "seo-test-key-for-local-verification-only";
+test("Netlify bridge sends only the signed URL and rejects redirects", async () => {
+  const names = ["SEO_SCANNER_BACKEND", "SEO_NODE_BACKEND_URL", "SEO_NODE_SHARED_SECRET", "SEO_NODE_VERCEL_BYPASS"];
+  const previous = names.map(name => process.env[name]);
+  const originalFetch = globalThis.fetch;
+  Object.assign(process.env, { SEO_SCANNER_BACKEND: "netlify", SEO_NODE_BACKEND_URL: "https://scanner.netlify.app", SEO_NODE_SHARED_SECRET: key, SEO_NODE_VERCEL_BYPASS: "must-not-leak" });
+  try {
+    globalThis.fetch = async (input, init) => {
+      assert.equal(String(input), "https://scanner.netlify.app/api/internal/seo-snapshot");
+      const headers = new Headers(init?.headers);
+      assert.equal(headers.has("x-vercel-protection-bypass"), false);
+      assert.equal(validSeoNodeRequest(headers, String(init?.body), key), true);
+      assert.deepEqual(JSON.parse(String(init?.body)), { websiteUrl: "https://example.com" });
+      assert.equal(init?.redirect, "manual");
+      return Response.json({ ok: true, checks: [], quickScore: 50 });
+    };
+    assert.equal((await runHostedSeoAudit("https://example.com")).quickScore, 50);
+    globalThis.fetch = async () => new Response(null, { status: 302 });
+    await assert.rejects(runHostedSeoAudit("https://example.com"), /redirect rejected/);
+    process.env.SEO_NODE_BACKEND_URL = "https://attacker.example";
+    await assert.rejects(runHostedSeoAudit("https://example.com"), /Invalid SEO/);
+  } finally {
+    globalThis.fetch = originalFetch;
+    names.forEach((name, index) => { if (previous[index] === undefined) delete process.env[name]; else process.env[name] = previous[index]; });
+  }
+});
 test("SEO bridge signatures expire and bind the exact request body", () => {
   const body = JSON.stringify({ websiteUrl: "https://example.com" });
   const now = 1792920000000;

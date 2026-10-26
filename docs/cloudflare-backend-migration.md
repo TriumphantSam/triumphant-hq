@@ -1,9 +1,8 @@
 # Remaining backend migration: prepared, not released
 
-The live website and Vercel backend are unchanged by this branch. The scanner
-container is opt-in; the production site continues using Vercel until remote
-acceptance succeeds. No paid plan, container, cron trigger or new outbound message
-has been activated.
+The paid scanner container remains an inactive alternative. The free migration
+uses the isolated Netlify Node scanner instead; see [Netlify scanner](netlify-scanner.md).
+No paid plan, container, cron trigger or new outbound message has been activated.
 
 ## Scanner implementation
 
