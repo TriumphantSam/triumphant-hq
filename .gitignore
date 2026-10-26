@@ -53,5 +53,6 @@ website.log
 /tmp/
 /.playwright-cli/
 /output/playwright/
+/output/followups/
 __pycache__/
 *.pyc

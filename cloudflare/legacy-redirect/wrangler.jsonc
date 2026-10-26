@@ -1,0 +1,11 @@
+{
+  "name": "triumphant-legacy-redirect",
+  "account_id": "a9bf344e401d603c114b152f500e6722",
+  "main": "worker.ts",
+  "compatibility_date": "2026-10-26",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "triumphanthq.com/*", "zone_id": "88ada1ec40abe66109661589dc73cb19" },
+    { "pattern": "www.triumphanthq.com/*", "zone_id": "88ada1ec40abe66109661589dc73cb19" }
+  ]
+}
