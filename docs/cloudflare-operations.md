@@ -41,8 +41,11 @@ redirects and uses deployment protection plus application HMAC. The endpoint
 rejects unsigned/expired requests and private targets, and is absent on Cloudflare
 (404). Keep Vercel production while this dependency remains.
 
-Vercel retains website schedules `0 0 * * *` and `0 2 * * *`, plus legacy domain
-redirects. Cloudflare has no scheduled triggers and SITE_CRON_ENABLED is false.
+Vercel retains schedule definitions `0 0 * * *` and `0 2 * * *`, plus legacy domain
+redirects. A later read-only audit found neither route has a configured cron
+authorization secret; the Digital Forge runner is also a no-op. See
+[backend migration findings](cloudflare-backend-migration.md) before enabling jobs.
+Cloudflare has no scheduled triggers and SITE_CRON_ENABLED is false.
 The separate automation Worker's schedules are unchanged.
 
 `git.deploymentEnabled=false` disables automatic Vercel Git builds for ordinary
