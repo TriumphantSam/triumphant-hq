@@ -7,10 +7,9 @@ https://triumphantech.com is served by production Worker `triumphant-hq-web`.
 Production is indexable; preview remains noindex at
 https://triumphant-hq-web-preview.triumphantsam30.workers.dev.
 
-Production code deployment: `cd695808-c090-470f-a053-0acb0bdfcdb8`.
-Active version after Netlify scanner settings: `25ff5ea3-6a46-4a46-bf49-7f8c0f102f64`.
+Production deployment: `ae1ee1b3-ce06-489a-b264-f67aff97f78c`.
 Production has its own `triumphant-hq-web-cache` R2 bucket, 427 assets and 117
-seeded cache entries. Gzip is 2,217.03 KiB. All uploads completed before testing.
+seeded cache entries. Gzip is 2,216.86 KiB. All uploads completed before testing.
 
 Namecheap delegates to `cosmin.ns.cloudflare.com` and `jewel.ns.cloudflare.com`.
 Free zone `b7b9a6c3e2aa32b63b75cf4a637c96c9` and Universal SSL are active.
@@ -45,17 +44,23 @@ see [scanner setup and acceptance](netlify-scanner.md). Paid container files rem
 inactive. Vercel deployment `dpl_3Jt1PGPBBtPA4Qs99MsyTNBuQxX1` is retained as a
 rollback destination, along with the legacy-domain redirects.
 
-Vercel retains schedule definitions `0 0 * * *` and `0 2 * * *`, plus legacy domain
-redirects. A later read-only audit found neither route has a configured cron
-authorization secret; the Digital Forge runner is also a no-op. See
-[backend migration findings](cloudflare-backend-migration.md) before enabling jobs.
+The old Vercel schedule definitions remain listed, but the project's cron feature
+is disabled, verified by API disabledAt readback. Definitions are removed from
+source. Follow-ups now have a read-only owner preview; authenticated runner calls
+return explicit preview-only 409 responses. See [follow-up preview](follow-up-preview.md).
 Cloudflare has no scheduled triggers and SITE_CRON_ENABLED is false.
 The separate automation Worker's schedules are unchanged.
 
 `git.deploymentEnabled=false` disables automatic Vercel Git builds for ordinary
 website pushes. Future Node releases require explicit production deployment.
-Existing deployments/storage are not removed; review cleanup separately, keeping
-the active backend and a rollback version.
+Retain active aliases and designated rollback deployments; additional deletion
+batches need their own reviewed inventory.
+
+The later approved cleanup removed 29 more unaliased deployments, leaving 36 and
+preserving all 38 alias mappings. The legacy triumphanthq.com apex/www now use
+Cloudflare DNS and a dedicated redirect Worker; HTTP/HTTPS, path/query preservation
+and Universal SSL were verified. Vercel domain attachments remain during DNS
+propagation. See [retirement record](vercel-retirement.md).
 
 ## Verification and configuration
 
