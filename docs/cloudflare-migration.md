@@ -1,5 +1,8 @@
 # Cloudflare website migration
 
+> Historical migration notes. The cutover is complete; current live state,
+> verification and release/rollback instructions are in [cloudflare-operations.md](cloudflare-operations.md).
+
 ## Current state — 25 October 2026
 
 The website is deployed separately at:

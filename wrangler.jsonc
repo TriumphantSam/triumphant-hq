@@ -19,6 +19,10 @@
   "env": {
     "production": {
       "name": "triumphant-hq-web",
+      "routes": [
+        { "pattern": "triumphantech.com/*", "zone_id": "b7b9a6c3e2aa32b63b75cf4a637c96c9" },
+        { "pattern": "www.triumphantech.com/*", "zone_id": "b7b9a6c3e2aa32b63b75cf4a637c96c9" }
+      ],
       "workers_dev": true,
       "assets": { "directory": ".open-next/assets", "binding": "ASSETS", "run_worker_first": true },
       "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "triumphant-hq-web" }],
