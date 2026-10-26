@@ -769,6 +769,9 @@ const CONTENT_IMAGE_DIMENSIONS: Record<string, { width: number; height: number }
   "/images/service-automation.png": { width: 1536, height: 1024 },
   "/images/clients/integrated-aerial-precision.png": { width: 1024, height: 614 },
   "/images/clients/dr-seyi-absolute-wellness.png": { width: 200, height: 200 },
+  "/images/clients/ilu.png": { width: 248, height: 144 },
+  "/images/clients/chatstack.png": { width: 454, height: 89 },
+  "/images/clients/oyo-candidate-tracker.png": { width: 527, height: 147 },
   "/brand-logo.png": { width: 512, height: 512 },
 };
 
