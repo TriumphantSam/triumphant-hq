@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import blogIndex from '@/content/blog-index.json';
+import bundledContent from '@/content/site-content.generated.json';
 
 export interface BlogPost {
     slug: string;
@@ -30,7 +31,9 @@ const BLOG_DIR = path.join(process.cwd(), 'content', 'blog');
 
 function parsePost(filename: string): BlogPost {
     const filePath = path.join(BLOG_DIR, filename);
-    const raw = fs.readFileSync(filePath, 'utf-8');
+    const raw = fs.existsSync(filePath)
+        ? fs.readFileSync(filePath, 'utf-8')
+        : (bundledContent.blog as Record<string, string>)[filename.replace(/\.md$/, '')];
     const { data, content } = matter(raw);
 
     return {
@@ -56,9 +59,9 @@ function parsePost(filename: string): BlogPost {
 }
 
 export function getAllPosts(includeDrafts = false): BlogPost[] {
-    if (!fs.existsSync(BLOG_DIR)) return [];
-
-    const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.md'));
+    const files = fs.existsSync(BLOG_DIR)
+        ? fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith('.md'))
+        : Object.keys(bundledContent.blog).map(slug => `${slug}.md`);
 
     const posts = files.map(parsePost).filter((post) => includeDrafts || post.published);
 
@@ -99,7 +102,7 @@ export function getBlogSitemapEntries(): BlogSitemapEntry[] {
 
 export function getPostBySlug(slug: string, includeDrafts = false): BlogPost | null {
     const filePath = path.join(BLOG_DIR, `${slug}.md`);
-    if (!fs.existsSync(filePath)) return null;
+    if (!fs.existsSync(filePath) && !Object.hasOwn(bundledContent.blog, slug)) return null;
 
     const post = parsePost(`${slug}.md`);
     if (!includeDrafts && !post.published) return null;
