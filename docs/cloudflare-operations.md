@@ -7,9 +7,10 @@ https://triumphantech.com is served by production Worker `triumphant-hq-web`.
 Production is indexable; preview remains noindex at
 https://triumphant-hq-web-preview.triumphantsam30.workers.dev.
 
-Production deployment: `eeabad5f-8ff0-4b00-8e8a-23fc0906d286`.
+Production code deployment: `cd695808-c090-470f-a053-0acb0bdfcdb8`.
+Active version after Netlify scanner settings: `25ff5ea3-6a46-4a46-bf49-7f8c0f102f64`.
 Production has its own `triumphant-hq-web-cache` R2 bucket, 427 assets and 117
-seeded cache entries. Gzip is 2,215.94 KiB. All uploads completed before testing.
+seeded cache entries. Gzip is 2,217.03 KiB. All uploads completed before testing.
 
 Namecheap delegates to `cosmin.ns.cloudflare.com` and `jewel.ns.cloudflare.com`.
 Free zone `b7b9a6c3e2aa32b63b75cf4a637c96c9` and Universal SSL are active.
@@ -27,22 +28,28 @@ Existing WhatsApp/automation Workers were not modified; post-cutover etags match
 Unpublished operations-readiness work remains separate. Migration source started
 from production main `60d726c`.
 
-## Retained Node backend and schedules
+## Node scanner and schedules
 
 The SEO scanner retains DNS-pinned HTTP on Node because Workers does not support
 its lookup option. Cloudflare signs requests with dedicated HMAC and sends only
-the target URL to the retained Vercel production endpoint:
+the target URL to the isolated Netlify Free endpoint:
 
-https://triumphant-hq-adeyemi-olayemis-projects.vercel.app/api/internal/seo-snapshot
+https://triumphant-hq-seo.netlify.app/api/internal/seo-snapshot
 
-Backend deployment: `dpl_3Jt1PGPBBtPA4Qs99MsyTNBuQxX1`. Production no longer
-depends on a preview deployment. The client restricts the HTTPS origin, refuses
-redirects and uses deployment protection plus application HMAC. The endpoint
-rejects unsigned/expired requests and private targets, and is absent on Cloudflare
-(404). Keep Vercel production while this dependency remains.
+Netlify deployment: `6adf3cf16dc726d4dbf92973`. The client restricts the HTTPS
+origin, refuses redirects and uses timestamped application HMAC. Vercel bypass
+credentials are not sent to Netlify. The endpoint rejects unsigned/expired requests
+and private targets, and is absent on the Cloudflare website (404).
+The Netlify team is Legacy Free, with no card saved or plan migration performed;
+see [scanner setup and acceptance](netlify-scanner.md). Paid container files remain
+inactive. Vercel deployment `dpl_3Jt1PGPBBtPA4Qs99MsyTNBuQxX1` is retained as a
+rollback destination, along with the legacy-domain redirects.
 
-Vercel retains website schedules `0 0 * * *` and `0 2 * * *`, plus legacy domain
-redirects. Cloudflare has no scheduled triggers and SITE_CRON_ENABLED is false.
+Vercel retains schedule definitions `0 0 * * *` and `0 2 * * *`, plus legacy domain
+redirects. A later read-only audit found neither route has a configured cron
+authorization secret; the Digital Forge runner is also a no-op. See
+[backend migration findings](cloudflare-backend-migration.md) before enabling jobs.
+Cloudflare has no scheduled triggers and SITE_CRON_ENABLED is false.
 The separate automation Worker's schedules are unchanged.
 
 `git.deploymentEnabled=false` disables automatic Vercel Git builds for ordinary
@@ -55,7 +62,7 @@ the active backend and a rollback version.
 31 complete exportable production configurations were compared/reused. Sensitive
 non-exportable credentials retain original local values. Owner access was set
 locally without storing plaintext. Original env files were unchanged. Public
-settings pack into SITE_PUBLIC_CONFIG: 58 secrets plus three preview or four
+settings pack into SITE_PUBLIC_CONFIG: 59 secrets plus three preview or four
 production text settings fit the binding limit. Expansion cannot replace private
 settings/service bindings. Private files are ignored; the generated local env
 fallback is removed before deploy.
@@ -71,6 +78,10 @@ fallback is removed before deploy.
 - Production Node returns 401 without HMAC, 400 for a signed private target and
   200 with 17 checks for a signed public scan. Earlier real Cloudflare-to-Node
   acceptance returned 17 checks; its temporary Worker was removed.
+- The Netlify release passed 12 targeted scanner/bridge/security tests,
+  changed-file lint, TypeScript, OpenNext build and production dry run. The
+  published scanner and real Cloudflare bridge returned 17 checks. Post-cutover
+  canonical smoke checks, protected routes and authenticated builder all passed.
 - Malformed forms reject input before provider delivery. Nameservers and Microsoft
   365 MX were verified after cutover; non-website DNS values remain intact.
 

@@ -19,6 +19,7 @@
 # next.js
 /.next/
 /.open-next/
+/cloudflare/seo-container/dist/
 /content/site-content.generated.json
 /out/
 
@@ -42,6 +43,7 @@ yarn-error.log*
 
 # vercel
 .vercel
+.netlify
 
 # typescript
 *.tsbuildinfo
