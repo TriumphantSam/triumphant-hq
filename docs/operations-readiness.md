@@ -22,7 +22,8 @@ file and `.manifest.json` form a backup set. Keep both. DPAPI requires this Wind
 profile and its recovery material: copying this file to another computer alone
 does not make a portable disaster-recovery backup. This increment is manual;
 there is no scheduled backup, off-device replication, backup-age monitor or
-automated backup expiry. Those remain launch requirements.
+automated backup expiry. Those remain launch requirements for this manual script.
+The next gated increment is documented in [Offsite recovery](offsite-recovery.md).
 
 25 October drill: actual staging and production exports both decrypted and
 restored successfully in memory with integrity `ok` and zero foreign-key
