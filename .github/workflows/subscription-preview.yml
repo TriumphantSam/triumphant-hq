@@ -2,7 +2,7 @@ name: Verify subscription preview
 on:
   push:
     branches: [codex/subscription-lifecycle]
-    paths: ['.github/workflows/subscription-preview.yml']
+    paths: ['.github/workflows/subscription-preview.yml', 'components/platform/**', 'app/api/platform/**', 'workers/triumph-automations/**']
   workflow_dispatch:
 permissions:
   contents: read

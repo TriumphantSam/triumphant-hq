@@ -13,13 +13,13 @@ async function request(workspaceId:string,action:string,payload:Record<string,un
   const response=await fetch("/api/platform",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action,payload:{workspaceId,...payload}}),cache:"no-store"});
   const data=await response.json();if(!response.ok)throw new Error(data.error||"Billing could not be loaded.");return data as Status;
 }
-export default function BillingPanel({workspaceId,plans}:{workspaceId:string;plans:Plan[]}) {
+export default function BillingPanel({workspaceId,plans,onChanged}:{workspaceId:string;plans:Plan[];onChanged?:()=>void}) {
   const [status,setStatus]=useState<Status|null>(null),[error,setError]=useState(""),[busy,setBusy]=useState(false),[planId,setPlanId]=useState(plans[0]?.id||"starter"),[consent,setConsent]=useState(false);
   const attempt=useRef<{planId:string;id:string}|null>(null);
   useEffect(()=>{let active=true;request(workspaceId,"billing.read").then(data=>{if(active)setStatus(data);}).catch(e=>{if(active)setError(e.message);});return()=>{active=false;};},[workspaceId]);
   async function run(action:string,payload?:Record<string,unknown>) {
     if(busy)return;setBusy(true);setError("");
-    try {setStatus(await request(workspaceId,action,payload));setConsent(false);} catch(e){setError(e instanceof Error?e.message:"Please reload billing.");} finally {setBusy(false);}
+    try {setStatus(await request(workspaceId,action,payload));setConsent(false);if(!['billing.read','billing.manage'].includes(action))onChanged?.();} catch(e){setError(e instanceof Error?e.message:"Please reload billing.");} finally {setBusy(false);}
   }
   const money=(amount:number)=>new Intl.NumberFormat('en-NG',{style:'currency',currency:'NGN',maximumFractionDigits:0}).format(amount/100);
   const stamp=(value:string)=>new Intl.DateTimeFormat('en-NG',{dateStyle:'medium',timeStyle:'short',timeZone:'Africa/Lagos'}).format(new Date(value));

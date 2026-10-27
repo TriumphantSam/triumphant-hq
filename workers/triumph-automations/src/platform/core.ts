@@ -1,6 +1,7 @@
 import type { Env } from "../types";
 import {plans} from './plans';
 import {subscriptionAccess} from './subscription-access';
+import {billingMode} from './billing-policy';
 export {plans} from './plans';
 export class PlatformError extends Error {
   constructor(
@@ -261,8 +262,11 @@ export async function workspaceView(
     env.DB.prepare("SELECT 1 AS ok FROM platform_whatsapp_connections WHERE workspace_id=? AND state='connected'").bind(workspace.id).first(),
   ]);
   const subscription = await subscriptionAccess(env, workspace.id);
+  const agreement = await env.DB.prepare('SELECT plan_id FROM platform_billing WHERE workspace_id=?').bind(workspace.id).first<{plan_id:string}>();
   return {
     subscription,
+    billingPlanId: agreement?.plan_id || null,
+    billingMode: billingMode(env),
     workspace,
     faqs: faqs.results,
     policy,

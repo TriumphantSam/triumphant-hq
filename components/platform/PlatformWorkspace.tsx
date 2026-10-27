@@ -52,6 +52,9 @@ type Policy = {
   notice_hours: number;
 };
 type View = {
+  subscription?:{active:boolean;planId:string|null};
+  billingPlanId?:string|null;
+  billingMode?:'test'|'live'|null;
   workspace: Workspace;
   faqs: Faq[];
   policy: Policy;
@@ -231,6 +234,7 @@ export default function PlatformWorkspace() {
     setNotice("Changes saved to your business workspace.");
   }
 
+  const displayedPlanId = view?.billingPlanId || view?.workspace.plan_id;
   return (
     <div className="platform ph-no-capture" data-ph-no-capture>
       <header className="platform-header">
@@ -833,14 +837,12 @@ export default function PlatformWorkspace() {
                 {tab === "Plans" && (
                   <>
                     <p className="platform-muted">
-                      Proposed monthly prices in NGN. Choose a draft plan to
-                      configure your workspace; no payment is taken and no
-                      subscription starts.
+                      {view.billingPlanId?'Your existing billing agreement determines your plan. Plan changes require support so a second recurring agreement is not created.':'Monthly prices in NGN. Selecting a draft plan configures your workspace; payment and recurring consent are handled separately below.'}
                     </p>
                     <div className="platform-plans">
                       {view.plans.map((plan) => (
                         <section
-                          className={`platform-card platform-plan ${plan.id === view.workspace.plan_id ? "selected" : ""}`}
+                          className={`platform-card platform-plan ${plan.id === displayedPlanId ? "selected" : ""}`}
                           key={plan.id}
                         >
                           <div className="platform-eyebrow">{plan.name}</div>
@@ -858,12 +860,12 @@ export default function PlatformWorkspace() {
                           </ul>
                           <button
                             className={
-                              plan.id === view.workspace.plan_id
+                              plan.id === displayedPlanId
                                 ? "platform-secondary"
                                 : "platform-primary"
                             }
                             disabled={
-                              busy || plan.id === view.workspace.plan_id
+                              busy || Boolean(view.billingPlanId) || plan.id === displayedPlanId
                             }
                             onClick={() =>
                               void run(() =>
@@ -871,9 +873,9 @@ export default function PlatformWorkspace() {
                               )
                             }
                           >
-                            {plan.id === view.workspace.plan_id
-                              ? "Draft plan selected"
-                              : "Choose draft plan"}
+                            {plan.id === displayedPlanId
+                              ? view.billingPlanId ? 'Subscription plan' : 'Draft plan selected'
+                              : view.billingPlanId ? 'Contact support to change' : 'Choose draft plan'}
                           </button>
                         </section>
                       ))}
@@ -884,10 +886,10 @@ export default function PlatformWorkspace() {
                         WhatsApp provider charges, taxes and final usage terms
                         need confirmation before paid activation. Website design
                         and custom integrations are separately quoted. Checkout
-                        is not enabled for live payments.
+                        {view.billingMode==='live'?'uses Paystack for your agreed monthly plan.':'is not enabled for live payments.'}
                       </p>
                     </div>
-                    <WorkspacePanelBoundary key={view.workspace.id+":billing"}><BillingPanel workspaceId={view.workspace.id} plans={view.plans}/></WorkspacePanelBoundary>
+                    <WorkspacePanelBoundary key={view.workspace.id+":billing"}><BillingPanel workspaceId={view.workspace.id} plans={view.plans} onChanged={()=>{void rpc<View>('workspace.read',{workspaceId:view.workspace.id}).then(display).catch(()=>setNotice('Billing updated. Reload the workspace to refresh your plan.'));}}/></WorkspacePanelBoundary>
                   </>
                 )}
                 {tab === "Launch" && (
