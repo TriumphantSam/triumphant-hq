@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
+    inputs:
+      notification_test:
+        description: Send the separately approved synthetic incident and recovery email pair
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -31,4 +36,13 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: a9bf344e401d603c114b152f500e6722
           CLOUDFLARE_API_TOKEN: ${{ secrets.BACKUP_CLOUDFLARE_API_TOKEN }}
           WRANGLER_PATH: ${{ runner.temp }}/backup-tools/node_modules/wrangler/bin/wrangler.js
-        run: node scripts/operations/monitor.mjs
+          OPERATIONS_EMAIL_ENABLED: ${{ vars.OPERATIONS_EMAIL_ENABLED }}
+          OPERATIONS_EMAIL_TEST_APPROVED: ${{ vars.OPERATIONS_EMAIL_TEST_APPROVED }}
+          OPERATIONS_RESEND_API_KEY: ${{ secrets.OPERATIONS_RESEND_API_KEY }}
+          NOTIFICATION_TEST: ${{ inputs.notification_test }}
+        run: |
+          if [ "$NOTIFICATION_TEST" = 'true' ]; then
+            node scripts/operations/monitor.mjs --notification-drill
+          else
+            node scripts/operations/monitor.mjs
+          fi
