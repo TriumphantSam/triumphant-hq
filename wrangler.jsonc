@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "triumphant-hq-web-preview",
+  "account_id": "a9bf344e401d603c114b152f500e6722",
+  "main": "cloudflare/worker.ts",
+  "compatibility_date": "2026-10-25",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": true,
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS", "run_worker_first": true },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "triumphant-hq-web-preview" }],
+  "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "triumphant-hq-web-preview-cache" }],
+  "images": { "binding": "IMAGES" },
+  "vars": {
+    "HOSTING_PLATFORM": "cloudflare",
+    "SITE_PREVIEW": "true",
+    "TURNSTILE_ALLOWED_HOSTNAMES": "triumphantech.com,www.triumphantech.com,triumphant-hq-web-preview.triumphantsam30.workers.dev"
+  },
+  "observability": { "enabled": true },
+  "env": {
+    "production": {
+      "name": "triumphant-hq-web",
+      "routes": [
+        { "pattern": "triumphantech.com/*", "zone_id": "b7b9a6c3e2aa32b63b75cf4a637c96c9" },
+        { "pattern": "www.triumphantech.com/*", "zone_id": "b7b9a6c3e2aa32b63b75cf4a637c96c9" }
+      ],
+      "workers_dev": true,
+      "assets": { "directory": ".open-next/assets", "binding": "ASSETS", "run_worker_first": true },
+      "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "triumphant-hq-web" }],
+      "r2_buckets": [{ "binding": "NEXT_INC_CACHE_R2_BUCKET", "bucket_name": "triumphant-hq-web-cache" }],
+      "images": { "binding": "IMAGES" },
+      "vars": { "HOSTING_PLATFORM": "cloudflare", "SITE_PREVIEW": "false", "SITE_CRON_ENABLED": "false", "TURNSTILE_ALLOWED_HOSTNAMES": "triumphantech.com,www.triumphantech.com" }
+    }
+  }
+}

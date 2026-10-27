@@ -1,14 +1,5 @@
 {
-  "crons": [
-    {
-      "path": "/api/seo/run-follow-ups",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/digital-forge/follow-ups/run",
-      "schedule": "0 2 * * *"
-    }
-  ],
+  "git": { "deploymentEnabled": false },
   "redirects": [
     {
       "source": "/(.*)",

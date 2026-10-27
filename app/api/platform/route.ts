@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import { clientIp } from "@/lib/client-ip";
 import { automationRequest, AutomationError } from "@/lib/automation-api";
 import {
   FormError,
@@ -107,11 +108,7 @@ export async function POST(request: Request) {
           body: raw,
         }),
       );
-    const ip =
-      request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-      request.headers.get("x-real-ip") ||
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      "unknown";
+    const ip = clientIp(request.headers);
     const ipKey = createHmac("sha256", secret)
       .update("platform-ip:" + ip)
       .digest("hex");

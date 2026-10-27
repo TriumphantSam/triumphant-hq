@@ -1,6 +1,7 @@
 import { createHash, createHmac } from "node:crypto";
 import { isIP } from "node:net";
 import { automationConfigured, automationRequest } from "./automation-api";
+import { clientIp } from "./client-ip";
 const windows = new Map<string, { count: number; until: number }>();
 export class FormError extends Error {
   constructor(
@@ -47,11 +48,7 @@ export async function readPublicForm(
   if (!body || typeof body !== "object" || Array.isArray(body))
     throw new FormError("Invalid submission.");
   if (body.companyWebsite) throw new FormError("Submission rejected.");
-  const ip =
-    request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    "unknown";
+  const ip = clientIp(request.headers);
   const key = createHash("sha256")
       .update(`${ip}\n${new URL(request.url).pathname}`)
       .digest("hex"),
@@ -104,7 +101,7 @@ export async function readPublicForm(
       throw new FormError("The security check expired. Please try again.");
   }
   if (automationConfigured()) {
-    if (process.env.VERCEL && !isIP(ip))
+    if ((process.env.VERCEL || process.env.HOSTING_PLATFORM === "cloudflare") && !isIP(ip))
       throw new FormError("Unable to verify this request. Please try again.", 503);
     const ipKey = createHmac("sha256", process.env.AUTOMATION_HMAC_SECRET!)
       .update(ip)

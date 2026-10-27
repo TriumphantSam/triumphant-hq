@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import { clientIp } from "@/lib/client-ip";
 import { NextResponse } from "next/server";
 import { automationRequest, AutomationError } from "@/lib/automation-api";
 import {
@@ -18,11 +19,7 @@ export async function POST(request: Request) {
     }
     if (!body || typeof body !== "object" || Array.isArray(body))
       throw new FormError("Invalid message.");
-    const ip =
-      request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-      request.headers.get("x-real-ip") ||
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      "unknown";
+    const ip = clientIp(request.headers);
     if (!process.env.AUTOMATION_HMAC_SECRET)
       throw new FormError("The assistant is not connected yet.", 503);
     const ipKey = createHmac("sha256", process.env.AUTOMATION_HMAC_SECRET)

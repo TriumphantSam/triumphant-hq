@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import bundledContent from "@/content/site-content.generated.json";
 
 export type ForgeFaq = {
   question: string;
@@ -307,7 +308,9 @@ export const forgeResources = [
 function loadGeneratedForgeProducts(): ForgeProduct[] {
   const generatedDir = GENERATED_FORGE_DIR;
   if (!fs.existsSync(generatedDir)) {
-    return [];
+    return (Object.values(bundledContent.products) as ForgeProduct[])
+      .filter(product => product.slug && product.title && (product.status ?? "draft") === "published")
+      .sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
   }
 
   const files = fs
@@ -334,7 +337,7 @@ function loadGeneratedForgeProducts(): ForgeProduct[] {
 function loadAllGeneratedForgeProducts(): ForgeProduct[] {
   const generatedDir = GENERATED_FORGE_DIR;
   if (!fs.existsSync(generatedDir)) {
-    return [];
+    return Object.values(bundledContent.products) as ForgeProduct[];
   }
   const files = fs.readdirSync(generatedDir).filter((f) => f.endsWith(".json"));
   const products: ForgeProduct[] = [];
@@ -398,7 +401,7 @@ export async function getForgeBuilderProducts(): Promise<ForgeProduct[]> {
 function loadGeneratedForgeFunnels(): FunnelPayload[] {
   const generatedDir = GENERATED_FUNNELS_DIR;
   if (!fs.existsSync(generatedDir)) {
-    return [];
+    return Object.values(bundledContent.funnels) as FunnelPayload[];
   }
 
   const files = fs

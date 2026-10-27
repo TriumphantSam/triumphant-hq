@@ -18,6 +18,9 @@
 
 # next.js
 /.next/
+/.open-next/
+/cloudflare/seo-container/dist/
+/content/site-content.generated.json
 /out/
 
 # production
@@ -35,9 +38,12 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+/.cloudflare-production-config.json
+/.cloudflare-dns-backup/
 
 # vercel
 .vercel
+.netlify
 
 # typescript
 *.tsbuildinfo
@@ -45,5 +51,8 @@ next-env.d.ts
 
 website.log
 /tmp/
+/.playwright-cli/
+/output/playwright/
+/output/followups/
 __pycache__/
 *.pyc

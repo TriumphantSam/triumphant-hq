@@ -1,4 +1,5 @@
 import { createHmac } from "node:crypto";
+import { clientIp } from "@/lib/client-ip";
 import { cookies } from "next/headers";
 import { ADMIN_COOKIE, validAdminSession } from "@/lib/admin-lab-auth";
 import { automationRequest, AutomationError } from "@/lib/automation-api";
@@ -39,12 +40,7 @@ export async function POST(request: Request) {
         throw new FormError("Please sign in to the owner workspace.", 401);
       actor = "owner:" + cookie;
     } else {
-      actor =
-        "customer:" +
-        (request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
-          request.headers.get("x-real-ip") ||
-          request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-          "unknown");
+      actor = "customer:" + clientIp(request.headers);
     }
     const actorKey = createHmac("sha256", secret)
       .update("assistant-actor:" + actor)
