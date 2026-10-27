@@ -1,0 +1,39 @@
+name: Encrypted offsite backups
+
+on:
+  schedule:
+    # 02:00 Africa/Lagos. GitHub schedules may start late.
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: offsite-backups
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    # Remain disabled until the private bucket, lifecycle and recovery key are verified.
+    if: github.ref == 'refs/heads/main' && vars.OFFSITE_BACKUPS_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --test scripts/operations/backup-archive.test.mjs
+      - name: Export, encrypt, upload, download and restore each database in isolation
+        env:
+          CLOUDFLARE_ACCOUNT_ID: a9bf344e401d603c114b152f500e6722
+          CLOUDFLARE_API_TOKEN: ${{ secrets.BACKUP_CLOUDFLARE_API_TOKEN }}
+          BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
+        run: |
+          node scripts/operations/offsite-backup.mjs staging
+          node scripts/operations/offsite-backup.mjs production
