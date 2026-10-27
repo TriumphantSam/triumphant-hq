@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   verify:
-    if: github.event_name == 'pull_request' || vars.OFFSITE_BACKUPS_ENABLED == 'true'
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' || vars.OFFSITE_BACKUPS_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -34,7 +34,7 @@ jobs:
   backup:
     needs: verify
     # Remain disabled until the private bucket, lifecycle and recovery key are verified.
-    if: github.ref == 'refs/heads/main' && vars.OFFSITE_BACKUPS_ENABLED == 'true'
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.OFFSITE_BACKUPS_ENABLED == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

@@ -48,14 +48,15 @@ against database or laptop loss, not total Cloudflare-account loss.
    TriumphantTech account only. Do not upload the broad interactive OAuth token.
 3. Save the generated recovery key as Actions secret `BACKUP_ENCRYPTION_KEY` and
    confirm an independent password-manager copy exists.
-4. Merge reviewed workflows to main, set repository variable
-   `OFFSITE_BACKUPS_ENABLED=true`, manually dispatch `Encrypted offsite backups`
-   and confirm both downloaded restores pass using the dedicated token.
-5. Set `OPERATIONS_MONITOR_ENABLED=true`, dispatch `Operations monitor`, and
-   verify its checks and a controlled failure before relying on notifications.
+4. Merge reviewed workflows to main, manually dispatch `Encrypted offsite backups`
+   and confirm both downloaded restores pass using the dedicated token. Then set
+   repository variable `OFFSITE_BACKUPS_ENABLED=true` to enable daily scheduling.
+5. Dispatch `Operations monitor`, verify its checks and a controlled failure,
+   then set `OPERATIONS_MONITOR_ENABLED=true` to enable scheduled checks.
 
-Workflows remain gated off until their variables are enabled. Interactive OAuth
-drills do not prove unattended credentials work.
+Scheduled runs remain gated off until their variables are enabled. Manual runs
+on main permit acceptance testing first. Interactive OAuth drills do not prove
+unattended credentials work.
 
 ## Monitoring limits
 
