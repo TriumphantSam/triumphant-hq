@@ -39,6 +39,8 @@ const allowed = new Set([
   "billing.checkout",
   "billing.refresh",
   "billing.cancel",
+  "billing.resume",
+  "billing.manage",
   "assistant.test",
   "widget.read",
   "widget.save",

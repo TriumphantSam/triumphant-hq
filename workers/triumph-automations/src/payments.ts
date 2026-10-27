@@ -343,9 +343,10 @@ export async function validPaystackSignature(
   secret: string,
   body: string,
   signature: string,
+  mode: 'test' | 'live' = 'test',
 ) {
   if (
-    !/^sk_test_[A-Za-z0-9]+$/.test(secret) ||
+    !(new RegExp(`^sk_${mode}_[A-Za-z0-9]+$`)).test(secret) ||
     !/^[a-f0-9]{128}$/.test(signature)
   )
     return false;
@@ -395,7 +396,7 @@ export async function paystackWebhook(request: Request, env: Env) {
     return new Response("Unauthorized", { status: 401 });
   try {
     const event = JSON.parse(body);
-    if (billingReady(env) && typeof event.event === "string" && event.data && typeof event.data === "object" && !Array.isArray(event.data))
+    if (env.ENVIRONMENT === 'staging' && billingReady(env) && typeof event.event === "string" && event.data && typeof event.data === "object" && !Array.isArray(event.data))
       await billingEvent(env,event.event,event.data);
     if (event.event !== "charge.success")
       return new Response("Ignored", { status: 200 });

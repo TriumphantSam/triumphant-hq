@@ -9,6 +9,7 @@ import {collaborationAction} from "./collaboration";
 import {workspaceUsage} from './usage';
 import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans } from "./billing";
+import {subscriptionAccess} from './subscription-access';
 import { teamAction } from "./team";
 import {exportRecords} from './record-export';
 import {retentionAction} from './retention';
@@ -191,6 +192,10 @@ export function createPlatformRoutes(sender?: OtpSender) {
       if (body.action === "plan.select") {
         const w = await requireWorkspace(c.env, userId, id, true);
         const plan = plans.find((p) => p.id === payload.planId);
+        const access = await subscriptionAccess(c.env,w.id);
+        if (access.active && access.planId !== payload.planId) throw new PlatformError('Your verified subscription determines your plan. Stop renewal and contact support for a plan change.',409);
+        const billing = await c.env.DB.prepare('SELECT plan_id FROM platform_billing WHERE workspace_id=?').bind(w.id).first<{plan_id:string}>();
+        if (billing && billing.plan_id !== payload.planId) throw new PlatformError('An existing billing agreement must be reconciled before changing plans. Contact support.',409);
         if (!plan || !Number.isSafeInteger(payload.version))
           throw new PlatformError("Choose a valid plan.");
         const count = await c.env.DB.prepare(
