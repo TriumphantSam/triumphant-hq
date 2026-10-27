@@ -96,5 +96,18 @@ groups and a recent successful cron heartbeat. Existing warnings can remain even
 when cron is healthy; this is not a claim that every delivery succeeded.
 
 After merging main, all 97 Worker tests, 15 website tests and 9 Cloudflare
-compatibility tests passed again. Website preview build/browser acceptance is
-being completed; production has not received this increment.
+compatibility tests passed again.
+
+PR #28 was subsequently merged as a8e6cc0 by the current release process. GitHub
+Actions run 40454124872 completed successfully. Production has both migrations
+applied. On 27 October the production operations endpoint returned 401 unsigned,
+200 signed, seven queue groups, a recent successful heartbeat and no stored
+warnings. The platform RPC still returned its intended 503 access gate.
+
+The local Next.js build compiled and passed TypeScript, but OpenNext packaging
+failed on Windows junction/symlink handling in this managed worktree. No partial
+local bundle was deployed. This does not replace the successful hosted Linux
+build/release evidence. A local Next preview at localhost:3137 uses the staging
+automation bridge for the remaining retention-screen check. Owner sign-in is
+pending after session expiry; UI acceptance is not yet claimed. Automatic
+deletion and outbound incident-alert email remain disabled.
