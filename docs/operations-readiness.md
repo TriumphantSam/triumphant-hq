@@ -117,9 +117,15 @@ fallbacks and publishes only the existing Cloudflare website preview. Run
 deployment is part of this workflow. It runs on changes to its own file on
 codex/operations-acceptance, or via manual dispatch from that branch or main.
 
-Use https://triumphant-hq-web-preview.triumphantsam30.workers.dev/platform for
-the remaining retention screen check. Its backend is staging. Owner sign-in is
-pending after session expiry; UI acceptance is not yet claimed. Automatic
-deletion and outbound incident-alert email remain disabled. PR #35 contains the
-preview workflow and this acceptance record; PR #28's feature release is already
-in production.
+Cloudflare browser acceptance passed on 27 October at
+https://triumphant-hq-web-preview.triumphantsam30.workers.dev/platform, using the
+staging backend. The owner saved a 90-day preview, reopened Inbox and saw the
+same saved window. A remote read confirmed days=90/version=1. The preview was
+then returned to Off; another remote read confirmed days=0/version=2 and the
+unchanged zero enquiry/appointment counts. No customer data was deleted and no
+messages were sent. Evidence: tmp/retention-off-accepted.png.
+
+Automatic deletion and outbound incident-alert email remain disabled. PR #35
+contains the preview workflow and this acceptance record; PR #28's feature
+release is already in production. Scheduled off-device recovery and unattended
+incident notifications remain separate launch work.
