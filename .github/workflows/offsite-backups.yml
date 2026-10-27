@@ -1,6 +1,11 @@
 name: Encrypted offsite backups
 
 on:
+  pull_request:
+    paths:
+      - 'scripts/operations/**'
+      - '.github/workflows/offsite-backups.yml'
+      - '.github/workflows/operations-monitor.yml'
   schedule:
     # 02:00 Africa/Lagos. GitHub schedules may start late.
     - cron: '0 1 * * *'
@@ -14,7 +19,20 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify:
+    if: github.event_name == 'pull_request' || vars.OFFSITE_BACKUPS_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: 22
+      - run: node --test scripts/operations/backup-archive.test.mjs
   backup:
+    needs: verify
     # Remain disabled until the private bucket, lifecycle and recovery key are verified.
     if: github.ref == 'refs/heads/main' && vars.OFFSITE_BACKUPS_ENABLED == 'true'
     runs-on: ubuntu-latest
