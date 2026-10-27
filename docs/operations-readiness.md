@@ -107,7 +107,19 @@ warnings. The platform RPC still returned its intended 503 access gate.
 The local Next.js build compiled and passed TypeScript, but OpenNext packaging
 failed on Windows junction/symlink handling in this managed worktree. No partial
 local bundle was deployed. This does not replace the successful hosted Linux
-build/release evidence. A local Next preview at localhost:3137 uses the staging
-automation bridge for the remaining retention-screen check. Owner sign-in is
+build/release evidence. The localhost check could not complete its security
+challenge, so it was abandoned without bypassing verification.
+
+The dedicated Verify operations preview workflow now builds on Linux, runs the
+website/Cloudflare and Worker checks, strips generated local environment
+fallbacks and publishes only the existing Cloudflare website preview. Run
+40484834753 succeeded, including the public 200/noindex check. No production
+deployment is part of this workflow. It runs on changes to its own file on
+codex/operations-acceptance, or via manual dispatch from that branch or main.
+
+Use https://triumphant-hq-web-preview.triumphantsam30.workers.dev/platform for
+the remaining retention screen check. Its backend is staging. Owner sign-in is
 pending after session expiry; UI acceptance is not yet claimed. Automatic
-deletion and outbound incident-alert email remain disabled.
+deletion and outbound incident-alert email remain disabled. PR #35 contains the
+preview workflow and this acceptance record; PR #28's feature release is already
+in production.
