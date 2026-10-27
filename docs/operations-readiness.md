@@ -80,3 +80,21 @@ Local validation: 97 Worker tests passed, including retention isolation, stale
 versions, no deletion, active/future exclusions, cron heartbeat and private job
 warning distinctions. Worker/frontend TypeScript and targeted ESLint passed.
 Migrations must precede deployment. Staging browser acceptance is recorded below.
+
+27 October integration: PR #28 includes the current main branch's Cloudflare
+website migration and automatic deployment setup. Vercel is retired; use the
+existing Cloudflare website preview for acceptance. That preview's automation
+bridge now targets triumph-automations-staging, with its matching private key.
+Production bridge/settings are unchanged. Backend migrations/releases remain
+separate from the website deployment workflow.
+
+Fresh staging and production protected exports were both restored successfully
+in isolated memory on 27 October. The private files remain under the same
+current-user backup folder. Remote restore was not performed. The staged signed
+operations endpoint returned 401 unsigned and 200 signed, with seven queue
+groups and a recent successful cron heartbeat. Existing warnings can remain even
+when cron is healthy; this is not a claim that every delivery succeeded.
+
+After merging main, all 97 Worker tests, 15 website tests and 9 Cloudflare
+compatibility tests passed again. Website preview build/browser acceptance is
+being completed; production has not received this increment.
