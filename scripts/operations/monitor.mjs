@@ -3,6 +3,7 @@ import {mkdtempSync, readFileSync, rmSync, rmdirSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {incidentNotifications, notificationDrill} from './incident-notifications.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const wrangler = process.env.WRANGLER_PATH || join(root, 'node_modules/wrangler/bin/wrangler.js');
@@ -14,6 +15,9 @@ async function check(name, operation) {
   catch { failures.push(name); console.error(`${name}: attention required`); }
 }
 try {
+  if (process.argv.includes('--notification-drill')) {
+    await notificationDrill();
+  } else {
   await check('Public website', async () => {
     const response = await fetch('https://triumphantech.com/', {signal: AbortSignal.timeout(20000)});
     if (!response.ok) throw new Error();
@@ -34,11 +38,12 @@ try {
     const age = Date.now() - Date.parse(status.verifiedAt);
     if (status.environment !== 'production' || !Number.isFinite(age) || age < -60000 || age > 36 * 3600000) throw new Error();
   });
-  if (failures.length) {
-    // GitHub records a failed run for its native notification channel.
-    // No outbound email provider is called by this first monitoring increment.
-    process.exitCode = 1;
+  if (failures.length) process.exitCode = 1;
+  await incidentNotifications(failures);
   }
+} catch {
+  console.error('Operations notification check failed; review its credential or durable state. No provider response or customer data is logged.');
+  process.exitCode = 1;
 } finally {
   rmSync(marker, {force: true});
   rmdirSync(directory);

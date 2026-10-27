@@ -67,8 +67,9 @@ check names, without SQL responses, credentials or customer content. No jobs are
 replayed. Owner GitHub Actions notifications can report failed runs, but inbox
 delivery has not been verified. GitHub outages can stop the monitor itself.
 
-No Resend incident emails are enabled or sent. Deduplicated incident/recovery
-emails and a controlled delivery test remain a separate gate.
+Resend incident emails have a separate disabled-by-default activation gate.
+See [incident notifications](incident-notifications.md) for duplicate suppression,
+the controlled delivery drill and notification limitations.
 
 27 October drill: real staging and production encrypted archives were uploaded,
 downloaded and restored successfully using the interactive Cloudflare login.
