@@ -5,7 +5,7 @@ import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const wrangler = join(root, 'node_modules/wrangler/bin/wrangler.js');
+const wrangler = process.env.WRANGLER_PATH || join(root, 'node_modules/wrangler/bin/wrangler.js');
 const directory = mkdtempSync(join(tmpdir(), 'triumphant-monitor-'));
 const marker = join(directory, 'status.json');
 const failures = [];

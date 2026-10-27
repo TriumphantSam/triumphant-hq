@@ -25,9 +25,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm install --prefix "$RUNNER_TEMP/backup-tools" --no-save --package-lock=false wrangler@4.152.0
       - name: Check uptime, automation cron and verified backup freshness
         env:
           CLOUDFLARE_ACCOUNT_ID: a9bf344e401d603c114b152f500e6722
           CLOUDFLARE_API_TOKEN: ${{ secrets.BACKUP_CLOUDFLARE_API_TOKEN }}
+          WRANGLER_PATH: ${{ runner.temp }}/backup-tools/node_modules/wrangler/bin/wrangler.js
         run: node scripts/operations/monitor.mjs

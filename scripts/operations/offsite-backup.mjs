@@ -8,7 +8,7 @@ import {encryptBackup, decryptBackup} from './backup-archive.mjs';
 
 // All command output is captured: export/restore errors must not leak SQL to CI.
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const wrangler = resolve(root, 'node_modules/wrangler/bin/wrangler.js');
+const wrangler = process.env.WRANGLER_PATH || resolve(root, 'node_modules/wrangler/bin/wrangler.js');
 const environment = process.argv[2];
 if (!['staging', 'production'].includes(environment)) throw new Error('Choose staging or production.');
 if (process.env.CLOUDFLARE_ACCOUNT_ID !== 'a9bf344e401d603c114b152f500e6722') throw new Error('Wrong backup account.');

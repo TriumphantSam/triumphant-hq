@@ -45,13 +45,14 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm install --prefix "$RUNNER_TEMP/backup-tools" --no-save --package-lock=false wrangler@4.152.0
       - run: node --test scripts/operations/backup-archive.test.mjs
       - name: Export, encrypt, upload, download and restore each database in isolation
         env:
           CLOUDFLARE_ACCOUNT_ID: a9bf344e401d603c114b152f500e6722
           CLOUDFLARE_API_TOKEN: ${{ secrets.BACKUP_CLOUDFLARE_API_TOKEN }}
           BACKUP_ENCRYPTION_KEY: ${{ secrets.BACKUP_ENCRYPTION_KEY }}
+          WRANGLER_PATH: ${{ runner.temp }}/backup-tools/node_modules/wrangler/bin/wrangler.js
         run: |
           node scripts/operations/offsite-backup.mjs staging
           node scripts/operations/offsite-backup.mjs production
