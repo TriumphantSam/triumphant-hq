@@ -23,7 +23,8 @@ import Turnstile from "@/components/automation/Turnstile";
 import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
 import TeamPanel,{TeamInvitations} from "./TeamPanel";
 import WhatsAppReview from "./WhatsAppReview";
-import SetupGuide from './SetupGuide';
+import SetupGuide,{LaunchReadiness} from './SetupGuide';
+import type {WorkspaceSetup} from '@/lib/platform-setup';
 
 type Plan = {
   id: string;
@@ -52,7 +53,8 @@ type Policy = {
   notice_hours: number;
 };
 type View = {
-  subscription?:{active:boolean;planId:string|null};
+  setup:WorkspaceSetup;
+  subscription?:{active:boolean;planId:string|null;replies:number};
   billingPlanId?:string|null;
   billingMode?:'test'|'live'|null;
   workspace: Workspace;
@@ -503,7 +505,7 @@ export default function PlatformWorkspace() {
               </form>
             ) : (
               <>
-                {tab === "Setup" && <SetupGuide key={view.workspace.id} readiness={view.readiness} onNavigate={setTab}/>}
+                {tab === "Setup" && <SetupGuide key={view.workspace.id} workspaceId={view.workspace.id} setup={view.setup} onNavigate={setTab} onChanged={()=>void run(()=>bootstrap(view.workspace.id))}/>}
                 {tab === "Usage" && <WorkspacePanelBoundary key={view.workspace.id+tab}><UsagePanel key={view.workspace.id} workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
@@ -909,35 +911,7 @@ export default function PlatformWorkspace() {
                         We show actual readiness. Unavailable connections are
                         never shown as active.
                       </p>
-                      {[
-                        { name: "Verified email account", ready: true },
-                        {
-                          name: "Business description saved",
-                          ready: view.readiness.profile,
-                        },
-                        {
-                          name: "Approved answers saved",
-                          ready: view.readiness.answers,
-                        },
-                        {
-                          name: "Sandbox customer page",
-                          ready: view.readiness.websitePublished,
-                        },
-                        { name: "Customer website installation", ready: false },
-                        { name: "WhatsApp connected and tested", ready: view.readiness.whatsappConnected },
-                        {
-                          name: "Subscription and usage controls",
-                          ready: false,
-                        },
-                      ].map((item) => (
-                        <div className="platform-check" key={item.name}>
-                          <span className={item.ready ? "done" : ""}>
-                            {item.ready ? <Check size={15} /> : "·"}
-                          </span>
-                          <strong>{item.name}</strong>
-                          <small>{item.ready ? "Ready" : "Pending"}</small>
-                        </div>
-                      ))}
+                      <LaunchReadiness setup={view.setup} onNavigate={setTab}/>
                       <div className="platform-sandbox-launch">
                         <p className="platform-muted">
                           Publish a sandbox page to test enquiries and
@@ -981,10 +955,10 @@ export default function PlatformWorkspace() {
                         )}
                       </div>
                       <p className="platform-muted">
-                        Sandbox replies this month:{" "}
+                        Recorded automated answers this month:{" "}
                         {view.usage.find((u) => u.kind === "assistant_replies")
                           ?.count || 0}{" "}
-                        / 100. Draft paid-plan allowances are not active.
+                        / {view.subscription?.replies??100}. Your verified subscription determines paid allowances.
                       </p>
                       <button className="platform-secondary" disabled>
                         Paid launch unavailable

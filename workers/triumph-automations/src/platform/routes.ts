@@ -10,6 +10,7 @@ import {workspaceUsage} from './usage';
 import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans } from "./billing";
 import {subscriptionAccess} from './subscription-access';
+import {workspaceSetup,setupInput,saveSetup} from './setup';
 import { teamAction } from "./team";
 import {exportRecords} from './record-export';
 import {retentionAction} from './retention';
@@ -159,6 +160,15 @@ export function createPlatformRoutes(sender?: OtpSender) {
       if(body.action.startsWith("collaboration."))return c.json({data:await collaborationAction(c.env,userId,body.action,payload)});
       if(body.action.startsWith("team."))return c.json({data:await teamAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
       if (body.action.startsWith("billing.")) return c.json({data:await billingAction(c.env,{id:userId,email:session.user.email},body.action,payload)});
+      if (body.action === 'setup.read' || body.action === 'setup.save') {
+        const workspace=await requireWorkspace(c.env,userId,payload.workspaceId,true);
+        if(body.action==='setup.save'){
+          const choices=setupInput(payload);
+          if(!choices)throw new PlatformError('Check your setup choices.');
+          if(!await saveSetup(c.env,workspace.id,choices))throw new PlatformError('Setup choices changed in another tab. Reload before saving.',409);
+        }
+        return c.json({data:await workspaceSetup(c.env,workspace)});
+      }
       if(body.action.startsWith("widget."))return c.json({data:await widgetAction(c.env,userId,body.action,payload)});
       if (body.action.startsWith("conversation.") || body.action.startsWith("responder."))
         return c.json({ data: await conversationAction(c.env, userId, body.action, payload) });
@@ -258,7 +268,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
             "UPDATE platform_workspaces SET version=version+1,updated_at=? WHERE id=? AND version=? RETURNING id",
           ).bind(lock, w.id, payload.version),
           c.env.DB.prepare(
-            "UPDATE platform_booking_policy SET days=?,start_hour=?,end_hour=?,duration=?,buffer=?,notice_hours=? WHERE workspace_id=? AND EXISTS(SELECT 1 FROM platform_workspaces WHERE id=? AND updated_at=?)",
+            "UPDATE platform_booking_policy SET days=?,start_hour=?,end_hour=?,duration=?,buffer=?,notice_hours=?,reviewed_at=? WHERE workspace_id=? AND EXISTS(SELECT 1 FROM platform_workspaces WHERE id=? AND updated_at=?)",
           ).bind(
             JSON.stringify(days),
             startHour,
@@ -266,6 +276,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
             duration,
             buffer,
             noticeHours,
+            new Date().toISOString(),
             w.id,
             w.id,
             lock,
