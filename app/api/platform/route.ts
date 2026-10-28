@@ -9,6 +9,12 @@ import {
 
 export const maxDuration = 20;
 const allowed = new Set([
+  "operations.read",
+  "followup.read",
+  "followup.save",
+  "followup.complete",
+  "setup.read",
+  "setup.save",
   "retention.read",
   "retention.save",
   "records.export",

@@ -86,7 +86,7 @@ export async function conversationAction(env: Env, userId: string, action: strin
       const local = new Date(now + 3600000), open = policy && JSON.parse(policy.days).includes(local.getUTCDay()) && local.getUTCHours() >= policy.start_hour && local.getUTCHours() < policy.end_hour;
       const resolved = open && config.ai_enabled
         ? await tenantAnswer(env,w.id,input.requestId,content,faqs.results,config.fallback,now)
-        : {answer:!open?config.away:matchFaq(content,faqs.results)?.answer||config.fallback,method:!open?"away":"approved",handoff:false};
+        : {answer:!open?config.away:matchFaq(content,faqs.results)?.answer||config.fallback,method:!open?"away":"approved",handoff:open?!matchFaq(content,faqs.results):false};
       const answer=resolved.answer;
       if(resolved.handoff)paused=1;
       if (!row.messages || JSON.parse(row.messages).length === 0) messages.push({id:crypto.randomUUID(),role:"automation",text:config.welcome,at});

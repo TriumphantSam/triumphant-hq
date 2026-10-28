@@ -2,6 +2,7 @@ import type { Env } from "../types";
 import {tenantAnswer} from "./tenant-ai";
 import { hmac } from "../security";
 import {subscriptionAccess} from './subscription-access';
+import {workspaceSetup} from './setup';
 import {
   admit,
   matchFaq,
@@ -113,6 +114,7 @@ export async function publishWorkspace(
         "Customer launch awaits billing and channel release checks.",
         503,
       );
+    if (env.ENVIRONMENT === 'production' && !(await workspaceSetup(env,w)).preparationComplete) throw new PlatformError('Complete the required business setup before publishing.',409);
     const count = await env.DB.prepare(
       "SELECT count(*) n FROM platform_faqs WHERE workspace_id=?",
     )

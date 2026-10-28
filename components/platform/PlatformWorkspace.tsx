@@ -23,7 +23,8 @@ import Turnstile from "@/components/automation/Turnstile";
 import WorkspacePanelBoundary from "./WorkspacePanelBoundary";
 import TeamPanel,{TeamInvitations} from "./TeamPanel";
 import WhatsAppReview from "./WhatsAppReview";
-import SetupGuide from './SetupGuide';
+import SetupGuide,{LaunchReadiness} from './SetupGuide';
+import type {WorkspaceSetup} from '@/lib/platform-setup';
 
 type Plan = {
   id: string;
@@ -52,7 +53,8 @@ type Policy = {
   notice_hours: number;
 };
 type View = {
-  subscription?:{active:boolean;planId:string|null};
+  setup:WorkspaceSetup;
+  subscription?:{active:boolean;planId:string|null;replies:number};
   billingPlanId?:string|null;
   billingMode?:'test'|'live'|null;
   workspace: Workspace;
@@ -68,7 +70,8 @@ type Bootstrap = {
   plans: Plan[];
 };
 type Tab =
-  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Usage" | "Launch" | "Team";
+  "Setup" | "Today" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Usage" | "Launch" | "Team";
+const TodayPanel=dynamic(()=>import('./TodayPanel'),{loading:()=> <p role="status">Loading daily work…</p>});
 const UsagePanel=dynamic(()=>import('./UsagePanel'),{loading:()=> <p role="status">Loading usage…</p>});
 const WebsiteWidgetPanel=dynamic(()=>import("./WebsiteWidgetPanel"),{loading:()=> <p role="status">Loading website settings…</p>});
 const BillingPanel=dynamic(()=>import("./BillingPanel"),{loading:()=> <p role="status">Loading billing…</p>});
@@ -83,6 +86,7 @@ const WhatsAppConnect = dynamic(() => import("./WhatsAppConnect"), {
 });
 const tabs = [
   { name: "Setup", icon: ListChecks },
+  { name: "Today", icon: CalendarDays },
   { name: "Business", icon: Building2 },
   { name: "Answers", icon: BookOpen },
   { name: "Appointments", icon: CalendarDays },
@@ -159,7 +163,7 @@ export default function PlatformWorkspace() {
     setContact(data.workspace.contact_url);
     setFaqs(data.faqs);
     setPolicy(data.policy);
-    if(data.workspace.role==="staff")setTab("Inbox");
+    if(data.workspace.role==="staff")setTab(previous=>['Today','Inbox','Conversations'].includes(previous)?previous:'Today');
   }
   async function bootstrap(preferredId?:string) {
     const data = await rpc<Bootstrap>("bootstrap");
@@ -388,7 +392,7 @@ export default function PlatformWorkspace() {
               </div>
             </div>
             <nav aria-label="Business workspace">
-              {tabs.filter(item=>view?.workspace.role!=="staff"||item.name==="Inbox"||item.name==="Conversations").map(({ name: label, icon: Icon }) => (
+              {tabs.filter(item=>view?.workspace.role!=="staff"||['Today','Inbox','Conversations'].includes(item.name)).map(({ name: label, icon: Icon }) => (
                 <button
                   key={label}
                   aria-current={tab === label ? "page" : undefined}
@@ -435,6 +439,7 @@ export default function PlatformWorkspace() {
                 <h1>
                   {view
                     ? tab === "Setup" ? "Your business, step by step."
+                    : tab === 'Today' ? 'Your team’s work, in one place.'
                       : tab === "Website" ? "Your assistant, on your website."
                       : tab === "Conversations" ? "Make every conversation count."
                       : tab === "Autoresponders" ? "A helpful reply starts here."
@@ -468,7 +473,7 @@ export default function PlatformWorkspace() {
               </p>
             )}
             <TeamInvitations onAccepted={id=>run(async()=>{setView(null);setTab("Inbox");await bootstrap(id);})}/>
-            {view?.workspace.role==="staff"&&<p className="platform-sandbox">Staff access · You can use this business’s inbox and conversation rehearsal. The owner manages configuration, billing and team membership.</p>}
+            {view?.workspace.role==="staff"&&<p className="platform-sandbox">Staff access · You can use this business’s daily work, inbox and conversation rehearsal. The owner manages configuration, billing and team membership.</p>}
             {!view ? (
               <form
                 className="platform-card platform-form"
@@ -503,7 +508,8 @@ export default function PlatformWorkspace() {
               </form>
             ) : (
               <>
-                {tab === "Setup" && <SetupGuide key={view.workspace.id} readiness={view.readiness} onNavigate={setTab}/>}
+                {tab === "Setup" && <SetupGuide key={view.workspace.id} workspaceId={view.workspace.id} setup={view.setup} onNavigate={setTab} onChanged={()=>void run(()=>bootstrap(view.workspace.id))}/>}
+                {tab === 'Today' && <TodayPanel key={view.workspace.id} workspaceId={view.workspace.id} owner={view.workspace.role==='owner'} onNavigate={setTab}/>}
                 {tab === "Usage" && <WorkspacePanelBoundary key={view.workspace.id+tab}><UsagePanel key={view.workspace.id} workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
@@ -909,35 +915,7 @@ export default function PlatformWorkspace() {
                         We show actual readiness. Unavailable connections are
                         never shown as active.
                       </p>
-                      {[
-                        { name: "Verified email account", ready: true },
-                        {
-                          name: "Business description saved",
-                          ready: view.readiness.profile,
-                        },
-                        {
-                          name: "Approved answers saved",
-                          ready: view.readiness.answers,
-                        },
-                        {
-                          name: "Sandbox customer page",
-                          ready: view.readiness.websitePublished,
-                        },
-                        { name: "Customer website installation", ready: false },
-                        { name: "WhatsApp connected and tested", ready: view.readiness.whatsappConnected },
-                        {
-                          name: "Subscription and usage controls",
-                          ready: false,
-                        },
-                      ].map((item) => (
-                        <div className="platform-check" key={item.name}>
-                          <span className={item.ready ? "done" : ""}>
-                            {item.ready ? <Check size={15} /> : "·"}
-                          </span>
-                          <strong>{item.name}</strong>
-                          <small>{item.ready ? "Ready" : "Pending"}</small>
-                        </div>
-                      ))}
+                      <LaunchReadiness setup={view.setup} onNavigate={setTab}/>
                       <div className="platform-sandbox-launch">
                         <p className="platform-muted">
                           Publish a sandbox page to test enquiries and
@@ -981,10 +959,10 @@ export default function PlatformWorkspace() {
                         )}
                       </div>
                       <p className="platform-muted">
-                        Sandbox replies this month:{" "}
+                        Recorded automated answers this month:{" "}
                         {view.usage.find((u) => u.kind === "assistant_replies")
                           ?.count || 0}{" "}
-                        / 100. Draft paid-plan allowances are not active.
+                        / {view.subscription?.replies??100}. Your verified subscription determines paid allowances.
                       </p>
                       <button className="platform-secondary" disabled>
                         Paid launch unavailable
