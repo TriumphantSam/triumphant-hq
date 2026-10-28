@@ -18,7 +18,7 @@ customer-service team answering the business's customers.
 
 Positioning: turn website and WhatsApp enquiries into organised leads and
 appointments, with the business team in control. The table below combines agreed
-price targets with CURRENT software capacities; it is not a launch-ready price
+price targets with implemented target capacities (staging acceptance pending); it is not a launch-ready price
 card. Record and AI limits need the redesign below before publication.
 
 | Included capacity | Starter | Growth | Business |
@@ -26,15 +26,15 @@ card. Record and AI limits need the redesign below before publication.
 | Monthly platform subscription | NGN 15,000 | NGN 30,000 | NGN 50,000 |
 | Automated reply allowance | 500 | 2,000 | 5,000 |
 | Saved approved FAQs | 20 | 60 | 150 |
-| New enquiry records per Lagos calendar month | 100 | 100 | 100 |
-| New booking records per Lagos calendar month | 100 | 100 | 100 |
+| New enquiry records per Lagos calendar month | 100 | 500 | 1,500 |
+| New booking records per Lagos calendar month | 100 | 300 | 1,000 |
 | Workspace members, including owner | 10 | 10 | 10 |
 | Eligible connected WhatsApp numbers | 1 | 1 | 1 |
 | Optional configuration help per month | 30 minutes | 60 minutes | 120 minutes |
 
 All three plans use the same standard workflows. The larger plans buy more
 answer capacity, more saved FAQs and a larger assistance allowance, not unbuilt
-features. The current enquiry/booking caps are deliberately disclosed rather than
+features. The enquiry/booking caps are deliberately disclosed rather than
 advertising unlimited leads. If a customer needs more, assess fit and implement
 and test a higher limit before contracting to supply it.
 
@@ -51,7 +51,8 @@ Agreed direction: 14 days or 50 automated replies, whichever comes first; no
 card, automatic charge or automatic paid conversion. Expiry should stop trial
 automation while preserving private access to existing records. Trial credits
 must not activate a live paid period or include Meta credits. This entitlement
-is NOT implemented yet and is not the existing unrestricted staging sandbox.
+is implemented behind a disabled-by-default trial flag and is not the existing
+staging sandbox. Full acceptance and release remain separate gates.
 Abuse prevention, calendar/reset behavior and expiry must be tested before use.
 
 Managed service: from NGN 75,000/month under a separate written scope for setup,
@@ -92,10 +93,10 @@ Implementation priorities before publication:
 - Bookings count newly created records, including ones later cancelled. Cancelling
   a booking does not replenish that month's record allowance.
 - Optional AI matching is a constrained aid for selecting approved business facts,
-  not an unrestricted generative agent. The current implementation permits at
-  most 100 matching attempts per workspace/month and has a shared daily safety
-  cap. A 5,000-reply plan is not 5,000 AI calls. Do not market expanded AI until
-  its quota, reliability and cost are separately implemented and verified.
+  not an unrestricted generative agent. Paid-plan matching attempts are capped at the same numerical monthly allowance
+  as replies, plus a shared daily safety cap of 500 across the platform. Exact
+  FAQ matches need no AI call. Trial AI attempts are capped at 50 over the trial.
+  Availability can be limited by the shared cap; no unrestricted AI is promised.
 
 ## WhatsApp and other provider charges
 

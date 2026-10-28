@@ -27,6 +27,7 @@ import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
 import {billingAction,billingEvent,nextMonthlyDate,provisionTestPlans,reconcileDueBilling} from "./billing";
 import {subscriptionAccess} from './subscription-access';
+import {startTrial} from './trial';
 import {billingMode} from './billing-policy';
 import {platformBillingWebhook} from './billing-webhook';
 import {setupInput,saveSetup,workspaceSetup} from './setup';
@@ -1340,6 +1341,78 @@ async function paidFixture() {
     .run(f.workspaceId,crypto.randomUUID(),f.owner.email,end,stamp,stamp);
   return {...f,now,stamp,end,ledger:()=>f.sql.prepare("INSERT INTO platform_billing_payments(reference,provider_id,workspace_id,amount,paid_at,period_end) VALUES('paid-reference','501',?,1500000,?,?)").run(f.workspaceId,stamp,end)};
 }
+test('trial is owner-only, one-time, bounded across month reset and never creates billing',async()=>{
+ const {env,sql,user}=setup();user('alice');user('bob');user('staff');
+ const w=(await createWorkspace(env,'alice','Trial business'))!;
+ sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(w.id,'staff');
+ const now=Date.parse('2026-10-31T22:30:00Z');
+ await assert.rejects(startTrial(env,'alice',w.id,now),/not open/);
+ env.PLATFORM_TRIAL_ENABLED='true';
+ await assert.rejects(startTrial(env,'staff',w.id,now),/owner/i);
+ await assert.rejects(startTrial(env,'bob',w.id,now),/not found/);
+ const a=await startTrial(env,'alice',w.id,now),b=await startTrial(env,'alice',w.id,now+3600000);
+ assert.equal(a.trial,true);assert.equal(a.active,false);assert.equal(a.replies,50);assert.equal(a.enquiries,10);assert.equal(b.trialEndsAt,a.trialEndsAt);
+ sql.prepare("INSERT INTO platform_usage VALUES(?,'trial','assistant_replies',49)").run(w.id);
+ assert.equal((await subscriptionAccess(env,w.id,now+86400000)).replies,50);
+ sql.prepare("UPDATE platform_usage SET count=50 WHERE workspace_id=?").run(w.id);
+ assert.equal((await subscriptionAccess(env,w.id,now+86400000)).trial,false);
+ assert.equal((await subscriptionAccess(env,w.id,now+86400000)).replies,0);
+ assert.equal((await startTrial(env,'alice',w.id,now+15*86400000)).replies,0);
+ assert.equal(sql.prepare('SELECT count(*) n FROM platform_trials').get()!.n,1);
+ assert.equal(sql.prepare('SELECT count(*) n FROM platform_billing').get()!.n,0);
+ env.ENVIRONMENT='production';await assert.rejects(startTrial(env,'alice',w.id,now),/not open/);
+ sql.close();
+});
+test('trial claims only its lifetime counter and expiry preserves original records',async()=>{
+ const {env,a,sql}=await businessFixture();env.PLATFORM_TRIAL_ENABLED='true';
+ await startTrial(env,'alice',a.id,workflowNow);
+ const input={workspaceId:a.id,question:'What are your opening hours?',requestId:crypto.randomUUID()};
+ await publicWorkflow(env,'public.ask',input,publicIp,workflowNow);
+ await publicWorkflow(env,'public.ask',input,publicIp,workflowNow);
+ assert.equal(sql.prepare("SELECT count FROM platform_usage WHERE workspace_id=? AND period='trial'").get(a.id)!.count,1);
+ const before=sql.prepare('SELECT count(*) n FROM platform_faqs WHERE workspace_id=?').get(a.id)!.n;
+ await assert.rejects(publicWorkflow(env,'public.ask',{...input,requestId:crypto.randomUUID()},publicIp,workflowNow+14*86400000),/not currently active/);
+ assert.equal(sql.prepare('SELECT count(*) n FROM platform_faqs WHERE workspace_id=?').get(a.id)!.n,before);
+ sql.close();
+});
+test('trial concurrent final replies cannot exceed fifty and enquiry capacity is lifetime scoped',async()=>{
+ const {env,a,sql}=await businessFixture();env.PLATFORM_TRIAL_ENABLED='true';
+ await startTrial(env,'alice',a.id,workflowNow);
+ sql.prepare("INSERT INTO platform_usage VALUES(?,'trial','assistant_replies',49)").run(a.id);
+ const replies=await Promise.allSettled([1,2].map(n=>publicWorkflow(env,'public.ask',{workspaceId:a.id,question:'What are your opening hours?',requestId:crypto.randomUUID()},'trial-ip-'+n,workflowNow)));
+ assert.equal(replies.filter(r=>r.status==='fulfilled').length,1);
+ assert.equal(sql.prepare("SELECT count FROM platform_usage WHERE workspace_id=? AND period='trial'").get(a.id)!.count,50);
+ assert.equal((await workspaceUsage(env,'alice',a.id,workflowNow)).metrics[0].state,'reached');
+ sql.close();
+});
+test('growth enquiry insertion enforces its own paid allowance without granting draft-plan capacity',async()=>{
+ const f=await paidFixture();f.ledger();
+ try{
+  f.sql.prepare("UPDATE platform_billing SET plan_id='growth',amount=3000000 WHERE workspace_id=?").run(f.workspaceId);
+  f.sql.prepare('UPDATE platform_billing_payments SET amount=3000000 WHERE workspace_id=?').run(f.workspaceId);
+  f.sql.prepare("UPDATE platform_workspaces SET state='published' WHERE id=?").run(f.workspaceId);
+  const stamp=new Date(f.now).toISOString();
+  const insert=f.sql.prepare("INSERT INTO platform_leads VALUES(?,?,?,?,?,?,?,'new',0,?,?)");
+  for(let n=0;n<499;n++)insert.run(crypto.randomUUID(),f.workspaceId,crypto.randomUUID(),'digest','Synthetic','test@example.test','Synthetic enquiry',stamp,stamp);
+  const input={workspaceId:f.workspaceId,requestId:crypto.randomUUID(),name:'Test Customer',email:'test@example.test',need:'Please discuss a consultation.',consent:true};
+  await publicWorkflow(f.env,'public.enquiry',input,'quota-ip',f.now);
+  await publicWorkflow(f.env,'public.enquiry',input,'quota-ip',f.now);
+  await assert.rejects(publicWorkflow(f.env,'public.enquiry',{...input,requestId:crypto.randomUUID()},'quota-ip',f.now),/could not be saved/);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_leads WHERE workspace_id=?').get(f.workspaceId)!.n,500);
+ }finally{f.sql.close();}
+});
+test('new prices preserve legacy verified agreements and expose graduated record allowances',async()=>{
+ const f=await paidFixture();f.ledger();
+ try{
+  for(const [id,amount,enquiries,bookings] of [['growth',3000000,500,300],['growth',3500000,500,300],['business',5000000,1500,1000],['business',7500000,1500,1000]] as const){
+   f.sql.prepare('UPDATE platform_billing SET plan_id=?,amount=? WHERE workspace_id=?').run(id,amount,f.workspaceId);
+   f.sql.prepare('UPDATE platform_billing_payments SET amount=? WHERE workspace_id=?').run(amount,f.workspaceId);
+   const access=await subscriptionAccess(f.env,f.workspaceId,f.now);assert.equal(access.active,true);assert.equal(access.enquiries,enquiries);assert.equal(access.bookings,bookings);assert.equal(access.ai,access.replies);
+  }
+  f.env.PLATFORM_TRIAL_ENABLED='true';await assert.rejects(startTrial(f.env,'alice',f.workspaceId,f.now),/cannot be started/);
+  assert.equal(plans.find(p=>p.id==='growth')!.monthlyKobo,3000000);assert.equal(plans.find(p=>p.id==='business')!.monthlyKobo,5000000);
+ }finally{f.sql.close();}
+});
 test('subscription access requires verified matching ledger, cannot activate production and expires without deleting data',async()=>{
  const f=await paidFixture();
  try {

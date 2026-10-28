@@ -1,3 +1,4 @@
+import {subscriptionAccess} from './subscription-access';
 import { generateText, Output, jsonSchema } from "ai";
 import { createWorkersAI } from "workers-ai-provider";
 import type { Env } from "../types";
@@ -38,11 +39,12 @@ export async function tenantAnswer(env:Env, workspaceId:string, requestId:string
     return {answer:row.handoff||!selected.length?fallback:selected.map(f=>f.answer).join("\n\n"),method:row.handoff||!selected.length?"fallback" as const:"ai" as const,handoff:Boolean(row.handoff)||!selected.length};
   };
   const old=await get(); if(old)return compose(old);
+  const access=await subscriptionAccess(env,workspaceId,now);
   const date=new Date(now).toISOString(),month=new Date(new Date(now+3600000).toISOString().slice(0,7)+"-01T00:00:00+01:00").toISOString();
   const day=new Date(new Date(now+3600000).toISOString().slice(0,10)+"T00:00:00+01:00").toISOString();
-  const claim=await env.DB.prepare("INSERT INTO platform_ai_requests(workspace_id,request_id,digest,created_at) SELECT ?,?,?,? WHERE (SELECT count(*) FROM platform_ai_requests WHERE workspace_id=? AND created_at>=?)<100 AND (SELECT count(*) FROM platform_ai_requests WHERE created_at>=?)<500 ON CONFLICT DO NOTHING RETURNING request_id")
-    .bind(workspaceId,requestId,digest,date,workspaceId,month,day).first();
-  if(!claim){const existing=await get();if(existing)return compose(existing);throw new PlatformError("The sandbox AI allowance is reached. Contact the team or use approved FAQ questions.",429);}
+  const claim=await env.DB.prepare("INSERT INTO platform_ai_requests(workspace_id,request_id,digest,created_at) SELECT ?,?,?,? WHERE (SELECT count(*) FROM platform_ai_requests WHERE workspace_id=? AND created_at>=?)<? AND (SELECT count(*) FROM platform_ai_requests WHERE created_at>=?)<500 ON CONFLICT DO NOTHING RETURNING request_id")
+    .bind(workspaceId,requestId,digest,date,workspaceId,access.period==='trial'?access.windowStart:month,access.ai,day).first();
+  if(!claim){const existing=await get();if(existing)return compose(existing);throw new PlatformError("The AI matching safety allowance is reached. Contact the team or use approved FAQ questions.",429);}
   let selection:Selection={ids:[],handoff:true};
   try {
     const candidate=await selector(env,question,faqs);

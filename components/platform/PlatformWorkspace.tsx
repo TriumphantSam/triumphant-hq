@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import TrialPanel from './TrialPanel';
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import {
@@ -32,6 +33,7 @@ type Plan = {
   monthlyKobo: number;
   replies: number;
   faqs: number;
+  enquiries:number;bookings:number;
 };
 type Workspace = {
   role: "owner" | "staff";
@@ -54,7 +56,7 @@ type Policy = {
 };
 type View = {
   setup:WorkspaceSetup;
-  subscription?:{active:boolean;planId:string|null;replies:number};
+  subscription?:{active:boolean;planId:string|null;replies:number;trial?:boolean;trialEndsAt?:string|null};
   billingPlanId?:string|null;
   billingMode?:'test'|'live'|null;
   workspace: Workspace;
@@ -861,7 +863,7 @@ export default function PlatformWorkspace() {
                               {plan.replies.toLocaleString()} assistant replies
                             </li>
                             <li>Up to {plan.faqs} approved answers</li>
-                            <li>Standard enquiry and appointment workflows</li>
+                            <li>{plan.enquiries.toLocaleString()} new enquiries / month</li><li>{plan.bookings.toLocaleString()} new booking records / month</li><li>Optional AI matching: up to {plan.replies.toLocaleString()} attempts / month; shared daily safety cap applies</li><li>Standard enquiry and appointment workflows</li>
                             <li>One WhatsApp number when connected</li>
                           </ul>
                           <button
@@ -895,6 +897,7 @@ export default function PlatformWorkspace() {
                         {view.billingMode==='live'?'uses Paystack for your agreed monthly plan.':'is not enabled for live payments.'}
                       </p>
                     </div>
+                    <TrialPanel key={view.workspace.id+":trial"} workspaceId={view.workspace.id} access={view.subscription} onChanged={()=>{void rpc<View>('workspace.read',{workspaceId:view.workspace.id}).then(display).catch(()=>setNotice('Reload the workspace to see your trial.'));}}/>
                     <WorkspacePanelBoundary key={view.workspace.id+":billing"}><BillingPanel workspaceId={view.workspace.id} plans={view.plans} onChanged={()=>{void rpc<View>('workspace.read',{workspaceId:view.workspace.id}).then(display).catch(()=>setNotice('Billing updated. Reload the workspace to refresh your plan.'));}}/></WorkspacePanelBoundary>
                   </>
                 )}
