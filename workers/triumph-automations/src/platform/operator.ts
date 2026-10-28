@@ -1,6 +1,25 @@
 import type {Env} from "../types";
 import type {PlatformOverview} from "../../../../lib/platform-operator";
-import {PlatformError,validId} from "./core";
+import {PlatformError,validId,type Workspace} from "./core";
+import type {PlatformSupport} from '../../../../lib/platform-operator';
+import {workspaceSetup} from './setup';
+import {subscriptionAccess} from './subscription-access';
+
+/** Metadata only: no contacts, conversations, tokens or provider calls. */
+export async function platformSupport(env:Env,input:Record<string,unknown>,now=Date.now()):Promise<PlatformSupport>{
+ if(env.PLATFORM_ENABLED!=='true')throw new PlatformError('The customer platform is not open yet.',503);
+ if(!validId(input.workspaceId))throw new PlatformError('Enter a valid business ID.');
+ const w=await env.DB.prepare('SELECT * FROM platform_workspaces WHERE id=?').bind(input.workspaceId).first<Workspace>();
+ if(!w)throw new PlatformError('Business not found.',404);
+ const period=new Date(now+3600000).toISOString().slice(0,7),stamp=new Date(now).toISOString();
+ const [setup,access,usage,members,invites]=await Promise.all([
+  workspaceSetup(env,w),subscriptionAccess(env,w.id,now),
+  env.DB.prepare("SELECT count FROM platform_usage WHERE workspace_id=? AND period=? AND kind='assistant_replies'").bind(w.id,period).first<{count:number}>(),
+  env.DB.prepare('SELECT count(*) n FROM platform_memberships WHERE workspace_id=?').bind(w.id).first<{n:number}>(),
+  env.DB.prepare("SELECT count(*) n FROM platform_team_invites WHERE workspace_id=? AND state='pending' AND expires_at>?").bind(w.id,stamp).first<{n:number}>(),
+ ]);
+ return {environment:env.ENVIRONMENT,generatedAt:stamp,period,business:{id:w.id,name:w.name,state:w.state,configuredPlan:w.plan_id,version:w.version},setup,access,repliesUsed:usage?.count||0,members:members?.n||0,pendingInvites:invites?.n||0};
+}
 
 /** Internal signed admin route only. Never expose through the customer RPC. */
 export async function platformOverview(env:Env,input:Record<string,unknown>,now=Date.now()):Promise<PlatformOverview> {

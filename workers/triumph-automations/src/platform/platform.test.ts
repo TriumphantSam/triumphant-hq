@@ -13,7 +13,7 @@ import {
 } from "./core";
 import { platformAuth } from "./auth";
 import {teamAction} from "./team";
-import {platformOverview} from "./operator";
+import {platformOverview,platformSupport} from "./operator";
 import {whatsappReview} from "./whatsapp-review";
 import {
   handleWhatsAppWebhook,
@@ -1774,6 +1774,27 @@ test("review sender rejects real senders and keeps ambiguous send outcomes reser
   }finally{globalThis.fetch=savedFetch;sql.close();}
 });
 
+test('support diagnostics isolate business metadata and preserve customer records',async()=>{
+ const {env,sql,user}=setup();user('support-owner');user('other-owner');
+ const w=(await createWorkspace(env,'support-owner','Support business'))!;
+ const other=(await createWorkspace(env,'other-owner','Other business'))!;
+ const now=Date.now(),period=new Date(now+3600000).toISOString().slice(0,7);
+ sql.prepare('INSERT INTO platform_usage VALUES(?,?,?,?)').run(w.id,period,'assistant_replies',17);
+ sql.prepare('INSERT INTO platform_usage VALUES(?,?,?,?)').run(other.id,period,'assistant_replies',91);
+ sql.prepare('UPDATE platform_workspaces SET description=?,contact_url=? WHERE id=?').run('Private configuration detail','https://example.test/private-link',w.id);
+ const before=JSON.stringify(sql.prepare('SELECT * FROM platform_workspaces WHERE id=?').get(w.id));
+ const data=await platformSupport(env,{workspaceId:w.id},now);
+ assert.equal(data.business.name,'Support business');assert.equal(data.repliesUsed,17);assert.equal(data.members,1);
+ assert.equal(data.access.active,false);assert.equal(data.access.replies,100);
+ assert.ok(data.setup.steps.some(s=>s.id==='appointments'&&!s.done));
+ const output=JSON.stringify(data);
+ for(const value of ['Private configuration detail','private-link','support-owner@example.com','Other business',other.id,'owner_user_id'])assert.ok(!output.includes(value));
+ assert.equal(JSON.stringify(sql.prepare('SELECT * FROM platform_workspaces WHERE id=?').get(w.id)),before);
+ await assert.rejects(platformSupport(env,{workspaceId:"' OR 1=1 --"}),/valid business ID/);
+ await assert.rejects(platformSupport(env,{workspaceId:crypto.randomUUID()}),/Business not found/);
+ env.PLATFORM_ENABLED='false';await assert.rejects(platformSupport(env,{workspaceId:w.id}),/not open yet/);
+ sql.close();
+});
 test("operator overview paginates businesses and excludes private customer and auth records",async()=>{
   const {env,sql,user}=setup();
   const now=Date.parse("2026-10-31T23:30:00Z");

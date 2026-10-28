@@ -1,8 +1,8 @@
 name: Verify customer workspace preview
 on:
   push:
-    branches: [codex/subscription-lifecycle, codex/guided-customer-setup, codex/daily-business-operations]
-    paths: ['.github/workflows/subscription-preview.yml', 'components/platform/**', 'app/api/platform/**', 'app/platform/**', 'lib/platform-setup.ts', 'lib/platform-work.ts', 'workers/triumph-automations/**']
+    branches: [codex/subscription-lifecycle, codex/guided-customer-setup, codex/daily-business-operations, codex/owner-support-controls]
+    paths: ['.github/workflows/subscription-preview.yml', 'components/platform/**', 'app/api/platform/**', 'app/platform/**', 'app/admin/platform/**', 'components/automation/PlatformSupportView.tsx', 'lib/platform-operator.ts', 'lib/platform-setup.ts', 'lib/platform-work.ts', 'workers/triumph-automations/**']
   workflow_dispatch:
 permissions:
   contents: read
@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   preview:
-    if: github.ref == 'refs/heads/codex/subscription-lifecycle' || github.ref == 'refs/heads/codex/guided-customer-setup' || github.ref == 'refs/heads/codex/daily-business-operations' || github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/codex/subscription-lifecycle' || github.ref == 'refs/heads/codex/guided-customer-setup' || github.ref == 'refs/heads/codex/daily-business-operations' || github.ref == 'refs/heads/codex/owner-support-controls' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:

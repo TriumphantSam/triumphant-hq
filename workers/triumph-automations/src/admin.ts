@@ -3,7 +3,7 @@ import type { Env } from "./types";
 import { privateReport } from "./reports";
 import { hmac } from "./security";
 import { claimLabJobs } from "./lab-delivery";
-import { platformOverview } from "./platform/operator";
+import { platformOverview,platformSupport } from "./platform/operator";
 import { PlatformError } from "./platform/core";
 import {operationsHealth} from './operations';
 import facts from "../../../content/kb/business.json";
@@ -20,7 +20,8 @@ adminRoutes.post("/platform", async(c)=>{
     let input:unknown;
     try {input=JSON.parse(c.get("raw"));} catch {throw new PlatformError("Invalid overview request.");}
     if(!input||typeof input!=="object"||Array.isArray(input))throw new PlatformError("Invalid overview request.");
-    return c.json(await platformOverview(c.env,input as Record<string,unknown>));
+    const request=input as Record<string,unknown>;
+    return c.json(await (Object.hasOwn(request,'workspaceId')?platformSupport(c.env,request):platformOverview(c.env,request)));
   }catch(error){return c.json({error:error instanceof PlatformError?error.message:"The platform overview is unavailable."},error instanceof PlatformError?error.status:503);}
 });
 export async function generateDrafts(env: Env, now = new Date()) {
