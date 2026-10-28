@@ -47,7 +47,16 @@ No private owner workspace or production business should be used as a fixture.
 
 The independent host now targets the Cloudflare staging website. Its widget
 response returned HTTP 200 with `frame-ancestors` restricted to the allowed
-acceptance origin. The controlled Edge tab remained at `about:blank`; this is
-not a completed iframe acceptance. Fresh-tab rendering, enquiry capture and
-handover checks remain pending for this deployment. Earlier October results
-above describe the previous deployment, not this recheck.
+acceptance origin. Initially the controlled Edge tab remained at `about:blank`.
+After the owner opened a fresh tab, the embedded assistant rendered and the
+browser check returned the approved weekday 10am–4pm Lagos answer inside the
+iframe. An unknown question returned an explicit lack-of-approved-answer message
+and directed the visitor to send an enquiry. This is a referral to the enquiry
+form, not an automatic live-agent conversation transfer.
+
+The negative-control host displayed the browser's "refused to connect" frame,
+while the approved host worked. Enquiry capture remains pending: its Turnstile
+script was present but the challenge had not mounted in the controlled tab,
+leaving submission disabled. No synthetic enquiry was submitted in this recheck.
+Earlier October capture and booking results above describe the previous
+deployment, not this recheck.
