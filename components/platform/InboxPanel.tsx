@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import WhatsAppInbox from "./WhatsAppInbox";
 import RecordExport from './RecordExport';
 import RetentionPreview from './RetentionPreview';
+import FollowUpPanel from './FollowUpPanel';
 type Lead = {
   id: string;
   name: string;
@@ -40,10 +41,12 @@ async function rpc<T>(action: string, payload: unknown): Promise<T> {
   return data;
 }
 function EnquiryCard({
+  workspaceId,
   lead,
   busy,
   update,
 }: {
+  workspaceId:string;
   lead: Lead;
   busy: boolean;
   update: (lead: Lead, status: string) => void;
@@ -84,6 +87,7 @@ function EnquiryCard({
           Save status
         </button>
       </form>
+      <FollowUpPanel workspaceId={workspaceId} target={{kind:'enquiry',id:lead.id}}/>
     </article>
   );
 }
@@ -171,6 +175,7 @@ export default function InboxPanel({
           {data.leads.length ? (
             data.leads.map((lead) => (
               <EnquiryCard
+                workspaceId={workspaceId}
                 key={`${lead.id}:${lead.version}`}
                 lead={lead}
                 busy={busy}
@@ -221,6 +226,7 @@ export default function InboxPanel({
                     Cancel test appointment
                   </button>
                 )}
+                <FollowUpPanel workspaceId={workspaceId} target={{kind:'booking',id:b.id}}/>
               </article>
             ))
           ) : (

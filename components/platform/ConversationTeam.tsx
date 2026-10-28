@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
+import FollowUpPanel from './FollowUpPanel';
 
 type Data={assignment:{assigneeId:string|null;version:number};members:{id:string;name:string;role:string}[];notes:{id:string;body:string;at:string;author:string}[]};
 type Props={workspaceId:string;threadId:string;channel:"rehearsal"|"whatsapp"};
@@ -31,5 +32,6 @@ export default function ConversationTeam({workspaceId,threadId,channel}:Props){
    </form>
   </>}
   <button className="platform-secondary" disabled={busy} onClick={()=>void run(async()=>{adopt(await call('collaboration.read',target));setNotice('Team details refreshed.');})}>Refresh team details</button>
+  <FollowUpPanel key={`${workspaceId}:${channel}:${threadId}`} workspaceId={workspaceId} target={{kind:channel,id:threadId}}/>
  </div></details>;
 }

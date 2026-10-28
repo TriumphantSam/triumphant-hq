@@ -11,6 +11,7 @@ import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans } from "./billing";
 import {subscriptionAccess} from './subscription-access';
 import {workspaceSetup,setupInput,saveSetup} from './setup';
+import {workOverview,followUpAction} from './work';
 import { teamAction } from "./team";
 import {exportRecords} from './record-export';
 import {retentionAction} from './retention';
@@ -154,6 +155,8 @@ export function createPlatformRoutes(sender?: OtpSender) {
         });
       }
       const id = payload.workspaceId;
+      if(body.action==='operations.read')return c.json({data:await workOverview(c.env,userId,payload)});
+      if(body.action.startsWith('followup.'))return c.json({data:await followUpAction(c.env,userId,body.action,payload)});
       if(body.action==='retention.read'||body.action==='retention.save')return c.json({data:await retentionAction(c.env,userId,body.action,payload)});
       if(body.action==='records.export')return c.json({data:await exportRecords(c.env,userId,payload)});
       if(body.action==='usage.read')return c.json({data:await workspaceUsage(c.env,userId,id)});

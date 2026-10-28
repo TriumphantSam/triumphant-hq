@@ -30,6 +30,7 @@ import {subscriptionAccess} from './subscription-access';
 import {billingMode} from './billing-policy';
 import {platformBillingWebhook} from './billing-webhook';
 import {setupInput,saveSetup,workspaceSetup} from './setup';
+import {workOverview,followUpAction} from './work';
 import type { Env } from "../types";
 import { Hono } from "hono";
 import { createPlatformRoutes } from "./routes";
@@ -541,6 +542,8 @@ test("RPC requires an actual verified session and isolates private settings and 
   const aid = a.data!.id,
     bid = b.data!.id;
   assert.equal((await call('setup.read',{workspaceId:bid},alice)).status,404);
+  assert.equal((await call('operations.read',{workspaceId:bid},alice)).status,404);
+  assert.equal((await call('operations.read',{workspaceId:aid})).status,401);
   const choices={workspaceId:aid,businessType:'services',appointments:false,team:false,channel:'website',version:0};
   assert.equal((await call('setup.save',choices,alice)).status,200);
   assert.equal((await call('setup.save',choices,alice)).status,409);
@@ -549,6 +552,7 @@ test("RPC requires an actual verified session and isolates private settings and 
   sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(aid as string,bobId);
   assert.equal((await call('setup.read',{workspaceId:aid},bob)).status,403);
   assert.equal((await call('setup.save',{...choices,version:1},bob)).status,403);
+  assert.equal((await call('operations.read',{workspaceId:aid},bob)).status,200);
   sql.prepare("DELETE FROM platform_memberships WHERE workspace_id=? AND user_id=? AND role='staff'").run(aid as string,bobId);
   assert.equal(
     (await call("workspace.read", { workspaceId: bid }, alice)).status,
@@ -1227,6 +1231,64 @@ test("website widget settings are owner-scoped and pause with publication",async
   sql.prepare("UPDATE platform_workspaces SET state='draft' WHERE id=?").run(workspaceId);
   await assert.rejects(publicWorkflow(env,"public.widget",{workspaceId},publicIp,workflowNow),/unavailable|published|not found/i);
   sql.close();
+});
+
+test('internal follow-ups isolate sources, enforce current assignees and complete without changing the conversation',async()=>{
+ const {env,sql,user}=setup();for(const id of ['work-owner','work-staff','work-other'])user(id);
+ const w=(await createWorkspace(env,'work-owner','Daily work'))!,other=(await createWorkspace(env,'work-other','Other work'))!,now=Date.parse('2026-11-02T10:00:00.000Z'),stamp=new Date(now).toISOString();
+ sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(w.id,'work-staff');
+ const id=crypto.randomUUID(),foreign=crypto.randomUUID();
+ for(const [thread,workspace] of [[id,w.id],[foreign,other.id]])sql.prepare("INSERT INTO platform_conversations(id,workspace_id,label,messages,paused,created_at,updated_at) VALUES(?,?,?,'[]',1,?,?)").run(thread,workspace,'Synthetic handover',stamp,stamp);
+ const target={workspaceId:w.id,kind:'rehearsal',id},input={...target,dueAt:stamp,note:'Review the saved request',assigneeId:'work-staff',version:0};
+ try {
+  const saved=await followUpAction(env,'work-owner','followup.save',input,now);assert.equal(saved.task!.version,1);
+  await assert.rejects(followUpAction(env,'work-owner','followup.save',input,now),/changed/);
+  await assert.rejects(followUpAction(env,'work-staff','followup.read',{...target,id:foreign},now),/not found/);
+  await assert.rejects(followUpAction(env,'work-other','followup.read',target,now),/not found/);
+  await assert.rejects(followUpAction(env,'work-owner','followup.save',{...input,version:1,assigneeId:'work-other'},now),/no longer a member/);
+  assert.equal((await workOverview(env,'work-owner',{workspaceId:w.id},now+1)).tasks.length,0);
+  assert.equal((await workOverview(env,'work-staff',{workspaceId:w.id},now+1)).tasks[0].overdue,true);
+  const done=await followUpAction(env,'work-staff','followup.complete',{...target,version:1},now);assert.equal(done.task!.done,true);
+  await assert.rejects(followUpAction(env,'work-owner','followup.complete',{...target,version:1},now),/changed/);
+  await followUpAction(env,'work-owner','followup.save',{...input,version:2},now);
+  sql.prepare('DELETE FROM platform_memberships WHERE workspace_id=? AND user_id=?').run(w.id,'work-staff');
+  assert.equal((await workOverview(env,'work-owner',{workspaceId:w.id},now+1)).tasks[0].assigneeName,null);
+  await assert.rejects(followUpAction(env,'work-staff','followup.read',target,now),/not found/);
+  const row=sql.prepare('SELECT paused,version,messages FROM platform_conversations WHERE id=?').get(id)!;assert.equal(row.paused,1);assert.equal(row.version,0);assert.equal(row.messages,'[]');
+  assert.equal(sql.prepare('SELECT count(*) n FROM platform_followups').get()!.n,1);assert.equal(sql.prepare('SELECT count(*) n FROM platform_whatsapp_events').get()!.n,0);
+  for(const bad of [{dueAt:'tomorrow'},{note:'x'.repeat(1001)},{dueAt:'2029-01-01T00:00:00.000Z'},{version:-1}])await assert.rejects(followUpAction(env,'work-owner','followup.save',{...input,version:3,...bad},now),/Check/);
+ }finally{sql.close();}
+});
+test('daily work counts are scoped, upcoming bookings exclude cancelled/past records and the queue is bounded',async()=>{
+ const {env,sql,user}=setup();user('daily-owner');const w=(await createWorkspace(env,'daily-owner','Daily counts'))!,now=Date.parse('2026-11-02T10:00:00.000Z'),stamp=new Date(now).toISOString();
+ try {
+  const lead=crypto.randomUUID();sql.prepare("INSERT INTO platform_leads(id,workspace_id,request_id,request_digest,name,email,need,created_at,updated_at) VALUES(?,?,?,'digest','Synthetic','test@example.test','A test enquiry',?,?)").run(lead,w.id,lead,stamp,stamp);
+  await followUpAction(env,'daily-owner','followup.save',{workspaceId:w.id,kind:'enquiry',id:lead,dueAt:stamp,note:'Check this enquiry',assigneeId:null,version:0},now);
+  const booking=sql.prepare("INSERT INTO platform_bookings(id,workspace_id,request_id,request_digest,manage_digest,name,email,start,end,blocked_until,state,created_at,updated_at) VALUES(?,?,?,'digest','manage','Synthetic','test@example.test',?,?,?, ?,?,?)");
+  for(const [hours,state] of [[1,'confirmed'],[2,'cancelled'],[25,'confirmed'],[-1,'confirmed']] as const){const id=crypto.randomUUID(),start=new Date(now+hours*3600000).toISOString(),end=new Date(now+(hours+0.5)*3600000).toISOString();booking.run(id,w.id,id,start,end,end,state,stamp,stamp);if(hours===1)await followUpAction(env,'daily-owner','followup.save',{workspaceId:w.id,kind:'booking',id,dueAt:end,note:'Check reservation',assigneeId:null,version:0},now);}
+  const whatsapp=crypto.randomUUID();sql.prepare('INSERT INTO platform_whatsapp_threads(id,workspace_id,wa_id,label,created_at,updated_at) VALUES(?,?,?,?,?,?)').run(whatsapp,w.id,'15550001111','Stored synthetic thread',stamp,stamp);
+  await followUpAction(env,'daily-owner','followup.save',{workspaceId:w.id,kind:'whatsapp',id:whatsapp,dueAt:stamp,note:'Local metadata only',assigneeId:null,version:0},now);
+  let data=await workOverview(env,'daily-owner',{workspaceId:w.id},now);assert.equal(data.newEnquiries,1);assert.equal(data.appointmentsNextDay,1);assert.equal(data.tasks.length,3);
+  for(let n=0;n<51;n++){const id=crypto.randomUUID();sql.prepare("INSERT INTO platform_conversations(id,workspace_id,label,messages,created_at,updated_at) VALUES(?,?,?,'[]',?,?)").run(id,w.id,'Synthetic '+n,stamp,stamp);await followUpAction(env,'daily-owner','followup.save',{workspaceId:w.id,kind:'rehearsal',id,dueAt:new Date(now+n*1000).toISOString(),note:'',assigneeId:null,version:0},now);}
+  data=await workOverview(env,'daily-owner',{workspaceId:w.id,filter:'all'},now);assert.equal(data.tasks.length,50);assert.equal(data.truncated,true);
+  await assert.rejects(workOverview(env,'daily-owner',{workspaceId:w.id,filter:'invalid'},now),/valid work filter/);
+ }finally{sql.close();}
+});
+test('non-AI unknown questions pause rehearsal for handover and only an explicit resume restores automation',async()=>{
+ const {env,sql,user}=setup();user('handover-owner');const w=(await createWorkspace(env,'handover-owner','Handover flow'))!,id=crypto.randomUUID(),now=Date.parse('2026-11-02T10:00:00.000Z');
+ try {
+  sql.prepare('INSERT INTO platform_faqs(id,workspace_id,question,answer) VALUES(?,?,?,?)').run(crypto.randomUUID(),w.id,'What are your hours?','10am to 4pm');
+  await conversationAction(env,'handover-owner','conversation.create',{workspaceId:w.id,id,label:'Synthetic customer'},now);
+  const target={workspaceId:w.id,id};
+  await conversationAction(env,'handover-owner','conversation.message',{...target,version:0,role:'customer',text:'Do you ship to Mars?',requestId:crypto.randomUUID()},now);
+  let row=sql.prepare('SELECT paused,version,json_array_length(messages) n FROM platform_conversations WHERE id=?').get(id)!;assert.equal(row.paused,1);assert.equal(row.n,3);
+  await conversationAction(env,'handover-owner','conversation.message',{...target,version:1,role:'customer',text:'What are your hours?',requestId:crypto.randomUUID()},now);
+  row=sql.prepare('SELECT paused,version,json_array_length(messages) n FROM platform_conversations WHERE id=?').get(id)!;assert.equal(row.n,4);assert.equal(row.paused,1);
+  await conversationAction(env,'handover-owner','conversation.pause',{...target,version:2,paused:false},now);
+  await conversationAction(env,'handover-owner','conversation.message',{...target,version:3,role:'customer',text:'What are your hours?',requestId:crypto.randomUUID()},now);
+  row=sql.prepare('SELECT paused,json_array_length(messages) n FROM platform_conversations WHERE id=?').get(id)!;assert.equal(row.paused,0);assert.equal(row.n,6);
+  assert.equal(sql.prepare('SELECT count(*) n FROM platform_whatsapp_events').get()!.n,0);
+ }finally{sql.close();}
 });
 
 test('guided setup uses saved evidence, keeps optional steps separate and does not activate channels',async()=>{

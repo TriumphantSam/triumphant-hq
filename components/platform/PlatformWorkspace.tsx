@@ -70,7 +70,8 @@ type Bootstrap = {
   plans: Plan[];
 };
 type Tab =
-  "Setup" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Usage" | "Launch" | "Team";
+  "Setup" | "Today" | "Business" | "Answers" | "Appointments" | "Inbox" | "Conversations" | "Autoresponders" | "Website" | "Plans" | "Usage" | "Launch" | "Team";
+const TodayPanel=dynamic(()=>import('./TodayPanel'),{loading:()=> <p role="status">Loading daily work…</p>});
 const UsagePanel=dynamic(()=>import('./UsagePanel'),{loading:()=> <p role="status">Loading usage…</p>});
 const WebsiteWidgetPanel=dynamic(()=>import("./WebsiteWidgetPanel"),{loading:()=> <p role="status">Loading website settings…</p>});
 const BillingPanel=dynamic(()=>import("./BillingPanel"),{loading:()=> <p role="status">Loading billing…</p>});
@@ -85,6 +86,7 @@ const WhatsAppConnect = dynamic(() => import("./WhatsAppConnect"), {
 });
 const tabs = [
   { name: "Setup", icon: ListChecks },
+  { name: "Today", icon: CalendarDays },
   { name: "Business", icon: Building2 },
   { name: "Answers", icon: BookOpen },
   { name: "Appointments", icon: CalendarDays },
@@ -161,7 +163,7 @@ export default function PlatformWorkspace() {
     setContact(data.workspace.contact_url);
     setFaqs(data.faqs);
     setPolicy(data.policy);
-    if(data.workspace.role==="staff")setTab("Inbox");
+    if(data.workspace.role==="staff")setTab(previous=>['Today','Inbox','Conversations'].includes(previous)?previous:'Today');
   }
   async function bootstrap(preferredId?:string) {
     const data = await rpc<Bootstrap>("bootstrap");
@@ -390,7 +392,7 @@ export default function PlatformWorkspace() {
               </div>
             </div>
             <nav aria-label="Business workspace">
-              {tabs.filter(item=>view?.workspace.role!=="staff"||item.name==="Inbox"||item.name==="Conversations").map(({ name: label, icon: Icon }) => (
+              {tabs.filter(item=>view?.workspace.role!=="staff"||['Today','Inbox','Conversations'].includes(item.name)).map(({ name: label, icon: Icon }) => (
                 <button
                   key={label}
                   aria-current={tab === label ? "page" : undefined}
@@ -437,6 +439,7 @@ export default function PlatformWorkspace() {
                 <h1>
                   {view
                     ? tab === "Setup" ? "Your business, step by step."
+                    : tab === 'Today' ? 'Your team’s work, in one place.'
                       : tab === "Website" ? "Your assistant, on your website."
                       : tab === "Conversations" ? "Make every conversation count."
                       : tab === "Autoresponders" ? "A helpful reply starts here."
@@ -470,7 +473,7 @@ export default function PlatformWorkspace() {
               </p>
             )}
             <TeamInvitations onAccepted={id=>run(async()=>{setView(null);setTab("Inbox");await bootstrap(id);})}/>
-            {view?.workspace.role==="staff"&&<p className="platform-sandbox">Staff access · You can use this business’s inbox and conversation rehearsal. The owner manages configuration, billing and team membership.</p>}
+            {view?.workspace.role==="staff"&&<p className="platform-sandbox">Staff access · You can use this business’s daily work, inbox and conversation rehearsal. The owner manages configuration, billing and team membership.</p>}
             {!view ? (
               <form
                 className="platform-card platform-form"
@@ -506,6 +509,7 @@ export default function PlatformWorkspace() {
             ) : (
               <>
                 {tab === "Setup" && <SetupGuide key={view.workspace.id} workspaceId={view.workspace.id} setup={view.setup} onNavigate={setTab} onChanged={()=>void run(()=>bootstrap(view.workspace.id))}/>}
+                {tab === 'Today' && <TodayPanel key={view.workspace.id} workspaceId={view.workspace.id} owner={view.workspace.role==='owner'} onNavigate={setTab}/>}
                 {tab === "Usage" && <WorkspacePanelBoundary key={view.workspace.id+tab}><UsagePanel key={view.workspace.id} workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
