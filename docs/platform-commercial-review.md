@@ -2,8 +2,9 @@
 
 Checked 28 October 2026. Owner agreed the revised direction:
 NGN 15,000 / 30,000 / 50,000, with managed service from NGN 75,000.
-Deployed plan data still uses NGN 15,000 / 35,000 / 75,000; this document does
-not change provider agreements or runtime entitlements. Do not change live Paystack plans, billing flags or
+Production remains on the previous release. This branch implements the revised
+amounts for new checkout and recognizes old verified agreements; it never changes
+the amount of an existing provider agreement. Do not change live Paystack plans, billing flags or
 public policies as a side effect of this document. This is a launch-price
 recommendation, not evidence of measured profitability or accepted legal terms.
 
@@ -26,8 +27,8 @@ Use an explicit **planning assumption** of NGN 2,000/USD and NGN 6,000/hour
 internal staff cost. These are not today's exchange rate or an actual salary.
 Qwen's published input/output prices are USD 0.0509/0.335 per million tokens.
 For a hypothetical 2,000-input/160-output-token call, inference is USD 0.0001554.
-Stress-budget one such call per included reply even though the current optional
-AI matcher has a separate 100-attempt monthly cap. Real token/retry usage differs.
+Stress-budget one such call per included reply. The revised AI matcher caps
+monthly attempts at the plan reply allowance, with a shared daily safety cap. Real token/retry usage differs.
 [Cloudflare model pricing](https://developers.cloudflare.com/workers-ai/models/qwen3-30b-a3b-fp8/)
 
 | Monthly allocation, NGN | Starter | Growth | Business |
@@ -103,16 +104,16 @@ claims, not tested performance, verified margins or equivalent usage units.
 Adopted: outcome-led positioning, revised software prices, a bounded no-card
 trial and a separately scoped managed-service tier. Do not copy unlimited claims,
 assume all prices include Meta fees, or treat payment screenshots as settlement
-evidence. Implement the recorded trial/quota/provider-plan work before marketing.
+evidence. The trial/quota/provider-plan implementation needs final staging acceptance before marketing.
 The revised cost table retains earlier support-time assumptions as a stress case;
 trial conversion/abuse and stronger AI limits still need actual pilot measurement.
 
 ## Source-of-truth and implementation gaps
 
 - Enforced plan amounts/FAQ/reply limits: `src/platform/plans.ts` in the Worker.
-- Monthly new-record limits: `workflows.ts` and `usage.ts`, 100 each on all plans.
+- Monthly new-record limits: `workflows.ts` and `usage.ts`; enquiries 100/500/1,500, bookings 100/300/1,000.
 - Current team cap: ten including owner. Do not sell invented tier seat limits.
-- AI cap: `tenant-ai.ts`, 100 attempts/workspace/month plus 500 shared daily.
+- AI cap: `tenant-ai.ts`, plan reply allowance per workspace/month plus 500 shared daily; trial 50 lifetime attempts.
 - Self-service setup fee is zero by proposal; assisted onboarding/extra hours are
   manual quoted services, not existing checkout products.
 - Configuration-help time is a service policy, not a software meter. Track it
