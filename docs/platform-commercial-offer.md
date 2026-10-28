@@ -1,6 +1,7 @@
 # TriumphantTech business automation — proposed offer
 
-Version: 28 October 2026. Owner-review draft, not published customer terms.
+Version: 28 October 2026. Owner-approved pricing direction; publication draft.
+Support/refund wording, taxes and technical launch gates still require review.
 Paid activation stays disabled until the remaining launch gates are accepted.
 
 ## What a customer buys
@@ -13,11 +14,16 @@ checks. Website design, bespoke workflows and third-party messaging fees are
 separate. This is a software subscription, not a promise of sales or a human
 customer-service team answering the business's customers.
 
-## Monthly plans
+## Agreed monthly pricing direction
+
+Positioning: turn website and WhatsApp enquiries into organised leads and
+appointments, with the business team in control. The table below combines agreed
+price targets with CURRENT software capacities; it is not a launch-ready price
+card. Record and AI limits need the redesign below before publication.
 
 | Included capacity | Starter | Growth | Business |
 | --- | ---: | ---: | ---: |
-| Monthly platform subscription | NGN 15,000 | NGN 35,000 | NGN 75,000 |
+| Monthly platform subscription | NGN 15,000 | NGN 30,000 | NGN 50,000 |
 | Automated reply allowance | 500 | 2,000 | 5,000 |
 | Saved approved FAQs | 20 | 60 | 150 |
 | New enquiry records per Lagos calendar month | 100 | 100 | 100 |
@@ -32,11 +38,42 @@ features. The current enquiry/booking caps are deliberately disclosed rather tha
 advertising unlimited leads. If a customer needs more, assess fit and implement
 and test a higher limit before contracting to supply it.
 
-The prices above are platform-price candidates. Do not collect money or publish
+The prices above are the agreed platform-price targets. They differ from the
+currently deployed Growth/Business amounts of NGN 35,000/75,000. Do not collect money or publish
 them as a final tax-inclusive/exclusive offer until the business's applicable
 tax treatment and checkout total are reviewed. Show the complete NGN total
 before consent. Absorb ordinary Paystack local collection fees in the platform
 price; no undisclosed checkout surcharge.
+
+## Trial and managed-service direction
+
+Agreed direction: 14 days or 50 automated replies, whichever comes first; no
+card, automatic charge or automatic paid conversion. Expiry should stop trial
+automation while preserving private access to existing records. Trial credits
+must not activate a live paid period or include Meta credits. This entitlement
+is NOT implemented yet and is not the existing unrestricted staging sandbox.
+Abuse prevention, calendar/reset behavior and expiry must be tested before use.
+
+Managed service: from NGN 75,000/month under a separate written scope for setup,
+optimisation and ongoing assistance. It is not a fourth self-service software
+plan and is not the old Business plan renamed. Specify software plan, included
+labour, provider charges and whether software is included in the quoted total.
+No unlimited changes, custom development or response SLA is implied.
+
+Implementation priorities before publication:
+
+1. Keep one WhatsApp number and current team capacity; do not advertise multiple
+   numbers, voice, catalogue checkout, campaigns or a visual flow builder.
+2. Design higher enquiry/booking allowances for Growth and Business, then enforce
+   them atomically in every affected route and update customer usage displays.
+3. Align optional AI quotas and global cost controls with the advertised reply
+   capacity; do not sell the current 100-attempt matcher as full-plan AI coverage.
+4. Implement the bounded trial with independent entitlement and no billing debit.
+5. Version provider plans and migrate only with consent: the existing stopped
+   NGN 15,000 Starter test agreement must remain stopped and unchanged. Do not
+   silently edit an existing recurring agreement or reuse mismatched plan codes.
+6. Test end-to-end and align plan cards, total checkout, support and refund copy.
+   Keep all customer-release/live-billing gates disabled until release approval.
 
 ## How usage works
 

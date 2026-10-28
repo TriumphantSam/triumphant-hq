@@ -1,7 +1,9 @@
 # Platform commercial review — internal only
 
-Checked 28 October 2026. Recommended starting prices match deployed plan data:
-NGN 15,000 / 35,000 / 75,000. Do not change live Paystack plans, billing flags or
+Checked 28 October 2026. Owner agreed the revised direction:
+NGN 15,000 / 30,000 / 50,000, with managed service from NGN 75,000.
+Deployed plan data still uses NGN 15,000 / 35,000 / 75,000; this document does
+not change provider agreements or runtime entitlements. Do not change live Paystack plans, billing flags or
 public policies as a side effect of this document. This is a launch-price
 recommendation, not evidence of measured profitability or accepted legal terms.
 
@@ -15,8 +17,8 @@ have different fees. Use actual settlement reports for accounting.
 | Plan | Charge | Local collection cost | Settlement before other costs |
 | --- | ---: | ---: | ---: |
 | Starter | 15,000 | 325 | 14,675 |
-| Growth | 35,000 | 625 | 34,375 |
-| Business | 75,000 | 1,225 | 73,775 |
+| Growth | 30,000 | 550 | 29,450 |
+| Business | 50,000 | 850 | 49,150 |
 
 ## Stress budget, not a supplier quote
 
@@ -30,12 +32,12 @@ AI matcher has a separate 100-attempt monthly cap. Real token/retry usage differ
 
 | Monthly allocation, NGN | Starter | Growth | Business |
 | --- | ---: | ---: | ---: |
-| Local payment fee | 325 | 625 | 1,225 |
+| Local payment fee | 325 | 550 | 850 |
 | Hypothetical full-quota inference, rounded up | 156 | 622 | 1,554 |
 | Hosting/database/email allocation (assumption) | 1,000 | 2,000 | 4,000 |
 | Configuration-help staff budget: 0.5 / 1 / 2 hours | 3,000 | 6,000 | 12,000 |
-| Refund/incident reserve allocation: 10% of price | 1,500 | 3,500 | 7,500 |
-| Remainder before tax, sales, core overhead and extra defect support | 9,019 | 22,253 | 48,721 |
+| Refund/incident reserve allocation: 10% of price | 1,500 | 3,000 | 5,000 |
+| Remainder before tax, sales, core overhead and extra defect support | 9,019 | 17,828 | 26,596 |
 
 The remainder is **not net profit**. The 10% reserve is not a statistically
 validated refund forecast. Fixed minimum hosting charges are not eliminated by
@@ -88,6 +90,22 @@ as a legal determination.
 Refund processing/access reconciliation remains manual and requires a tested
 runbook before selling. Cancellation is not a refund, and a provider refund must
 not be assumed to revoke a locally verified paid period automatically.
+
+## Competitor review and adopted direction
+
+Public offers checked on 28 October: [Qwiqa](https://qwiqa.com/) lists NGN
+15k/30k/50k and conversation-based capacities; [SureLeads](https://sureleads.ng/)
+lists NGN 10k/25k/50k with message/voice credits; [BotWave](https://www.botwave.ng/)
+lists NGN 9,900/24,900/59,900 with advertised channel and AI allowances.
+[Buvvo](https://buvvo.ng/) also advertises free/5k/25k offers. These are published
+claims, not tested performance, verified margins or equivalent usage units.
+
+Adopted: outcome-led positioning, revised software prices, a bounded no-card
+trial and a separately scoped managed-service tier. Do not copy unlimited claims,
+assume all prices include Meta fees, or treat payment screenshots as settlement
+evidence. Implement the recorded trial/quota/provider-plan work before marketing.
+The revised cost table retains earlier support-time assumptions as a stress case;
+trial conversion/abuse and stronger AI limits still need actual pilot measurement.
 
 ## Source-of-truth and implementation gaps
 
