@@ -81,3 +81,52 @@ Local validation: 97 Worker tests passed, including retention isolation, stale
 versions, no deletion, active/future exclusions, cron heartbeat and private job
 warning distinctions. Worker/frontend TypeScript and targeted ESLint passed.
 Migrations must precede deployment. Staging browser acceptance is recorded below.
+
+27 October integration: PR #28 includes the current main branch's Cloudflare
+website migration and automatic deployment setup. Vercel is retired; use the
+existing Cloudflare website preview for acceptance. That preview's automation
+bridge now targets triumph-automations-staging, with its matching private key.
+Production bridge/settings are unchanged. Backend migrations/releases remain
+separate from the website deployment workflow.
+
+Fresh staging and production protected exports were both restored successfully
+in isolated memory on 27 October. The private files remain under the same
+current-user backup folder. Remote restore was not performed. The staged signed
+operations endpoint returned 401 unsigned and 200 signed, with seven queue
+groups and a recent successful cron heartbeat. Existing warnings can remain even
+when cron is healthy; this is not a claim that every delivery succeeded.
+
+After merging main, all 97 Worker tests, 15 website tests and 9 Cloudflare
+compatibility tests passed again.
+
+PR #28 was subsequently merged as a8e6cc0 by the current release process. GitHub
+Actions run 40454124872 completed successfully. Production has both migrations
+applied. On 27 October the production operations endpoint returned 401 unsigned,
+200 signed, seven queue groups, a recent successful heartbeat and no stored
+warnings. The platform RPC still returned its intended 503 access gate.
+
+The local Next.js build compiled and passed TypeScript, but OpenNext packaging
+failed on Windows junction/symlink handling in this managed worktree. No partial
+local bundle was deployed. This does not replace the successful hosted Linux
+build/release evidence. The localhost check could not complete its security
+challenge, so it was abandoned without bypassing verification.
+
+The dedicated Verify operations preview workflow now builds on Linux, runs the
+website/Cloudflare and Worker checks, strips generated local environment
+fallbacks and publishes only the existing Cloudflare website preview. Run
+40484834753 succeeded, including the public 200/noindex check. No production
+deployment is part of this workflow. It runs on changes to its own file on
+codex/operations-acceptance, or via manual dispatch from that branch or main.
+
+Cloudflare browser acceptance passed on 27 October at
+https://triumphant-hq-web-preview.triumphantsam30.workers.dev/platform, using the
+staging backend. The owner saved a 90-day preview, reopened Inbox and saw the
+same saved window. A remote read confirmed days=90/version=1. The preview was
+then returned to Off; another remote read confirmed days=0/version=2 and the
+unchanged zero enquiry/appointment counts. No customer data was deleted and no
+messages were sent. Evidence: tmp/retention-off-accepted.png.
+
+Automatic deletion and outbound incident-alert email remain disabled. PR #35
+contains the preview workflow and this acceptance record; PR #28's feature
+release is already in production. Scheduled off-device recovery and unattended
+incident notifications remain separate launch work.
