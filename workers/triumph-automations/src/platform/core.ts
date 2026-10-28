@@ -2,6 +2,7 @@ import type { Env } from "../types";
 import {plans} from './plans';
 import {subscriptionAccess} from './subscription-access';
 import {billingMode} from './billing-policy';
+import {workspaceSetup} from './setup';
 export {plans} from './plans';
 export class PlatformError extends Error {
   constructor(
@@ -267,6 +268,7 @@ export async function workspaceView(
     subscription,
     billingPlanId: agreement?.plan_id || null,
     billingMode: billingMode(env),
+    setup: await workspaceSetup(env,workspace),
     workspace,
     faqs: faqs.results,
     policy,

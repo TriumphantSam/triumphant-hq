@@ -9,6 +9,8 @@ import {
 
 export const maxDuration = 20;
 const allowed = new Set([
+  "setup.read",
+  "setup.save",
   "retention.read",
   "retention.save",
   "records.export",

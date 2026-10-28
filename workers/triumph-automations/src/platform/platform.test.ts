@@ -29,6 +29,7 @@ import {billingAction,billingEvent,nextMonthlyDate,provisionTestPlans,reconcileD
 import {subscriptionAccess} from './subscription-access';
 import {billingMode} from './billing-policy';
 import {platformBillingWebhook} from './billing-webhook';
+import {setupInput,saveSetup,workspaceSetup} from './setup';
 import type { Env } from "../types";
 import { Hono } from "hono";
 import { createPlatformRoutes } from "./routes";
@@ -539,6 +540,16 @@ test("RPC requires an actual verified session and isolates private settings and 
   assert.equal(b.status, 200);
   const aid = a.data!.id,
     bid = b.data!.id;
+  assert.equal((await call('setup.read',{workspaceId:bid},alice)).status,404);
+  const choices={workspaceId:aid,businessType:'services',appointments:false,team:false,channel:'website',version:0};
+  assert.equal((await call('setup.save',choices,alice)).status,200);
+  assert.equal((await call('setup.save',choices,alice)).status,409);
+  assert.equal((await call('setup.save',{...choices,version:1,channel:'invalid'},alice)).status,400);
+  const bobId=sql.prepare('SELECT owner_user_id FROM platform_workspaces WHERE id=?').get(bid as string)!.owner_user_id;
+  sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(aid as string,bobId);
+  assert.equal((await call('setup.read',{workspaceId:aid},bob)).status,403);
+  assert.equal((await call('setup.save',{...choices,version:1},bob)).status,403);
+  sql.prepare("DELETE FROM platform_memberships WHERE workspace_id=? AND user_id=? AND role='staff'").run(aid as string,bobId);
   assert.equal(
     (await call("workspace.read", { workspaceId: bid }, alice)).status,
     404,
@@ -688,6 +699,7 @@ test("RPC requires an actual verified session and isolates private settings and 
     409,
   );
   const logout = await call("auth.logout", {}, alice);
+  assert.ok(sql.prepare('SELECT reviewed_at FROM platform_booking_policy WHERE workspace_id=?').get(bid as string)!.reviewed_at);
   assert.equal(logout.status, 200);
   assert.equal(
     (await call("workspace.read", { workspaceId: aid }, alice)).status,
@@ -1215,6 +1227,49 @@ test("website widget settings are owner-scoped and pause with publication",async
   sql.prepare("UPDATE platform_workspaces SET state='draft' WHERE id=?").run(workspaceId);
   await assert.rejects(publicWorkflow(env,"public.widget",{workspaceId},publicIp,workflowNow),/unavailable|published|not found/i);
   sql.close();
+});
+
+test('guided setup uses saved evidence, keeps optional steps separate and does not activate channels',async()=>{
+ const {env,sql,user}=setup();user('setup-owner');user('setup-staff');
+ const w=(await createWorkspace(env,'setup-owner','Guided business'))!;
+ const read=async()=>workspaceSetup(env,await requireWorkspace(env,'setup-owner',w.id));
+ try {
+  const initial=await read();assert.equal(initial.completed,0);assert.equal(initial.required,6);assert.equal(initial.preparationComplete,false);
+  assert.equal(sql.prepare('SELECT count(*) n FROM platform_setup_preferences').get()!.n,0);
+  const choices=setupInput({businessType:'shop',appointments:false,team:false,channel:'website',version:0})!;
+  assert.ok(await saveSetup(env,w.id,choices));assert.equal(await saveSetup(env,w.id,choices),null);
+  let data=await read();assert.equal(data.required,5);assert.equal(data.completed,1);assert.equal(data.launchChecks.find(c=>c.id==='whatsapp')!.state,'not-required');
+  await saveProfile(env,'setup-owner',w.id,{name:w.name,description:'A synthetic shop',contactUrl:'https://example.test/contact',version:0});
+  sql.prepare('INSERT INTO platform_faqs(id,workspace_id,question,answer) VALUES(?,?,?,?)').run(crypto.randomUUID(),w.id,'Do you deliver?','Ask our team to confirm.');
+  sql.prepare("INSERT INTO platform_responder_settings(workspace_id,welcome,away,fallback,version,updated_at) VALUES(?,'Welcome','Away','Ask the team',1,?)").run(w.id,new Date().toISOString());
+  const thread=crypto.randomUUID(),stamp=new Date().toISOString();
+  sql.prepare('INSERT INTO platform_conversations(id,workspace_id,label,messages,created_at,updated_at) VALUES(?,?,?,?,?,?)').run(thread,w.id,'Synthetic rehearsal',JSON.stringify([{role:'customer',text:'Hello'}]),stamp,stamp);
+  data=await read();assert.equal(data.steps.find(s=>s.id==='rehearsal')!.done,false);
+  sql.prepare('UPDATE platform_conversations SET messages=? WHERE id=?').run(JSON.stringify([{role:'customer',text:'Hello'},{role:'automation',text:'Welcome'},{role:'team',text:'Our team can help'}]),thread);
+  data=await read();assert.equal(data.preparationComplete,true);assert.equal(data.launchChecks.find(c=>c.id==='release')!.state,'blocked');assert.equal(data.launchChecks.find(c=>c.id==='billing')!.state,'pending');
+  assert.ok(await saveSetup(env,w.id,{...data.choices,appointments:true,team:true}));
+  data=await read();assert.equal(data.required,7);assert.equal(data.preparationComplete,false);assert.equal(data.steps.find(s=>s.id==='appointments')!.done,false);assert.equal(data.steps.find(s=>s.id==='team')!.done,false);
+  sql.prepare('UPDATE platform_booking_policy SET reviewed_at=? WHERE workspace_id=?').run(stamp,w.id);
+  sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(w.id,'setup-staff');
+  assert.equal((await read()).preparationComplete,true);
+  sql.prepare('UPDATE platform_responder_settings SET enabled=0 WHERE workspace_id=?').run(w.id);assert.equal((await read()).preparationComplete,false);
+  assert.equal(sql.prepare('SELECT state FROM platform_workspaces WHERE id=?').get(w.id)!.state,'draft');
+  assert.equal(sql.prepare('SELECT count(*) n FROM platform_whatsapp_connections').get()!.n,0);
+ } finally {sql.close();}
+});
+test('production publishing refuses incomplete guided setup even with a verified live period',async()=>{
+ const f=await paidFixture();f.ledger();
+ try {
+  Object.assign(f.env,{ENVIRONMENT:'production',PLATFORM_ENABLED:'true',PLATFORM_CUSTOMER_RELEASE_ENABLED:'true',PLATFORM_BILLING_LIVE_ENABLED:'true',PLATFORM_PAYSTACK_LIVE_SECRET_KEY:'sk_live_unit'});
+  f.sql.prepare("UPDATE platform_billing SET mode='live'").run();f.sql.prepare("UPDATE platform_billing_payments SET mode='live'").run();
+  await assert.rejects(publishWorkspace(f.env,'alice',f.workspaceId,0),/Complete the required business setup/);
+  assert.equal(f.sql.prepare('SELECT state FROM platform_workspaces WHERE id=?').get(f.workspaceId)!.state,'draft');
+ } finally {f.sql.close();}
+});
+test('setup choices reject coerced values, unsafe versions and unsupported paths',()=>{
+ const valid={businessType:'services',appointments:true,team:false,channel:'both',version:0};
+ assert.ok(setupInput(valid));
+ for(const bad of [{channel:'telegram'},{team:'true'},{appointments:1},{version:-1},{version:1.5},{businessType:{toString:()=> 'services'}}])assert.equal(setupInput({...valid,...bad}),null);
 });
 
 async function paidFixture() {
