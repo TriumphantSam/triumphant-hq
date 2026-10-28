@@ -1,6 +1,7 @@
 import type { Env } from "../types";
 import {tenantAnswer} from "./tenant-ai";
 import { hmac } from "../security";
+import {subscriptionAccess} from './subscription-access';
 import {
   admit,
   matchFaq,
@@ -107,7 +108,7 @@ export async function publishWorkspace(
   if (!Number.isSafeInteger(version))
     throw new PlatformError("Reload your settings.");
   if (!pause) {
-    if (env.ENVIRONMENT === "production")
+    if (env.ENVIRONMENT === "production" && (env.PLATFORM_CUSTOMER_RELEASE_ENABLED !== 'true' || !(await subscriptionAccess(env,w.id)).active))
       throw new PlatformError(
         "Customer launch awaits billing and channel release checks.",
         503,
@@ -136,7 +137,7 @@ export async function publishWorkspace(
     throw new PlatformError("Settings changed. Reload before publishing.", 409);
   return {
     ok: true,
-    sandbox: true,
+    sandbox: env.ENVIRONMENT !== "production",
     path: pause ? null : `/business/${w.id}`,
     notifications: "disabled",
     charged: false,
@@ -215,7 +216,7 @@ export async function publicWorkflow(
   ipKey: string,
   now = Date.now(),
 ) {
-  if (env.ENVIRONMENT === "production")
+  if (env.ENVIRONMENT === "production" && env.PLATFORM_CUSTOMER_RELEASE_ENABLED !== 'true')
     throw new PlatformError("Customer workflows are not open yet.", 503);
   await admit(env, "public:" + ipKey, 200);
   if (action === "public.cancel") {
@@ -241,12 +242,13 @@ export async function publicWorkflow(
     )
       .bind(new Date(now).toISOString(), row.id, input.workspaceId, digest)
       .run();
-    return { ok: true, sandbox: true, notifications: "disabled" };
+    return { ok: true, sandbox: env.ENVIRONMENT !== "production", notifications: "disabled" };
   }
   const w = await published(env, input.workspaceId),
     date = new Date(now).toISOString(),
     period = new Date(now + 3600000).toISOString().slice(0, 7),
     monthStart = new Date(period + "-01T00:00:00+01:00").toISOString();
+  if (env.ENVIRONMENT === 'production' && !(await subscriptionAccess(env,w.id,now)).active) throw new PlatformError('This business subscription is not currently active.',503);
   if(action==="public.widget"){
     const config=await env.DB.prepare("SELECT origin FROM platform_widget_settings WHERE workspace_id=? AND enabled=1").bind(w.id).first<{origin:string}>();
     if(!config)throw new PlatformError("The sandbox widget is unavailable.",404);
@@ -267,11 +269,12 @@ export async function publicWorkflow(
         timezone: w.timezone,
       },
       faqs: answers.results,
-      sandbox: true,
+      sandbox: env.ENVIRONMENT !== "production",
       notifications: "disabled",
     };
   }
   if (action === "public.ask") {
+    const access = await subscriptionAccess(env, w.id, now);
     if (
       typeof input.question !== "string" ||
       !input.question.trim() ||
@@ -298,7 +301,7 @@ export async function publicWorkflow(
       .all<Faq>();
     const config=await env.DB.prepare("SELECT ai_enabled,fallback FROM platform_responder_settings WHERE workspace_id=?").bind(w.id).first<{ai_enabled:number;fallback:string}>();
     const allowance=await env.DB.prepare("SELECT count FROM platform_usage WHERE workspace_id=? AND period=? AND kind='assistant_replies'").bind(w.id,period).first<{count:number}>();
-    if(Number(allowance?.count)>=100)throw new PlatformError("This business has reached its sandbox answer allowance.",429);
+    if(Number(allowance?.count)>=access.replies)throw new PlatformError("This business has reached its current answer allowance.",429);
     const resolved=config?.ai_enabled?await tenantAnswer(env,w.id,input.requestId,input.question,faqs.results,config.fallback,now):null;
     const chosen = matchFaq(input.question, faqs.results),
       reply = {
@@ -308,13 +311,13 @@ export async function publicWorkflow(
         source: chosen?.question || null,
         method:resolved?.method||"approved",
         handoff:resolved?resolved.handoff:!chosen,
-        sandbox: true,
+        sandbox: env.ENVIRONMENT !== "production",
         notifications: "disabled",
       };
     const claimId = crypto.randomUUID();
     const result = await env.DB.batch([
       env.DB.prepare(
-        "INSERT INTO platform_reply_requests(workspace_id,request_id,payload_digest,reply,claim_id,created_at) SELECT ?,?,?,?,?,? WHERE COALESCE((SELECT count FROM platform_usage WHERE workspace_id=? AND period=? AND kind='assistant_replies'),0)<100 ON CONFLICT DO NOTHING RETURNING request_id",
+        "INSERT INTO platform_reply_requests(workspace_id,request_id,payload_digest,reply,claim_id,created_at) SELECT ?,?,?,?,?,? WHERE COALESCE((SELECT count FROM platform_usage WHERE workspace_id=? AND period=? AND kind='assistant_replies'),0)<? ON CONFLICT DO NOTHING RETURNING request_id",
       ).bind(
         w.id,
         input.requestId,
@@ -324,6 +327,7 @@ export async function publicWorkflow(
         date,
         w.id,
         period,
+        access.replies,
       ),
       env.DB.prepare(
         "INSERT INTO platform_usage(workspace_id,period,kind,count) SELECT ?,?,'assistant_replies',1 WHERE EXISTS(SELECT 1 FROM platform_reply_requests WHERE workspace_id=? AND request_id=? AND claim_id=?) ON CONFLICT(workspace_id,period,kind) DO UPDATE SET count=count+1",
@@ -360,7 +364,7 @@ export async function publicWorkflow(
       return {
         reference: old.id,
         stored: true,
-        sandbox: true,
+        sandbox: env.ENVIRONMENT !== "production",
         notifications: "disabled",
       };
     }
@@ -390,7 +394,7 @@ export async function publicWorkflow(
     return {
       reference: row.id,
       stored: true,
-      sandbox: true,
+      sandbox: env.ENVIRONMENT !== "production",
       notifications: "disabled",
     };
   }
@@ -410,7 +414,7 @@ export async function publicWorkflow(
             ),
         )
         .slice(0, 100),
-      sandbox: true,
+      sandbox: env.ENVIRONMENT !== "production",
       duration: p.duration,
       buffer: p.buffer,
       noticeHours: p.notice_hours,
@@ -441,7 +445,7 @@ export async function publicWorkflow(
         end: old.end,
         state: old.state,
         manageCode: code,
-        sandbox: true,
+        sandbox: env.ENVIRONMENT !== "production",
         notifications: "disabled",
       };
     }
@@ -491,7 +495,7 @@ export async function publicWorkflow(
       end: slot.end,
       state: "confirmed",
       manageCode: code,
-      sandbox: true,
+      sandbox: env.ENVIRONMENT !== "production",
       notifications: "disabled",
     };
   }

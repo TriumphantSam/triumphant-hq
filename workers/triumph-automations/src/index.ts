@@ -13,12 +13,15 @@ import {
   verifyWhatsAppSubscription,
 } from "./platform/whatsapp";
 import { paymentRoutes, paystackWebhook, drainPaymentJobs } from "./payments";
+import {reconcileDueBilling} from './platform/billing';
+import {platformBillingWebhook} from './platform/billing-webhook';
 import { reviewRoutes, drainReviewJobs, drainReviewInvites } from "./reviews";
 import { adminRoutes, scheduleOwnerReports, drainOwnerReports } from "./admin";
 import {heartbeatStart,heartbeatFinish} from './operations';
 
 const app = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
 app.post("/webhooks/paystack", (c) => paystackWebhook(c.req.raw, c.env));
+app.post('/webhooks/platform-paystack', c => platformBillingWebhook(c.req.raw,c.env));
 app.get("/webhooks/whatsapp", (c) => verifyWhatsAppSubscription(c.req.raw, c.env));
 app.post("/webhooks/whatsapp", (c) => handleWhatsAppWebhook(c.req.raw, c.env));
 app.use("/v1/*", async (c, next) => {
@@ -398,6 +401,7 @@ export default {
     await drainBookingOutbox(env);
     await drainBookingMessages(env);
     await drainPaymentJobs(env);
+    await reconcileDueBilling(env);
     await drainReviewJobs(env);
     await drainReviewInvites(env);
     await scheduleOwnerReports(env);

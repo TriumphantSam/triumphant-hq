@@ -1,28 +1,8 @@
 import type { Env } from "../types";
-
-export const plans = [
-  {
-    id: "starter",
-    name: "Starter",
-    monthlyKobo: 1500000,
-    replies: 500,
-    faqs: 20,
-  },
-  {
-    id: "growth",
-    name: "Growth",
-    monthlyKobo: 3500000,
-    replies: 2000,
-    faqs: 60,
-  },
-  {
-    id: "business",
-    name: "Business",
-    monthlyKobo: 7500000,
-    replies: 5000,
-    faqs: 150,
-  },
-] as const;
+import {plans} from './plans';
+import {subscriptionAccess} from './subscription-access';
+import {billingMode} from './billing-policy';
+export {plans} from './plans';
 export class PlatformError extends Error {
   constructor(
     message: string,
@@ -209,7 +189,9 @@ export async function saveFaqs(
   input: Record<string, unknown>,
 ) {
   const w = await requireWorkspace(env, userId, workspaceId, true);
-  const plan = plans.find((p) => p.id === w.plan_id) || plans[0];
+  const access = await subscriptionAccess(env, w.id);
+  const billing = await env.DB.prepare('SELECT plan_id FROM platform_billing WHERE workspace_id=?').bind(w.id).first<{plan_id:string}>();
+  const plan = plans.find((p) => p.id === (access.planId || billing?.plan_id || w.plan_id)) || plans[0];
   if (
     !Array.isArray(input.faqs) ||
     input.faqs.length > plan.faqs ||
@@ -279,7 +261,12 @@ export async function workspaceView(
     env.DB.prepare("SELECT id FROM platform_conversations WHERE workspace_id=? AND json_array_length(messages)>0 LIMIT 1").bind(workspace.id).first(),
     env.DB.prepare("SELECT 1 AS ok FROM platform_whatsapp_connections WHERE workspace_id=? AND state='connected'").bind(workspace.id).first(),
   ]);
+  const subscription = await subscriptionAccess(env, workspace.id);
+  const agreement = await env.DB.prepare('SELECT plan_id FROM platform_billing WHERE workspace_id=?').bind(workspace.id).first<{plan_id:string}>();
   return {
+    subscription,
+    billingPlanId: agreement?.plan_id || null,
+    billingMode: billingMode(env),
     workspace,
     faqs: faqs.results,
     policy,
@@ -293,7 +280,7 @@ export async function workspaceView(
       conversationTested: Boolean(rehearsal),
       websitePublished: workspace.state === "published",
       whatsappConnected: Boolean(whatsapp),
-      billingActive: false,
+      billingActive: env.ENVIRONMENT === 'production' && subscription.active,
     },
   };
 }

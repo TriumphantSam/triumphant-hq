@@ -1,4 +1,5 @@
 import type { Env } from "../types";
+import {subscriptionAccess} from './subscription-access';
 import { hmac } from "../security";
 import {
   PlatformError,
@@ -316,13 +317,14 @@ async function sendTenantText(
   return id;
 }
 async function recordUsage(env: Env, workspaceId: string, requestId: string, now: number) {
+  const access = await subscriptionAccess(env, workspaceId, now);
   const period = new Date(now + 3600000).toISOString().slice(0, 7);
   const date = new Date(now).toISOString();
   const claimId = crypto.randomUUID();
   const digest = await hmac(env.AUTOMATION_HMAC_SECRET, requestId);
   const result = await env.DB.batch([
     env.DB.prepare(
-      "INSERT INTO platform_reply_requests(workspace_id,request_id,payload_digest,reply,claim_id,created_at) SELECT ?,?,?,?,?,? WHERE COALESCE((SELECT count FROM platform_usage WHERE workspace_id=? AND period=? AND kind='assistant_replies'),0)<100 ON CONFLICT DO NOTHING RETURNING request_id",
+      "INSERT INTO platform_reply_requests(workspace_id,request_id,payload_digest,reply,claim_id,created_at) SELECT ?,?,?,?,?,? WHERE COALESCE((SELECT count FROM platform_usage WHERE workspace_id=? AND period=? AND kind='assistant_replies'),0)<? ON CONFLICT DO NOTHING RETURNING request_id",
     ).bind(
       workspaceId,
       requestId,
@@ -332,6 +334,7 @@ async function recordUsage(env: Env, workspaceId: string, requestId: string, now
       date,
       workspaceId,
       period,
+      access.replies,
     ),
     env.DB.prepare(
       "INSERT INTO platform_usage(workspace_id,period,kind,count) SELECT ?,?,'assistant_replies',1 WHERE EXISTS(SELECT 1 FROM platform_reply_requests WHERE workspace_id=? AND request_id=? AND claim_id=?) ON CONFLICT(workspace_id,period,kind) DO UPDATE SET count=count+1",

@@ -25,7 +25,10 @@ import { hmac } from "../security";
 import { conversationAction, responderDefaults } from "./conversations";
 import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
-import {billingAction,billingEvent,nextMonthlyDate,provisionTestPlans} from "./billing";
+import {billingAction,billingEvent,nextMonthlyDate,provisionTestPlans,reconcileDueBilling} from "./billing";
+import {subscriptionAccess} from './subscription-access';
+import {billingMode} from './billing-policy';
+import {platformBillingWebhook} from './billing-webhook';
 import type { Env } from "../types";
 import { Hono } from "hono";
 import { createPlatformRoutes } from "./routes";
@@ -1212,6 +1215,164 @@ test("website widget settings are owner-scoped and pause with publication",async
   sql.prepare("UPDATE platform_workspaces SET state='draft' WHERE id=?").run(workspaceId);
   await assert.rejects(publicWorkflow(env,"public.widget",{workspaceId},publicIp,workflowNow),/unavailable|published|not found/i);
   sql.close();
+});
+
+async function paidFixture() {
+  const f = await billingFixture(), now = Date.now(), stamp = new Date(now).toISOString(), end = new Date(now+86400000).toISOString();
+  f.sql.prepare("INSERT INTO platform_billing(workspace_id,request_id,reference,email,plan_id,plan_code,amount,state,subscription_code,customer_code,paid_through,created_at,updated_at) VALUES(?,?,'paid-reference',?,'starter','PLN_starter',1500000,'active','SUB_alice','CUS_alice',?,?,?)")
+    .run(f.workspaceId,crypto.randomUUID(),f.owner.email,end,stamp,stamp);
+  return {...f,now,stamp,end,ledger:()=>f.sql.prepare("INSERT INTO platform_billing_payments(reference,provider_id,workspace_id,amount,paid_at,period_end) VALUES('paid-reference','501',?,1500000,?,?)").run(f.workspaceId,stamp,end)};
+}
+test('subscription access requires verified matching ledger, cannot activate production and expires without deleting data',async()=>{
+ const f=await paidFixture();
+ try {
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId,f.now)).active,false);
+  f.ledger();
+  for(const state of ['active','attention','non-renewing','cancel-pending','cancelled']){
+   f.sql.prepare('UPDATE platform_billing SET state=? WHERE workspace_id=?').run(state,f.workspaceId);
+   const access=await subscriptionAccess(f.env,f.workspaceId,f.now);assert.equal(access.active,true);assert.equal(access.replies,500);
+  }
+  const b=(await createWorkspace(f.env,'bob','Other business'))!;
+  assert.equal((await subscriptionAccess(f.env,b.id,f.now)).active,false);
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId,f.now+86400001)).replies,100);
+  f.env.ENVIRONMENT='production';assert.equal((await subscriptionAccess(f.env,f.workspaceId,f.now)).active,false);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_billing_payments').get()!.n,1);
+ } finally {f.sql.close();}
+});
+test('verified plan answer limits are enforced atomically and draft selection cannot increase paid FAQ limits',async()=>{
+ const f=await paidFixture();f.ledger();
+ try {
+  f.sql.prepare("UPDATE platform_workspaces SET state='published',plan_id='business',description='Synthetic business' WHERE id=?").run(f.workspaceId);
+  const faqs=Array.from({length:21},(_,n)=>({id:crypto.randomUUID(),question:'Question '+n,answer:'Synthetic answer'}));
+  await assert.rejects(saveFaqs(f.env,'alice',f.workspaceId,{faqs,version:0}),/20 approved answers/);
+  const period=new Date(f.now+3600000).toISOString().slice(0,7);
+  f.sql.prepare("INSERT INTO platform_usage VALUES(?,?,'assistant_replies',499)").run(f.workspaceId,period);
+  const input={workspaceId:f.workspaceId,question:'What services?',requestId:crypto.randomUUID()};
+  await publicWorkflow(f.env,'public.ask',input,'synthetic-ip',f.now);
+  await publicWorkflow(f.env,'public.ask',input,'synthetic-ip',f.now);
+  assert.equal(f.sql.prepare('SELECT count FROM platform_usage WHERE workspace_id=?').get(f.workspaceId)!.count,500);
+  await assert.rejects(publicWorkflow(f.env,'public.ask',{...input,requestId:crypto.randomUUID()},'synthetic-ip',f.now),/answer allowance/);
+  const usage=await workspaceUsage(f.env,'alice',f.workspaceId,f.now);assert.equal(usage.metrics[0].limit,500);assert.equal(usage.metrics[0].state,'reached');assert.equal(usage.metrics[1].limit,100);
+ } finally {f.sql.close();}
+});
+test('background reconciliation is bounded, read-only at provider and preserves paid periods on failures',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let calls=0;
+ globalThis.fetch=async(url,options)=>{calls++;assert.equal(options?.method,'GET');assert.match(String(url),/\/subscription\/SUB_alice$/);return Response.json({status:true,data:{subscription_code:'SUB_alice',domain:'test',status:'attention',amount:1500000,plan:{plan_code:'PLN_starter',currency:'NGN',interval:'monthly'},customer:{email:f.owner.email,customer_code:'CUS_alice'}}});};
+ try {
+  await reconcileDueBilling(f.env,f.now);await reconcileDueBilling(f.env,f.now+60000);assert.equal(calls,1);
+  assert.equal(f.sql.prepare('SELECT state FROM platform_billing').get()!.state,'attention');
+  assert.equal(f.sql.prepare('SELECT reconcile_state FROM platform_billing').get()!.reconcile_state,'verified');
+  f.sql.prepare("UPDATE platform_billing SET next_check_at='1970-01-01'").run();
+  globalThis.fetch=async()=>{throw Error('provider unavailable');};await reconcileDueBilling(f.env,f.now+120000);
+  const row=f.sql.prepare('SELECT * FROM platform_billing').get()!;assert.equal(row.reconcile_state,'needs-review');assert.equal(row.reconcile_lease_until,null);assert.equal(row.paid_through,f.end);
+  f.env.ENVIRONMENT='production';globalThis.fetch=async()=>{throw Error('must not reach provider');};await reconcileDueBilling(f.env,f.now+86400000);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+test('resume requires fresh consent, reuses existing agreement and does not grant time after unknown enable outcome',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let state='non-renewing',enables=0;
+ f.sql.prepare("UPDATE platform_billing SET cancel_requested=1,state='non-renewing',paid_through='2000-01-01'").run();
+ globalThis.fetch=async(url)=>{if(String(url).endsWith('/subscription/enable')){enables++;state='active';throw Error('response lost');}return Response.json({status:true,data:{subscription_code:'SUB_alice',email_token:'private-test-token',domain:'test',status:state,amount:1500000,plan:{plan_code:'PLN_starter',currency:'NGN',interval:'monthly'},customer:{email:f.owner.email,customer_code:'CUS_alice'}}});};
+ try {
+  await assert.rejects(billingAction(f.env,f.owner,'billing.resume',{workspaceId:f.workspaceId}),/Confirm/);
+  await assert.rejects(billingAction(f.env,f.owner,'billing.resume',{workspaceId:f.workspaceId,recurringConsent:true}),/could not be reached/);
+  const result=await billingAction(f.env,f.owner,'billing.resume',{workspaceId:f.workspaceId,recurringConsent:true});
+  assert.equal(enables,1);assert.equal(result.cancelRequested,false);assert.equal(result.testAccessActive,false);assert.equal(result.payments.length,1);assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_billing').get()!.n,1);
+  assert.ok(!JSON.stringify(result).includes('private-test-token'));
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+
+test('live billing needs every release gate and never accepts test ledger credit or test plan codes',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let calls=0;
+ try {
+  f.env.ENVIRONMENT='production';f.env.PLATFORM_PAYSTACK_LIVE_SECRET_KEY='sk_live_unit';f.env.PLATFORM_BILLING_LIVE_ENABLED='true';
+  assert.equal(billingMode(f.env),null);
+  f.env.PLATFORM_ENABLED='true';assert.equal(billingMode(f.env),null);
+  f.env.PLATFORM_CUSTOMER_RELEASE_ENABLED='true';assert.equal(billingMode(f.env),'live');
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId,f.now)).active,false);
+  f.sql.prepare("UPDATE platform_billing SET mode='live'").run();assert.equal((await subscriptionAccess(f.env,f.workspaceId,f.now)).active,false);
+  f.sql.prepare("UPDATE platform_billing_payments SET mode='live'").run();assert.equal((await subscriptionAccess(f.env,f.workspaceId,f.now)).active,true);
+  f.sql.prepare("UPDATE platform_workspaces SET state='published',description='Synthetic live business' WHERE id=?").run(f.workspaceId);
+  const result=await publicWorkflow(f.env,'public.read',{workspaceId:f.workspaceId},'live-test-ip',f.now);assert.equal(result.sandbox,false);
+  await assert.rejects(publicWorkflow(f.env,'public.ask',{workspaceId:f.workspaceId,question:'Hello',requestId:crypto.randomUUID()},'live-test-ip',f.now+86400001),/subscription is not currently active/);
+  f.env.PLATFORM_BILLING_LIVE_ENABLED='false';assert.equal(billingMode(f.env),null);
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId,f.now)).active,false);
+  globalThis.fetch=async()=>{calls++;throw Error('must not call');};
+  await assert.rejects(billingAction(f.env,f.owner,'billing.resume',{workspaceId:f.workspaceId,recurringConsent:true}),/not enabled/);assert.equal(calls,0);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+test('checkout rejects too many saved FAQs and invalidates an editor opened before its plan lock',async()=>{
+ const f=await billingFixture(),saved=globalThis.fetch;let initializes=0;
+ f.sql.prepare("UPDATE platform_workspaces SET plan_id='business' WHERE id=?").run(f.workspaceId);
+ for(let n=0;n<21;n++)f.sql.prepare('INSERT INTO platform_faqs(id,workspace_id,question,answer) VALUES(?,?,?,?)').run(crypto.randomUUID(),f.workspaceId,'Question '+n,'Synthetic answer');
+ globalThis.fetch=async(url,options)=>{
+  if(String(url).endsWith('/plan/PLN_starter'))return Response.json({status:true,data:{plan_code:'PLN_starter',amount:1500000,currency:'NGN',interval:'monthly',domain:'test'}});
+  initializes++;return Response.json({status:true,data:{reference:JSON.parse(String(options?.body)).reference,authorization_url:'https://checkout.paystack.com/synthetic'}});
+ };
+ try {
+  const payload={workspaceId:f.workspaceId,planId:'starter',requestId:crypto.randomUUID(),recurringConsent:true};
+  await assert.rejects(billingAction(f.env,f.owner,'billing.checkout',payload),/FAQs exceed/);assert.equal(initializes,0);assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_billing').get()!.n,0);
+  f.sql.prepare('DELETE FROM platform_faqs WHERE id=(SELECT id FROM platform_faqs LIMIT 1)').run();
+  await billingAction(f.env,f.owner,'billing.checkout',payload);assert.equal(initializes,1);
+  assert.equal(f.sql.prepare('SELECT plan_id FROM platform_workspaces WHERE id=?').get(f.workspaceId)!.plan_id,'starter');
+  await assert.rejects(saveFaqs(f.env,'alice',f.workspaceId,{faqs:[],version:0}),/changed/);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+test('live checkout rejects test plans and test transactions before granting live access',async()=>{
+ const f=await billingFixture(),saved=globalThis.fetch;let domain='test',reference='';
+ Object.assign(f.env,{ENVIRONMENT:'production',PLATFORM_ENABLED:'true',PLATFORM_CUSTOMER_RELEASE_ENABLED:'true',PLATFORM_BILLING_LIVE_ENABLED:'true',PLATFORM_PAYSTACK_LIVE_SECRET_KEY:'sk_live_unit',PLATFORM_PAYSTACK_LIVE_PLANS:JSON.stringify({starter:'PLN_live'})});
+ globalThis.fetch=async(url,options)=>{
+  assert.equal((options?.headers as Record<string,string>).Authorization,'Bearer sk_live_unit');
+  const path=new URL(String(url)).pathname;
+  if(path==='/plan/PLN_live')return Response.json({status:true,data:{plan_code:'PLN_live',amount:1500000,currency:'NGN',interval:'monthly',domain}});
+  if(path==='/transaction/initialize'){const body=JSON.parse(String(options?.body));reference=body.reference;return Response.json({status:true,data:{reference,authorization_url:'https://checkout.paystack.com/synthetic-live'}});}
+  return Response.json({status:true,data:{id:8801,reference,status:'success',domain,currency:'NGN',amount:1500000,paid_at:new Date().toISOString(),plan_object:{plan_code:'PLN_live'},customer:{email:f.owner.email,customer_code:'CUS_alice'}}});
+ };
+ try {
+  const input={workspaceId:f.workspaceId,planId:'starter',requestId:crypto.randomUUID(),recurringConsent:true};
+  await assert.rejects(billingAction(f.env,f.owner,'billing.checkout',input),/displayed price/);assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_billing').get()!.n,0);
+  domain='live';await billingAction(f.env,f.owner,'billing.checkout',input);domain='test';
+  await assert.rejects(billingEvent(f.env,'charge.success',{reference}),/does not match/);assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  domain='live';await billingEvent(f.env,'charge.success',{reference});await billingEvent(f.env,'charge.success',{reference});
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_billing_payments').get()!.n,1);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+test('live webhook is gated, bounded and rejects test-key signatures',async()=>{
+ const f=await billingFixture();
+ const request=(body:string,signature='')=>new Request('https://worker.test/webhooks/platform-paystack',{method:'POST',body,headers:{'x-paystack-signature':signature}});
+ try {
+  assert.equal((await platformBillingWebhook(request('{}'),f.env)).status,503);
+  Object.assign(f.env,{ENVIRONMENT:'production',PLATFORM_ENABLED:'true',PLATFORM_CUSTOMER_RELEASE_ENABLED:'true',PLATFORM_BILLING_LIVE_ENABLED:'true',PLATFORM_PAYSTACK_LIVE_SECRET_KEY:'sk_live_unit'});
+  assert.equal((await platformBillingWebhook(request('{}'),f.env)).status,401);
+  assert.equal((await platformBillingWebhook(request('x'.repeat(16385)),f.env)).status,413);
+  const body=JSON.stringify({event:'unrelated.event',data:{}});
+  async function signature(secret:string){const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-512'},false,['sign']);return Buffer.from(await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(body))).toString('hex');}
+  assert.equal((await platformBillingWebhook(request(body,await signature('sk_test_unit')),f.env)).status,401);
+  assert.equal((await platformBillingWebhook(request(body,await signature('sk_live_unit')),f.env)).status,200);
+ } finally {f.sql.close();}
+});
+test('card-update links are owner-only and strictly limited to the Paystack management page',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let link='https://evil.example/manage/subscriptions/test';
+ globalThis.fetch=async(url)=>Response.json({status:true,data:String(url).endsWith('/manage/link')?{link}:{subscription_code:'SUB_alice',domain:'test',status:'attention',amount:1500000,plan:{plan_code:'PLN_starter',currency:'NGN',interval:'monthly'},customer:{email:f.owner.email,customer_code:'CUS_alice'}}});
+ try {
+  await assert.rejects(billingAction(f.env,f.owner,'billing.manage',{workspaceId:f.workspaceId}),/could not be verified/);
+  link='https://paystack.com/manage/subscriptions/synthetic?subscription_token=private';
+  const result=await billingAction(f.env,f.owner,'billing.manage',{workspaceId:f.workspaceId});assert.equal('manageUrl' in result&&result.manageUrl,link);
+  f.sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(f.workspaceId,'bob');
+  await assert.rejects(billingAction(f.env,{id:'bob',email:'bob@example.com'},'billing.manage',{workspaceId:f.workspaceId}),/Only the business owner/);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+test('provider acknowledgements without data are accepted for stopping and resuming renewal',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let state='active';
+ globalThis.fetch=async(url)=>{
+  const path=new URL(String(url)).pathname;
+  if(path==='/subscription/disable'){state='non-renewing';return Response.json({status:true,message:'Disabled'});}
+  if(path==='/subscription/enable'){state='active';return Response.json({status:true,message:'Enabled'});}
+  return Response.json({status:true,data:{subscription_code:'SUB_alice',email_token:'private-token',domain:'test',status:state,amount:1500000,plan:{plan_code:'PLN_starter',currency:'NGN',interval:'monthly'},customer:{email:f.owner.email,customer_code:'CUS_alice'}}});
+ };
+ try {
+  assert.equal((await billingAction(f.env,f.owner,'billing.cancel',{workspaceId:f.workspaceId})).state,'non-renewing');
+  assert.equal((await billingAction(f.env,f.owner,'billing.resume',{workspaceId:f.workspaceId,recurringConsent:true})).state,'active');
+ } finally {globalThis.fetch=saved;f.sql.close();}
 });
 
 async function billingFixture() {
