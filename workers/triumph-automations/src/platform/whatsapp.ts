@@ -318,7 +318,7 @@ async function sendTenantText(
 }
 async function recordUsage(env: Env, workspaceId: string, requestId: string, now: number) {
   const access = await subscriptionAccess(env, workspaceId, now);
-  const period = new Date(now + 3600000).toISOString().slice(0, 7);
+  const period = access.period;
   const date = new Date(now).toISOString();
   const claimId = crypto.randomUUID();
   const digest = await hmac(env.AUTOMATION_HMAC_SECRET, requestId);
@@ -644,6 +644,8 @@ async function replyToInbound(
       .bind(connection.workspace_id)
       .first<Settings>()) || responderDefaults;
   if (!config.enabled) return;
+  const currentAccess=await subscriptionAccess(env,connection.workspace_id,now);
+  if(currentAccess.replies===0)return;
   const faqs = await env.DB.prepare(
     "SELECT id,question,answer FROM platform_faqs WHERE workspace_id=? ORDER BY id",
   )

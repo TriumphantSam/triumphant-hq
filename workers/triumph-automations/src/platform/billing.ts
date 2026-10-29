@@ -55,7 +55,7 @@ export function nextMonthlyDate(paidAt: string) {
 function view(row: Billing | null, enabled: boolean, mode: 'test' | 'live' | null) {
   return {
     testMode: mode !== 'live', available: enabled, liveBilling: mode === 'live',
-    state: row?.state || "none", planId: row?.plan_id || null,
+    state: row?.state || "none", agreementAmount:row?.amount||null, planId: row?.plan_id || null,
     paidThrough: row?.paid_through || null, cancelRequested: Boolean(row?.cancel_requested),
     testAccessActive: Boolean(row?.paid_through && Date.parse(row.paid_through) > Date.now()),
     checkoutUrl: row?.state === "checkout" ? row.checkout_url : null,
@@ -245,13 +245,13 @@ export async function provisionTestPlans(env:Env) {
   if (billingMode(env) !== 'test') throw new PlatformError('Test plan provisioning is staging-only.',503);
   const result=[];
   for(const plan of plans) {
-    const existing=await env.DB.prepare("SELECT plan_code,state,amount FROM platform_billing_plans WHERE plan_id=?").bind(plan.id).first<{plan_code:string|null;state:string;amount:number}>();
+    const existing=await env.DB.prepare("SELECT plan_code,state,amount FROM platform_billing_plans WHERE plan_id=? AND amount=?").bind(plan.id,plan.monthlyKobo).first<{plan_code:string|null;state:string;amount:number}>();
     if(existing?.state==="ready" && existing.plan_code && existing.amount===plan.monthlyKobo){result.push({id:plan.id,code:existing.plan_code});continue;}
     const claimed=await env.DB.prepare("INSERT INTO platform_billing_plans(plan_id,amount,created_at) VALUES(?,?,?) ON CONFLICT DO NOTHING RETURNING plan_id").bind(plan.id,plan.monthlyKobo,new Date().toISOString()).first();
     if(!claimed)throw new PlatformError("A test plan needs operator reconciliation before another creation attempt.",409);
     const remote=await provider<{plan_code:string;amount:number;currency:string;interval:string;domain:string}>(env,"/plan",{name:`TriumphantTech ${plan.name} TEST`,amount:plan.monthlyKobo,currency:"NGN",interval:"monthly",send_invoices:false,send_sms:false});
     if(!code(remote.plan_code,"PLN")||remote.amount!==plan.monthlyKobo||remote.currency!=="NGN"||remote.interval!=="monthly"||remote.domain!=="test")throw new PlatformError("The created test plan could not be verified.",503);
-    await env.DB.prepare("UPDATE platform_billing_plans SET plan_code=?,state='ready' WHERE plan_id=? AND state='creating'").bind(remote.plan_code,plan.id).run();
+    await env.DB.prepare("UPDATE platform_billing_plans SET plan_code=?,state='ready' WHERE plan_id=? AND amount=? AND state='creating'").bind(remote.plan_code,plan.id,plan.monthlyKobo).run();
     result.push({id:plan.id,code:remote.plan_code});
   }
   return {testMode:true,plans:result};

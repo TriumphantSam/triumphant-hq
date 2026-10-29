@@ -9,6 +9,7 @@ import {
 
 export const maxDuration = 20;
 const allowed = new Set([
+  "trial.start",
   "operations.read",
   "followup.read",
   "followup.save",

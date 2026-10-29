@@ -195,11 +195,11 @@ export async function saveFaqs(
   const plan = plans.find((p) => p.id === (access.planId || billing?.plan_id || w.plan_id)) || plans[0];
   if (
     !Array.isArray(input.faqs) ||
-    input.faqs.length > plan.faqs ||
+    input.faqs.length > (access.faqs??plan.faqs) ||
     !Number.isSafeInteger(input.version)
   )
     throw new PlatformError(
-      `This plan allows up to ${plan.faqs} approved answers.`,
+      `This plan allows up to ${access.faqs??plan.faqs} approved answers.`,
     );
   const faqs = input.faqs.map((entry: Record<string, unknown>) => {
     if (!entry || typeof entry !== "object")
@@ -252,17 +252,17 @@ export async function workspaceView(
   )
     .bind(workspace.id)
     .first();
+  const subscription = await subscriptionAccess(env, workspace.id);
   const usage = await env.DB.prepare(
     "SELECT kind,count FROM platform_usage WHERE workspace_id=? AND period=?",
   )
-    .bind(workspace.id, new Date(Date.now() + 3600000).toISOString().slice(0, 7))
+    .bind(workspace.id, subscription.period)
     .all();
   const [responder, rehearsal, whatsapp] = await Promise.all([
     env.DB.prepare("SELECT version FROM platform_responder_settings WHERE workspace_id=?").bind(workspace.id).first<{version:number}>(),
     env.DB.prepare("SELECT id FROM platform_conversations WHERE workspace_id=? AND json_array_length(messages)>0 LIMIT 1").bind(workspace.id).first(),
     env.DB.prepare("SELECT 1 AS ok FROM platform_whatsapp_connections WHERE workspace_id=? AND state='connected'").bind(workspace.id).first(),
   ]);
-  const subscription = await subscriptionAccess(env, workspace.id);
   const agreement = await env.DB.prepare('SELECT plan_id FROM platform_billing WHERE workspace_id=?').bind(workspace.id).first<{plan_id:string}>();
   return {
     subscription,
