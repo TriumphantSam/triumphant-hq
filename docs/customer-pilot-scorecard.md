@@ -1,6 +1,6 @@
 # Customer pilot acceptance scorecard
 
-Prepared 29 October 2026. Status: **owner rehearsal prepared, not executed**.
+Prepared 29 October 2026. Status: **owner rehearsal in progress; feedback fixes verified on staging**.
 Live Paystack acceptance is deferred to the final checklist item at the owner's
 request. WhatsApp delivery remains a separate permission/onboarding gate.
 
@@ -50,3 +50,26 @@ Check that the rehearsal business is unpublished, website embedding disabled and
 no temporary staff invitations remain. Preserve synthetic evidence with its
 workspace ID. Assign each blocker an issue, owner and retest result. Do not mark
 the independent pilot passed until observed outcomes and cleanup are complete.
+
+## First rehearsal feedback and retest, 29 October
+
+The owner created Demo Studio Rehearsal and reported difficulty returning from
+Business to Setup, unclear appointment-save feedback and the website publication
+prerequisite. These are observed usability problems, not a completed pilot.
+
+Commit `48874b0` adds the checklist return control, unsaved-edit warning, saved
+appointment summary and Website → Launch guidance. Hosted staging workflow
+`40798627416` passed its web/Worker tests, build, deployment and route check.
+Local TypeScript and targeted component lint also passed.
+
+Browser retest confirmed Business → Setup navigation and a saved Monday–Friday
+10:00–16:00 WAT schedule, 30-minute appointments, 15-minute buffer and 24-hour
+notice. Changing the buffer draft to 20 kept the saved summary at 15, marked
+unsaved edits, and returning prompted before discarding. Cancelling the prompt
+kept the draft; the operator restored it to 15 without saving. Website showed
+the unpublished prerequisite, disabled embedding and offered Go to Launch.
+No publication, payment, invitation or WhatsApp connection occurred in this retest.
+
+The operator retest is assisted functional evidence. The remaining task outcomes,
+independent participant session and live-channel gates remain open. Language and
+typo quality are tracked separately in `platform-language-plan.md`.
