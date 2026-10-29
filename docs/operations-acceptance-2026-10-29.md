@@ -39,11 +39,24 @@ Record presence does not prove signature validity or alignment on a received
 message. No DNS policy was changed, and `p=none` alone is not evidence of the
 cause of Spam placement.
 
-Next evidence required: SPF, DKIM and DMARC results from one received test
-message's original headers. Request only those results, not the full private
-message source. If authentication fails, repair the specific verified mismatch;
-if it passes, investigate recipient filtering/reputation and recheck delivery
-with a separately approved test. Provider acceptance alone is not Inbox proof.
+The owner supplied headers for the operational report dated 20 October 2026
+(not the later incident/recovery test pair). Microsoft recorded SPF, aligned
+business-domain DKIM, DMARC and composite authentication as passing. Filtering
+recorded `SFV:SPM`, `CAT:SPM`, `SCL:5`, and delivery destination `J`/`JunkEmail`.
+This confirms an authenticated message was classified as spam; it does not
+identify the precise content/reputation feature responsible. Do not infer an
+authentication defect or diagnose the later incident emails from this sample.
+Raw headers and message identifiers are not retained in this document.
+
+[Microsoft's header reference](https://learn.microsoft.com/en-us/defender-office-365/message-headers-eop-mdo)
+identifies `SFV:SPM` as spam filtering. Its
+[troubleshooting guide](https://learn.microsoft.com/en-us/defender-office-365/anti-spam-policies-troubleshooting)
+recommends submitting legitimate messages classified as spam as false positives.
+Next: the mailbox owner should report the legitimate message as not junk; an
+authorized Microsoft 365 admin can submit it for analysis. Avoid broad sender-IP
+or domain bypass rules. Recheck Inbox placement using a separately approved
+incident test after this recipient-side action. Provider acceptance and successful
+authentication alone are not Inbox proof. No DNS change is justified by this sample.
 
 ## Remaining gates
 
