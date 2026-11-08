@@ -48,7 +48,24 @@ const stopwords = new Set([
   "that",
   "this",
 ]);
+// One edit in a long Latin word only. Never approximate amounts, short words or
+// language diacritics; those can change the business fact being requested.
+function smallTypo(a: string, b: string) {
+  if (!/^[a-z]{7,}$/.test(a) || !/^[a-z]{7,}$/.test(b) || Math.abs(a.length-b.length)>1) return false;
+  if (a.length === b.length) {
+    const differences=[];
+    for(let i=0;i<a.length;i++) if(a[i]!==b[i]) differences.push(i);
+    return differences.length===1 || (differences.length===2 && differences[1]===differences[0]+1 && a[differences[0]]===b[differences[1]] && a[differences[1]]===b[differences[0]]);
+  }
+  const shorter=a.length<b.length?a:b,longer=a.length<b.length?b:a;
+  let i=0; while(i<shorter.length && shorter[i]===longer[i])i++;
+  return shorter.slice(i)===longer.slice(i+1);
+}
+export function requestsHuman(question:string) {
+  return /^(?:stop|human|agent)\b/i.test(question.trim()) || /\b(?:speak|talk|connect|transfer|chat)\b.{0,60}\b(?:human|agent|person|team)\b/i.test(question);
+}
 export function matchFaq(question: string, faqs: Faq[]) {
+  if(requestsHuman(question))return null;
   const words = (value: string) =>
     value.toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
   const normalized = words(question).join(" ");
@@ -58,10 +75,13 @@ export function matchFaq(question: string, faqs: Faq[]) {
     words(question).filter((w) => w.length > 2 && !stopwords.has(w)),
   );
   const ranked = faqs
-    .map((f) => ({
-      f,
-      score: new Set(words(f.question).filter((w) => keywords.has(w))).size,
-    }))
+    .map((f) => {
+      const approved=new Set(words(f.question).filter(w=>w.length>2 && !stopwords.has(w)));
+      const exactWords=[...keywords].filter(w=>approved.has(w));
+      // Do not let multiple misspelled query tokens count as independent evidence.
+      const typo=exactWords.length>0 && [...keywords].some(w=>!approved.has(w) && [...approved].some(v=>!keywords.has(v) && smallTypo(w,v)));
+      return {f,score:exactWords.length+(typo?1:0)};
+    })
     .sort((a, b) => b.score - a.score);
   // Generic phrasing and repeated words cannot turn an unknown topic into a fact.
   return ranked[0]?.score >= 2 && ranked[0].score > (ranked[1]?.score || 0)

@@ -205,6 +205,17 @@ test("private FAQ matching rejects generic words, repetition and ambiguous topic
     null,
   );
 });
+test('FAQ typos need an exact anchor and unique topic; short words and numbers stay literal',()=>{
+  const hours={id:'hours',question:'What are your consultation hours?',answer:'Approved hours'};
+  for(const q of ['What are your consultaton hours?','consutlation hours','consultatoin hours','consultationn hours']) assert.equal(matchFaq(q,[hours])?.id,'hours',q);
+  for(const q of ['consultaton','consultaton consultaton','consultaton hurs','consultation tours','bank details','Wetin be una opening time?']) assert.equal(matchFaq(q,[hours]),null,q);
+  const delivery={id:'delivery',question:'consultation delivery',answer:'Delivery'};
+  assert.equal(matchFaq('consultaton hours',[hours,delivery])?.id,'hours');
+  assert.equal(matchFaq('consultaton hours',[hours,{...hours,id:'evening',question:'Evening consultation hours'}]),null);
+  assert.equal(matchFaq('package 1500001',[{id:'price',question:'package 1500000',answer:'A price'}]),null);
+  assert.equal(matchFaq('consultation hours',[hours])?.answer,'Approved hours');
+  assert.equal(matchFaq('Please connect me to a human about consultation hours',[hours]),null);
+});
 function setup() {
   const sql = new DatabaseSync(":memory:");
   sql.exec("PRAGMA foreign_keys=ON");
@@ -2200,7 +2211,7 @@ test("live WhatsApp human takeover pauses automation and unknown numbers never c
                     id: "wamid.human",
                     from: "2348090000009",
                     type: "text",
-                    text: { body: "HUMAN" },
+                    text: { body: "Please connect me to a human" },
                   },
                 ],
               },

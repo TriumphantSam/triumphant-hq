@@ -4,6 +4,7 @@ import { hmac } from "../security";
 import {
   PlatformError,
   matchFaq,
+  requestsHuman,
   requireWorkspace,
   validId,
   type Faq,
@@ -102,7 +103,7 @@ function isProtectedNumber(phoneNumberId: string, displayPhone = "") {
   );
 }
 function pauseCommand(text: string) {
-  return /^(stop|human|agent|help|speak to (a person|the team))\b/i.test(text);
+  return requestsHuman(text) || /^(help|speak to (a person|the team))\b/i.test(text.trim());
 }
 function extractInboundText(message: Record<string, unknown>) {
   const type = String(message.type || "");
