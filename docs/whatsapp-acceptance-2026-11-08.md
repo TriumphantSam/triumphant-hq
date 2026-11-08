@@ -66,9 +66,11 @@ silently relax matching thresholds and risk selecting an unrelated approved fact
 Next evaluate the existing constrained AI selector with real provider responses
 before enabling it for this company's live connected number.
 
-STOP suppression test requested from the owner: send STOP followed by the hours
-question and leave the thread paused. Result is pending confirmation and a scoped
-event/state read; do not mark it passed from source behaviour alone.
+STOP suppression passed: the owner reported no automatic reply. Scoped D1 read
+confirmed STOP received at 15:45:35 UTC, a following customer message at 15:45:53
+UTC, paused=1/version=4 and no outgoing event after STOP. Leave this conversation
+paused after the exercise. This confirms suppression on this platform thread,
+not a permanent channel-wide marketing opt-out registry.
 
 Restore any temporary phone-app setting by agreement at completion. Do not change
 real business availability merely to force an in-hours FAQ test. Protect the
