@@ -55,3 +55,12 @@ remains off until an explicit owner setting change. In-hours WhatsApp matching,
 larger evaluation sets, code-switching, Yoruba, Igbo and Hausa remain separate
 acceptance work. A successful Pidgin example is not broad Pidgin support.
 Production rollout, public customer activation and billing are unchanged.
+
+Validation: TypeScript and all 120 Worker tests passed after the handoff change.
+Dry run and staging deployment succeeded, Worker version
+`7776ee25-1e90-4cd0-b9a7-bf61c12a8b81`. Signed operations returned 200,
+unsigned requests 401, and cron heartbeat was healthy. Operations also reported
+one overdue enquiry-delivery item; other queue groups had zero failures, unknown
+states, overdue items and expired leases. No delivery job was retried or message
+sent to clear that unrelated alert. Scoped D1 read confirmed the test thread
+remains paused and workspace `ai_enabled=0` after deployment.
