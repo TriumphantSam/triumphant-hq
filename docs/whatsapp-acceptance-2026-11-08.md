@@ -53,6 +53,23 @@ staff delivery and resumed outside-hours delivery for this test conversation.
 No new message was sent by the operator. FAQ/AI quality and STOP remain untested
 in this exercise; direct phone-app team replies are not certified as takeover.
 
+## FAQ matching preflight
+
+Read the one saved staging FAQ and invoked the current deterministic `matchFaq`
+locally with its question. Exact wording and "consultation hours please" selected
+the hours FAQ. "What are your consultaton hours?", "what time do you open?" and
+"Wetin be una opening time?" returned no match. The unrelated bank-details
+question also returned no match, as required. These are local selection results,
+not live WhatsApp answers. The connected workspace has AI matching disabled.
+Reliable typo/paraphrase/Pidgin coverage is therefore not established. Do not
+silently relax matching thresholds and risk selecting an unrelated approved fact.
+Next evaluate the existing constrained AI selector with real provider responses
+before enabling it for this company's live connected number.
+
+STOP suppression test requested from the owner: send STOP followed by the hours
+question and leave the thread paused. Result is pending confirmation and a scoped
+event/state read; do not mark it passed from source behaviour alone.
+
 Restore any temporary phone-app setting by agreement at completion. Do not change
 real business availability merely to force an in-hours FAQ test. Protect the
 existing campaign number and Worker. Customer onboarding, templates, STOP,
