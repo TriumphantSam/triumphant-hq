@@ -11,6 +11,7 @@ import {workspaceUsage} from './usage';
 import { widgetAction } from "./widget";
 import { billingAction, provisionTestPlans, reconcileRefund } from "./billing";
 import {subscriptionAccess} from './subscription-access';
+import {liveAcceptance} from './billing-policy';
 import {workspaceSetup,setupInput,saveSetup} from './setup';
 import {workOverview,followUpAction} from './work';
 import { teamAction } from "./team";
@@ -72,6 +73,14 @@ export function createPlatformRoutes(sender?: OtpSender) {
         !Array.isArray(body.payload)
           ? (body.payload as Record<string, unknown>)
           : {};
+      const restricted=c.env.ENVIRONMENT==='production'&&c.env.PLATFORM_CUSTOMER_RELEASE_ENABLED!=='true';
+      const acceptance=restricted?liveAcceptance(c.env):null;
+      if(restricted){
+        if(!acceptance)throw new PlatformError('The customer platform is not open yet.',503);
+        if(body.action.startsWith('public.'))throw new PlatformError('Customer workflows are not released.',503);
+        if(['auth.send','auth.verify'].includes(body.action)&&String(payload.email||'').trim().toLowerCase()!==acceptance!.email)
+          throw new PlatformError('This account is not enrolled in acceptance.',403);
+      }
       if (body.action.startsWith("public."))
         return c.json({
           data: await publicWorkflow(c.env, body.action, payload, body.ipKey),
@@ -140,6 +149,9 @@ export function createPlatformRoutes(sender?: OtpSender) {
       if (!session?.user.emailVerified)
         throw new PlatformError("Sign in to your business workspace.", 401);
       const userId = session.user.id;
+      if(restricted&&session.user.email.toLowerCase()!==acceptance!.email)throw new PlatformError('This account is not enrolled in acceptance.',403);
+      if(restricted&&!['bootstrap'].includes(body.action)&&payload.workspaceId!==acceptance!.workspaceId)
+        throw new PlatformError('This workspace is not enrolled in acceptance.',403);
       await admit(c.env, "account:" + userId, 240);
       if (body.action === "bootstrap") {
         const memberships = await c.env.DB.prepare(
@@ -150,7 +162,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
         return c.json({
           data: {
             user: { name: session.user.name, email: session.user.email },
-            workspaces: memberships.results,
+            workspaces: restricted?memberships.results.filter(w=>w.id===acceptance!.workspaceId):memberships.results,
             plans,
           },
         });

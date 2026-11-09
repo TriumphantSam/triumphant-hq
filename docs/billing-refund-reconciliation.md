@@ -1,7 +1,8 @@
 # Refund reconciliation preparation
 
-9 November 2026. Local implementation; no payment or refund initiated. This
-does not open live checkout or customer release.
+9 November 2026. Implemented and deployed to staging; no payment or refund
+initiated. This does not open live checkout or customer release. See
+`live-billing-acceptance-controls.md` for subsequent controls and deployment.
 
 The operator-only signed `POST /v1/platform/billing/reconcile-refund` accepts
 `refundId` and `paymentReference`. It reads an existing payment in the enabled
@@ -24,16 +25,14 @@ bank. Owner confirmation of receipt remains separate.
 
 ## Remaining before live acceptance
 
-Local validation: Worker type-check and website type-check passed; all 123 Worker
-tests passed. The updated replay case also passed in a separate three-test refund
-run. No remote migration or deployment was performed.
+Initial local validation: Worker and website type-checks and all 123 Worker tests
+passed, including a separate replay check. Subsequent acceptance validation ran
+128 tests and deployed the backend/migrations to staging; see the controls file.
 
-- Restrict live acceptance to one verified owner/workspace, with an expiring
-  checkout window and a cleanup path for cancellation after the window closes.
-- Add refund discovery/reconciliation from provider notifications and scheduled
-  recovery. This first implementation needs an operator-supplied refund ID;
-  it is not unattended refund handling.
-- Apply the migration and verify in staging before any production release.
+- The owner/workspace restriction, checkout deadline, notification queue and
+  scheduled refund discovery are now implemented and tested; see the controls
+  document for bounds and the separate production activation procedure.
+- Production migrations and release remain pending.
 - Verify live account, plans, webhook and secret settings without printing keys.
 - Obtain specific approval for the amount and recurring payment; the owner
   completes checkout personally. No live charge is currently authorised.

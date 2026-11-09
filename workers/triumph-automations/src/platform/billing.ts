@@ -1,7 +1,7 @@
 import type { Env } from "../types";
 import { admit, plans, PlatformError, requireWorkspace, validId } from "./core";
 import {subscriptionAccess} from './subscription-access';
-import {billingMode,billingKey} from './billing-policy';
+import {billingMode,billingKey,billingRecordAllowed,billingCheckoutAllowed,liveAcceptance} from './billing-policy';
 
 type Billing = {
   workspace_id: string; request_id: string; reference: string; email: string;
@@ -33,9 +33,10 @@ export async function reconcileRefund(env: Env, input: Record<string, unknown>) 
   const mode = billingMode(env);
   if (typeof input.refundId !== 'string' || !/^[1-9][0-9]{0,15}$/.test(input.refundId) || typeof input.paymentReference !== 'string')
     throw new PlatformError('Choose a refund ID and a recorded payment reference.');
-  const payment = await env.DB.prepare('SELECT reference,provider_id,amount,mode FROM platform_billing_payments WHERE reference=? AND mode=?')
-    .bind(input.paymentReference,mode).first<{reference:string;provider_id:string;amount:number;mode:string}>();
+  const payment = await env.DB.prepare('SELECT p.reference,p.provider_id,p.amount,p.mode,p.workspace_id,b.email FROM platform_billing_payments p JOIN platform_billing b ON b.workspace_id=p.workspace_id AND b.mode=p.mode WHERE p.reference=? AND p.mode=?')
+    .bind(input.paymentReference,mode).first<{reference:string;provider_id:string;amount:number;mode:string;workspace_id:string;email:string}>();
   if (!payment) throw new PlatformError('Recorded payment not found in this billing environment.',404);
+  if(!billingRecordAllowed(env,payment.workspace_id,payment.email))throw new PlatformError('Payment is outside billing acceptance.',403);
   const refund = await provider<{id:number;transaction:number|{id:number};domain:string;currency:string;amount:number;status:string}>(env,'/refund/'+input.refundId);
   const transactionId = typeof refund.transaction === 'number' ? refund.transaction : refund.transaction?.id;
   const states = new Set(['pending','processing','needs-attention','failed','processed']);
@@ -91,7 +92,8 @@ function view(row: Billing | null, enabled: boolean, mode: 'test' | 'live' | nul
 async function billingView(env: Env, row: Billing | null, enabled: boolean, workspaceId: string) {
   const payments = await env.DB.prepare("SELECT reference,amount,paid_at AS paidAt,period_end AS periodEnd,(SELECT COALESCE(SUM(r.amount),0) FROM platform_billing_refunds r WHERE r.payment_reference=p.reference AND r.mode=p.mode AND r.status='processed') AS refundedAmount FROM platform_billing_payments p WHERE workspace_id=? ORDER BY paid_at DESC,reference DESC LIMIT 24").bind(workspaceId).all();
   const entitlement = await subscriptionAccess(env, workspaceId);
-  return {...view(row, enabled, billingMode(env)), accessActive: entitlement.active, testAccessActive: entitlement.active && billingMode(env) === 'test', entitlement, payments: payments.results};
+  const checkoutAvailable=billingCheckoutAllowed(env,workspaceId,row?.email||env.PLATFORM_BILLING_ACCEPTANCE_EMAIL||'');
+  return {...view(row, enabled, billingMode(env)),checkoutAvailable,checkoutUrl:checkoutAvailable&&row?.state==='checkout'?row.checkout_url:null, accessActive: entitlement.active, testAccessActive: entitlement.active && billingMode(env) === 'test', entitlement, payments: payments.results};
 }
 async function read(env: Env, id: string) {
   return env.DB.prepare("SELECT * FROM platform_billing WHERE workspace_id=?").bind(id).first<Billing>();
@@ -112,8 +114,48 @@ async function recordPayment(env: Env, row: Billing, tx: Transaction, periodEnd:
     env.DB.prepare("UPDATE platform_billing SET paid_through=CASE WHEN paid_through IS NULL OR paid_through<? THEN ? ELSE paid_through END,customer_code=?,state=CASE WHEN cancel_requested=1 THEN CASE WHEN state IN ('non-renewing','cancelled','completed') THEN state ELSE 'cancel-pending' END WHEN paid_through IS NULL OR paid_through<? THEN 'active' ELSE state END,updated_at=? WHERE workspace_id=? AND EXISTS(SELECT 1 FROM platform_billing_payments WHERE reference=? AND provider_id=? AND workspace_id=? AND period_end=?)")
       .bind(periodEnd,periodEnd,tx.customer.customer_code,periodEnd,new Date().toISOString(),row.workspace_id,tx.reference,String(tx.id),row.workspace_id,periodEnd),
   ]);
+  await env.DB.prepare("INSERT INTO platform_refund_checks(payment_reference,workspace_id,mode,next_check_at) VALUES(?,?,?,?) ON CONFLICT DO NOTHING")
+    .bind(tx.reference,row.workspace_id,row.mode,new Date(Date.now()+6*3600000).toISOString()).run();
+}
+
+// A webhook is only a wake-up signal. Do not trust its claimed amount/status.
+async function queueRefundCheck(env:Env,reference:string) {
+  const mode=billingMode(env);
+  const row=await env.DB.prepare("SELECT b.* FROM platform_billing b WHERE b.mode=? AND (b.reference=? OR EXISTS(SELECT 1 FROM platform_billing_payments p WHERE p.workspace_id=b.workspace_id AND p.mode=b.mode AND p.reference=?))")
+    .bind(mode,reference,reference).first<Billing>();
+  if(!row||!billingRecordAllowed(env,row.workspace_id,row.email))return;
+  await env.DB.prepare("INSERT INTO platform_refund_checks(payment_reference,workspace_id,mode,blocking,next_check_at) VALUES(?,?,?,1,?) ON CONFLICT(payment_reference) DO UPDATE SET blocking=1,state='pending',version=version+1,next_check_at=excluded.next_check_at")
+    .bind(reference,row.workspace_id,mode,new Date().toISOString()).run();
+}
+
+export async function reconcileDueRefunds(env:Env,now=Date.now()) {
+  const mode=billingMode(env);if(!mode)return;
+  const acceptance=mode==='live'&&env.PLATFORM_CUSTOMER_RELEASE_ENABLED!=='true'?liveAcceptance(env):null;
+  const email=mode==='test'?env.PLATFORM_BILLING_TEST_EMAIL?.toLowerCase():acceptance?.email;
+  if(mode==='test'&&!email)return;
+  const stamp=new Date(now).toISOString(),lease=new Date(now+5*60000).toISOString();
+  const check=await env.DB.prepare("UPDATE platform_refund_checks SET lease_until=? WHERE payment_reference=(SELECT c.payment_reference FROM platform_refund_checks c JOIN platform_billing b ON b.workspace_id=c.workspace_id AND b.mode=c.mode WHERE c.mode=? AND (? IS NULL OR b.email=?) AND (? IS NULL OR c.workspace_id=?) AND c.next_check_at<=? AND (c.lease_until IS NULL OR c.lease_until<=?) ORDER BY c.next_check_at,c.payment_reference LIMIT 1) RETURNING *")
+    .bind(lease,mode,email||null,email||null,acceptance?.workspaceId||null,acceptance?.workspaceId||null,stamp,stamp).first<{payment_reference:string;workspace_id:string;version:number}>();
+  if(!check)return;
+  let ok=false;
+  try {
+    const payment=await env.DB.prepare('SELECT provider_id FROM platform_billing_payments WHERE reference=? AND workspace_id=? AND mode=?').bind(check.payment_reference,check.workspace_id,mode).first<{provider_id:string}>();
+    if(!payment)throw new Error('Payment verification pending');
+    const refunds=await provider<Array<{id:number}>>(env,'/refund?transaction='+encodeURIComponent(payment.provider_id)+'&perPage=6&page=1');
+    // Bound provider work and refuse truncation rather than certify an incomplete list.
+    if(!Array.isArray(refunds)||refunds.length>=6)throw new Error('Refund reconciliation needs operator pagination');
+    for(const refund of refunds){
+      if(!Number.isSafeInteger(refund.id)||refund.id<=0)throw new Error('Invalid refund ID');
+      await reconcileRefund(env,{refundId:String(refund.id),paymentReference:check.payment_reference});
+    }
+    ok=true;
+  } catch {console.warn('platform_refund_reconciliation_needs_review');}
+  // A concurrent notification increments version. Never clear its blocking check.
+  await env.DB.prepare("UPDATE platform_refund_checks SET state=?,last_checked_at=?,next_check_at=?,lease_until=NULL WHERE payment_reference=? AND lease_until=? AND version=?")
+    .bind(ok?'verified':'needs-review',stamp,new Date(now+(ok?6*3600000:15*60000)).toISOString(),check.payment_reference,lease,check.version).run();
 }
 async function initialPayment(env: Env, row: Billing) {
+  if(!billingRecordAllowed(env,row.workspace_id,row.email))throw new PlatformError('Payment is outside billing acceptance.',403);
   const tx = await provider<Transaction>(env,"/transaction/verify/"+encodeURIComponent(row.reference));
   if (tx.status !== "success") return null;
   const planCode = tx.plan_object?.plan_code || (typeof tx.plan === "string" ? tx.plan : tx.plan?.plan_code);
@@ -149,6 +191,7 @@ async function subscription(env: Env, row: Billing, subscriptionCode: string) {
   return sub;
 }
 async function reconcile(env: Env, row: Billing) {
+  if(!billingRecordAllowed(env,row.workspace_id,row.email))throw new PlatformError('Subscription is outside billing acceptance.',403);
   if (!row.subscription_code) {
     const tx=await initialPayment(env,row);if(!tx)return;
     const found=await discoverSubscription(env,row,tx);if(!found)return;row=found;
@@ -177,11 +220,12 @@ export async function billingAction(env: Env, user: {id:string;email:string}, ac
   const workspace=await requireWorkspace(env,user.id,input.workspaceId,true);
   let row=await read(env,workspace.id);
   const mode = billingMode(env);
-  const accepted=mode === 'live' || Boolean(env.PLATFORM_BILLING_TEST_EMAIL && user.email.toLowerCase()===env.PLATFORM_BILLING_TEST_EMAIL.toLowerCase());
+  const accepted=mode === 'live' ? billingRecordAllowed(env,workspace.id,user.email) : Boolean(env.PLATFORM_BILLING_TEST_EMAIL && user.email.toLowerCase()===env.PLATFORM_BILLING_TEST_EMAIL.toLowerCase());
   if (action === "billing.read") return billingView(env,row,billingReady(env)&&accepted,workspace.id);
   requireReady(env);
   if (row && row.mode !== mode) throw new PlatformError('Billing environment mismatch. Contact support before paying.',409);
   if(!accepted) throw new PlatformError("This account is not enrolled in billing acceptance.",403);
+  if((action==='billing.checkout'||action==='billing.resume')&&!billingCheckoutAllowed(env,workspace.id,user.email))throw new PlatformError('The live acceptance checkout window has closed. Verification and stopping renewal remain available.',403);
   if (action === "billing.checkout") {
     const plan=plans.find(p=>p.id===input.planId);
     if (!plan || !validId(input.requestId) || input.recurringConsent !== true) throw new PlatformError("Choose a plan and confirm the monthly subscription.");
@@ -247,11 +291,14 @@ export async function billingAction(env: Env, user: {id:string;email:string}, ac
 // Bounded missed-webhook reconciliation. No direct charge/checkout/enable call.
 // A failed row is isolated so it cannot stop unrelated delivery jobs or cron.
 export async function reconcileDueBilling(env: Env, now = Date.now()) {
+  await reconcileDueRefunds(env,now);
   const mode = billingMode(env);
   if (!mode || (mode === 'test' && !env.PLATFORM_BILLING_TEST_EMAIL)) return;
   const stamp = new Date(now).toISOString(), lease = new Date(now+5*60000).toISOString();
-  const row = await env.DB.prepare("UPDATE platform_billing SET reconcile_lease_until=? WHERE workspace_id=(SELECT workspace_id FROM platform_billing WHERE mode=? AND (? IS NULL OR email=?) AND next_check_at<=? AND (reconcile_lease_until IS NULL OR reconcile_lease_until<=?) ORDER BY next_check_at,workspace_id LIMIT 1) RETURNING *")
-    .bind(lease,mode,mode === 'test' ? env.PLATFORM_BILLING_TEST_EMAIL!.toLowerCase() : null,mode === 'test' ? env.PLATFORM_BILLING_TEST_EMAIL!.toLowerCase() : null,stamp,stamp).first<Billing>();
+  const acceptance=mode==='live'&&env.PLATFORM_CUSTOMER_RELEASE_ENABLED!=='true'?liveAcceptance(env):null;
+  const email=mode==='test'?env.PLATFORM_BILLING_TEST_EMAIL!.toLowerCase():acceptance?.email||null;
+  const row = await env.DB.prepare("UPDATE platform_billing SET reconcile_lease_until=? WHERE workspace_id=(SELECT workspace_id FROM platform_billing WHERE mode=? AND (? IS NULL OR email=?) AND (? IS NULL OR workspace_id=?) AND next_check_at<=? AND (reconcile_lease_until IS NULL OR reconcile_lease_until<=?) ORDER BY next_check_at,workspace_id LIMIT 1) RETURNING *")
+    .bind(lease,mode,email,email,acceptance?.workspaceId||null,acceptance?.workspaceId||null,stamp,stamp).first<Billing>();
   if (!row) return;
   let ok = false;
   try {await reconcile(env,row); ok = true;} catch {console.warn('platform_billing_reconciliation_needs_review');}
@@ -281,11 +328,15 @@ export async function provisionTestPlans(env:Env) {
 // Called only after the dedicated webhook's raw-body HMAC verification.
 export async function billingEvent(env:Env,event:string,data:Record<string,unknown>) {
   requireReady(env);
+  if(['refund.pending','refund.processing','refund.needs-attention','refund.failed','refund.processed'].includes(event)){
+    if(data.domain!==billingMode(env)||typeof data.transaction_reference!=='string'||data.transaction_reference.length>128)return;
+    await queueRefundCheck(env,data.transaction_reference);return;
+  }
   const subCode=typeof data.subscription_code==="string"?data.subscription_code:(data.subscription as {subscription_code?:string}|undefined)?.subscription_code;
   if (event === "charge.success") {
     if (typeof data.reference!=="string") return;
     const row=await env.DB.prepare("SELECT * FROM platform_billing WHERE reference=? AND mode=?").bind(data.reference,billingMode(env)).first<Billing>();
-    if (row) await initialPayment(env,row);
+    if (row && billingRecordAllowed(env,row.workspace_id,row.email)) await initialPayment(env,row);
     return;
   }
   if (!subCode || !["subscription.create","subscription.not_renew","subscription.disable","invoice.update","invoice.payment_failed"].includes(event)) return;
@@ -296,10 +347,11 @@ export async function billingEvent(env:Env,event:string,data:Record<string,unkno
     const rows=await env.DB.prepare("SELECT * FROM platform_billing WHERE email=? AND plan_code=? AND mode=? AND subscription_code IS NULL").bind(customer.email.toLowerCase(),plan.plan_code,billingMode(env)).all<Billing>();
     if (rows.results.length!==1) return;
     row=rows.results[0];
+    if(!billingRecordAllowed(env,row.workspace_id,row.email))return;
     const sub=await subscription(env,row,subCode);
     if (!await initialPayment(env,row)) throw new PlatformError("Initial payment reconciliation pending.",503);
     await env.DB.prepare("UPDATE platform_billing SET subscription_code=?,customer_code=?,updated_at=? WHERE workspace_id=? AND subscription_code IS NULL").bind(subCode,sub.customer.customer_code,new Date().toISOString(),row.workspace_id).run();
     row=await read(env,row.workspace_id);
   }
-  if (row) await reconcile(env,row);
+  if (row && billingRecordAllowed(env,row.workspace_id,row.email)) await reconcile(env,row);
 }

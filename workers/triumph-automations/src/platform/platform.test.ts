@@ -25,10 +25,10 @@ import { hmac } from "../security";
 import { conversationAction, responderDefaults } from "./conversations";
 import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
-import {reconcileRefund,billingAction,billingEvent,nextMonthlyDate,provisionTestPlans,reconcileDueBilling} from "./billing";
+import {reconcileRefund,reconcileDueRefunds,billingAction,billingEvent,nextMonthlyDate,provisionTestPlans,reconcileDueBilling} from "./billing";
 import {subscriptionAccess} from './subscription-access';
 import {startTrial} from './trial';
-import {billingMode} from './billing-policy';
+import {billingMode,billingRecordAllowed,billingCheckoutAllowed} from './billing-policy';
 import {platformBillingWebhook} from './billing-webhook';
 import {setupInput,saveSetup,workspaceSetup} from './setup';
 import {workOverview,followUpAction} from './work';
@@ -1352,6 +1352,122 @@ async function paidFixture() {
     .run(f.workspaceId,crypto.randomUUID(),f.owner.email,end,stamp,stamp);
   return {...f,now,stamp,end,ledger:()=>f.sql.prepare("INSERT INTO platform_billing_payments(reference,provider_id,workspace_id,amount,paid_at,period_end) VALUES('paid-reference','501',?,1500000,?,?)").run(f.workspaceId,stamp,end)};
 }
+
+function acceptanceEnvironment(env:Env,workspaceId:string,expiresAt=new Date(Date.now()+3600000).toISOString()) {
+ Object.assign(env,{ENVIRONMENT:'production',PLATFORM_ENABLED:'true',PLATFORM_CUSTOMER_RELEASE_ENABLED:'false',PLATFORM_BILLING_LIVE_ENABLED:'true',PLATFORM_PAYSTACK_LIVE_SECRET_KEY:'sk_live_unit',PLATFORM_PAYSTACK_LIVE_PLANS:'{"starter":"PLN_live"}',PLATFORM_BILLING_ACCEPTANCE_ENABLED:'true',PLATFORM_BILLING_ACCEPTANCE_EMAIL:'alice@example.com',PLATFORM_BILLING_ACCEPTANCE_WORKSPACE_ID:workspaceId,PLATFORM_BILLING_ACCEPTANCE_EXPIRES_AT:expiresAt});
+}
+
+test('closed production RPC permits only the selected verified owner and workspace for acceptance',async()=>{
+ const {env,sql,user}=setup();user('alice');user('bob');
+ const w=(await createWorkspace(env,'alice','Private acceptance'))!;
+ acceptanceEnvironment(env,w.id);let otp='',sends=0;
+ const app=new Hono<{Bindings:Env;Variables:{raw:string}}>();
+ app.use('*',async(c,next)=>{c.set('raw',await c.req.text());await next();});
+ app.route('/',createPlatformRoutes(async(email,code)=>{assert.equal(email,'alice@example.com');otp=code;sends++;}));
+ async function call(action:string,payload:Record<string,unknown>={},sessionCookie=''){
+  const response=await app.fetch(new Request('https://worker.example/rpc',{method:'POST',body:JSON.stringify({action,payload,sessionCookie,ipKey:'d'.repeat(64)})}),env);
+  return {status:response.status,body:await response.json() as {data?:{workspaces?:Array<{id:string}>;available?:boolean};cookies?:string[]}};
+ }
+ try{
+  assert.equal((await call('auth.send',{email:'bob@example.com'})).status,403);assert.equal(sends,0);
+  assert.equal((await call('public.read',{workspaceId:w.id})).status,503);
+  assert.equal((await call('auth.send',{email:'alice@example.com'})).status,200);
+  const login=await call('auth.verify',{email:'alice@example.com',otp});assert.equal(login.status,200);
+  const cookie=login.body.cookies!.map(c=>c.split(';')[0]).join('; ');
+  assert.equal((await call('billing.read',{workspaceId:w.id},cookie)).status,200);
+  assert.equal((await call('billing.read',{workspaceId:crypto.randomUUID()},cookie)).status,403);
+  assert.equal((await call('workspace.create',{name:'Another business'},cookie)).status,403);
+  const boot=await call('bootstrap',{},cookie);assert.equal(boot.status,200);assert.deepEqual(boot.body.data!.workspaces!.map(w=>w.id),[w.id]);
+  env.PLATFORM_BILLING_ACCEPTANCE_ENABLED='false';assert.equal((await call('bootstrap',{},cookie)).status,503);
+ }finally{sql.close();}
+});
+
+test('live acceptance fails closed by configuration, owner, workspace, environment and deadline',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let calls=0;
+ globalThis.fetch=async()=>{calls++;throw Error('unexpected provider call');};
+ try{
+  acceptanceEnvironment(f.env,f.workspaceId);
+  assert.equal(billingMode(f.env),'live');
+  assert.equal(billingCheckoutAllowed(f.env,f.workspaceId,f.owner.email),true);
+  assert.equal(billingRecordAllowed(f.env,crypto.randomUUID(),f.owner.email),false);
+  assert.equal(billingRecordAllowed(f.env,f.workspaceId,'other@example.com'),false);
+  for(const field of ['PLATFORM_BILLING_ACCEPTANCE_EMAIL','PLATFORM_BILLING_ACCEPTANCE_WORKSPACE_ID','PLATFORM_BILLING_ACCEPTANCE_EXPIRES_AT'] as const){
+   const original=f.env[field];f.env[field]='invalid';assert.equal(billingMode(f.env),null);f.env[field]=original;
+  }
+  f.env.PLATFORM_BILLING_ACCEPTANCE_EXPIRES_AT=new Date(Date.now()-1000).toISOString();
+  assert.equal(billingMode(f.env),'live');assert.equal(billingCheckoutAllowed(f.env,f.workspaceId,f.owner.email),false);
+  f.sql.prepare("UPDATE platform_billing SET mode='live',plan_code='PLN_live'").run();f.sql.prepare("UPDATE platform_billing_payments SET mode='live'").run();
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);
+  for(const action of ['billing.checkout','billing.resume'])await assert.rejects(billingAction(f.env,f.owner,action,{workspaceId:f.workspaceId,recurringConsent:true}),/window has closed/);
+  f.env.PLATFORM_BILLING_ACCEPTANCE_WORKSPACE_ID=crypto.randomUUID();
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  await assert.rejects(billingAction(f.env,f.owner,'billing.refresh',{workspaceId:f.workspaceId}),/not enrolled/);
+  await billingEvent(f.env,'charge.success',{reference:'paid-reference'});
+  await billingEvent(f.env,'subscription.create',{subscription_code:'SUB_other',customer:{email:f.owner.email},plan:{plan_code:'PLN_live'}});
+  assert.equal(calls,0);
+  f.env.ENVIRONMENT='staging';assert.equal(billingMode(f.env),'test');
+ }finally{globalThis.fetch=saved;f.sql.close();}
+});
+
+test('selected live owner can stop renewal and reconcile a refund after checkout expiry',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let disables=0;
+ acceptanceEnvironment(f.env,f.workspaceId,new Date(Date.now()-1000).toISOString());
+ f.sql.prepare("UPDATE platform_billing SET mode='live',plan_code='PLN_live'").run();f.sql.prepare("UPDATE platform_billing_payments SET mode='live'").run();
+ globalThis.fetch=async(input,init)=>{
+  const path=new URL(String(input)).pathname;
+  if(path==='/subscription/SUB_alice')return Response.json({status:true,data:{subscription_code:'SUB_alice',email_token:'token',domain:'live',status:'active',amount:1500000,plan:{plan_code:'PLN_live',currency:'NGN',interval:'monthly'},customer:{email:f.owner.email,customer_code:'CUS_alice'}}});
+  if(path==='/subscription/disable'){assert.equal(init?.method,'POST');disables++;return Response.json({status:true});}
+  assert.equal(path,'/refund/710');assert.equal(init?.method,'GET');
+  return Response.json({status:true,data:{id:710,transaction:501,domain:'live',currency:'NGN',amount:1500000,status:'processed'}});
+ };
+ try{
+  const cancelled=await billingAction(f.env,f.owner,'billing.cancel',{workspaceId:f.workspaceId});assert.equal(cancelled.state,'non-renewing');assert.equal(disables,1);
+  assert.equal(cancelled.checkoutAvailable,false);assert.equal(cancelled.accessActive,true);
+  await reconcileRefund(f.env,{refundId:'710',paymentReference:'paid-reference'});
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+ }finally{globalThis.fetch=saved;f.sql.close();}
+});
+
+test('refund notification before payment verification is durable and completed refunds are re-fetched',async()=>{
+ const f=await paidFixture();const saved=globalThis.fetch;let fail=true,calls=0;
+ try{
+  await billingEvent(f.env,'refund.processed',{transaction_reference:'paid-reference',domain:'live'});
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_refund_checks').get()!.n,0);
+  await billingEvent(f.env,'refund.processed',{transaction_reference:'paid-reference',domain:'test',amount:'1',status:'processed'});
+  f.ledger();assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  globalThis.fetch=async(input)=>{
+   calls++;if(fail)throw Error('temporary failure');
+   if(String(input).includes('/refund?'))return Response.json({status:true,data:[{id:711}]});
+   assert.equal(String(input),'https://api.paystack.co/refund/711');
+   return Response.json({status:true,data:{id:711,transaction:501,domain:'test',currency:'NGN',amount:1500000,status:'processed'}});
+  };
+  await reconcileDueRefunds(f.env,f.now+1000);
+  assert.equal(f.sql.prepare('SELECT state FROM platform_refund_checks').get()!.state,'needs-review');
+  assert.equal((await operationsHealth(f.env,f.now+1000)).queues.find(q=>q.name==='Platform refund checks')!.failed,1);
+  fail=false;await reconcileDueRefunds(f.env,f.now+16*60000);
+  assert.equal(f.sql.prepare('SELECT status FROM platform_billing_refunds').get()!.status,'processed');
+  assert.equal(f.sql.prepare('SELECT state FROM platform_refund_checks').get()!.state,'verified');
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);assert.equal(calls,3);
+ }finally{globalThis.fetch=saved;f.sql.close();}
+});
+
+test('refund recovery does not clear a concurrent notification or accept a truncated refund list',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let concurrent=true,truncated=false;
+ try{
+  await billingEvent(f.env,'refund.pending',{transaction_reference:'paid-reference',domain:'test'});
+  globalThis.fetch=async()=>{
+   if(concurrent){concurrent=false;await billingEvent(f.env,'refund.processing',{transaction_reference:'paid-reference',domain:'test'});}
+   return Response.json({status:true,data:truncated?Array.from({length:6},(_,i)=>({id:i+1})):[]});
+  };
+  await reconcileDueRefunds(f.env,f.now+1000);
+  assert.notEqual(f.sql.prepare('SELECT state FROM platform_refund_checks').get()!.state,'verified');
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  truncated=true;await reconcileDueRefunds(f.env,f.now+6*60000);
+  assert.equal(f.sql.prepare('SELECT state FROM platform_refund_checks').get()!.state,'needs-review');
+  truncated=false;await reconcileDueRefunds(f.env,f.now+22*60000);
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);
+ }finally{globalThis.fetch=saved;f.sql.close();}
+});
 
 test('verified refund lifecycle preserves pending access, removes fully refunded access and resists replay',async()=>{
  const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let state='pending',amount=1500000;

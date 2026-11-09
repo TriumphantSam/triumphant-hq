@@ -17,6 +17,7 @@
         "PLATFORM_WHATSAPP_ENABLED": "false",
         "PLATFORM_BILLING_TEST_ENABLED": "false",
         "PLATFORM_BILLING_LIVE_ENABLED": "false",
+        "PLATFORM_BILLING_ACCEPTANCE_ENABLED": "false",
         "PLATFORM_CUSTOMER_RELEASE_ENABLED": "false",
         "PLATFORM_TRIAL_ENABLED": "false",
         "CHAT_ENABLED": "true",

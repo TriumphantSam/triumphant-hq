@@ -8,6 +8,8 @@ export async function operationsHealth(env:Env,now=Date.now()):Promise<Operation
   return {name,...counts!};
  }));
  const heartbeat=await env.DB.prepare("SELECT last_started AS lastStarted,last_finished AS lastFinished,last_success AS lastSuccess,last_outcome AS lastOutcome FROM automation_heartbeat WHERE id='minute-cron'").first<NonNullable<OperationsHealth['heartbeat']>>();
+ const refunds=await env.DB.prepare("SELECT coalesce(sum(state='needs-review'),0) AS failed,0 AS unknown,coalesce(sum(next_check_at<? AND (lease_until IS NULL OR lease_until<?)),0) AS overdue,coalesce(sum(lease_until<?),0) AS expiredLeases FROM platform_refund_checks").bind(cutoff,new Date(now).toISOString(),leaseCutoff).first<{failed:number;unknown:number;overdue:number;expiredLeases:number}>();
+ queues.push({name:'Platform refund checks',...refunds!});
  const invitation=await env.DB.prepare("SELECT count(*) AS n FROM platform_team_invites WHERE state='pending' AND expires_at>? AND (email_state='unconfirmed' OR (email_state='sending' AND email_attempted_at<?))").bind(new Date(now).toISOString(),cutoff).first<{n:number}>();
  const heartbeatAttention=!heartbeat||!heartbeat.lastSuccess||Date.parse(heartbeat.lastSuccess)<now-5*60000||heartbeat.lastOutcome==='failed';
  return {environment:env.ENVIRONMENT,generatedAt:new Date(now).toISOString(),heartbeat,heartbeatAttention,queues,invitationAttention:invitation?.n||0,attention:heartbeatAttention||queues.some(q=>q.failed+q.unknown+q.overdue+q.expiredLeases>0)||Boolean(invitation?.n)};
