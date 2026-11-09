@@ -9,6 +9,11 @@ staging. Backend staging version `f53fa1ed-95f7-4e5f-b635-23c357d5a94c` deployed
 Signed operations returned 200, unsigned 401, heartbeat healthy and all four
 refund queue warning counters zero. Overall operations attention remains true
 from an existing unrelated queue condition; no delivery retry was initiated.
+Website preview CI [42647676300](https://github.com/TriumphantSam/triumphant-hq/actions/runs/42647676300)
+passed for code commit `3253a07`, including its build, deployment and route check.
+The updated preview workspace returned 200 with noindex. The website rejects the
+operator refund action with 400, and the unsigned backend refund endpoint returns
+401. Production was not deployed or enabled during this release.
 
 ## Production configuration for a later approved exercise
 
