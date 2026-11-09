@@ -109,7 +109,8 @@ export async function publishWorkspace(
   if (!Number.isSafeInteger(version))
     throw new PlatformError("Reload your settings.");
   if (!pause) {
-    if (env.ENVIRONMENT === "production" && (env.PLATFORM_CUSTOMER_RELEASE_ENABLED !== 'true' || !(await subscriptionAccess(env,w.id)).active))
+    const access=await subscriptionAccess(env,w.id);
+    if (env.ENVIRONMENT === "production" && (env.PLATFORM_CUSTOMER_RELEASE_ENABLED !== 'true' || !(access.active||access.trial)))
       throw new PlatformError(
         "Customer launch awaits billing and channel release checks.",
         503,
@@ -248,9 +249,10 @@ export async function publicWorkflow(
   }
   const w = await published(env, input.workspaceId),
     date = new Date(now).toISOString(),
-    period = new Date(now + 3600000).toISOString().slice(0, 7),
-    monthStart = new Date(period + "-01T00:00:00+01:00").toISOString();
-  if (env.ENVIRONMENT === 'production' && !(await subscriptionAccess(env,w.id,now)).active) throw new PlatformError('This business subscription is not currently active.',503);
+    access = await subscriptionAccess(env,w.id,now),
+    period = access.period,
+    monthStart = access.windowStart;
+  if ((env.ENVIRONMENT === 'production' || access.trialEndsAt) && !(access.active||access.trial)) throw new PlatformError('This business subscription is not currently active.',503);
   if(action==="public.widget"){
     const config=await env.DB.prepare("SELECT origin FROM platform_widget_settings WHERE workspace_id=? AND enabled=1").bind(w.id).first<{origin:string}>();
     if(!config)throw new PlatformError("The sandbox widget is unavailable.",404);
@@ -371,7 +373,7 @@ export async function publicWorkflow(
       };
     }
     const row = await env.DB.prepare(
-      "INSERT INTO platform_leads(id,workspace_id,request_id,request_digest,name,email,need,created_at,updated_at) SELECT ?,?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM platform_workspaces WHERE id=? AND state='published') AND (SELECT count(*) FROM platform_leads WHERE workspace_id=? AND created_at>=?)<100 ON CONFLICT DO NOTHING RETURNING id",
+      "INSERT INTO platform_leads(id,workspace_id,request_id,request_digest,name,email,need,created_at,updated_at) SELECT ?,?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM platform_workspaces WHERE id=? AND state='published') AND (SELECT count(*) FROM platform_leads WHERE workspace_id=? AND created_at>=?)<? ON CONFLICT DO NOTHING RETURNING id",
     )
       .bind(
         crypto.randomUUID(),
@@ -386,6 +388,7 @@ export async function publicWorkflow(
         w.id,
         w.id,
         monthStart,
+        access.enquiries,
       )
       .first<{ id: string }>();
     if (!row)
@@ -462,7 +465,7 @@ export async function publicWorkflow(
       "platform-management-code:" + code,
     );
     const row = await env.DB.prepare(
-      "INSERT INTO platform_bookings(id,workspace_id,request_id,request_digest,manage_digest,name,email,start,end,blocked_until,created_at,updated_at) SELECT ?,?,?,?,?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM platform_workspaces WHERE id=? AND state='published' AND version=?) AND NOT EXISTS(SELECT 1 FROM platform_bookings WHERE workspace_id=? AND state='confirmed' AND start<? AND blocked_until>?) AND (SELECT count(*) FROM platform_bookings WHERE workspace_id=? AND created_at>=?)<100 ON CONFLICT DO NOTHING RETURNING id",
+      "INSERT INTO platform_bookings(id,workspace_id,request_id,request_digest,manage_digest,name,email,start,end,blocked_until,created_at,updated_at) SELECT ?,?,?,?,?,?,?,?,?,?,?,? WHERE EXISTS(SELECT 1 FROM platform_workspaces WHERE id=? AND state='published' AND version=?) AND NOT EXISTS(SELECT 1 FROM platform_bookings WHERE workspace_id=? AND state='confirmed' AND start<? AND blocked_until>?) AND (SELECT count(*) FROM platform_bookings WHERE workspace_id=? AND created_at>=?)<? ON CONFLICT DO NOTHING RETURNING id",
     )
       .bind(
         crypto.randomUUID(),
@@ -484,6 +487,7 @@ export async function publicWorkflow(
         slot.start,
         w.id,
         monthStart,
+        access.bookings,
       )
       .first<{ id: string }>();
     if (!row)

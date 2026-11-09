@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import TrialPanel from './TrialPanel';
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import {
@@ -32,6 +33,7 @@ type Plan = {
   monthlyKobo: number;
   replies: number;
   faqs: number;
+  enquiries:number;bookings:number;
 };
 type Workspace = {
   role: "owner" | "staff";
@@ -54,7 +56,7 @@ type Policy = {
 };
 type View = {
   setup:WorkspaceSetup;
-  subscription?:{active:boolean;planId:string|null;replies:number};
+  subscription?:{active:boolean;planId:string|null;replies:number;trial?:boolean;trialEndsAt?:string|null};
   billingPlanId?:string|null;
   billingMode?:'test'|'live'|null;
   workspace: Workspace;
@@ -235,7 +237,10 @@ export default function PlatformWorkspace() {
     display(
       await rpc<View>("workspace.read", { workspaceId: view.workspace.id }),
     );
-    setNotice("Changes saved to your business workspace.");
+    setNotice(action === 'booking.save'
+      ? 'Appointment rules saved. The “Currently saved” summary now shows the rules stored for your business.'
+      : action === 'profile.save' ? 'Business details saved. You can return to the Setup checklist.'
+      : 'Changes saved to your business workspace.');
   }
 
   const displayedPlanId = view?.billingPlanId || view?.workspace.plan_id;
@@ -508,11 +513,25 @@ export default function PlatformWorkspace() {
               </form>
             ) : (
               <>
+                {view.workspace.role === 'owner' && ['Business','Answers','Appointments','Website','Autoresponders'].includes(tab) && (
+                  <div className="platform-card">
+                    <button className="platform-secondary" disabled={busy} onClick={() => {
+                      const dirty = tab === 'Business'
+                        ? name !== view.workspace.name || description !== view.workspace.description || contact !== view.workspace.contact_url
+                        : tab === 'Appointments' ? JSON.stringify(policy) !== JSON.stringify(view.policy)
+                        : tab === 'Answers' ? JSON.stringify(faqs) !== JSON.stringify(view.faqs) : true;
+                      if (dirty && !window.confirm('Return to Setup? Any unsaved changes on this page will be discarded. Save first if you want to keep them.')) return;
+                      display(view);
+                      setTab('Setup');
+                    }}>← Back to Setup checklist</button>
+                    <p className="platform-muted">Save your changes before returning. Your saved preparation stays in this workspace.</p>
+                  </div>
+                )}
                 {tab === "Setup" && <SetupGuide key={view.workspace.id} workspaceId={view.workspace.id} setup={view.setup} onNavigate={setTab} onChanged={()=>void run(()=>bootstrap(view.workspace.id))}/>}
                 {tab === 'Today' && <TodayPanel key={view.workspace.id} workspaceId={view.workspace.id} owner={view.workspace.role==='owner'} onNavigate={setTab}/>}
                 {tab === "Usage" && <WorkspacePanelBoundary key={view.workspace.id+tab}><UsagePanel key={view.workspace.id} workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
-                {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
+                {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id} published={view.workspace.state === 'published'} onLaunch={()=>setTab('Launch')}/></WorkspacePanelBoundary>}
                 {tab==="Team"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><TeamPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {tab === "Business" && (
                   <div className="platform-columns">
@@ -740,6 +759,12 @@ export default function PlatformWorkspace() {
                     }}
                   >
                     <h2>Appointment rules</h2>
+                    <section className="platform-guide" aria-label="Saved appointment rules">
+                      <h3>Currently saved</h3>
+                      <p>{['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].filter((_,i)=>(JSON.parse(view.policy.days) as number[]).includes(i)).join(', ') || 'No working days'} · {String(view.policy.start_hour).padStart(2,'0')}:00–{String(view.policy.end_hour).padStart(2,'0')}:00 Lagos time (WAT)</p>
+                      <p>{view.policy.duration}-minute appointments · {view.policy.buffer}-minute buffer · at least {view.policy.notice_hours} hours’ notice.</p>
+                      <p className="platform-muted">{JSON.stringify(policy) !== JSON.stringify(view.policy) ? 'You have unsaved rule changes below. This summary shows the last saved rules.' : 'The form matches your saved rules. Saving does not publish your booking page.'}</p>
+                    </section>
                     <p>
                       Lagos time (WAT). Saving rules does not publish a booking
                       page.
@@ -861,7 +886,7 @@ export default function PlatformWorkspace() {
                               {plan.replies.toLocaleString()} assistant replies
                             </li>
                             <li>Up to {plan.faqs} approved answers</li>
-                            <li>Standard enquiry and appointment workflows</li>
+                            <li>{plan.enquiries.toLocaleString()} new enquiries / month</li><li>{plan.bookings.toLocaleString()} new booking records / month</li><li>Optional AI matching: up to {plan.replies.toLocaleString()} attempts / month; shared daily safety cap applies</li><li>Standard enquiry and appointment workflows</li>
                             <li>One WhatsApp number when connected</li>
                           </ul>
                           <button
@@ -895,6 +920,7 @@ export default function PlatformWorkspace() {
                         {view.billingMode==='live'?'uses Paystack for your agreed monthly plan.':'is not enabled for live payments.'}
                       </p>
                     </div>
+                    <TrialPanel key={view.workspace.id+":trial"} workspaceId={view.workspace.id} access={view.subscription} onChanged={()=>{void rpc<View>('workspace.read',{workspaceId:view.workspace.id}).then(display).catch(()=>setNotice('Reload the workspace to see your trial.'));}}/>
                     <WorkspacePanelBoundary key={view.workspace.id+":billing"}><BillingPanel workspaceId={view.workspace.id} plans={view.plans} onChanged={()=>{void rpc<View>('workspace.read',{workspaceId:view.workspace.id}).then(display).catch(()=>setNotice('Billing updated. Reload the workspace to refresh your plan.'));}}/></WorkspacePanelBoundary>
                   </>
                 )}
