@@ -15,7 +15,7 @@ export async function subscriptionAccess(env: Env, workspaceId: string, now = Da
   const mode = billingMode(env);
   const unpaid=()=>trial?{...sandbox,period:'trial',windowStart:trial.started_at,replies:trialOpen?50:0,faqs:20,enquiries:trialOpen?10:0,bookings:trialOpen?10:0,ai:trialOpen?50:0,trial:trialOpen,trialEndsAt:trial.expires_at}:sandbox;
   if (!mode) return unpaid();
-  const row = await env.DB.prepare("SELECT b.plan_id,b.amount,b.paid_through FROM platform_billing b WHERE b.workspace_id=? AND b.mode=? AND b.state IN ('active','attention','non-renewing','cancelled','completed','cancel-pending') AND b.paid_through>? AND EXISTS(SELECT 1 FROM platform_billing_payments p WHERE p.workspace_id=b.workspace_id AND p.mode=b.mode AND p.amount=b.amount AND p.period_end=b.paid_through)")
+  const row = await env.DB.prepare("SELECT b.plan_id,b.amount,b.paid_through FROM platform_billing b WHERE b.workspace_id=? AND b.mode=? AND b.state IN ('active','attention','non-renewing','cancelled','completed','cancel-pending') AND b.paid_through>? AND EXISTS(SELECT 1 FROM platform_billing_payments p WHERE p.workspace_id=b.workspace_id AND p.mode=b.mode AND p.amount=b.amount AND p.period_end=b.paid_through AND (SELECT COALESCE(SUM(r.amount),0) FROM platform_billing_refunds r WHERE r.payment_reference=p.reference AND r.mode=p.mode AND r.status='processed')<p.amount)")
     .bind(workspaceId, mode, new Date(now).toISOString()).first<{plan_id: string; amount: number; paid_through: string}>();
   const plan = plans.find(p => p.id === row?.plan_id && (p.monthlyKobo === row.amount || (p.id==='growth'&&row.amount===3500000) || (p.id==='business'&&row.amount===7500000)));
   if (!plan || !row) return unpaid();

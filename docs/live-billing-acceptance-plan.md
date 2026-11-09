@@ -1,5 +1,10 @@
 # Controlled live billing acceptance
 
+9 November update: the local refund-evidence and access-reconciliation foundation
+is implemented and covered by tests. See `billing-refund-reconciliation.md`.
+It is not deployed and does not yet provide webhook refund discovery or the
+owner-scoped live acceptance gate. The 29 October preflight below is historical.
+
 29 October 2026. Status: preflight inspected; no live checkout enabled, provider
 plan created, charge or refund initiated. Independent customer pilot is deferred
 at the owner's request. Meta approval is not required for this billing-only test.

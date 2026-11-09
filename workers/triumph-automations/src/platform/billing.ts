@@ -27,6 +27,28 @@ type Subscription = {
   };
 };
 export const billingReady = (env: Env) => billingMode(env) !== null;
+// Operator reconciliation only. This performs a GET and never creates a refund.
+export async function reconcileRefund(env: Env, input: Record<string, unknown>) {
+  requireReady(env);
+  const mode = billingMode(env);
+  if (typeof input.refundId !== 'string' || !/^[1-9][0-9]{0,15}$/.test(input.refundId) || typeof input.paymentReference !== 'string')
+    throw new PlatformError('Choose a refund ID and a recorded payment reference.');
+  const payment = await env.DB.prepare('SELECT reference,provider_id,amount,mode FROM platform_billing_payments WHERE reference=? AND mode=?')
+    .bind(input.paymentReference,mode).first<{reference:string;provider_id:string;amount:number;mode:string}>();
+  if (!payment) throw new PlatformError('Recorded payment not found in this billing environment.',404);
+  const refund = await provider<{id:number;transaction:number|{id:number};domain:string;currency:string;amount:number;status:string}>(env,'/refund/'+input.refundId);
+  const transactionId = typeof refund.transaction === 'number' ? refund.transaction : refund.transaction?.id;
+  const states = new Set(['pending','processing','needs-attention','failed','processed']);
+  if (String(refund.id)!==input.refundId || !Number.isSafeInteger(refund.id) || !Number.isSafeInteger(transactionId) || String(transactionId)!==payment.provider_id || refund.domain!==mode || refund.currency!=='NGN' || !Number.isSafeInteger(refund.amount) || refund.amount<=0 || refund.amount>payment.amount || !states.has(refund.status))
+    throw new PlatformError('The refund does not match the recorded payment.',409);
+  const existing = await env.DB.prepare('SELECT payment_reference,mode,amount FROM platform_billing_refunds WHERE refund_id=?').bind(input.refundId).first<{payment_reference:string;mode:string;amount:number}>();
+  if (existing && (existing.payment_reference!==payment.reference || existing.mode!==mode || existing.amount!==refund.amount))
+    throw new PlatformError('The refund reference conflicts with its recorded evidence.',409);
+  await env.DB.prepare("INSERT INTO platform_billing_refunds(refund_id,payment_reference,mode,amount,status,verified_at) VALUES(?,?,?,?,?,?) ON CONFLICT(refund_id) DO UPDATE SET status=CASE WHEN platform_billing_refunds.status='processed' THEN 'processed' ELSE excluded.status END,verified_at=excluded.verified_at WHERE platform_billing_refunds.payment_reference=excluded.payment_reference AND platform_billing_refunds.mode=excluded.mode AND platform_billing_refunds.amount=excluded.amount")
+    .bind(input.refundId,payment.reference,mode,refund.amount,refund.status,new Date().toISOString()).run();
+  const recorded = await env.DB.prepare('SELECT refund_id,status,amount,verified_at FROM platform_billing_refunds WHERE refund_id=?').bind(input.refundId).first();
+  return {refund:recorded,fullPaymentRefunded:Boolean(await env.DB.prepare("SELECT reference FROM platform_billing_payments p WHERE reference=? AND (SELECT COALESCE(SUM(r.amount),0) FROM platform_billing_refunds r WHERE r.payment_reference=p.reference AND r.mode=p.mode AND r.status='processed')>=p.amount").bind(payment.reference).first())};
+}
 function requireReady(env: Env) {
   if (!billingReady(env)) throw new PlatformError("Subscriptions are not enabled. No payment was started.", 503);
 }
@@ -67,7 +89,7 @@ function view(row: Billing | null, enabled: boolean, mode: 'test' | 'live' | nul
   };
 }
 async function billingView(env: Env, row: Billing | null, enabled: boolean, workspaceId: string) {
-  const payments = await env.DB.prepare('SELECT reference,amount,paid_at AS paidAt,period_end AS periodEnd FROM platform_billing_payments WHERE workspace_id=? ORDER BY paid_at DESC,reference DESC LIMIT 24').bind(workspaceId).all();
+  const payments = await env.DB.prepare("SELECT reference,amount,paid_at AS paidAt,period_end AS periodEnd,(SELECT COALESCE(SUM(r.amount),0) FROM platform_billing_refunds r WHERE r.payment_reference=p.reference AND r.mode=p.mode AND r.status='processed') AS refundedAmount FROM platform_billing_payments p WHERE workspace_id=? ORDER BY paid_at DESC,reference DESC LIMIT 24").bind(workspaceId).all();
   const entitlement = await subscriptionAccess(env, workspaceId);
   return {...view(row, enabled, billingMode(env)), accessActive: entitlement.active, testAccessActive: entitlement.active && billingMode(env) === 'test', entitlement, payments: payments.results};
 }

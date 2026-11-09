@@ -25,7 +25,7 @@ import { hmac } from "../security";
 import { conversationAction, responderDefaults } from "./conversations";
 import {tenantAnswer} from "./tenant-ai";
 import {widgetAction} from "./widget";
-import {billingAction,billingEvent,nextMonthlyDate,provisionTestPlans,reconcileDueBilling} from "./billing";
+import {reconcileRefund,billingAction,billingEvent,nextMonthlyDate,provisionTestPlans,reconcileDueBilling} from "./billing";
 import {subscriptionAccess} from './subscription-access';
 import {startTrial} from './trial';
 import {billingMode} from './billing-policy';
@@ -1352,6 +1352,67 @@ async function paidFixture() {
     .run(f.workspaceId,crypto.randomUUID(),f.owner.email,end,stamp,stamp);
   return {...f,now,stamp,end,ledger:()=>f.sql.prepare("INSERT INTO platform_billing_payments(reference,provider_id,workspace_id,amount,paid_at,period_end) VALUES('paid-reference','501',?,1500000,?,?)").run(f.workspaceId,stamp,end)};
 }
+
+test('verified refund lifecycle preserves pending access, removes fully refunded access and resists replay',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let state='pending',amount=1500000;
+ globalThis.fetch=async(input,init)=>{
+  assert.equal(String(input),'https://api.paystack.co/refund/701');assert.equal(init?.method,'GET');
+  return Response.json({status:true,data:{id:701,transaction:501,domain:'test',currency:'NGN',amount,status:state}});
+ };
+ try {
+  const input={refundId:'701',paymentReference:'paid-reference'};
+  assert.equal((await reconcileRefund(f.env,input)).fullPaymentRefunded,false);
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);
+  state='failed';await reconcileRefund(f.env,input);assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);
+  state='processed';assert.equal((await reconcileRefund(f.env,input)).fullPaymentRefunded,true);
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  state='pending';await reconcileRefund(f.env,input);
+  assert.equal(f.sql.prepare('SELECT status FROM platform_billing_refunds').get()!.status,'processed');
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  // A replayed successful payment leaves its original ledger row intact, but
+  // cannot make the completed refund disappear from the access predicate.
+  globalThis.fetch=async(input)=>{
+   assert.equal(String(input),'https://api.paystack.co/transaction/verify/paid-reference');
+   return Response.json({status:true,data:{id:501,reference:'paid-reference',status:'success',domain:'test',currency:'NGN',amount:1500000,paid_at:f.stamp,plan:'PLN_starter',customer:{email:f.owner.email,customer_code:'CUS_alice'}}});
+  };
+  await billingEvent(f.env,'charge.success',{reference:'paid-reference'});
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_billing_payments').get()!.n,1);
+  amount=1499999;
+  globalThis.fetch=async()=>Response.json({status:true,data:{id:701,transaction:501,domain:'test',currency:'NGN',amount,status:'processed'}});
+  await assert.rejects(reconcileRefund(f.env,input),/conflicts/);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+
+test('refund reconciliation rejects foreign transactions, modes, currencies and unrecorded payments',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;let calls=0;
+ const base={id:702,transaction:501,domain:'test',currency:'NGN',amount:1500000,status:'processed'};
+ try {
+  globalThis.fetch=async()=>{calls++;return Response.json({status:true,data:base});};
+  await assert.rejects(reconcileRefund(f.env,{refundId:'702',paymentReference:'unknown'}),/not found/);assert.equal(calls,0);
+  for(const bad of [{transaction:999},{domain:'live'},{currency:'USD'},{amount:1500001},{amount:-1},{status:'unknown'},{id:703}]) {
+   globalThis.fetch=async()=>Response.json({status:true,data:{...base,...bad}});
+   await assert.rejects(reconcileRefund(f.env,{refundId:'702',paymentReference:'paid-reference'}),/does not match/);
+  }
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_billing_refunds').get()!.n,0);
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
+
+test('distinct processed partial refunds add up without duplicate refund events removing unrelated periods',async()=>{
+ const f=await paidFixture();f.ledger();const saved=globalThis.fetch;
+ globalThis.fetch=async(input)=>Response.json({status:true,data:{id:Number(String(input).split('/').pop()),transaction:501,domain:'test',currency:'NGN',amount:750000,status:'processed'}});
+ try {
+  const input={refundId:'703',paymentReference:'paid-reference'};
+  await reconcileRefund(f.env,input);await reconcileRefund(f.env,input);
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);
+  await reconcileRefund(f.env,{...input,refundId:'704'});
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,false);
+  f.sql.prepare("INSERT INTO platform_billing_payments(reference,provider_id,workspace_id,amount,paid_at,period_end) VALUES('renewal','502',?,1500000,?,?)").run(f.workspaceId,f.stamp,new Date(f.now+2*86400000).toISOString());
+  f.sql.prepare('UPDATE platform_billing SET paid_through=?').run(new Date(f.now+2*86400000).toISOString());
+  assert.equal((await subscriptionAccess(f.env,f.workspaceId)).active,true);
+ } finally {globalThis.fetch=saved;f.sql.close();}
+});
 test('trial is owner-only, one-time, bounded across month reset and never creates billing',async()=>{
  const {env,sql,user}=setup();user('alice');user('bob');user('staff');
  const w=(await createWorkspace(env,'alice','Trial business'))!;

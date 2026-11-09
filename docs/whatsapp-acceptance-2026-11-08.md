@@ -76,3 +76,11 @@ Restore any temporary phone-app setting by agreement at completion. Do not chang
 real business availability merely to force an in-hours FAQ test. Protect the
 existing campaign number and Worker. Customer onboarding, templates, STOP,
 FAQ/AI matching and production release retain their own acceptance gates.
+
+## Owner follow-up, 9 November 2026
+
+Owner reported live WhatsApp replies working, including a Pidgin question, after
+resuming the real WhatsApp thread under Inbox. The Conversations rehearsal has a
+separate pause control; resuming it does not resume the WhatsApp thread. This is
+owner-reported live acceptance, not a captured provider trace or broad language
+quality certification.

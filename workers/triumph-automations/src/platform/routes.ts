@@ -9,7 +9,7 @@ import {collaborationAction} from "./collaboration";
 import {startTrial} from './trial';
 import {workspaceUsage} from './usage';
 import { widgetAction } from "./widget";
-import { billingAction, provisionTestPlans } from "./billing";
+import { billingAction, provisionTestPlans, reconcileRefund } from "./billing";
 import {subscriptionAccess} from './subscription-access';
 import {workspaceSetup,setupInput,saveSetup} from './setup';
 import {workOverview,followUpAction} from './work';
@@ -38,6 +38,11 @@ import {
 
 export function createPlatformRoutes(sender?: OtpSender) {
   const routes = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
+  // Parent platform routes require the operator HMAC. No website RPC action.
+  routes.post('/billing/reconcile-refund',async(c)=>{
+    try {return c.json({data:await reconcileRefund(c.env,JSON.parse(c.get('raw')))});}
+    catch(error){return c.json({error:error instanceof PlatformError?error.message:'Refund verification unavailable.'},error instanceof PlatformError?error.status:503);}
+  });
   routes.post("/billing/test-plans",async(c)=>{
     try {return c.json({data:await provisionTestPlans(c.env)});}
     catch(error){return c.json({error:error instanceof PlatformError?error.message:"Test plan provisioning failed."},error instanceof PlatformError?error.status:503);}
