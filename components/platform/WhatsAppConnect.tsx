@@ -60,6 +60,7 @@ export default function WhatsAppConnect({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [ready, setReady] = useState(false);
+  const [businessApp, setBusinessApp] = useState(true);
   const sessionRef = useRef<SessionPayload | null>(null);
   useEffect(() => {
     let active = true;
@@ -85,7 +86,7 @@ export default function WhatsAppConnect({
       setReady(true);
     };
     function onMessage(event: MessageEvent) {
-      if (!String(event.origin).endsWith("facebook.com")) return;
+      if (!['https://www.facebook.com', 'https://web.facebook.com', 'https://facebook.com'].includes(event.origin)) return;
       try {
         const data = JSON.parse(String(event.data)) as SessionPayload;
         if (data.type === "WA_EMBEDDED_SIGNUP") sessionRef.current = data;
@@ -141,7 +142,11 @@ export default function WhatsAppConnect({
         config_id: configId,
         response_type: "code",
         override_default_response_type: true,
-        extras: { version: "v5" },
+        extras: {
+          version: "v4",
+          sessionInfoVersion: "3",
+          ...(businessApp ? {featureType: 'whatsapp_business_app_onboarding'} : {}),
+        },
       },
     );
   }
@@ -166,10 +171,10 @@ export default function WhatsAppConnect({
         />
       )}
       <div className="platform-sandbox">
-        <strong>Staging tester onboarding</strong> · Embedded Signup v5. App
-        Review was submitted on 23 October 2026 and approval is pending. Only Meta app admins, developers and testers
-        can complete this. External customers cannot be onboarded yet. The UK
-        campaign number stays on the existing bot.
+        <strong>Controlled staging onboarding</strong> · The app’s WhatsApp
+        messaging and management permissions are approved. This workspace remains
+        a staging acceptance environment; connecting and testing your number are
+        still required. The existing campaign number stays on its current bot.
       </div>
       <h2>Connect your WhatsApp number</h2>
       <p>
@@ -209,6 +214,11 @@ export default function WhatsAppConnect({
         </>
       ) : (
         <>
+          <label className="public-consent">
+            <input type="checkbox" checked={businessApp} disabled={busy} onChange={e=>setBusinessApp(e.target.checked)}/>
+            This number is already active in the WhatsApp Business app. Use Business App onboarding.
+          </label>
+          {businessApp && <p className="platform-muted">Keep the Business app account active. Complete Meta’s eligibility and phone-app confirmation steps. If Meta asks you to delete or deregister the account, stop and contact support.</p>}
           <p className="platform-muted">
             {status?.available
               ? "A genuine inbound message to the connected number is required before this is treated as live delivery."

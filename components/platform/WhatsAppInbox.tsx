@@ -35,17 +35,16 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const pending = useRef<string | null>(null);
+  const [repliesEnabled,setRepliesEnabled]=useState<boolean|null>(null);
   const [filter,setFilter]=useState<InboxFilter>('all');
   async function refresh() {
-    const data = await rpc<{ threads: Summary[] }>("whatsapp.inbox", {
-      workspaceId,
-    });
-    setThreads(data.threads);
+    const [data,settings]=await Promise.all([rpc<{threads:Summary[]}>("whatsapp.inbox",{workspaceId}),rpc<{enabled:boolean|number}>("responder.read",{workspaceId})]);
+    setThreads(data.threads);setRepliesEnabled(Boolean(settings.enabled));
   }
   useEffect(() => {
     let active = true;
-    rpc<{threads:Summary[]}>("whatsapp.inbox",{workspaceId})
-      .then(data=>{if(active)setThreads(data.threads);})
+    Promise.all([rpc<{threads:Summary[]}>("whatsapp.inbox",{workspaceId}),rpc<{enabled:boolean|number}>("responder.read",{workspaceId})])
+      .then(([data,settings])=>{if(active){setThreads(data.threads);setRepliesEnabled(Boolean(settings.enabled));}})
       .catch((e) => {
         if (active) setError(e.message);
       });
@@ -78,8 +77,9 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
         </h2>
         <p className="platform-muted">
           Messages for the number connected to this business. Unknown or agency
-          campaign numbers are ignored.
+          campaign numbers are ignored. Pause or resume an individual WhatsApp chat here. To stop automatic replies across this number, turn off automatic replies under Autoresponders and save.
         </p>
+        {repliesEnabled!==null&&<p role="status"><strong>Automatic replies for this number: {repliesEnabled?"On":"Off"}.</strong>{!repliesEnabled&&" Resuming a chat does not turn automatic replies back on. Turn them on separately in Autoresponders when you are ready."}</p>}
         <button
           className="platform-secondary"
           disabled={busy}
@@ -104,7 +104,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
               <strong>{item.label}</strong>
               <small>{item.assigned?`Assigned to ${item.assigneeName}`:'Unassigned'}{Number(item.unreadCount)>0?` · ${item.unreadCount} unread`:''}</small>
               <small>
-                {item.paused ? "With team" : "Automation on"} · ending {item.wa_id}
+                {item.paused ? "Chat paused" : repliesEnabled===false ? "Chat unpaused · automatic replies off" : "Chat unpaused"} · ending {item.wa_id}
               </small>
             </button>
           ))}
@@ -119,7 +119,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
           <div className="conversation-empty">
             <h2>Take over when needed.</h2>
             <p>
-              Approved answers reply automatically. A team reply, STOP, HUMAN or
+              When automatic replies are enabled, approved answers can reply automatically. A team reply, STOP, HUMAN or
               an unknown question pauses automation until you resume it.
             </p>
           </div>
@@ -131,7 +131,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
                 <small>
                   {thread.paused
                     ? "Automation paused · team in control"
-                    : "Automation available"}
+                    : repliesEnabled===false ? "Chat unpaused · automatic replies off for this number" : "Chat unpaused · replies follow your saved settings"}
                 </small>
               </div>
               <button
@@ -151,7 +151,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
                   })
                 }
               >
-                {thread.paused ? "Resume automation" : "Pause automation"}
+                {thread.paused ? "Resume this WhatsApp chat" : "Pause this WhatsApp chat"}
               </button>
             </header>
             <ConversationTeam key={`${workspaceId}:${thread.id}`} workspaceId={workspaceId} threadId={thread.id} channel="whatsapp"/>

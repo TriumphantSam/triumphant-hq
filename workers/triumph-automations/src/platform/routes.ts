@@ -6,10 +6,12 @@ import { conversationAction } from "./conversations";
 import { whatsappAction } from "./whatsapp";
 import {whatsappReview} from "./whatsapp-review";
 import {collaborationAction} from "./collaboration";
+import {startTrial} from './trial';
 import {workspaceUsage} from './usage';
 import { widgetAction } from "./widget";
-import { billingAction, provisionTestPlans } from "./billing";
+import { billingAction, provisionTestPlans, reconcileRefund } from "./billing";
 import {subscriptionAccess} from './subscription-access';
+import {liveAcceptance} from './billing-policy';
 import {workspaceSetup,setupInput,saveSetup} from './setup';
 import {workOverview,followUpAction} from './work';
 import { teamAction } from "./team";
@@ -37,6 +39,11 @@ import {
 
 export function createPlatformRoutes(sender?: OtpSender) {
   const routes = new Hono<{ Bindings: Env; Variables: { raw: string } }>();
+  // Parent platform routes require the operator HMAC. No website RPC action.
+  routes.post('/billing/reconcile-refund',async(c)=>{
+    try {return c.json({data:await reconcileRefund(c.env,JSON.parse(c.get('raw')))});}
+    catch(error){return c.json({error:error instanceof PlatformError?error.message:'Refund verification unavailable.'},error instanceof PlatformError?error.status:503);}
+  });
   routes.post("/billing/test-plans",async(c)=>{
     try {return c.json({data:await provisionTestPlans(c.env)});}
     catch(error){return c.json({error:error instanceof PlatformError?error.message:"Test plan provisioning failed."},error instanceof PlatformError?error.status:503);}
@@ -66,6 +73,14 @@ export function createPlatformRoutes(sender?: OtpSender) {
         !Array.isArray(body.payload)
           ? (body.payload as Record<string, unknown>)
           : {};
+      const restricted=c.env.ENVIRONMENT==='production'&&c.env.PLATFORM_CUSTOMER_RELEASE_ENABLED!=='true';
+      const acceptance=restricted?liveAcceptance(c.env):null;
+      if(restricted){
+        if(!acceptance)throw new PlatformError('The customer platform is not open yet.',503);
+        if(body.action.startsWith('public.'))throw new PlatformError('Customer workflows are not released.',503);
+        if(['auth.send','auth.verify'].includes(body.action)&&String(payload.email||'').trim().toLowerCase()!==acceptance!.email)
+          throw new PlatformError('This account is not enrolled in acceptance.',403);
+      }
       if (body.action.startsWith("public."))
         return c.json({
           data: await publicWorkflow(c.env, body.action, payload, body.ipKey),
@@ -134,6 +149,9 @@ export function createPlatformRoutes(sender?: OtpSender) {
       if (!session?.user.emailVerified)
         throw new PlatformError("Sign in to your business workspace.", 401);
       const userId = session.user.id;
+      if(restricted&&session.user.email.toLowerCase()!==acceptance!.email)throw new PlatformError('This account is not enrolled in acceptance.',403);
+      if(restricted&&!['bootstrap'].includes(body.action)&&payload.workspaceId!==acceptance!.workspaceId)
+        throw new PlatformError('This workspace is not enrolled in acceptance.',403);
       await admit(c.env, "account:" + userId, 240);
       if (body.action === "bootstrap") {
         const memberships = await c.env.DB.prepare(
@@ -144,7 +162,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
         return c.json({
           data: {
             user: { name: session.user.name, email: session.user.email },
-            workspaces: memberships.results,
+            workspaces: restricted?memberships.results.filter(w=>w.id===acceptance!.workspaceId):memberships.results,
             plans,
           },
         });
@@ -155,6 +173,7 @@ export function createPlatformRoutes(sender?: OtpSender) {
         });
       }
       const id = payload.workspaceId;
+      if(body.action==='trial.start')return c.json({data:await startTrial(c.env,userId,id)});
       if(body.action==='operations.read')return c.json({data:await workOverview(c.env,userId,payload)});
       if(body.action.startsWith('followup.'))return c.json({data:await followUpAction(c.env,userId,body.action,payload)});
       if(body.action==='retention.read'||body.action==='retention.save')return c.json({data:await retentionAction(c.env,userId,body.action,payload)});

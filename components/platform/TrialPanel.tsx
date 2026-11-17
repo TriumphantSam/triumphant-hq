@@ -1,0 +1,9 @@
+'use client';
+import {useState} from 'react';
+type Access={active:boolean;trial?:boolean;trialEndsAt?:string|null;replies:number};
+export default function TrialPanel({workspaceId,access,onChanged}:{workspaceId:string;access?:Access;onChanged:()=>void}){
+ const [busy,setBusy]=useState(false),[error,setError]=useState('');
+ return <section className="platform-card platform-form"><p className="platform-eyebrow">Try the standard workflows</p><h2>14 days. Up to 50 automated replies.</h2><p>No card, recurring agreement or automatic charge. One trial per verified account and business. Trial replies do not reset each month. Meta/provider charges are separate; WhatsApp still needs an eligible connection.</p>
+ {access?.active?<p>A paid subscription is already active. Its existing agreement stays unchanged.</p>:access?.trialEndsAt?<p role="status">{access.trial?'Trial active':'Trial ended or unavailable'} · expires {new Intl.DateTimeFormat('en-NG',{dateStyle:'medium',timeStyle:'short',timeZone:'Africa/Lagos'}).format(new Date(access.trialEndsAt))} WAT. Existing records are preserved.</p>:<button disabled={busy} className="platform-primary" onClick={async()=>{setBusy(true);setError('');try{const r=await fetch('/api/platform',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'trial.start',payload:{workspaceId}})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Trial could not be started.');onChanged();}catch(e){setError(e instanceof Error?e.message:'Please try again.');}finally{setBusy(false);}}}>{busy?'Starting…':'Start my free trial'}</button>}
+ <p>Trial capacity: 20 FAQs, 10 new enquiries and 10 new booking records. Completion or cancellation does not replenish usage. Availability is controlled separately for each environment.</p>{error&&<p role="alert">{error}</p>}</section>;
+}
