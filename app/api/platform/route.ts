@@ -70,6 +70,8 @@ const allowed = new Set([
   "whatsapp.thread",
   "whatsapp.pause",
   "whatsapp.reply",
+  "whatsapp.testing.read",
+  "whatsapp.testing.save",
   "whatsapp.review.read",
   "whatsapp.review.send",
   "public.read",

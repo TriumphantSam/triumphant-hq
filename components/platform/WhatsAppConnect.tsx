@@ -195,8 +195,7 @@ export default function WhatsAppConnect({
             {status.isOnBizApp
               ? " WhatsApp Business app coexistence is enabled."
               : " Cloud API registration completed."}{" "}
-            Live replies use this business’s approved answers. A team reply
-            pauses automation.
+            Connecting does not enable testing. In Inbox · WhatsApp, save the selected test contacts and enable testing. Automatic replies also require the separate Autoresponders switch. A team reply pauses that chat.
           </p>
           <button
             className="platform-secondary"

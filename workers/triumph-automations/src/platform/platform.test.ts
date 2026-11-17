@@ -15,6 +15,7 @@ import { platformAuth } from "./auth";
 import {teamAction} from "./team";
 import {platformOverview,platformSupport} from "./operator";
 import {whatsappReview} from "./whatsapp-review";
+import {normaliseTestRecipients,testContactPermission,resetWhatsAppTesting} from './whatsapp-test-settings';
 import {
   handleWhatsAppWebhook,
   processWhatsAppPayload,
@@ -2115,6 +2116,96 @@ function graphFetch(handlers: Record<string, (url: string, init?: RequestInit) =
     return handlers[matched](url, init);
   };
 }
+async function whatsappTestFixture(){
+ const f=setup();f.user('alice');f.user('bob');f.user('staff');enableWhatsApp(f.env);
+ const w=(await createWorkspace(f.env,'alice','Selected contact test'))!;
+ f.sql.prepare("INSERT INTO platform_memberships VALUES(?,?,'staff')").run(w.id,'staff');
+ await saveFaqs(f.env,'alice',w.id,{version:0,faqs:[{id:crypto.randomUUID(),question:'What are your consultation hours?',answer:'Weekdays ten to four.'}]});
+ const saved=globalThis.fetch,messages:string[]=[];
+ const fake=graphFetch({
+  '/oauth/access_token':()=>Response.json({access_token:'tenant-token'}),
+  'fields=display_phone_number':()=>Response.json({display_phone_number:'+234 801 222 2222',is_on_biz_app:true}),
+  '/subscribed_apps':()=>Response.json({success:true}),
+  '/messages':(_url,init)=>{messages.push(JSON.parse(String(init?.body)).text.body);return Response.json({messages:[{id:'wamid.selected-out-'+messages.length}]});},
+ });
+ globalThis.fetch=fake as typeof fetch;
+ try{await whatsappAction(f.env,'alice','whatsapp.connect',{workspaceId:w.id,code:'exchange-code-value',session:{event:'FINISH',data:{phone_number_id:'555222333444',messaging_account_ids:['555222000']}}});}
+ catch(e){globalThis.fetch=saved;f.sql.close();throw e;}
+ const read=()=>whatsappAction(f.env,'alice','whatsapp.testing.read',{workspaceId:w.id}) as Promise<{enabled:boolean;recipients:string[];version:number}>;
+ const save=async(enabled:boolean,numbers=['+2348010000001'])=>whatsappAction(f.env,'alice','whatsapp.testing.save',{workspaceId:w.id,enabled,recipients:numbers,version:(await read()).version,testConsent:true});
+ const feed=(number:string,id:string,body='What are your consultation hours?')=>processWhatsAppPayload(f.env,{object:'whatsapp_business_account',entry:[{changes:[{value:{metadata:{phone_number_id:'555222333444'},contacts:[{profile:{name:'Synthetic contact'}}],messages:[{id,from:number,type:'text',text:{body}}]}}]}]},Date.parse('2026-11-17T11:00:00Z'));
+ return {...f,w,read,save,feed,messages,fake,restore:()=>{globalThis.fetch=saved;f.sql.close();}};
+}
+
+test('WhatsApp testing is off after connection and excludes normal chats before storage or inference',async()=>{
+ const f=await whatsappTestFixture();
+ try{
+  assert.equal((await f.read()).enabled,false);
+  await f.feed('2348010000001','wamid.default-off');
+  await f.save(true);
+  await f.feed('2348099999999','wamid.normal-chat');
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_whatsapp_threads').get()!.n,0);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_whatsapp_events').get()!.n,0);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_ai_requests').get()!.n,0);
+  assert.equal(f.sql.prepare('SELECT count(*) n FROM platform_usage').get()!.n,0);
+  assert.equal(f.messages.length,0);
+  await f.feed('2348010000001','wamid.selected-chat');
+  assert.ok(f.messages.includes('Weekdays ten to four.'));
+  assert.equal(f.sql.prepare("SELECT count(*) n FROM platform_whatsapp_events WHERE direction='in'").get()!.n,1);
+  const inbox=await whatsappAction(f.env,'staff','whatsapp.inbox',{workspaceId:f.w.id});
+  assert.ok(!JSON.stringify(inbox).includes('2348010000001'));
+ }finally{f.restore();}
+});
+
+test('only an owner can change test numbers; versions, consent and international numbers are checked',async()=>{
+ const f=await whatsappTestFixture();
+ try{
+  assert.deepEqual(normaliseTestRecipients(['+234 801-000-0001','2348010000001']),['2348010000001']);
+  for(const input of [['08010000001'],['2348+010000001'],['+234abc'],[12345],Array(6).fill('2348010000001'),null])assert.equal(normaliseTestRecipients(input),null);
+  for(const user of ['staff','bob'])for(const action of ['whatsapp.testing.read','whatsapp.testing.save'])await assert.rejects(whatsappAction(f.env,user,action,{workspaceId:f.w.id}),/owner|not found/);
+  const base={workspaceId:f.w.id,enabled:true,recipients:['+2348010000001'],version:(await f.read()).version};
+  await assert.rejects(whatsappAction(f.env,'alice','whatsapp.testing.save',base),/confirm permission/);
+  await assert.rejects(whatsappAction(f.env,'alice','whatsapp.testing.save',{...base,testConsent:true,recipients:['+2348012222222']}),/different WhatsApp account/);
+  await f.save(true);
+  await assert.rejects(whatsappAction(f.env,'alice','whatsapp.testing.save',{...base,testConsent:true}),/changed/);
+  assert.equal((await f.read()).enabled,true);
+  await f.save(false);assert.equal((await f.read()).enabled,false);
+  f.env.ENVIRONMENT='production';await assert.rejects(f.save(true),/not available/);
+ }finally{f.restore();}
+});
+
+test('test access never enables the global responder and removal blocks team replies and future ingestion',async()=>{
+ const f=await whatsappTestFixture();
+ try{
+  const settings=await conversationAction(f.env,'alice','responder.read',{workspaceId:f.w.id});
+  await conversationAction(f.env,'alice','responder.save',{workspaceId:f.w.id,...settings,enabled:false,ai_enabled:false});
+  await f.save(true);await f.feed('2348010000001','wamid.selected-global-off');
+  assert.equal(f.messages.length,0);assert.equal(f.sql.prepare('SELECT enabled FROM platform_responder_settings').get()!.enabled,0);
+  const thread=f.sql.prepare('SELECT id,version FROM platform_whatsapp_threads').get()!;
+  await f.save(false);
+  await assert.rejects(whatsappAction(f.env,'staff','whatsapp.reply',{workspaceId:f.w.id,id:thread.id,version:thread.version,text:'Must not send'}),/not enabled/);
+  await f.feed('2348010000001','wamid.removed-contact');
+  assert.equal(f.sql.prepare("SELECT count(*) n FROM platform_whatsapp_events WHERE direction='in'").get()!.n,1);
+  assert.equal(f.messages.length,0);
+  const view=await whatsappAction(f.env,'staff','whatsapp.thread',{workspaceId:f.w.id,id:thread.id}) as {canReply:boolean};assert.equal(view.canReply,false);
+ }finally{f.restore();}
+});
+
+test('revoking test access between automated sends stops further sends and reconnect starts off',async()=>{
+ const f=await whatsappTestFixture();
+ try{
+  await f.save(true);
+  let accepted=0;globalThis.fetch=async(input,init)=>{
+   if(String(input).includes('/messages')){accepted++;await resetWhatsAppTesting(f.env,f.w.id);return Response.json({messages:[{id:'wamid.accepted-before-revoke'}]});}
+   return f.fake(input,init);
+  };
+  await f.feed('2348010000001','wamid.revoked-between-sends');assert.equal(accepted,1);
+  assert.equal((await testContactPermission(f.env,f.w.id,'2348010000001')).allowed,false);
+  await f.save(true);
+  await whatsappAction(f.env,'alice','whatsapp.connect',{workspaceId:f.w.id,code:'exchange-code-value',session:{event:'FINISH',data:{phone_number_id:'555222333444',messaging_account_ids:['555222000']}}});
+  assert.equal((await f.read()).enabled,false);assert.deepEqual((await f.read()).recipients,[]);
+ }finally{f.restore();}
+});
 async function signedWhatsApp(env: Env, payload: unknown) {
   const body = JSON.stringify(payload);
   return handleWhatsAppWebhook(
@@ -2298,6 +2389,7 @@ test("staging WhatsApp signup stores a tenant token, overrides the webhook and i
         },
       ],
     };
+    await whatsappAction(env,'alice','whatsapp.testing.save',{workspaceId:alice.id,enabled:true,recipients:['2348010000001'],version:1,testConsent:true});
     await processWhatsAppPayload(env, inbound, Date.parse("2026-10-23T10:30:00Z"));
     const events = sql.prepare("SELECT direction,role,text FROM platform_whatsapp_events ORDER BY created_at,wamid").all() as {direction:string;role:string;text:string}[];
     assert.ok(events.some((row) => row.direction === "in" && row.text.includes("opening hours")));
@@ -2374,6 +2466,7 @@ test("live WhatsApp human takeover pauses automation and unknown numbers never c
       200,
     );
     assert.equal(sql.prepare("SELECT count(*) n FROM platform_whatsapp_threads").get()!.n, 0);
+    await whatsappAction(env,'alice','whatsapp.testing.save',{workspaceId:alice.id,enabled:true,recipients:['2348090000009'],version:1,testConsent:true});
     await processWhatsAppPayload(env, {
       object: "whatsapp_business_account",
       entry: [

@@ -863,7 +863,7 @@ export default function PlatformWorkspace() {
                   </form>
                 )}
                 {tab === "Inbox" && (
-                  <InboxPanel workspaceId={view.workspace.id} whatsappConnected={view.readiness.whatsappConnected} />
+                  <InboxPanel workspaceId={view.workspace.id} whatsappConnected={view.readiness.whatsappConnected} owner={view.workspace.role==='owner'} />
                 )}
                 {tab === "Plans" && (
                   <>

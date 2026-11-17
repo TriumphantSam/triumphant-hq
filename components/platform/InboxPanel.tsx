@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import WhatsAppInbox from "./WhatsAppInbox";
+import WhatsAppTestControls from './WhatsAppTestControls';
 import RecordExport from './RecordExport';
 import RetentionPreview from './RetentionPreview';
 import FollowUpPanel from './FollowUpPanel';
@@ -94,10 +95,13 @@ function EnquiryCard({
 export default function InboxPanel({
   workspaceId,
   whatsappConnected,
+  owner,
 }: {
   workspaceId: string;
   whatsappConnected: boolean;
+  owner:boolean;
 }) {
+  const [testRevision,setTestRevision]=useState(0);
   const [data, setData] = useState<Data | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
@@ -162,7 +166,8 @@ export default function InboxPanel({
       {data?.exportAvailable&&<RetentionPreview key={workspaceId} workspaceId={workspaceId}/>}
       {whatsappConnected && (
         <div className="platform-inbox-whatsapp">
-          <WhatsAppInbox workspaceId={workspaceId} />
+          {owner&&<WhatsAppTestControls key={workspaceId} workspaceId={workspaceId} onChanged={()=>setTestRevision(n=>n+1)}/>}
+          <WhatsAppInbox key={`${workspaceId}:${testRevision}`} workspaceId={workspaceId} />
         </div>
       )}
       {!data ? (

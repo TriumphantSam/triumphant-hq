@@ -12,6 +12,7 @@ import {
 import { tenantAnswer } from "./tenant-ai";
 import { responderDefaults } from "./conversations";
 import {threadSignals} from './collaboration';
+import {testContactPermission,whatsappTestSettings,whatsappTestSummary,resetWhatsAppTesting} from './whatsapp-test-settings';
 
 export const PROTECTED_PHONE_NUMBER_IDS = new Set(["1092109073976406"]);
 export const PROTECTED_DISPLAY_PHONES = new Set(["447478036301"]);
@@ -429,6 +430,7 @@ async function connectWorkspace(
   }
   const sealed = await encryptSecret(env, token);
   const now = new Date().toISOString();
+  await resetWhatsAppTesting(env,w.id);
   await env.DB.prepare(
     "INSERT INTO platform_whatsapp_connections(workspace_id,phone_number_id,messaging_account_id,business_id,display_phone,is_on_biz_app,token_ciphertext,token_iv,pin_ciphertext,pin_iv,state,connected_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?, 'connected',?,?) ON CONFLICT(workspace_id) DO UPDATE SET phone_number_id=excluded.phone_number_id,messaging_account_id=excluded.messaging_account_id,business_id=excluded.business_id,display_phone=excluded.display_phone,is_on_biz_app=excluded.is_on_biz_app,token_ciphertext=excluded.token_ciphertext,token_iv=excluded.token_iv,pin_ciphertext=excluded.pin_ciphertext,pin_iv=excluded.pin_iv,state='connected',connected_at=excluded.connected_at,updated_at=excluded.updated_at",
   )
@@ -453,6 +455,7 @@ async function disconnectWorkspace(env: Env, userId: string, workspaceId: unknow
   if (!whatsappReady(env))
     throw new PlatformError("WhatsApp onboarding is not available in this environment.", 503);
   const w = await requireWorkspace(env, userId, workspaceId, true);
+  await resetWhatsAppTesting(env,w.id);
   await env.DB.prepare(
     "DELETE FROM platform_whatsapp_connections WHERE workspace_id=?",
   )
@@ -477,6 +480,7 @@ async function listThreads(env: Env, userId: string, workspaceId: unknown) {
     .all<Thread>();
   const signals=await threadSignals(env,w.id,userId,'whatsapp');
   return {
+    testing:await whatsappTestSummary(env,w.id),
     threads: rows.results.map((row) => ({
       ...row,
       ...signals.get(row.id),
@@ -502,6 +506,7 @@ async function readThread(env: Env, userId: string, input: Record<string, unknow
     .all<{ read_cursor:number;wamid: string; role: string; text: string; created_at: string }>();
   return {
     ...row,
+    canReply:(await testContactPermission(env,w.id,row.wa_id)).allowed,
     paused: Boolean(row.paused),
     wa_id: row.wa_id.slice(-4),
     readCursor:events.results[0]?.read_cursor||0,
@@ -538,12 +543,16 @@ async function teamReply(env: Env, userId: string, input: Record<string, unknown
     .bind(w.id, input.id)
     .first<{ id: string; wa_id: string; version: number }>();
   if (!thread) throw new PlatformError("Conversation not found.", 404);
+  const permission=await testContactPermission(env,w.id,thread.wa_id);
+  if(!permission.allowed)throw new PlatformError('This contact is not enabled for WhatsApp testing. Ask the owner to review the selected test numbers.',403);
   if (thread.version !== input.version)
     throw new PlatformError("Another reply changed this conversation. Reload before continuing.", 409);
   const connection = await loadConnection(env, w.id);
   if (connection?.state !== "connected")
     throw new PlatformError("Connect a WhatsApp number before sending a reply.");
   const token = await connectionToken(env, connection);
+  const currentPermission=await testContactPermission(env,w.id,thread.wa_id);
+  if(!currentPermission.allowed||currentPermission.version!==permission.version)throw new PlatformError('Test contact settings changed. Reload before sending.',409);
   let wamid: string;
   try {
     wamid = await sendTenantText(env, token, connection.phone_number_id, thread.wa_id, text);
@@ -572,6 +581,10 @@ export async function whatsappAction(
   input: Record<string, unknown>,
   now = Date.now(),
 ) {
+  if(action==='whatsapp.testing.read'||action==='whatsapp.testing.save'){
+    if(action==='whatsapp.testing.save'&&input.enabled===true&&!whatsappReady(env))throw new PlatformError('WhatsApp testing is not available in this environment.',503);
+    return whatsappTestSettings(env,userId,action,input);
+  }
   if (action === "whatsapp.read") {
     const w = await requireWorkspace(env, userId, input.workspaceId);
     if (!whatsappReady(env))
@@ -628,6 +641,7 @@ async function replyToInbound(
   wamid: string,
   text: string,
   now: number,
+  testVersion:number,
 ) {
   if (thread.paused || pauseCommand(text)) {
     if (!thread.paused)
@@ -686,6 +700,9 @@ async function replyToInbound(
     )
       .bind(new Date(now).toISOString(), thread.id, connection.workspace_id)
       .run();
+  const permission=await testContactPermission(env,connection.workspace_id,waId);
+  const latestSettings=await env.DB.prepare('SELECT enabled FROM platform_responder_settings WHERE workspace_id=?').bind(connection.workspace_id).first<{enabled:number}>();
+  if(!permission.allowed||permission.version!==testVersion||latestSettings?.enabled===0)return;
   if (!(await recordUsage(env, connection.workspace_id, wamid, now))) return;
   const token = await connectionToken(env, connection);
   const outgoing: string[] = [];
@@ -693,6 +710,9 @@ async function replyToInbound(
   outgoing.push(resolved.answer);
   for (const body of outgoing) {
     try {
+      const current=await testContactPermission(env,connection.workspace_id,waId);
+      const responder=await env.DB.prepare('SELECT enabled FROM platform_responder_settings WHERE workspace_id=?').bind(connection.workspace_id).first<{enabled:number}>();
+      if(!current.allowed||current.version!==testVersion||responder?.enabled===0)return;
       const sentId = await sendTenantText(
         env,
         token,
@@ -740,6 +760,8 @@ export async function processWhatsAppPayload(
         const wamid = typeof message.id === "string" ? message.id : "";
         const text = extractInboundText(message);
         if (!waId || !/^[A-Za-z0-9._=+/-]{8,256}$/.test(wamid) || !text) continue;
+        const permission=await testContactPermission(env,connection.workspace_id,waId);
+        if(!permission.allowed)continue;
         const date = new Date(now).toISOString();
         const thread = await upsertThread(env, connection.workspace_id, waId, label, date);
         const stored = await env.DB.prepare(
@@ -753,7 +775,7 @@ export async function processWhatsAppPayload(
         )
           .bind(date, thread.id, connection.workspace_id)
           .run();
-        await replyToInbound(env, connection, thread, waId, wamid, text, now);
+        await replyToInbound(env, connection, thread, waId, wamid, text, now,permission.version);
       }
     }
   }

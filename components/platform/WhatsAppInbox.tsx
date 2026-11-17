@@ -13,6 +13,7 @@ type Summary = Signals & {
   updated_at: string;
 };
 type Thread = Summary & {
+  canReply?:boolean;
   readCursor:number;
   messages: { id: string; role: string; text: string; at: string }[];
   live?: boolean;
@@ -36,15 +37,16 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
   const [error, setError] = useState("");
   const pending = useRef<string | null>(null);
   const [repliesEnabled,setRepliesEnabled]=useState<boolean|null>(null);
+  const [testing,setTesting]=useState<{enabled:boolean;count:number}|null>(null);
   const [filter,setFilter]=useState<InboxFilter>('all');
   async function refresh() {
-    const [data,settings]=await Promise.all([rpc<{threads:Summary[]}>("whatsapp.inbox",{workspaceId}),rpc<{enabled:boolean|number}>("responder.read",{workspaceId})]);
-    setThreads(data.threads);setRepliesEnabled(Boolean(settings.enabled));
+    const [data,settings]=await Promise.all([rpc<{threads:Summary[];testing?:{enabled:boolean;count:number}}>("whatsapp.inbox",{workspaceId}),rpc<{enabled:boolean|number}>("responder.read",{workspaceId})]);
+    setThreads(data.threads);setTesting(data.testing||null);setRepliesEnabled(Boolean(settings.enabled));
   }
   useEffect(() => {
     let active = true;
-    Promise.all([rpc<{threads:Summary[]}>("whatsapp.inbox",{workspaceId}),rpc<{enabled:boolean|number}>("responder.read",{workspaceId})])
-      .then(([data,settings])=>{if(active){setThreads(data.threads);setRepliesEnabled(Boolean(settings.enabled));}})
+    Promise.all([rpc<{threads:Summary[];testing?:{enabled:boolean;count:number}}>("whatsapp.inbox",{workspaceId}),rpc<{enabled:boolean|number}>("responder.read",{workspaceId})])
+      .then(([data,settings])=>{if(active){setThreads(data.threads);setTesting(data.testing||null);setRepliesEnabled(Boolean(settings.enabled));}})
       .catch((e) => {
         if (active) setError(e.message);
       });
@@ -79,7 +81,8 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
           Messages for the number connected to this business. Unknown or agency
           campaign numbers are ignored. Pause or resume an individual WhatsApp chat here. To stop automatic replies across this number, turn off automatic replies under Autoresponders and save.
         </p>
-        {repliesEnabled!==null&&<p role="status"><strong>Automatic replies for this number: {repliesEnabled?"On":"Off"}.</strong>{!repliesEnabled&&" Resuming a chat does not turn automatic replies back on. Turn them on separately in Autoresponders when you are ready."}</p>}
+        {repliesEnabled!==null&&<p role="status"><strong>Saved automatic-replies switch: {repliesEnabled?"On":"Off"}.</strong>{!repliesEnabled&&" Resuming a chat does not turn automatic replies back on."}</p>}
+        <p role="status">{testing?testing.enabled?`WhatsApp testing: selected contacts only (${testing.count}). Replies also follow the automatic-replies switch and each chat’s pause state.`:'WhatsApp testing is off. New incoming messages are ignored by this workspace; platform team replies are blocked.':'Test-contact protection has not been verified. Reload after the backend update.'}</p>
         <button
           className="platform-secondary"
           disabled={busy}
@@ -131,7 +134,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
                 <small>
                   {thread.paused
                     ? "Automation paused · team in control"
-                    : repliesEnabled===false ? "Chat unpaused · automatic replies off for this number" : "Chat unpaused · replies follow your saved settings"}
+                    : thread.canReply!==true ? "Chat unpaused · outside enabled test contacts" : repliesEnabled===false ? "Chat unpaused · automatic replies off for this number" : "Chat unpaused · replies follow your saved settings"}
                 </small>
               </div>
               <button
@@ -209,6 +212,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
               <label>
                 Team reply
                 <textarea
+                  disabled={busy||thread.canReply!==true}
                   required
                   rows={3}
                   maxLength={1000}
@@ -218,7 +222,7 @@ export default function WhatsAppInbox({ workspaceId }: { workspaceId: string }) 
               </label>
               <button
                 className="platform-primary"
-                disabled={busy || !message.trim()}
+                disabled={busy || !message.trim() || thread.canReply!==true}
               >
                 {busy ? "Sending…" : "Send WhatsApp reply"}
               </button>
