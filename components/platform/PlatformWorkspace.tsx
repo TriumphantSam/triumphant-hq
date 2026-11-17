@@ -409,7 +409,7 @@ export default function PlatformWorkspace() {
                   disabled={!view || busy}
                 >
                   <Icon size={18} />
-                  {label}
+                  {label === "Conversations" ? "Practice chats" : label === "Inbox" ? "Inbox · WhatsApp" : label}
                 </button>
               ))}
             </nav>
@@ -446,7 +446,7 @@ export default function PlatformWorkspace() {
                     ? tab === "Setup" ? "Your business, step by step."
                     : tab === 'Today' ? 'Your team’s work, in one place.'
                       : tab === "Website" ? "Your assistant, on your website."
-                      : tab === "Conversations" ? "Make every conversation count."
+                      : tab === "Conversations" ? "Practise before replying to customers."
                       : tab === "Autoresponders" ? "A helpful reply starts here."
                       : tab === "Team" ? "The right people. The right access."
                       : tab === "Business"
@@ -530,7 +530,7 @@ export default function PlatformWorkspace() {
                 {tab === "Setup" && <SetupGuide key={view.workspace.id} workspaceId={view.workspace.id} setup={view.setup} onNavigate={setTab} onChanged={()=>void run(()=>bootstrap(view.workspace.id))}/>}
                 {tab === 'Today' && <TodayPanel key={view.workspace.id} workspaceId={view.workspace.id} owner={view.workspace.role==='owner'} onNavigate={setTab}/>}
                 {tab === "Usage" && <WorkspacePanelBoundary key={view.workspace.id+tab}><UsagePanel key={view.workspace.id} workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
-                {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
+                {(tab === "Conversations" || tab === "Autoresponders") && <WorkspacePanelBoundary key={view.workspace.id+tab}><ConversationStudio whatsappConnected={view.readiness.whatsappConnected} onOpenInbox={()=>setTab("Inbox")} workspaceId={view.workspace.id} mode={tab === "Conversations"?"conversations":"responders"} onSaved={()=>void run(bootstrap)}/></WorkspacePanelBoundary>}
                 {tab==="Website"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><WebsiteWidgetPanel workspaceId={view.workspace.id} published={view.workspace.state === 'published'} onLaunch={()=>setTab('Launch')}/></WorkspacePanelBoundary>}
                 {tab==="Team"&&<WorkspacePanelBoundary key={view.workspace.id+tab}><TeamPanel workspaceId={view.workspace.id}/></WorkspacePanelBoundary>}
                 {tab === "Business" && (

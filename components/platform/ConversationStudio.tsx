@@ -12,16 +12,17 @@ async function call<T>(action:string,payload:unknown):Promise<T> {
   if(!response.ok) throw new Error(data.error || "Please try again.");
   return data;
 }
-export default function ConversationStudio({workspaceId,mode,onSaved}:{workspaceId:string;mode:"responders"|"conversations";onSaved:()=>void}) {
+export default function ConversationStudio({workspaceId,mode,onSaved,whatsappConnected,onOpenInbox}:{workspaceId:string;mode:"responders"|"conversations";onSaved:()=>void;whatsappConnected:boolean;onOpenInbox:()=>void}) {
   const [settings,setSettings]=useState<Settings|null>(null),[threads,setThreads]=useState<Summary[]>([]),[thread,setThread]=useState<Thread|null>(null);
   const [loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[error,setError]=useState(""),[notice,setNotice]=useState("");
   const [label,setLabel]=useState("Practice customer"),[message,setMessage]=useState(""),[role,setRole]=useState<"customer"|"team">("customer");
   const pending=useRef<{fingerprint:string;id:string}|null>(null),createId=useRef<string|null>(null);
   const [filter,setFilter]=useState<InboxFilter>('all');
+  const [savedEnabled,setSavedEnabled]=useState<boolean|null>(null);
   useEffect(()=>{
     let active=true;
     Promise.all([call<Settings>("responder.read",{workspaceId}),call<{conversations:Summary[]}>("conversation.list",{workspaceId})])
-      .then(([config,list])=>{if(active){setSettings(config);setThreads(list.conversations);}})
+      .then(([config,list])=>{if(active){setSettings(config);setSavedEnabled(Boolean(config.enabled));setThreads(list.conversations);}})
       .catch(e=>{if(active)setError(e.message);}).finally(()=>{if(active)setLoading(false);});
     return ()=>{active=false;};
   },[workspaceId]);
@@ -40,21 +41,23 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
   }
   if(loading)return <p role="status">Opening your conversation studio…</p>;
   return <div className="platform-studio">
-    <div className="platform-sandbox"><strong>Private rehearsal</strong> · Simulated customers only. No number is connected and no messages leave this workspace.</div>
-    {error&&<p role="alert" className="platform-error">{error} {thread&&<button disabled={busy} onClick={()=>void run(()=>open(thread.id))}>Reload conversation</button>} {mode==="responders"&&<button disabled={busy} onClick={()=>void run(async()=>setSettings(await call<Settings>("responder.read",{workspaceId})))}>Reload saved settings</button>}</p>}
+    <div className="platform-sandbox">{mode==="conversations"?<><strong>Practice chats only</strong> · Messages entered here are simulated. Pausing or resuming a practice chat does not change any real WhatsApp chat. <button type="button" className="platform-secondary" onClick={onOpenInbox}>Open Inbox · WhatsApp</button></>:<><strong>Shared reply settings</strong> · These settings apply to practice chats and, when connected, your WhatsApp number. The AI option also applies to your published website assistant.</>}</div>
+    {error&&<p role="alert" className="platform-error">{error} {thread&&<button disabled={busy} onClick={()=>void run(()=>open(thread.id))}>Reload conversation</button>} {mode==="responders"&&<button disabled={busy} onClick={()=>void run(async()=>{const saved=await call<Settings>("responder.read",{workspaceId});setSettings(saved);setSavedEnabled(Boolean(saved.enabled));})}>Reload saved settings</button>}</p>}
     {notice&&<p role="status" className="platform-success">{notice}</p>}
-    {mode==="responders"&&settings&&<form className="platform-card platform-form" onSubmit={e=>{e.preventDefault();void run(async()=>{setSettings(await call<Settings>("responder.save",{workspaceId,...settings,enabled:Boolean(settings.enabled),ai_enabled:Boolean(settings.ai_enabled)}));setNotice("Autoresponders saved. Practise them in Conversations.");onSaved();});}}>
-      <h2>Your voice, even when you’re away.</h2><p>These messages currently run in your private conversation rehearsal. Approved FAQ answers are used during your saved business hours; unknown questions receive your fallback.</p>
-      <label className="public-consent"><input type="checkbox" checked={Boolean(settings.enabled)} onChange={e=>setSettings({...settings,enabled:e.target.checked})}/>Enable automatic replies in rehearsal</label>
+    {mode==="responders"&&settings&&<form className="platform-card platform-form" onSubmit={e=>{e.preventDefault();void run(async()=>{const saved=await call<Settings>("responder.save",{workspaceId,...settings,enabled:Boolean(settings.enabled),ai_enabled:Boolean(settings.ai_enabled)});setSettings(saved);setSavedEnabled(Boolean(saved.enabled));setNotice(saved.enabled?`Saved: automatic replies are on for practice chats${whatsappConnected?" and your connected WhatsApp number. Individual paused WhatsApp chats stay paused.":". No WhatsApp number is connected to this workspace."}`:`Saved: automatic replies are off for practice chats${whatsappConnected?" and your connected WhatsApp number. Your number remains connected.":"."}`);onSaved();});}}>
+      <h2>Choose when your business replies automatically.</h2><p>Approved FAQ answers are used during your saved business hours. Outside those hours, the away message is used.</p>
+      <p role="status"><strong>Saved automatic replies: {savedEnabled?"On":"Off"}.</strong> Checkbox changes take effect after you save.</p>
+      {whatsappConnected&&<p className="platform-sandbox"><strong>Your WhatsApp number is connected.</strong> Enabling automatic replies applies to incoming chats, including existing contacts and normal conversations. Keep this off when you want to reply personally. You can pause an individual live chat under Inbox · WhatsApp.</p>}
+      <label className="public-consent"><input type="checkbox" checked={Boolean(settings.enabled)} onChange={e=>setSettings({...settings,enabled:e.target.checked})}/>Enable automatic replies for practice chats and my connected WhatsApp number</label>
       <label className="public-consent"><input type="checkbox" checked={Boolean(settings.ai_enabled)} onChange={e=>setSettings({...settings,ai_enabled:e.target.checked})}/>Use AI to match differently worded questions to my approved answers</label>
-      <p className="platform-muted">Applies to private rehearsal and the published sandbox website assistant. When enabled, the latest test question and this business’s approved FAQs may be processed by Cloudflare Workers AI. No customer list or conversation history is sent. Sandbox limit: 100 AI attempts per Lagos month, shared with a platform daily safety cap. Unknown answers and provider failures refer visitors to the team; private rehearsal pauses for takeover.</p>
+      <p className="platform-muted">AI matching applies to practice chats, the published website assistant and automatic WhatsApp replies. It may send the latest question and this business’s approved FAQs to Cloudflare Workers AI. No customer list or conversation history is sent. Usage limits follow your workspace allowance and the platform safety cap. Turning AI off still allows automatic FAQ and away replies when the automatic-replies switch is on. Unknown questions and AI failures use your fallback; practice and WhatsApp chats pause for the team.</p>
       {([ ["welcome","Welcome message"],["away","Outside business hours"],["fallback","When an answer is unavailable"] ] as const).map(([key,title])=><label key={key}>{title}<textarea required maxLength={1000} rows={3} value={settings[key]} onChange={e=>setSettings({...settings,[key]:e.target.value})}/></label>)}
       <p className="platform-muted">A team reply pauses automation. “STOP”, “human”, “agent” or “speak to the team” also pause it. Only a workspace member can resume. AI-assisted matching is optional; every answer still uses approved text.</p>
       <button disabled={busy} className="platform-primary">{busy?"Saving…":"Save autoresponders"}</button>
     </form>}
     {mode==="conversations"&&<div className="conversation-layout">
       <aside className="platform-card conversation-list">
-        <h2>Conversations <span className="platform-status">Test</span></h2>
+        <h2>Practice chats <span className="platform-status">Simulated</span></h2>
         <button className="platform-secondary" disabled={busy} onClick={()=>void run(refresh)}>Refresh conversation list</button>
         <InboxFilters value={filter} onChange={setFilter} disabled={busy}/><p className="platform-muted">Unread counts are personal and count customer messages only. Refresh to see new activity.</p>
         <form onSubmit={e=>{e.preventDefault();void run(async()=>{createId.current??=crypto.randomUUID();const created=await call<Thread>("conversation.create",{workspaceId,id:createId.current,label});setThread(created);createId.current=null;await refresh();});}}>
@@ -68,7 +71,7 @@ export default function ConversationStudio({workspaceId,mode,onSaved}:{workspace
       </aside>
       <section className="platform-card conversation-chat" aria-label="Conversation rehearsal">
         {!thread?<div className="conversation-empty"><h2>See the customer experience.</h2><p>Start a test conversation, ask a saved FAQ and practise taking over. Nothing is sent to WhatsApp.</p></div>:<>
-          <header className="conversation-heading"><div><h2>{thread.label}</h2><small>{thread.paused?"Automation paused · team in control":settings?.enabled?"Automation available":"Auto replies disabled in settings"}</small></div><button className="platform-secondary" disabled={busy} onClick={()=>void run(async()=>{setThread(await call<Thread>("conversation.pause",{workspaceId,id:thread.id,version:thread.version,paused:!thread.paused}));await refresh();})}>{thread.paused?"Resume automation":"Pause automation"}</button></header>
+          <header className="conversation-heading"><div><h2>{thread.label}</h2><small>{thread.paused?"Automation paused · team in control":settings?.enabled?"Automation available":"Auto replies disabled in settings"}</small></div><button className="platform-secondary" disabled={busy} onClick={()=>void run(async()=>{setThread(await call<Thread>("conversation.pause",{workspaceId,id:thread.id,version:thread.version,paused:!thread.paused}));await refresh();})}>{thread.paused?"Resume this practice chat":"Pause this practice chat"}</button></header>
           <ConversationTeam key={`${workspaceId}:${thread.id}`} workspaceId={workspaceId} threadId={thread.id} channel="rehearsal"/>
           <div className="conversation-messages" role="log" aria-live="polite" aria-label="Test messages">{thread.messages.map(m=><article className={`conversation-bubble conversation-${m.role}`} key={m.id}><small>{m.role==="customer"?"Test customer":m.role==="team"?"Your team":m.method==="ai"?"AI-selected approved answer":"Autoresponder"}</small><p>{m.text}</p><time dateTime={m.at}>{new Intl.DateTimeFormat("en-NG",{timeZone:"Africa/Lagos",hour:"2-digit",minute:"2-digit"}).format(new Date(m.at))} WAT</time></article>)}{!thread.messages.length&&<p className="platform-muted">Send a test message below to begin.</p>}</div>
           <form className="conversation-composer" onSubmit={e=>{e.preventDefault();void run(send);}}>

@@ -118,7 +118,7 @@ and the actual data inventory. This draft does not certify legal compliance.
    then save. Review welcome, away and handover responders before enabling them.
 5. Start the free trial in Plans if eligible. Usage shows lifetime trial balance and
    expiry; paid plans use monthly counters. No automatic paid conversion occurs.
-6. Practise a question and team reply in Conversations. Rehearsals send no WhatsApp
+6. Practise a question and team reply in Practice chats. Rehearsals send no WhatsApp
    message. Team takeover pauses automation; read the conversation before resuming.
 7. Invite colleagues only when needed. They sign in using the exact verified invited
    email and accept. An email invitation alone grants no access. Remove former staff.
