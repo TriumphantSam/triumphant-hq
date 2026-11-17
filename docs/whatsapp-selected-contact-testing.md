@@ -1,14 +1,23 @@
 # Selected-contact WhatsApp testing
 
-17 November 2026. Built and locally validated; not deployed.
+17 November 2026. Backend deployed to staging; matching website preview pending.
 Payments remain deferred. No real WhatsApp message is authorised by this file.
 
 All 132 backend tests passed, including seven targeted WhatsApp cases. Worker
-and website type-checks and targeted React lint passed. Local Wrangler is still
-signed in as info@iaprecision.com, without the TriumphantTech account. The owner
-has been asked to restore the correct login; no migration or deployment has been
-attempted with that unrelated account. The feature is isolated on
-`codex/whatsapp-test-contacts`; existing preview/backend remain unchanged.
+and website type-checks and targeted React lint passed. Local Wrangler still
+resolves to the unrelated IAPrecision account after the login attempt. The
+staging-only repository workflow instead used the existing scoped Cloudflare
+deployment and D1 credentials without extracting their values.
+
+Backend workflow [44065976158](https://github.com/TriumphantSam/triumphant-hq/actions/runs/44065976158)
+passed for `d0d04c9`, including 132 backend tests and five release-check tests.
+Migration 0028 applied to staging, and Worker version
+`4f5e7bb7-01a1-4886-8d51-f5f3443918e0` deployed. Direct database post-checks
+confirmed the company stays connected, automatic/AI replies are off and
+selected-contact testing is off. Signed operations returned 200, unsigned 401,
+and heartbeat was healthy. Overall operations still reports an unrelated
+existing delivery-queue warning; no retry or message send was initiated.
+Production and live billing were untouched. No real WhatsApp test was run.
 
 ## Behaviour
 
