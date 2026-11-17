@@ -1,0 +1,51 @@
+name: Deploy selected-contact WhatsApp staging
+on:
+  push:
+    branches: [codex/whatsapp-test-contacts]
+    paths: ['workers/triumph-automations/**', 'scripts/operations/whatsapp-staging-release*', '.github/workflows/deploy-whatsapp-staging.yml']
+permissions:
+  contents: read
+concurrency:
+  group: automations-staging-deploy
+  cancel-in-progress: false
+jobs:
+  deploy:
+    if: github.repository == 'TriumphantSam/triumphant-hq' && github.ref == 'refs/heads/codex/whatsapp-test-contacts'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLOUDFLARE_ACCOUNT_ID: a9bf344e401d603c114b152f500e6722
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --test scripts/operations/whatsapp-staging-release.test.mjs
+      - run: npm ci
+        working-directory: workers/triumph-automations
+      - run: npm run check && npm test
+        working-directory: workers/triumph-automations
+      - name: Verify staging identity and keep company replies off
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.BACKUP_CLOUDFLARE_API_TOKEN }}
+        run: node scripts/operations/whatsapp-staging-release.mjs before
+      - name: Apply additive staging migrations only
+        working-directory: workers/triumph-automations
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.BACKUP_CLOUDFLARE_API_TOKEN }}
+        run: npx wrangler d1 migrations apply triumph_db_staging --env staging --remote
+      - name: Deploy the staging backend only
+        working-directory: workers/triumph-automations
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          npx wrangler deploy --env staging --dry-run --keep-vars --var PLATFORM_BILLING_TEST_ENABLED:true --var PLATFORM_BILLING_TEST_EMAIL:adeyemilayemi@gmail.com --var PLATFORM_TRIAL_ENABLED:true
+          npx wrangler deploy --env staging --keep-vars --var PLATFORM_BILLING_TEST_ENABLED:true --var PLATFORM_BILLING_TEST_EMAIL:adeyemilayemi@gmail.com --var PLATFORM_TRIAL_ENABLED:true
+      - name: Verify migration and disabled reply controls
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.BACKUP_CLOUDFLARE_API_TOKEN }}
+        run: node scripts/operations/whatsapp-staging-release.mjs after
